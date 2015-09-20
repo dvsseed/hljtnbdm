@@ -1,10 +1,11 @@
 <?php namespace App\Http\Controllers\Admin;
 
-use DB;
 use Redirect;
 use Input;
 use Hash;
+use Auth;
 use App\User;
+use App\Http\Controllers\Event\EventController;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -16,36 +17,46 @@ class AdminController extends Controller {
     {
         $this->middleware('admin');
     }
-/*
-    public function index()
-    {
-        $result = User::where('is_admin', 0);
-        $count = $result->count();
-        $users = $result->paginate(10);
-        return view('Admin.index', compact('users', 'count'));
-    }
-*/
+
     public function index(Request $request)
     {
         // Gets the query string from our form submission 
         // $query = Input::get('search', '');
         $query = $request->search;
+        $category = $request->category;
         // Returns an array of users that have the query string located somewhere within 
         // our users names. Paginates them so we can break up lots of search results.
         if (count($query) >= 1)
-  	   $result = User::where('is_admin', 0)->where('name', 'like', '%' . $query . '%');
+        {
+           switch ($category) {
+             case 1:
+               $field = 'name';
+               break;
+             case 2:
+               $field = 'department';
+               break;
+             case 3:
+               $field = 'position';
+               break;
+           }
+           $result = User::where('is_admin', 0)->where($field, 'like', '%' . $query . '%');
+        }
         else
            $result = User::where('is_admin', 0);
+        $countstr = '人';
         $count = $result->count();
         $users = $result->paginate(10);
 	// returns a view and passes the view the list of users and the original query.
-        return view('Admin.index', compact('users', 'count'));
+        $categories = array('0' => '请选择', '1' => '姓名', '2' => '部门', '3' => '职务');
+        return view('Admin.index', compact('users', 'countstr', 'count', 'categories'));
     }
 
     public function create(){
         $result = User::where('is_admin', 0);
+        $countstr = '人';
         $count = $result->count();
-        return view('Admin.create', compact('count'));
+        EventController::SaveEvent('users', 'create(创建)');
+        return view('Admin.create', compact('countstr', 'count'));
     }
 
     public function store(Request $request)
@@ -59,11 +70,7 @@ class AdminController extends Controller {
         $user->password = Hash::make($user->id);
         $user->save();
         session()->flash('message', $user->name."人员添加成功");
-/*
-        $grade = new Grade;
-	    $grade->user_id = $request->id;
-	    $grade->save();
-*/
+        EventController::SaveEvent('users', 'store(保存)');
         return Redirect::to('admin');
     }
 
@@ -72,6 +79,7 @@ class AdminController extends Controller {
         $name = $user->name;
         $user->delete();
         session()->flash('message', $name."人员已经被移除");
+        EventController::SaveEvent('users', 'destroy(删除)');
         return Redirect::back();
     }
 
@@ -89,6 +97,7 @@ class AdminController extends Controller {
         $user->email = $request->email;
         $user->save();
         session()->flash('message', '人员更新成功');
+        EventController::SaveEvent('users', 'update(更新)');
         return Redirect::back();
     }
 
