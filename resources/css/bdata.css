@@ -1,0 +1,6 @@
+table.statics , th, td {
+    text-align: center;
+}
+.table tbody>th.vert-align{
+    vertical-align: middle;
+}

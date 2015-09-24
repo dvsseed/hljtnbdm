@@ -46,3 +46,6 @@ Route::post('feature/upload_feature', ['as' => 'upload_feature', 'uses' => 'Feat
 #操作管理
 Route::resource('hasfeature', 'Hasfeature\HasfeatureController');
 Route::post('hasfeature/upload_hasfeature', ['as' => 'upload_hasfeature', 'uses' => 'Hasfeature\HasfeatureController@upload_hasfeature']);
+
+
+Route::get('bdata/{end?}', 'BData\BDataController@page');
