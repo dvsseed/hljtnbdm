@@ -57,14 +57,15 @@
               </div>
 
             {!! Form::close() !!}
-	<script>
-	    $(document).ready(function(){
-	        $("#email").completer({
-	            separator: "@",
-	            source: ["126.com", "163.com", "yeah.net", "qq.com", "gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "live.com", "aol.com", "mail.com"]
-	        });
-	    });
-	</script>
         </div>
     </div>
 </div>
+
+<script>
+    $(function(){
+        $("#email").completer({
+            separator: "@",
+            source: ["126.com", "163.com", "yeah.net", "qq.com", "gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "live.com", "aol.com", "mail.com"]
+        });
+    });
+</script>

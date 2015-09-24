@@ -122,6 +122,10 @@ return [
                 'feature_id' => [
                        	'required' => '操作功能必须填写',
                 ],
+                'pp_name' => [
+                        'required' => '姓名必须填写',
+                ],
+
 	],
 
 	/*
