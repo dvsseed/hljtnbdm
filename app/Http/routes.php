@@ -48,4 +48,6 @@ Route::resource('hasfeature', 'Hasfeature\HasfeatureController');
 Route::post('hasfeature/upload_hasfeature', ['as' => 'upload_hasfeature', 'uses' => 'Hasfeature\HasfeatureController@upload_hasfeature']);
 
 
-Route::get('bdata/{end?}', 'BData\BDataController@page');
+Route::get('bdata/{uuid}/{end?}', 'BData\BDataController@page');
+Route::get('bdata/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_detail');
+Route::post('bdata/upsert', 'BData\BDataController@upsert');

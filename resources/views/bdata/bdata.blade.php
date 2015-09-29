@@ -12,9 +12,9 @@
         <br/>
         <div class="row">
             <div class="col-md-2"><h4>病歷號碼</h4></div>
-            <div class="col-md-2"><h4>K221xxxxxxx</h4></div>
+            <div class="col-md-2"><h4>{{$displayname}}</h4></div>
             <div class="col-md-2"><h4>姓 名</h4></div>
-            <div class="col-md-2"><h4>陳旻渝</h4></div>
+            <div class="col-md-2"><h4>{{$patient_displayname}}</h4></div>
             <div class="col-md-2"><h4>生 日</h4></div>
             <div class="col-md-2"><h4>西元2000年1月1日 , 16歲</h4></div>
         </div>
@@ -52,5 +52,5 @@
             </table>
         </div>
     </div>
-
+    @include('bdata.insert')
 @stop

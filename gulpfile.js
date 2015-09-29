@@ -15,7 +15,10 @@ elixir(function(mix) {
 
     mix.styles([
         "bootstrap.min.css",
-        "main.css"
+        "main.css",
+        "jquery-ui.structure.min.css",
+        "jquery-ui.theme.min.css",
+        "jquery.ui.timepicker.css"
         ]).styles([
             "bdata.css"
     ], 'public/css/bdata.css');
@@ -24,7 +27,9 @@ elixir(function(mix) {
         "jquery.min.js",
         "bootstrap.min.js",
         "jquery.tablesorter.min.js",
-        "main.js"
+        "main.js",
+        "jquery-ui.min.js",
+        "jquery.ui.timepicker.js"
     ]).scripts([
         "bdata.js"
     ], 'public/js/bdata.js');
