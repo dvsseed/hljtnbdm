@@ -8,6 +8,10 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Model\Pdata\FoodCategory;
+use App\Model\Pdata\Food;
+use App\Model\Pdata\UserFood;
+use App\Model\Pdata\UserFoodDetail;
 use Illuminate\Http\Request;
 use App\Model\Pdata\BloodSugar;
 use App\Model\Pdata\BloodSugarDetail;
@@ -15,6 +19,7 @@ use App\Model\Pdata\HospitalNo;
 use App\User;
 use Session;
 use Auth;
+use Cache;
 
 
     class BDataController extends Controller{
@@ -26,9 +31,27 @@ use Auth;
 
         public function page( $uuid, $end = null)
         {
-            if($end == null)
+            if($end > date('Y-m-d')){
+                return redirect('/bdata/'.$uuid);
+            }
+
+            if($end == null){
+                $data['next'] = null;
                 $end = date('Y-m-d');
+            }else{
+                $next = date('Y-m-d',strtotime("2 week", strtotime($end)));
+                if($end == date('Y-m-d')){
+                    $data['next'] = null;
+                }
+                else if($next == date('Y-m-d')){
+                    $data['next'] = "/bdata/".$uuid;
+                }else{
+                    $data['next'] = "/bdata/".$uuid."/".$next;
+                }
+            }
+
             $start = date('Y-m-d', strtotime("-2 week", strtotime($end)));
+            $data['previous'] = "/bdata/".$uuid."/".$start;
 
             $users = Auth::user();
 
@@ -40,16 +63,102 @@ use Auth;
             }
             $hospital_no = $hospital_no->first();
 
-            $displayname = $hospital_no->hospital_no_displayname;
-            $patient_displayname = User::find($hospital_no->patient_user_id)->name;
+            $data['displayname'] = $hospital_no->hospital_no_displayname;
+            $data['patient_displayname'] = User::find($hospital_no->patient_user_id);
 
-            $blood_records = $hospital_no->blood_sugar()->where('calendar_date', '<=', $end)->where('calendar_date', '>=', $start)->orderBy('calendar_date', 'DESC')->get();
+            $blood_records = $hospital_no->blood_sugar()->where('calendar_date', '<=', $end)->where('calendar_date', '>', $start)->orderBy('calendar_date', 'DESC')->get();
+            $stat = $this -> get_stat($blood_records);
             $blood_records = $this->fillup($blood_records,$start,$end);
 
+            $data['food_categories'] = FoodCategory::all();
+
+            $food_stat = $this->get_food_stat($uuid);
             Session::put('blood_records', $blood_records);
             Session::put('uuid', $uuid);
 
-            return view('bdata.bdata', compact('blood_records', 'displayname', 'patient_displayname'));
+            return view('bdata.bdata', compact('blood_records', 'data', 'food_categories', 'stat', 'food_stat'));
+        }
+
+        private function get_food_stat($uuid){
+            $nodes = ['early_morning', 'morning', 'breakfast_before', 'breakfast_after', 'lunch_before', 'lunch_after', 'dinner_brfore', 'dinner_after', 'sleep_before'];
+            $calendar_date = date('Y-m-d');
+            $start = date('Y-m-d', strtotime("-2 month", strtotime($calendar_date)));
+
+            $records = HospitalNo::find($uuid)->food_record()->where('calendar_date','<=',$calendar_date)-> where('calendar_date','>',$start)->get();
+
+            $food_tmp = array();
+            foreach($records as $record){
+                if(isset($food_tmp[$record['measure_type']])){
+                    array_push($food_tmp[$record['measure_type']],$record['sugar_amount']);
+                }else{
+                    $food_tmp[$record['measure_type']] = [$record['sugar_amount']];
+                }
+            }
+
+            $food_stat = array();
+            foreach($food_tmp as $key => $food_array){
+                $food_stat[$key]["count"] = count($food_array);
+                $food_stat[$key]["average"] = round($this->average($food_array));
+                $food_stat[$key]["max"] = max($food_array);
+                $food_stat[$key]["min"] = min($food_array);
+                $food_stat[$key]["above"] = "0 (0%)";
+                $food_stat[$key]["normal"] = count($food_array)." (100%)";
+                $food_stat[$key]["below"] = "0 (0%)";
+            }
+
+            return $food_stat;
+        }
+
+        private function get_stat($blood_records){
+
+            $nodes = ['early_morning', 'morning', 'breakfast_before', 'breakfast_after', 'lunch_before', 'lunch_after', 'dinner_brfore', 'dinner_after', 'sleep_before'];
+            $stat['avg'] = array();
+            $stat['deviation'] = array();
+            $counter = 0;
+            foreach($nodes as $node){
+                $tmp_arr = [];
+                foreach($blood_records as $blood_record){
+                    if($blood_record[$node] != null){
+                        $counter ++;
+                    }
+                    if($blood_record[$node] != null)
+                        array_push($tmp_arr,$blood_record[$node]);
+                }
+
+                if(count($blood_records) != 0){
+                    $stat['avg'][$node] = ($this -> average($tmp_arr));
+                    $stat['deviation'][$node] = round($this -> deviation($tmp_arr, $stat['avg'][$node]));
+                    $stat['avg'][$node] = round($stat['avg'][$node]);
+                }
+                else{
+                    $stat['deviation'][$node] = 0.0;
+                    $stat['avg'][$node] = 0.0;
+                }
+            }
+            $stat['total'] = $counter;
+            return $stat;
+        }
+
+        private function average($arr){
+            if(count($arr) == 0)
+                return 0.0;
+            else{
+                return array_sum($arr)/count($arr);
+            }
+        }
+
+        private function deviation($arr,$avg){
+            if(count($arr) <= 1){
+                return 0.0;
+            }
+            $sqr = 0.0;
+            foreach($arr as $ar){
+                $sqr += (($ar - $avg) * ($ar - $avg));
+            }
+
+            $sqr /= (count($arr)-1);
+
+            return sqrt($sqr);
         }
 
         public function get_detail( $calendar_date, $measure_type){
@@ -108,6 +217,7 @@ use Auth;
             $blood_sugar -> calendar_date = $request -> calendar_date;
             $blood_sugar[$request->measure_type] = $request -> blood_sugar;
             $blood_sugar -> user_id = $users->id;
+            $blood_sugar -> note = $request -> note;
             $blood_sugar -> save();
 
             $this->validate($request, BloodSugarDetail::rules());
@@ -129,5 +239,84 @@ use Auth;
             $blood_sugar_detail -> save();
 
             return "success";
+        }
+
+        public function upsertfood(Request $request){
+            $uuid = Session::get('uuid');
+            $users = Auth::user();
+
+            $food_record = HospitalNo::find($uuid)->food_record()->firstOrNew(array('calendar_date' => $request->calendar_date));
+            $food_record -> calendar_date = $request -> calendar_date;
+            $food_record -> measure_type= $request -> type;
+            $food_record -> user_id = $users -> id;
+            $food_record -> sugar_amount = $request -> sugar_amount;
+            $food_record -> food_note = $request -> food_note;
+            $food_record -> note = $request -> overall_note;
+            $food_record -> food_time = date('Y-m-d H:i', strtotime($request -> food_time));
+            $food_record -> save();
+
+            //delete old
+            $food_record -> food_detail() -> delete();
+
+            if($request -> details != null){
+                //rule check
+                foreach($request -> details as $detail){
+                    $user_food_detail = new UserFoodDetail();
+                    $user_food_detail -> food_pk = $detail['food_type_option'];
+                    if($detail['food_unit'] == "gram")
+                        $user_food_detail -> amount_gram = $detail['amount'];
+                    elseif($detail['food_unit'] == "set"){
+                        $user_food_detail -> amount_set = $detail['amount'];
+                    }
+                    $user_food_detail -> food_category_pk = $detail['food_category'];
+                    $user_food_detail -> user_food_pk = $food_record -> user_food_pk;
+                    $user_food_detail -> save();
+                }
+            }
+
+
+            return "success";
+        }
+
+        public function get_food_detail( $calendar_date, $measure_type){
+            $user_food = array();
+            $uuid = Session::get('uuid');
+
+            $user_food['summary'] = HospitalNo::find($uuid)->food_record()->where('calendar_date','=',$calendar_date)->where('measure_type','=',$measure_type)->get()->first();
+            if($user_food['summary'] != null){
+                $user_food['detail'] = $user_food['summary']->food_detail;
+                if($user_food['detail'] != null){
+                    foreach($user_food['detail'] as $detail){
+                        $food = Food::find($detail -> food_pk);
+                        $detail -> food_name = $food -> food_name;
+                        $detail -> food_category_name = FoodCategory::find($detail -> food_category_pk) -> food_category_name;
+                        if($detail -> amount_gram != null){
+                            $detail -> sugar = $food -> default_sugar_value * ($detail -> amount_gram / $food -> default_weight);
+                        }
+                        else if($detail -> amount_set != null){
+                            $detail -> sugar = $food -> default_sugar_value * $detail -> amount_set;
+                        }
+                    }
+                }
+            }
+
+            return $user_food;
+        }
+
+        public function get_food_category($food_category_id){
+            $all_food = Cache::get('foods');
+
+            if(isset($all_food)){
+                if(!isset($all_food[$food_category_id])){
+                    $all_food[$food_category_id] = Food::where('food_category_pk','=',$food_category_id)->get();
+                }
+            }else{
+                $all_food = array();
+                $all_food[$food_category_id] = Food::where('food_category_pk','=',$food_category_id)->get();
+            }
+            Cache::forever('foods',$all_food);
+            $foods = $all_food[$food_category_id];
+
+            return $foods;
         }
     }

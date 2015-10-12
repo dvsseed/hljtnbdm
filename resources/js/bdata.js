@@ -45,7 +45,168 @@ $( document ).ready(function() {
         }
     });
 
+    $('#food_timepicker').timepicker({
+        defaultTime: '00:01',
+        minutes: {
+            starts: 0,
+            ends: 59,
+            interval: 1,
+            manual: []
+        }
+    });
+
 });
+
+function clear(amount,unit){
+    amount.val("");
+    unit.val("set");
+    calc_sugar();
+}
+
+function foodHandler(event){
+    var food_type =event.data.type;
+    var default_value =event.data.value;
+    var food_category =event.data.category;
+    if(food_category.val() != 0){
+
+        $.ajax({
+            type: 'GET',
+            url: 'foods/'+food_category.val(),
+            success: function(result){
+                var html ="";
+
+                if(result.length > 0){
+                    for(i = 0; i < result.length; i++){
+                        if(default_value == result[i].food_pk)
+                            html += "<option selected value='" + result[i].food_pk + "' data='" + result[i].default_sugar_value + "' default='" + result[i].default_weight + "'>"+result[i].food_name + " <" + result[i].default_weight + " 克></option>";
+                        else
+                            html += "<option value='" + result[i].food_pk + "' data='" + result[i].default_sugar_value + "' default='" + result[i].default_weight + "'>" + result[i].food_name + " <" + result[i].default_weight + " 克></option>";
+                    }
+                }
+                else{
+                    html = "<option value=\"0\">無</option>";
+                }
+
+                food_type.html(html);
+
+                calc_sugar();
+            }
+        });
+    }
+    else{
+        food_type.html("<option value=\"0\">無</option>");
+    }
+
+
+    clear(food_type.parent().parent("tr").find("#amount"), food_type.parent().parent("tr").find("#food_unit"));
+}
+
+function calc_sugar(){
+    var trs = $("#sample > tbody").children("tr");
+
+    var total_sugar = 0.0;
+    for(var i = 1; i < trs.length; i++){
+        var tr = $(trs[i]);
+        var amount = tr.find('td').eq(3).attr("sugar");
+        total_sugar += parseFloat(amount);
+    }
+
+    if(!isNaN(total_sugar))
+        $("#sugar_amount").val(total_sugar);
+    else
+        $("#sugar_amount").val("0.0");
+}
+
+function setFoodList(food_category, food_type, default_value){
+    food_category.change({category: food_category,type:food_type,value:default_value},foodHandler);
+    food_type.change({type:food_type}, function(event){
+        var food_type = event.data.type;
+        clear(food_type.parent().parent("tr").find("#amount"), food_type.parent().parent("tr").find("#food_unit"));
+    });
+}
+
+function setAddFood(food_add_button){
+    food_add_button.click({button:food_add_button },function(event){
+
+        event.preventDefault();
+
+        var add_button = event.data.button;
+        var tr = add_button.parents("#sample tr");
+
+        var food_category_pk =  tr.find("#food_category").val();
+        var food_category_name =  tr.find("#food_category option:selected").text();
+        var food_pk =  tr.find("#food_type_option").val();
+        var food_name =  tr.find("#food_type_option option:selected").text().split(" ")[0];
+        var amount = tr.find("#amount").val();
+        var unit = tr.find("#food_unit").val();
+        var sugar_amount = tr.find("#food_type_option option:selected").attr("data");
+        var default_weight = tr.find("#food_type_option option:selected").attr("default");
+
+        var flag = true;
+
+        if(food_category_pk <= 0){
+            tr.find("#food_category").addClass("error");
+            flag = false;
+        }
+        if(food_pk <= 0){
+            tr.find("#food_type_option").addClass("error");
+            flag = false;
+        }
+        if(isNaN(amount) || amount <= 0){
+            tr.find("#amount").addClass("error");
+            flag = false;
+        }
+
+        if(flag){
+            var new_row = tr.clone();
+            new_row.insertAfter('#sample tr:last');
+
+            new_row.find("#delete_food").show();
+            new_row.find("#add_food").hide();
+            new_row.find('td').eq(1).attr("pk",food_category_pk).html(food_category_name);
+            new_row.find('td').eq(2).attr("pk",food_pk).html(food_name);
+            if (unit == "gram") {
+                var sugar = (amount/default_weight) * sugar_amount;
+                new_row.find('td').eq(3).attr("sugar", sugar).attr("unit","gram").attr("amount",amount).html(amount + " 克");
+
+            }else if (unit == "set") {
+                var sugar = amount * sugar_amount;
+                new_row.find('td').eq(3).attr("sugar", sugar).attr("unit","set").attr("amount",amount).html(amount + " 份");
+            }
+
+            setfoodRemove(new_row.find("#delete_food"));
+
+            calc_sugar();
+            init_food_input();
+        }
+
+    });
+}
+
+function init_food_input(){
+    var tr = $("#sample tr:first");
+    tr.find("#food_category").removeClass("error");
+    tr.find("#food_type_option").removeClass("error");
+    tr.find("#amount").removeClass("error");
+    tr.find("#add_food").blur();
+
+    tr.find("#food_category").val("0");
+    tr.find("#food_type_option").html("<option value=\"0\">無</option>");
+    tr.find("#amount").val("");
+    tr.find("#food_unit").val("set");
+
+}
+
+function setfoodRemove(delete_food){
+    delete_food.click({button:delete_food },function(event){
+        event.preventDefault();
+
+        var delete_food = event.data.button;
+        delete_food.parents("#sample tr").remove();
+
+        calc_sugar();
+    });
+}
 
 function updateBloodSugar(calendar_date, type, sugar_value) {
 
@@ -53,6 +214,7 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
 
     $("#calendar_date").html(calendar_date);
     $("#range").html(mapping[type]);
+    $("#range").attr("value",type);
     $('#timepicker').timepicker('setTime', mapping_time[type]);
 
     if (sugar_value != null) {
@@ -63,7 +225,6 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
 
             $("#filter").show();
             $("#insert_data").show();
-            console.log(result);
             if (result) {
                 if (result["measure_time"])
                     $('#timepicker').timepicker('setTime', result["measure_time"].split(" ")[1]);
@@ -145,9 +306,9 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
 
         if(flag){
             var insert_data={};
-            insert_data['calendar_date'] = calendar_date;
-            insert_data['measure_time'] = calendar_date+" "+$('#timepicker').timepicker('getTime');
-            insert_data['measure_type'] = type;
+            insert_data['calendar_date'] = $("#calendar_date").html();
+            insert_data['measure_time'] = $("#calendar_date").html()+" "+$('#timepicker').timepicker('getTime');
+            insert_data['measure_type'] = $("#range").attr('value');
             insert_data['blood_sugar'] = $("#blood_sugar").val();
             insert_data['low_blood_sugar'] = $("#low").val();
             if($("#sport").val() != "none"){
@@ -179,8 +340,8 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
                 data: insert_data,
                 success: function(result){
                     if(result == "success"){
-                        $("#filter").hide();
-                        $("#insert_data").hide();
+                        //$("#filter").hide();
+                        //$("#insert_data").hide();
                         location.reload();
                     }else{
                         alert(儲存失敗);
@@ -216,5 +377,126 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
 }
 
 function insertFood(calendar_date, type) {
-    
+    $("#food_calendar_date").html(calendar_date);
+    $("#food_range").html(mapping[type]);
+    $("#food_range").attr("value",type);
+    $('#food_timepicker').timepicker('setTime', mapping_time[type]);
+    setFoodList($("#food_category"), $("#food_type_option"),1);
+    setAddFood($("#add_food"));
+    setfoodRemove($("#delete_food"));
+    $("#amount").focusout(calc_sugar);
+    $("#food_unit").focusout(calc_sugar);
+
+    $.ajax({
+        type: 'GET',
+        url: 'food/detail/' + calendar_date + '/' + type,
+        success: function(result){
+            if(result != null && result["summary"] != null) {
+                if (result["summary"]["food_time"])
+                    $('#food_timepicker').timepicker('setTime', result["summary"]["food_time"].split(" ")[1]);
+                else
+                    $('#food_timepicker').timepicker('setTime', mapping_time[type]);
+                $("#sugar_amount").val(result["summary"]["sugar_amount"]);
+
+                $("#food_note").val(result["summary"]["food_note"]);
+                $("#overall_note").val(result["summary"]["note"]);
+
+                var foods = result["detail"];
+                var row_html = $("#sample tr:last");
+                for (var i = 0; i < foods.length; i++) {
+                    var tmp_row = row_html.clone();
+                    tmp_row.insertAfter('#sample tr:last');
+                    tmp_row.find("#add_food").hide();
+                    tmp_row.find("#delete_food").show();
+                    setfoodRemove(tmp_row.find("#delete_food"));
+                    tmp_row.find('td').eq(1).attr("pk",foods[i].food_category_pk).html(foods[i].food_category_name);
+                    tmp_row.find('td').eq(2).attr("pk",foods[i].food_pk).html(foods[i].food_name);
+                    if (foods[i].amount_gram) {
+                        tmp_row.find('td').eq(3).attr("sugar", foods[i].sugar).attr("unit","gram").attr("amount",foods[i].amount_gram ).html(foods[i].amount_gram + " 克");
+                    }else if (foods[i].amount_set) {
+                        tmp_row.find('td').eq(3).attr("sugar", foods[i].sugar).attr("unit","set").attr("amount",foods[i].amount_set).html(foods[i].amount_set + " 份");
+                    }
+
+                }
+            }
+            $("#filter").show();
+            $("#insert_food_data").show();
+        },
+        error: function(){
+            $("#filter").show();
+            $("#insert_food_data").show();
+        }
+    });
+
+    $("#food_save").click(function(event){
+        var flag = true;
+
+        event.preventDefault();
+
+        var details = [];
+        var trs = $("#sample > tbody").children("tr");
+
+        for(var i = 1; i < trs.length; i++){
+            var tr = $(trs[i]);
+            var food_category = tr.find('td').eq(1).attr("pk");
+            var food_type_option = tr.find('td').eq(2).attr("pk");
+            var amount = tr.find('td').eq(3).attr("amount");
+            var food_unit = tr.find('td').eq(3).attr("unit");
+
+            details.push({'food_category':food_category,
+                'food_type_option': food_type_option,
+                'amount': amount,
+                'food_unit': food_unit
+            })
+        }
+
+        if(flag){
+            var insert_data = {};
+            insert_data['calendar_date'] = $("#food_calendar_date").html();
+            insert_data['type'] = $("#food_range").attr("value");
+            insert_data['food_time'] = $("#food_calendar_date").html() + " " +$("#food_timepicker").timepicker("getTime");
+            insert_data['details'] = details;
+            insert_data['sugar_amount'] = $("#sugar_amount").val();
+            insert_data['food_note'] = $("#food_note").val();
+            insert_data['overall_note'] = $("#overall_note").val();
+            insert_data['_token'] = $('input[name=_token]').val();
+
+            $.ajax({
+                type: 'POST',
+                url: 'upsertfood',
+                data: insert_data,
+                success: function(result){
+                    if(result == "success"){
+                        $("#filter").hide();
+                        $("#insert_data").hide();
+                        location.reload();
+                    }else{
+                        alert("儲存失敗");
+                    }
+                },
+                error: function(){
+                    alert("儲存失敗");
+                }
+            });
+        }else{
+            $("#food_note").focusin();
+        }
+    });
+
+    $("#food_cancel").click(function(){
+        event.preventDefault();
+        $("#filter").hide();
+        $("#insert_food_data").hide();
+
+        init_food_input();
+        var trs = $("#sample > tbody").children("tr");
+
+        for(var i = 1; i < trs.length; i++) {
+            $(trs[i]).remove();
+        }
+        $("#sugar_amount").val("");
+        $("#food_note").val("");
+        $("#overall_note").val("");
+
+    });
 }

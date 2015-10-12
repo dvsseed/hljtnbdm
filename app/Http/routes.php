@@ -47,7 +47,9 @@ Route::post('feature/upload_feature', ['as' => 'upload_feature', 'uses' => 'Feat
 Route::resource('hasfeature', 'Hasfeature\HasfeatureController');
 Route::post('hasfeature/upload_hasfeature', ['as' => 'upload_hasfeature', 'uses' => 'Hasfeature\HasfeatureController@upload_hasfeature']);
 
-
-Route::get('bdata/{uuid}/{end?}', 'BData\BDataController@page');
+Route::get('bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');
 Route::get('bdata/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_detail');
 Route::post('bdata/upsert', 'BData\BDataController@upsert');
+Route::post('bdata/upsertfood', 'BData\BDataController@upsertfood');
+Route::get('bdata/food/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_food_detail');
+Route::get('bdata/{uuid}/{end?}', 'BData\BDataController@page');

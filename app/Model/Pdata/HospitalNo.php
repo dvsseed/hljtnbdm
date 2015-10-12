@@ -12,4 +12,9 @@ class HospitalNo extends Model
     {
         return $this->hasMany('App\Model\Pdata\BloodSugar','hospital_no_uuid');
     }
+
+    public function food_record()
+    {
+        return $this->hasMany('App\Model\Pdata\UserFood','hospital_no_uuid');
+    }
 }
