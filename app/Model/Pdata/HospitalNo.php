@@ -17,4 +17,9 @@ class HospitalNo extends Model
     {
         return $this->hasMany('App\Model\Pdata\UserFood','hospital_no_uuid');
     }
+
+    public function messages()
+    {
+        return $this->hasMany('App\Model\Pdata\Message','hospital_no_uuid');
+    }
 }

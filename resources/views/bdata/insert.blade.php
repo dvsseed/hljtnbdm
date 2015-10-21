@@ -7,13 +7,13 @@
             <td>量測日期：</td><td id="calendar_date"></td>
         </tr>
         <tr>
-            <td>量測時間：</td><td><input type="text" id="timepicker"/></td>
+            <td>量測時間：</td><td class="form-inline"><input type="text" id="timepicker" class="form-control" style="width: 100px"/></td>
         </tr>
         <tr>
             <td>量測時段：</td><td id="range"></td>
         </tr>
         <tr>
-            <td style="vertical-align: middle">血 糖：</td><td><input type="text" id="blood_sugar"/> mg/dl
+            <td style="vertical-align: middle" >血 糖：</td><td class="form-inline"><input type="text" id="blood_sugar" class="form-control" style="width: 100px"/> mg/dl
             <div id="blood_sugar_err" style="color: red">&nbsp;</div></td>
         </tr>
         <tr>
@@ -59,7 +59,7 @@
                     <option value="7">幫浦</option>
                     <option value="8">口服藥</option>
                 </select>
-                <input id="insulin_value_1" type="text">單位
+                <input id="insulin_value_1" type="text" class="form-control">單位
                 <div id="insulin_1_err" style="color: red">&nbsp;</div></td>
             </td>
         </tr>
@@ -76,7 +76,7 @@
                     <option value="7">幫浦</option>
                     <option value="8">口服藥</option>
                 </select>
-                <input id="insulin_value_2" type="text">單位
+                <input id="insulin_value_2" type="text" class="form-control">單位
                 <div id="insulin_2_err" style="color: red">&nbsp;</div></td>
         </tr>
         <tr>
@@ -92,25 +92,24 @@
                     <option value="7">幫浦</option>
                     <option value="8">口服藥</option>
                 </select>
-                <input id="insulin_value_3" type="text">單位
+                <input id="insulin_value_3" type="text" class="form-control">單位
                 <div id="insulin_3_err" style="color: red">&nbsp;</div>
             </td>
         </tr>
         <tr>
-            <td style="vertical-align:middle;">飲食醣份：</td><td class="form-inline"><input id="sugar" type="text">克
+            <td style="vertical-align:middle;">飲食醣份：</td><td class="form-inline"><input id="sugar" type="text" class="form-control">克
                 <div id="sugar_err" style="color: red">&nbsp;</div>
             </td>
         </tr>
         <tr>
-            <td style="vertical-align:middle;">我的備註：</td><td class="form-inline"><textarea id="note" style="width: 330px; height: 150px"></textarea></td>
+            <td style="vertical-align:middle;">我的備註：</td><td class="form-inline"><textarea id="note" style="width: 330px; height: 150px" class="form-control"></textarea></td>
         </tr>
         <tr>
             <td colspan="2">
-                <input id="addfood" name="addfood" value="1" type="checkbox">
                 {!! Form::open(array('url'=>'upsert','method'=>'POST', 'id'=>'myform')) !!}
-                存檔後增加飲食資料
                 {!! Form::button('存 檔', array('class'=>'btn btn-default', 'id'=>'save')) !!}
                 <button class="btn btn-default" id="cancel">取 消</button>
+                {!! Form::close() !!}
             </td>
         </tr>
     </table>

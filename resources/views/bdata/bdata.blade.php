@@ -19,10 +19,12 @@
             <div class="col-md-2"><h4>西元2000年1月1日 , 16歲</h4></div>
         </div>
         <br/>
-        <ul class="nav nav-tabs">
-            <li role="presentation" class="active"><a class="menuLink" href="#data">區間資料</a></li>
+        <ul class="nav nav-tabs" id="top">
+            <li role="presentation"><a class="menuLink" href="#data">區間資料</a></li>
+            <li role="presentation"><a id="batch" class="menuLink" href="#batchInsert">批次輸入</a></li>
             <li role="presentation"><a class="menuLink" href="#statics">統計資料</a></li>
             <li role="presentation"><a class="menuLink" href="#hba1c">HbA1C</a></li>
+            <li role="presentation"><a class="menuLink" href="#message">留言</a></li>
             <li role="presentation"><a href="#print">列印本頁</a></li>
         </ul>
         <br/>
@@ -30,6 +32,8 @@
         @include('bdata.sugar')
 
         @include('bdata.statics')
+
+        @include('bdata.message')
         <div id="hba1c" class="content" style="display: none">
             <table class="table table-hover">
                 <tr>
@@ -41,4 +45,6 @@
     </div>
     @include('bdata.insert')
     @include('bdata.insertfood')
+
+
 @stop

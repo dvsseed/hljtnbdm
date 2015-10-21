@@ -2,37 +2,52 @@
  * Created by purplebleed on 2015/9/22.
  */
 
-    var mapping = {
-        'early_morning': '凌晨',
-        'morning': '晨起',
-        'breakfast_before': '早餐飯前',
-        'breakfast_after': '早餐飯後',
-        'lunch_before': '中餐飯前',
-        'lunch_after': '中餐飯後',
-        'dinner_brfore': '晚餐飯前',
-        'dinner_after': '晚餐飯後',
-        'sleep_before': '睡前'
-    };
-    var mapping_time = {
-        'early_morning': '00:01',
-        'morning': '06:01',
-        'breakfast_before': '07:01',
-        'breakfast_after': '09:01',
-        'lunch_before': '11:01',
-        'lunch_after': '13:01',
-        'dinner_brfore': '17:01',
-        'dinner_after': '19:01',
-        'sleep_before': '20:01'
-    };
-
+var mapping = {
+    'early_morning': '凌晨',
+    'morning': '晨起',
+    'breakfast_before': '早餐飯前',
+    'breakfast_after': '早餐飯後',
+    'lunch_before': '中餐飯前',
+    'lunch_after': '中餐飯後',
+    'dinner_before': '晚餐飯前',
+    'dinner_after': '晚餐飯後',
+    'sleep_before': '睡前'
+};
+var mapping_time = {
+    'early_morning': '00:01',
+    'morning': '06:01',
+    'breakfast_before': '07:01',
+    'breakfast_after': '09:01',
+    'lunch_before': '11:01',
+    'lunch_after': '13:01',
+    'dinner_before': '17:01',
+    'dinner_after': '19:01',
+    'sleep_before': '20:01'
+};
+$("document").on("pageshow",function(event){
+    alert('123!');
+})
+var patt = /\d{4}-\d{2}-\d{2}/;
 $( document ).ready(function() {
+
     $(".menuLink").on('click', function (e) {
         $(this).parent().parent().find('.active').removeClass('active');
         $('.nav').find('.active').removeClass('active');
         $(this).parent().addClass('active');
         e.preventDefault();
         $('.content').hide();
-        $($(this).attr('href')).show();
+        var link = $(this).attr('href');
+        if( link == '#batchInsert'){
+            link = '#data';
+        }
+
+        $(link).show({
+            duration: 1,
+            always: checkContent
+        });
+        if($(this).attr('href') == "#message"){
+            setUpMessage();
+        }
     });
 
     $('#timepicker').timepicker({
@@ -55,11 +70,225 @@ $( document ).ready(function() {
         }
     });
 
+    var mode = getUrlParameter("mode");
+    if(mode){
+        if($("[href =" +  "#" + mode +"]").length > 0){
+            $("[href =" +  "#" + mode +"]").click();
+        }
+        else{
+            $('[href ' + '= #data]').click();
+        }
+    }
+    else{
+        $('[href =' + ' #data]').click();
+    }
 });
+
+function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
+
+function checkContent(){
+    if($(this).attr('id') == 'data'){
+        var active = $("#top").find('.active').children('a').attr('href');
+
+        var trs = $("#sugartable > tbody").children("tr");
+        for(var i = 2; i < trs.length; i++){
+            var tr = $(trs[i]);
+            tr.children('td').each (function() {
+                if(active == '#data'){
+                    $(this).children('#normal').show();
+                    $(this).children('#sugar_batch').hide();
+                }else if(active == '#batchInsert'){
+                    $(this).children('#normal').hide();
+                    $(this).children('#sugar_batch').show();
+                }
+            });
+
+            if(active == '#batchInsert'){
+                tr.find('#sugar_batch_empty').show();
+                tr.find('#sugar_batch_empty').click(function(){
+                    var tr = $(this).parents('tr');
+                    tr.children('td').each (function() {
+                        $(this).children('#sugar_batch').val("");
+                    });
+                });
+            }
+        }
+        if(active == '#data'){
+            $('.statics_data').show();
+            $('.batch_save_tr').hide();
+        }else if(active == '#batchInsert'){
+            $('.statics_data').hide();
+            $('.batch_save_tr').show();
+        }
+
+        if(active == '#batchInsert'){
+
+            $('#batch_save_btn').click(function(event){
+                var flag = true;
+                var batch_data = [];
+                var trs = $("#sugartable > tbody").children("tr");
+                for(var i = 2; i < trs.length; i++){
+                    var single_record = {};
+                    var tr = $(trs[i]);
+                    tr.children('td').each (function() {
+                        if($(this).children('#sugar_batch')){
+                            var sugar_value = $(this).children('#sugar_batch').val();
+                            if(isNaN(sugar_value)){
+                                flag = false;
+                                $(this).children('#sugar_batch').addClass('error');
+                            }else if(sugar_value != ''){
+                                single_record[$(this).children('#sugar_batch').attr('data')] = sugar_value;
+                            }
+                        }
+                    });
+
+                    if(patt.test(tr.children('td:first').html())){
+                        single_record['calendar_date'] = tr.children('td:first').html();
+                    }
+
+                    if(!$.isEmptyObject(single_record)){
+                        batch_data.push(single_record);
+                    }
+                }
+
+                event.preventDefault();
+                $(this).blur();
+                var inputdata = {};
+                inputdata['sugar_data'] = batch_data;
+                inputdata['_token'] = $('#batch_form > input[ name=_token]').val();;
+                $.ajax({
+                    type: 'POST',
+                    url: 'batch_update',
+                    data: inputdata,
+                    success: function(result){
+                        if(result == 'success'){
+                            location.reload();
+                        }
+                    }
+                });
+            });
+
+            var href = $("#before_two_week").attr('href');
+            if(href)
+                $("#before_two_week").attr('href', href + "?mode=batchInsert");
+            href = $("#after_two_week").attr('href');
+            if(href)
+                $("#after_two_week").attr('href', href + "?mode=batchInsert");
+        }
+        else if(active == '#data'){
+            var href = $("#before_two_week").attr('href');
+            href = href.split('?')[0]
+            if(href)
+                $("#before_two_week").attr('href', href);
+            href = $("#after_two_week").attr('href');
+            if(href)
+                $("#after_two_week").attr('href', href);
+        }
+    }
+}
+
+function setUpBatch(){
+    $("#batch").click(function(event){
+        event.preventDefault();
+        $(this).parent().parent().find('.active').removeClass('active');
+        $('.nav').find('.active').removeClass('active');
+        $(this).parent().addClass('active');
+        $('#data').show();
+
+        var trs = $("#sugartable > tbody").children("tr");
+        for(var i = 2; i < trs.length; i++){
+            var tr = $(trs[i]);
+            tr.children('td').each (function() {
+                $(this).children('#normal').hide();
+                $(this).children('#sugar_batch').show();
+            });
+            tr.find('#sugar_batch_empty').show();
+            tr.find('#sugar_batch_empty').click(function(){
+                var tr = $(this).parents('tr');
+                tr.children('td').each (function() {
+                    $(this).children('#sugar_batch').val("");
+                });
+            });
+        }
+
+        $('.statics_data').hide();
+        $('.batch_save_tr').show();
+    });
+}
+
+function setUpMessage(){
+    //setting for message
+    $("#messages").css('height', $( window ).height() - $("#top").offset().top - $("#top").height() - 150 );
+    $("#reply").click(function(event){
+        var inputdata = {};
+        inputdata['message_body'] = $("#messagearea").val();
+        inputdata['_token'] = $('#message_form > input[ name=_token]').val();
+        event.preventDefault();
+
+        if(inputdata['message_body'] == '' ){
+            $("#messagearea").addClass('error');
+        }else{
+            $.ajax({
+                type: 'POST',
+                url: 'post_message',
+                data: inputdata,
+                success: function(result){
+                    if(result == 'success'){
+                        getMessageData();
+                        $("#reply").blur();
+                        $("#messagearea").val('');
+                    }
+                }
+            });
+        }
+    });
+
+    $('#messages').scroll(function() {
+        if($('#messages').scrollTop() + $('#messages').height() == $("#message_table").height()) {
+            $.ajax({
+                type: 'GET',
+                url: 'message?start=' + $('#message_count').val(),
+                success: function(result){
+                    var trs = $(result).find("tr");
+                    for(var i = 0; i < trs.length; i++){
+                        var tr = $(trs[i]);
+                        tr.insertAfter('#message_table tr:last');
+                    }
+                    $('#message_count').val(parseInt($('#message_count').val()) + trs.length);
+                }
+            });
+        }
+    });
+
+    getMessageData();
+}
+
+function getMessageData(){
+    $.ajax({
+        type: 'GET',
+        url: 'message',
+        success: function(result){
+            $("#messages").html(result);
+        }
+    });
+}
 
 function clear(amount,unit){
     amount.val("");
-    unit.val("set");
+    unit.val("gram");
     calc_sugar();
 }
 
@@ -78,9 +307,9 @@ function foodHandler(event){
                 if(result.length > 0){
                     for(i = 0; i < result.length; i++){
                         if(default_value == result[i].food_pk)
-                            html += "<option selected value='" + result[i].food_pk + "' data='" + result[i].default_sugar_value + "' default='" + result[i].default_weight + "'>"+result[i].food_name + " <" + result[i].default_weight + " 克></option>";
+                            html += "<option selected value='" + result[i].food_pk + "' gram='" + result[i].gram_sugar_value + "' set='" + result[i].set_sugar_value + "'>"+result[i].food_name + "</option>";
                         else
-                            html += "<option value='" + result[i].food_pk + "' data='" + result[i].default_sugar_value + "' default='" + result[i].default_weight + "'>" + result[i].food_name + " <" + result[i].default_weight + " 克></option>";
+                            html += "<option value='" + result[i].food_pk + "' gram='" + result[i].gram_sugar_value + "' set='" + result[i].set_sugar_value + "'>" + result[i].food_name + " </option>";
                     }
                 }
                 else{
@@ -89,6 +318,7 @@ function foodHandler(event){
 
                 food_type.html(html);
 
+                set_sugar_option_value();
                 calc_sugar();
             }
         });
@@ -99,6 +329,20 @@ function foodHandler(event){
 
 
     clear(food_type.parent().parent("tr").find("#amount"), food_type.parent().parent("tr").find("#food_unit"));
+
+    food_type.change(set_sugar_option_value);
+}
+
+function set_sugar_option_value(){
+    var gram_sugar_value = $("#food_type_option option:selected").attr('gram');
+    var set_sugar_value = $("#food_type_option option:selected").attr('set');
+
+    var html = "<option value=\"gram\">公克 < " + gram_sugar_value + "克 ></option>";
+    if(set_sugar_value){
+        html += "<option value=\"gram\">份 < " + set_sugar_value + "克 ></option>";
+    }
+
+    $("#food_unit").html(html);
 }
 
 function calc_sugar(){
@@ -139,8 +383,8 @@ function setAddFood(food_add_button){
         var food_name =  tr.find("#food_type_option option:selected").text().split(" ")[0];
         var amount = tr.find("#amount").val();
         var unit = tr.find("#food_unit").val();
-        var sugar_amount = tr.find("#food_type_option option:selected").attr("data");
-        var default_weight = tr.find("#food_type_option option:selected").attr("default");
+        var gram_sugar_value = tr.find("#food_type_option option:selected").attr("gram");
+        var set_sugar_value = tr.find("#food_type_option option:selected").attr("set");
 
         var flag = true;
 
@@ -166,11 +410,11 @@ function setAddFood(food_add_button){
             new_row.find('td').eq(1).attr("pk",food_category_pk).html(food_category_name);
             new_row.find('td').eq(2).attr("pk",food_pk).html(food_name);
             if (unit == "gram") {
-                var sugar = (amount/default_weight) * sugar_amount;
+                var sugar = gram_sugar_value * amount;
                 new_row.find('td').eq(3).attr("sugar", sugar).attr("unit","gram").attr("amount",amount).html(amount + " 克");
 
             }else if (unit == "set") {
-                var sugar = amount * sugar_amount;
+                var sugar = set_sugar_value * amount;
                 new_row.find('td').eq(3).attr("sugar", sugar).attr("unit","set").attr("amount",amount).html(amount + " 份");
             }
 
@@ -193,7 +437,7 @@ function init_food_input(){
     tr.find("#food_category").val("0");
     tr.find("#food_type_option").html("<option value=\"0\">無</option>");
     tr.find("#amount").val("");
-    tr.find("#food_unit").val("set");
+    tr.find("#food_unit").val("gram");
 
 }
 
@@ -225,12 +469,13 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
 
             $("#filter").show();
             $("#insert_data").show();
+            $("#blood_sugar").val(sugar_value);
             if (result) {
                 if (result["measure_time"])
                     $('#timepicker').timepicker('setTime', result["measure_time"].split(" ")[1]);
                 else
                     $('#timepicker').timepicker('setTime', mapping_time[type]);
-                $("#blood_sugar").val(sugar_value);
+
                 if (result['exercise_type'] != null) {
                     $('#sport').val(result['exercise_type']);
                     $('#duration').val(result['exercise_duration']);
@@ -467,8 +712,7 @@ function insertFood(calendar_date, type) {
                 data: insert_data,
                 success: function(result){
                     if(result == "success"){
-                        $("#filter").hide();
-                        $("#insert_data").hide();
+
                         location.reload();
                     }else{
                         alert("儲存失敗");
@@ -498,5 +742,27 @@ function insertFood(calendar_date, type) {
         $("#food_note").val("");
         $("#overall_note").val("");
 
+    });
+
+    $("#delete_food_all").click(function(){
+
+        if (confirm("確定要刪除嗎?") == true) {
+            $.ajax({
+                type: 'DELETE',
+                url: 'foods/'+$("#food_calendar_date").html(),
+                data: { _token : $('input[name=_token]').val()},
+                success: function(result){
+                    if(result == "success"){
+                        location.reload();
+                    }else{
+                        alert("刪除失敗");
+                    }
+                },
+                error: function(){
+                    alert("刪除失敗");
+                }
+            });
+        }
+        event.preventDefault();
     });
 }

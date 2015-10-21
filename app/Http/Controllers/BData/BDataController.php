@@ -10,6 +10,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model\Pdata\FoodCategory;
 use App\Model\Pdata\Food;
+use App\Model\Pdata\Message;
 use App\Model\Pdata\UserFood;
 use App\Model\Pdata\UserFoodDetail;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ use App\User;
 use Session;
 use Auth;
 use Cache;
+use Input;
 
 
     class BDataController extends Controller{
@@ -64,7 +66,7 @@ use Cache;
             $hospital_no = $hospital_no->first();
 
             $data['displayname'] = $hospital_no->hospital_no_displayname;
-            $data['patient_displayname'] = User::find($hospital_no->patient_user_id);
+            $data['patient_displayname'] = User::find($hospital_no->patient_user_id)->name;
 
             $blood_records = $hospital_no->blood_sugar()->where('calendar_date', '<=', $end)->where('calendar_date', '>', $start)->orderBy('calendar_date', 'DESC')->get();
             $stat = $this -> get_stat($blood_records);
@@ -80,7 +82,7 @@ use Cache;
         }
 
         private function get_food_stat($uuid){
-            $nodes = ['early_morning', 'morning', 'breakfast_before', 'breakfast_after', 'lunch_before', 'lunch_after', 'dinner_brfore', 'dinner_after', 'sleep_before'];
+            $nodes = ['early_morning', 'morning', 'breakfast_before', 'breakfast_after', 'lunch_before', 'lunch_after', 'dinner_before', 'dinner_after', 'sleep_before'];
             $calendar_date = date('Y-m-d');
             $start = date('Y-m-d', strtotime("-2 month", strtotime($calendar_date)));
 
@@ -111,7 +113,7 @@ use Cache;
 
         private function get_stat($blood_records){
 
-            $nodes = ['early_morning', 'morning', 'breakfast_before', 'breakfast_after', 'lunch_before', 'lunch_after', 'dinner_brfore', 'dinner_after', 'sleep_before'];
+            $nodes = ['early_morning', 'morning', 'breakfast_before', 'breakfast_after', 'lunch_before', 'lunch_after', 'dinner_before', 'dinner_after', 'sleep_before'];
             $stat['avg'] = array();
             $stat['deviation'] = array();
             $counter = 0;
@@ -195,7 +197,7 @@ use Cache;
                     $bsugar->breakfast_after = null;
                     $bsugar->lunch_before = null;
                     $bsugar->lunch_after = null;
-                    $bsugar->dinner_brfore = null;
+                    $bsugar->dinner_before = null;
                     $bsugar->dinner_after = null;
                     $bsugar->sleep_before = null;
                     $bsugar->note = null;
@@ -211,12 +213,12 @@ use Cache;
                 return "fail";
             }
             $uuid = Session::get('uuid');
-            $users = Auth::user();
+            $hospital_no = HospitalNo::find($uuid);
 
-            $blood_sugar = HospitalNo::find($uuid)->blood_sugar()->firstOrNew(array('calendar_date' => $request->calendar_date));
+            $blood_sugar = $hospital_no->blood_sugar()->firstOrNew(array('calendar_date' => $request->calendar_date));
             $blood_sugar -> calendar_date = $request -> calendar_date;
             $blood_sugar[$request->measure_type] = $request -> blood_sugar;
-            $blood_sugar -> user_id = $users->id;
+            $blood_sugar -> user_id = $hospital_no-> patient_user_id;
             $blood_sugar -> note = $request -> note;
             $blood_sugar -> save();
 
@@ -243,12 +245,12 @@ use Cache;
 
         public function upsertfood(Request $request){
             $uuid = Session::get('uuid');
-            $users = Auth::user();
+            $hospital_no = HospitalNo::find($uuid);
 
-            $food_record = HospitalNo::find($uuid)->food_record()->firstOrNew(array('calendar_date' => $request->calendar_date));
+            $food_record = $hospital_no->food_record()->firstOrNew(array('calendar_date' => $request->calendar_date));
             $food_record -> calendar_date = $request -> calendar_date;
             $food_record -> measure_type= $request -> type;
-            $food_record -> user_id = $users -> id;
+            $food_record -> user_id = $hospital_no -> patient_user_id;
             $food_record -> sugar_amount = $request -> sugar_amount;
             $food_record -> food_note = $request -> food_note;
             $food_record -> note = $request -> overall_note;
@@ -274,7 +276,6 @@ use Cache;
                 }
             }
 
-
             return "success";
         }
 
@@ -291,10 +292,10 @@ use Cache;
                         $detail -> food_name = $food -> food_name;
                         $detail -> food_category_name = FoodCategory::find($detail -> food_category_pk) -> food_category_name;
                         if($detail -> amount_gram != null){
-                            $detail -> sugar = $food -> default_sugar_value * ($detail -> amount_gram / $food -> default_weight);
+                            $detail -> sugar = $food -> gram_sugar_value * $detail -> amount_gram ;
                         }
                         else if($detail -> amount_set != null){
-                            $detail -> sugar = $food -> default_sugar_value * $detail -> amount_set;
+                            $detail -> sugar = $food -> set_sugar_value * $detail -> amount_set;
                         }
                     }
                 }
@@ -304,7 +305,7 @@ use Cache;
         }
 
         public function get_food_category($food_category_id){
-            $all_food = Cache::get('foods');
+            $all_food = array();//Cache::get('foods');
 
             if(isset($all_food)){
                 if(!isset($all_food[$food_category_id])){
@@ -318,5 +319,84 @@ use Cache;
             $foods = $all_food[$food_category_id];
 
             return $foods;
+        }
+
+        public function message(){
+            $uuid = Session::get('uuid');
+            $hospital_no = HospitalNo::find($uuid);
+
+            $user[$hospital_no-> pateint_user_id] = User::find($hospital_no-> pateint_user_id) -> name;
+            $user[$hospital_no-> nurse_user_id] = User::find($hospital_no-> nurse_user_id) -> name;
+
+            $start = Input::get('start');
+            if($start != null && is_numeric($start)){
+                $messages = $hospital_no->messages()-> orderBy('message_pk','desc')-> skip($start) -> take(20)->get();
+            }else{
+                $messages = $hospital_no->messages()-> orderBy('message_pk','desc') ->take(20)->get();
+            }
+
+            return view('bdata.messagetemplate', compact('messages', 'user'));
+        }
+
+        public function post_message(Request $request){
+            $uuid = Session::get('uuid');
+            $user_id = Auth::user()->id;
+
+            $message = new Message();
+            $message -> hospital_no_uuid = $uuid;
+            $message -> sender_id = $user_id;
+            $message -> message = $request->message_body;
+            $message -> save();
+
+            return "success";
+
+        }
+
+        public function batch_update(Request $request){
+            $sugar_data = $request['sugar_data'];
+            $uuid = Session::get('uuid');
+            $hospital_no = HospitalNo::find($uuid);
+            $user_id = $hospital_no->patient_user_id;
+
+            foreach($sugar_data as $one_data){
+                $calendar_date = $one_data['calendar_date'];
+                if(count(array_keys($one_data)) == 1){
+                    $blood_sugar_data = $hospital_no->blood_sugar()->where('calendar_date', '=' , $calendar_date) ->first();
+                    if($blood_sugar_data !=null ){
+                        $details = $blood_sugar_data -> blood_sugar_detail;
+                        foreach( $details as $detail){
+                            $detail -> delete();
+                        }
+                        $blood_sugar_data -> delete();
+                    }
+                }
+                else{
+                    $blood_sugar = HospitalNo::find($uuid)->blood_sugar()->firstOrNew(array('calendar_date' => $calendar_date));
+                    foreach( $one_data as $key => $value){
+                        $blood_sugar[$key] = $value;
+                    }
+                    $blood_sugar -> calendar_date = $calendar_date;
+                    $blood_sugar -> user_id = $user_id;
+                    $blood_sugar -> save();
+                }
+            }
+
+            return "success";
+        }
+
+        public function delete_food($calendar_date){
+
+            $uuid = Session::get('uuid');
+            $user_food = HospitalNo::find($uuid) -> food_record() -> where('calendar_date', '=', $calendar_date) -> first();
+
+            if($user_food != null){
+                $details = $user_food -> food_detail;
+                foreach( $details as $detail){
+                    $detail -> delete();
+                }
+                $user_food -> delete();
+            }
+
+            return "success";
         }
     }

@@ -28,3 +28,7 @@ table.statics , th, td, tr {
 .error{
     border-color: red !important;
 }
+.batchInput{
+    width: 60px !important;
+    margin: 0 auto !important;
+}

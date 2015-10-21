@@ -30,9 +30,9 @@
                         </td>
                         <td class="form-inline">
                             <input id="amount" type="text" class="timepicker form-control"/>
-                            <select id="food_unit" class="form-control" style="width: 100px">
-                                <option value="set">份</option>
+                            <select id="food_unit" class="form-control" style="width: 150px">
                                 <option value="gram">公克</option>
+                                <option value="set">份</option>
                             </select>
                         </td>
                     </tr>
@@ -58,7 +58,8 @@
                 {!! Form::open(array('url'=>'upsertfood','method'=>'POST', 'id'=>'myform')) !!}
                 {!! Form::button('存 檔', array('class'=>'btn btn-default', 'id'=>'food_save')) !!}
                 <button class="btn btn-default" id="food_cancel">取 消</button>
-                {!! Form::button('刪除飲食資料', array('class'=>'btn btn-default', 'id'=>'delete_food')) !!}
+                {!! Form::button('刪除飲食資料', array('class'=>'btn btn-default', 'id'=>'delete_food_all')) !!}
+                {!! Form::close() !!}
             </td>
         </tr>
     </table>
