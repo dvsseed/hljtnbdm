@@ -98,7 +98,8 @@ use Input;
             return $food_all_calendar;
         }
 
-        public function get_food_stat($uuid){
+        public function get_food_stat(){
+            $uuid = Session::get('uuid');
             $nodes = ['early_morning', 'morning', 'breakfast_before', 'breakfast_after', 'lunch_before', 'lunch_after', 'dinner_before', 'dinner_after', 'sleep_before'];
             $calendar_date = date('Y-m-d');
             $start = date('Y-m-d', strtotime("-2 month", strtotime($calendar_date)));

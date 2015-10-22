@@ -48,6 +48,7 @@ Route::resource('hasfeature', 'Hasfeature\HasfeatureController');
 Route::post('hasfeature/upload_hasfeature', ['as' => 'upload_hasfeature', 'uses' => 'Hasfeature\HasfeatureController@upload_hasfeature']);
 
 Route::get('bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');
+Route::get('bdata/food/statics', 'BData\BDataController@get_food_stat');
 Route::delete('bdata/foods/{calendar_date}', 'BData\BDataController@delete_food');
 Route::get('bdata/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_detail');
 Route::get('bdata/message', 'BData\BDataController@message');
