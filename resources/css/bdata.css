@@ -4,14 +4,11 @@ table.statics , th, td, tr {
 .table tbody>th.vert-align{
     vertical-align: middle;
 }
-.hover{
-    width: 100%;
-    height: 100%;
-}
-.hover a{
+
+.change{
     visibility: hidden;
 }
-.hover:hover a{
+.hover:hover a.change{
     visibility: visible;
 }
 .borderless>tbody>tr>td, .borderless tbody tr, .borderless tbody th, .borderless td{

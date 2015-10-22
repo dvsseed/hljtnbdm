@@ -47,6 +47,8 @@ $( document ).ready(function() {
         });
         if($(this).attr('href') == "#message"){
             setUpMessage();
+        }else if($(this).attr('href') == "#statics"){
+            getStaticsData();
         }
     });
 
@@ -274,6 +276,16 @@ function setUpMessage(){
     });
 
     getMessageData();
+}
+
+function getStaticsData(){
+    $.ajax({
+        type: 'GET',
+        url: 'food/statics',
+        success: function(result){
+            $("#statics").html(result);
+        }
+    });
 }
 
 function getMessageData(){

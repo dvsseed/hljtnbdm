@@ -27,94 +27,111 @@
         @foreach ($blood_records as $day)
             <tr>
                 <td>{{ $day->calendar_date }}</td>
-                <td>
+                <td class="form-inline">
                     <div id="normal">
                     @if ($day->early_morning != null)
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'early_morning', {{$day->early_morning}})" >{{$day->early_morning}}@if($day->note != null)*@endif</a>
+                        <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'early_morning', {{$day->early_morning}})" >{{$day->early_morning}}@if($day->note != null)*@endif</a>&nbsp;
                     @else
-                        <div class="hover"><a href="#"  onclick="updateBloodSugar('{{$day->calendar_date}}', 'early_morning');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
-                        <a href="#"  onclick="insertFood('{{$day->calendar_date}}', 'early_morning');" ><img src="/css/images/rice.gif"/></a></div>
+                        <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'early_morning');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
                     @endif
+                        <a href="#" @if(!array_key_exists($day->calendar_date, $food_records) || !in_array('early_morning', $food_records[$day->calendar_date])) class="change" @endif
+                            onclick="insertFood('{{$day->calendar_date}}', 'early_morning');" ><img src="/css/images/rice.gif"/></a></div>
                     </div>
                     <input class="form-control batchInput" id="sugar_batch" type="text" data="early_morning" style="display: none" value="{{$day->early_morning}}"/>
                 </td>
                 <td>
                     <div id="normal">
                     @if ($day->morning != null)
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'morning', {{$day->morning}})" >{{$day->morning}}@if($day->note != null)*@endif</a>
+                        <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'morning', {{$day->morning}})" >{{$day->morning}}@if($day->note != null)*@endif</a>&nbsp;
                     @else
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'morning');" >--</a>
+                        <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'morning');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
                     @endif
+                        <a href="#" @if(!array_key_exists($day->calendar_date, $food_records) || !in_array('morning', $food_records[$day->calendar_date])) class="change" @endif
+                            onclick="insertFood('{{$day->calendar_date}}', 'morning');" ><img src="/css/images/rice.gif"/></a></div>
                     </div>
                     <input class="form-control batchInput" id="sugar_batch" type="text" data="morning" style="display: none" value="{{$day->morning}}"/>
                 </td>
                 <td>
                     <div id="normal">
-                    @if ($day->breakfast_before != null)
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_before', {{$day->breakfast_before}})" >{{$day->breakfast_before}}@if($day->note != null)*@endif</a>
-                    @else
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_before'); " >--</a>
-                    @endif
+                        @if ($day->breakfast_before != null)
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_before', {{$day->breakfast_before}})" >{{$day->breakfast_before}}@if($day->note != null)*@endif</a>&nbsp;
+                        @else
+                            <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
+                                @endif
+                                <a href="#" @if(!array_key_exists($day->calendar_date, $food_records) || !in_array('breakfast_before', $food_records[$day->calendar_date])) class="change" @endif
+                                onclick="insertFood('{{$day->calendar_date}}', 'breakfast_before');" ><img src="/css/images/rice.gif"/></a></div>
                     </div>
                     <input class="form-control batchInput" id="sugar_batch" type="text" data="breakfast_before" style="display: none" value="{{$day->breakfast_before}}"/>
                 </td>
                 <td>
                     <div id="normal">
-                    @if ($day->breakfast_after != null)
-                        <a href=#"" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_after', {{$day->breakfast_after}})" >{{$day->breakfast_after}}@if($day->note != null)*@endif</a>
-                    @else
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_after');" >--</a>
-                    @endif
+                        @if ($day->breakfast_after != null)
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_after', {{$day->breakfast_after}})" >{{$day->breakfast_after}}@if($day->note != null)*@endif</a>&nbsp;
+                        @else
+                            <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_after');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
+                                @endif
+                                <a href="#" @if(!array_key_exists($day->calendar_date, $food_records) || !in_array('breakfast_after', $food_records[$day->calendar_date])) class="change" @endif
+                                onclick="insertFood('{{$day->calendar_date}}', 'breakfast_after');" ><img src="/css/images/rice.gif"/></a></div>
                     </div>
                     <input class="form-control batchInput" id="sugar_batch" type="text" data="breakfast_after" style="display: none" value="{{$day->breakfast_after}}"/>
                 </td>
                 <td>
                     <div id="normal">
-                    @if ($day->lunch_before != null)
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_before', {{$day->lunch_before}})" >{{$day->lunch_before}}@if($day->note != null)*@endif</a>
-                    @else
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_before');" >--</a>
-                    @endif
+                        @if ($day->lunch_before != null)
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_before', {{$day->lunch_before}})" >{{$day->lunch_before}}@if($day->note != null)*@endif</a>&nbsp;
+                        @else
+                            <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
+                                @endif
+                                <a href="#" @if(!array_key_exists($day->calendar_date, $food_records) || !in_array('lunch_before', $food_records[$day->calendar_date])) class="change" @endif
+                                onclick="insertFood('{{$day->calendar_date}}', 'lunch_before');" ><img src="/css/images/rice.gif"/></a></div>
                     </div>
                     <input class="form-control batchInput" id="sugar_batch" type="text" data="lunch_before" style="display: none" value="{{$day->lunch_before}}"/>
                 </td>
                 <td>
                     <div id="normal">
-                    @if ($day->lunch_after != null)
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_after', {{$day->lunch_after}})" >{{$day->lunch_after}}@if($day->note != null)*@endif</a>
-                    @else
-                        <a href=#"" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_after'); " >--</a>
-                    @endif
+                        @if ($day->lunch_after != null)
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_after', {{$day->lunch_after}})" >{{$day->lunch_after}}@if($day->note != null)*@endif</a>&nbsp;
+                        @else
+                            <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_after');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
+                                @endif
+                                <a href="#" @if(!array_key_exists($day->calendar_date, $food_records) || !in_array('lunch_after', $food_records[$day->calendar_date])) class="change" @endif
+                                onclick="insertFood('{{$day->calendar_date}}', 'lunch_after');" ><img src="/css/images/rice.gif"/></a></div>
                     </div>
                     <input class="form-control batchInput" id="sugar_batch" type="text" data="lunch_after" style="display: none" value="{{$day->lunch_after}}"/>
                 </td>
                 <td>
                     <div id="normal">
-                    @if ($day->dinner_before != null)
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_before', {{$day->dinner_before}}; event.preventDefault();)" >{{$day->dinner_before}}@if($day->note != null)*@endif</a>
-                    @else
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_before'); " >--</a>
-                    @endif
+                        @if ($day->dinner_before != null)
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_before', {{$day->dinner_before}})" >{{$day->dinner_before}}@if($day->note != null)*@endif</a>&nbsp;
+                        @else
+                            <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
+                                @endif
+                                <a href="#" @if(!array_key_exists($day->calendar_date, $food_records) || !in_array('dinner_before', $food_records[$day->calendar_date])) class="change" @endif
+                                onclick="insertFood('{{$day->calendar_date}}', 'dinner_before');" ><img src="/css/images/rice.gif"/></a></div>
                     </div>
                     <input class="form-control batchInput" id="sugar_batch" type="text" data="dinner_before" style="display: none" value="{{$day->dinner_before}}"/>
                 </td>
                 <td>
                     <div id="normal">
-                    @if ($day->dinner_after != null)
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_after', {{$day->dinner_after}}); event.preventDefault();" >{{$day->dinner_after}}@if($day->note != null)*@endif</a>
-                    @else
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_after'); " >--</a>
-                    @endif
+                        @if ($day->dinner_after != null)
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_after', {{$day->dinner_after}})" >{{$day->dinner_after}}@if($day->note != null)*@endif</a>&nbsp;
+                        @else
+                            <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_after');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
+                                @endif
+                                <a href="#" @if(!array_key_exists($day->calendar_date, $food_records) || !in_array('dinner_after', $food_records[$day->calendar_date])) class="change" @endif
+                                onclick="insertFood('{{$day->calendar_date}}', 'dinner_after');" ><img src="/css/images/rice.gif"/></a></div>
                     </div>
                     <input class="form-control batchInput" id="sugar_batch" type="text" data="dinner_after" style="display: none" value="{{$day->dinner_after}}"/>
                 </td>
                 <td>
                     <div id="normal">
-                    @if ($day->sleep_before != null)
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'sleep_before', {{$day->sleep_before}})" >{{$day->sleep_before}}@if($day->note != null)*@endif</a>
-                    @else
-                        <a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'sleep_before'); " >--</a>
-                    @endif
+                        @if ($day->sleep_before != null)
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'sleep_before', {{$day->sleep_before}})" >{{$day->sleep_before}}@if($day->note != null)*@endif</a>&nbsp;
+                        @else
+                            <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'sleep_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
+                                @endif
+                                <a href="#" @if(!array_key_exists($day->calendar_date, $food_records) || !in_array('sleep_before', $food_records[$day->calendar_date])) class="change" @endif
+                                onclick="insertFood('{{$day->calendar_date}}', 'sleep_before');" ><img src="/css/images/rice.gif"/></a></div>
                     </div>
                     <input class="form-control batchInput" id="sugar_batch" type="text" data="sleep_before" style="display: none" value="{{$day->sleep_before}}"/>
                 </td>

@@ -74,14 +74,31 @@ use Input;
 
             $data['food_categories'] = FoodCategory::all();
 
-            $food_stat = $this->get_food_stat($uuid);
+            $food_records = $this->get_has_food($uuid);
             Session::put('blood_records', $blood_records);
             Session::put('uuid', $uuid);
 
-            return view('bdata.bdata', compact('blood_records', 'data', 'food_categories', 'stat', 'food_stat'));
+            return view('bdata.bdata', compact('blood_records', 'data', 'food_categories', 'stat', 'food_records'));
         }
 
-        private function get_food_stat($uuid){
+        private function get_has_food($uuid){
+            $calendar_date = date('Y-m-d');
+            $start = date('Y-m-d', strtotime("-2 week", strtotime($calendar_date)));
+            $records = HospitalNo::find($uuid)->food_record()->where('calendar_date','<=',$calendar_date)-> where('calendar_date','>',$start)->get();
+
+            $food_all_calendar = array();
+            foreach($records as $record){
+                if(isset($food_all_calendar[$record['calendar_date']])){
+                    array_push($food_all_calendar, $record['measure_type']);
+                }else{
+                    $food_all_calendar[$record['calendar_date']] = [$record['measure_type']];
+                }
+            }
+
+            return $food_all_calendar;
+        }
+
+        public function get_food_stat($uuid){
             $nodes = ['early_morning', 'morning', 'breakfast_before', 'breakfast_after', 'lunch_before', 'lunch_after', 'dinner_before', 'dinner_after', 'sleep_before'];
             $calendar_date = date('Y-m-d');
             $start = date('Y-m-d', strtotime("-2 month", strtotime($calendar_date)));
@@ -89,6 +106,7 @@ use Input;
             $records = HospitalNo::find($uuid)->food_record()->where('calendar_date','<=',$calendar_date)-> where('calendar_date','>',$start)->get();
 
             $food_tmp = array();
+
             foreach($records as $record){
                 if(isset($food_tmp[$record['measure_type']])){
                     array_push($food_tmp[$record['measure_type']],$record['sugar_amount']);
@@ -108,7 +126,8 @@ use Input;
                 $food_stat[$key]["below"] = "0 (0%)";
             }
 
-            return $food_stat;
+
+            return view('bdata.food_statics', compact('food_stat'));
         }
 
         private function get_stat($blood_records){
@@ -325,8 +344,9 @@ use Input;
             $uuid = Session::get('uuid');
             $hospital_no = HospitalNo::find($uuid);
 
-            $user[$hospital_no-> pateint_user_id] = User::find($hospital_no-> pateint_user_id) -> name;
-            $user[$hospital_no-> nurse_user_id] = User::find($hospital_no-> nurse_user_id) -> name;
+            $user = array();
+            $user[$hospital_no-> pateint_user_id] = User::find($hospital_no-> patient_user_id) -> name;
+            $user[$hospital_no-> nurse_user_id] =  User::find($hospital_no-> nurse_user_id) -> name ;
 
             $start = Input::get('start');
             if($start != null && is_numeric($start)){
