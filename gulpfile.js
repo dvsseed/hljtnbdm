@@ -24,13 +24,12 @@ elixir(function(mix) {
     ], 'public/css/bdata.css');
 
     mix.scripts([
-        "jquery.min.js",
-        "bootstrap.min.js",
-        "jquery.tablesorter.min.js",
-        "main.js",
-        "jquery-ui.min.js",
-        "jquery.ui.timepicker.js"
+        "jquery-ui.min.js"
     ]).scripts([
         "bdata.js"
-    ], 'public/js/bdata.js');
+    ], 'public/js/bdata.js').scripts([
+        "jquery.ui.timepicker.js"
+    ], 'public/js/timepicker.js');
 });
+
+

@@ -5,8 +5,7 @@
 @stop
 
 @section('content')
-    {!! Html::script('js/all.js') !!}
-    {!! Html::script('js/bdata.js') !!}
+
     <div class="container">
         <h3 align="center">血糖資料</h3>
         <br/>
@@ -47,4 +46,10 @@
     @include('bdata.insertfood')
 
 
+@stop
+
+@section('loadScripts')
+    {!! Html::script('js/all.js') !!}
+    {!! Html::script('js/timepicker.js') !!}
+    {!! Html::script('js/bdata.js') !!}
 @stop

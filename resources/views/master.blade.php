@@ -79,6 +79,7 @@
 <script src="/js/completer.min.js"></script>
 <script type="text/javascript" src="/js/main.js"></script>
 <script>@yield('scripts')</script>
+@yield('loadScripts')
 </body>
 
 </html>

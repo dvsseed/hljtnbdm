@@ -15,10 +15,6 @@ Route::get('users', 'TestController@users');
 #主页
 Route::get('/', 'WelcomeController@index');
 
-<<<<<<< HEAD
-
-=======
->>>>>>> upstream/master
 #登录，登出, 自动跳转, 密码重置
 Route::get('login', ['middleware' => 'guest', 'as' => 'login', 'uses' => 'loginController@loginGet']);
 Route::post('login', ['middleware' => 'guest', 'uses' => 'loginController@loginPost']);
@@ -41,11 +37,7 @@ Route::post('admin/upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminC
 #下载人员名单
 Route::get('download/dmList', ['as' => 'download_dm_list_excel', 'uses' => 'Admin\ExcelController@dmList']);
 #Route::get('download/grade', ['as' => 'download_grade_list_excel', 'uses' => 'Admin\ExcelController@grade']);
-<<<<<<< HEAD
 
-
-=======
->>>>>>> upstream/master
 #功能管理
 Route::resource('feature', 'Feature\FeatureController');
 Route::post('feature/upload_feature', ['as' => 'upload_feature', 'uses' => 'Feature\FeatureController@upload_feature']);
@@ -59,8 +51,8 @@ Route::resource('event', 'Event\EventController');
 #一般人员入口
 #病患基本数据
 Route::resource("patient", "Patient\PatientprofileController");
-Route::post('hasfeature/upload_hasfeature', ['as' => 'upload_hasfeature', 'uses' => 'Hasfeature\HasfeatureController@upload_hasfeature']);
 
+#血糖
 Route::get('bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');
 Route::get('bdata/food/statics', 'BData\BDataController@get_food_stat');
 Route::delete('bdata/foods/{calendar_date}', 'BData\BDataController@delete_food');
