@@ -11,7 +11,7 @@ class Hasfeature extends Model {
         protected static function rules()
         {
                 return [
-                        'user_id' => 'required',
+                        'user_id' => 'required|unique:hasfeatures',
                         'feature_id' => 'required',
                 ];
         }

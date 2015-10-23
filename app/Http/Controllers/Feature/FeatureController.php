@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class FeatureController extends Controller {
 
+	public function __construct()
+	{
+		$this->middleware('admin');
+	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -17,9 +22,10 @@ class FeatureController extends Controller {
 	public function index(Request $request)
 	{
              	$result = Feature::orderBy('id', 'ASC');
+                $countstr = '功能';
                 $count = $result->count();
                	$features = $result->paginate(10);
-                return view('Feature.index', compact('features', 'count'));
+                return view('Feature.index', compact('features', 'countstr', 'count'));
 	}
 
 	/**
@@ -30,8 +36,9 @@ class FeatureController extends Controller {
 	public function create()
 	{
 	        $result = Feature::orderBy('id', 'ASC');
+                $countstr = '功能';
         	$count = $result->count();
-        	return view('Feature.create', compact('count'));
+        	return view('Feature.create', compact('countstr', 'count'));
 	}
 
 	/**

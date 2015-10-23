@@ -24,7 +24,7 @@ class FeatureTableSeeder extends Seeder {
         Feature::create([
         'href' => '/patient',
         'btnclass' => 'btn-primary',
-        'innerhtml' => '病患列表'
+        'innerhtml' => '病患数据'
         ]);
 
 	Feature::create([

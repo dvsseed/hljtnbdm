@@ -26,7 +26,7 @@ return [
 	|
 	*/
 
-	'url' => 'http://localhost:8004',
+	'url' => 'http://localhost:8000',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -146,8 +146,10 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
-
+		'Laralib\L5scaffold\GeneratorsServiceProvider',
+		'Barryvdh\Debugbar\ServiceProvider',
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+
 	],
 
 	/*
@@ -195,9 +197,10 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
-		'Html'		=> 'Illuminate\Html\HtmlFacade',
-		'Form'		=> 'Illuminate\Html\FormFacade',
+		'Html'      => 'Illuminate\Html\HtmlFacade',
+		'Form'      => 'Illuminate\Html\FormFacade',
 		'Excel'     => 'Maatwebsite\Excel\Facades\Excel',
+		'Debugbar'  => 'Barryvdh\Debugbar\Facade',
 	],
 
 ];

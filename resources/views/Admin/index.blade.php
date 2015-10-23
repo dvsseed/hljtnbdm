@@ -18,8 +18,8 @@
                     {!! Form::text('search', null, array('required', 'class'=>'form-control', 'placeholder'=>'按栏位搜索...')) !!}
                     {!! Form::submit('搜寻', array('class'=>'btn btn-default')) !!}
                 {!! Form::close() !!}
-                <table class="table table-hover">
-                    <tr>
+                <table class="table table-striped table-hover">
+                    <tr style="background: silver;">
                         <th>编号</th>
                         <th>姓名</th>
                         <th>部门</th>

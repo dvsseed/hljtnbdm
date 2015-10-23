@@ -1,5 +1,6 @@
 <?php namespace App\Http\Controllers\Hasfeature;
 
+use DB;
 use Input;
 use Redirect;
 use App\Http\Requests;
@@ -12,6 +13,11 @@ use Illuminate\Http\Request;
 
 class HasfeatureController extends Controller {
 
+        public function __construct()
+       	{
+                $this->middleware('admin');
+       	}
+
 	/**
 	 * Display a listing of the resource.
 	 *
@@ -19,10 +25,16 @@ class HasfeatureController extends Controller {
 	 */
 	public function index(Request $request)
 	{
-		$result = Hasfeature::orderBy('id', 'ASC');
-		$count = $result->count();
-		$hasfeatures = $result->paginate(10);
-		return view('Hasfeature.index', compact('hasfeatures', 'count'));
+		// $result = Hasfeature::orderBy('id', 'ASC');
+		$result = DB::table('hasfeatures')
+			->join('users', 'hasfeatures.user_id', '=', 'users.id')
+			->join('features', 'hasfeatures.feature_id', '=', 'features.id')
+			->select('hasfeatures.id', 'hasfeatures.user_id', 'users.name', 'hasfeatures.feature_id', 'features.innerhtml')
+			->orderBy('hasfeatures.id', 'ASC');
+                $countstr = '操作';
+                $count = $result->count();
+                $hasfeatures = $result->paginate(10);
+		return view('Hasfeature.index', compact('hasfeatures', 'countstr', 'count'));
 	}
 
 	/**
@@ -33,10 +45,11 @@ class HasfeatureController extends Controller {
 	public function create()
 	{
 		$result = Hasfeature::orderBy('id', 'ASC');
+                $countstr = '操作';
 		$count = $result->count();
 		$users = User::where('is_admin', 0)->lists('name', 'id');
 		$features = Feature::all(); // lists('innerhtml', 'id');
-		return view('Hasfeature.create', compact('count', 'users', 'features'));
+		return view('Hasfeature.create', compact('countstr', 'count', 'users', 'features'));
 	}
 
 	/**
@@ -46,7 +59,8 @@ class HasfeatureController extends Controller {
 	 */
 	public function store(Request $request)
 	{
-		$featureids = Input::get('feature_ids', true);
+		$this->validate($request, Hasfeature::rules());
+		$featureids = Input::get('feature_id', true);
 		if(is_array($featureids))
 		{
 			foreach($featureids as $featureid)

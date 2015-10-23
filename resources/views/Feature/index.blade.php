@@ -13,8 +13,8 @@
 
                 <h3 align="center">功能信息表</h3>
                 <a href="/feature/create"><button class="btn btn-primary">添加功能</button></a>
-                <table class="table table-hover">
-                    <tr>
+                <table class="table table-striped table-hover">
+                    <tr style="background: silver;">
                         <th>编号</th>
                         <th>方法名</th>
                         <th>按钮类</th>

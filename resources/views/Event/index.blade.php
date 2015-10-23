@@ -13,8 +13,8 @@
 
                 <h3 align="center">轨迹纪录表</h3>
                 <!-- a href="/event/create"><button class="btn btn-primary">添加操作</button></a -->
-                <table class="table table-hover">
-                    <tr>
+                <table class="table table-striped table-hover">
+                    <tr style="background: silver;">
                         <th>编号</th>
                         <th>数据表</th>
                         <th>行为</th>

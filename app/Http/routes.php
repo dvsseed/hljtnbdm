@@ -15,19 +15,22 @@ Route::get('users', 'TestController@users');
 #主页
 Route::get('/', 'WelcomeController@index');
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream/master
 #登录，登出, 自动跳转, 密码重置
 Route::get('login', ['middleware' => 'guest', 'as' => 'login', 'uses' => 'loginController@loginGet']);
 Route::post('login', ['middleware' => 'guest', 'uses' => 'loginController@loginPost']);
 Route::get('logout', ['middleware' => 'auth', 'as' => 'logout', 'uses' => 'loginController@logout']);
 Route::controller('password', 'PasswordController');
-
+#关于
+Route::get('/about', ['middleware' => 'admin', 'as' => 'about', 'uses' => 'Pages\PagesController@about']);
 
 #人员的登录详情(包括资料修改，查询)
 Route::get('dm/home', ['as' => 'dm_home', 'uses' => 'DM\DiabetesController@home']);
 Route::get('dm/edit', ['as' => 'dm_edit', 'uses' => 'DM\DiabetesController@edit']);
 Route::post('dm/update', ['as' => 'dm_update', 'uses' => 'DM\DiabetesController@update']);
-
 
 #管理员入口(增删改查，上传)
 #Route::get('admin/grade', ['as' => 'grade_list', 'uses' => 'Admin\GradeController@index']);
@@ -38,13 +41,24 @@ Route::post('admin/upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminC
 #下载人员名单
 Route::get('download/dmList', ['as' => 'download_dm_list_excel', 'uses' => 'Admin\ExcelController@dmList']);
 #Route::get('download/grade', ['as' => 'download_grade_list_excel', 'uses' => 'Admin\ExcelController@grade']);
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> upstream/master
 #功能管理
 Route::resource('feature', 'Feature\FeatureController');
 Route::post('feature/upload_feature', ['as' => 'upload_feature', 'uses' => 'Feature\FeatureController@upload_feature']);
 #操作管理
 Route::resource('hasfeature', 'Hasfeature\HasfeatureController');
+#Route::post('hasfeature/upload_hasfeature', ['as' => 'upload_hasfeature', 'uses' => 'Hasfeature\HasfeatureController@upload_hasfeature']);
+#轨迹纪录
+Route::resource('event', 'Event\EventController');
+
+
+#一般人员入口
+#病患基本数据
+Route::resource("patient", "Patient\PatientprofileController");
 Route::post('hasfeature/upload_hasfeature', ['as' => 'upload_hasfeature', 'uses' => 'Hasfeature\HasfeatureController@upload_hasfeature']);
 
 Route::get('bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');

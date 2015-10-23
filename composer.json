@@ -8,11 +8,14 @@
 		"laravel/framework": "5.0.*",
 		"illuminate/html": "5.0",
 		"maatwebsite/excel": "~2.0.0",
+		"nesbot/carbon": "^1.20",
 		"phpunit/phpunit": "4.8.7",
 	  	"barryvdh/laravel-ide-helper": "v2.1.0"
 	},
 	"require-dev": {
-		"phpspec/phpspec": "~2.1"
+		"phpunit/phpunit": "~4.0",
+		"phpspec/phpspec": "~2.1",
+		"laralib/l5scaffold": "^1.0"
 	},
 	"autoload": {
 		"classmap": [
@@ -24,10 +27,22 @@
 	},
 	"autoload-dev": {
 		"classmap": [
-			"tests"
+			"tests/TestCase.php"
 		]
 	},
 	"scripts": {
+		"post-install-cmd": [
+			"php artisan clear-compiled",
+			"php artisan optimize"
+		],
+		"post-update-cmd": [
+			"php artisan clear-compiled",
+			"php artisan optimize"
+		],
+		"post-create-project-cmd": [
+			"php -r \"copy('.env.example', '.env');\"",
+			"php artisan key:generate"
+		]
 	},
 	"config": {
 		"preferred-install": "dist"

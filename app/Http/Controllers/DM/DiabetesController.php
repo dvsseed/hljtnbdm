@@ -3,11 +3,9 @@
 use DB;
 use Auth;
 use Redirect;
-use App\User;
-use App\Feature;
-use App\Hasfeature;
 use Hash;
 use App\Http\Requests\DiabetesMesRequest;
+use App\Http\Controllers\Event\EventController;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -60,9 +58,8 @@ class DiabetesController extends Controller {
         $user->phone = $request->phone;
         $user->email = $request->email;
         $user->save();
-
         session()->flash('message', '个人信息修改成功');
-
+        EventController::SaveEvent('users', 'update(更新)');
         return Redirect::route('dm_home');
     }
 
