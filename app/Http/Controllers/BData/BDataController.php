@@ -31,8 +31,32 @@ use Input;
             $this->middleware('auth');
         }
 
-        public function page( $uuid, $end = null)
+        public function page( $uuid = null, $end = null)
         {
+
+            $users = Auth::user();
+
+            if($uuid == null){
+                $hospital_no = HospitalNo::where('patient_user_id', '=', $users->id) -> first();
+                if($hospital_no != null){
+                    $uuid = $hospital_no -> hospital_no_uuid;
+                }else{
+                    $err_msg = '沒有血糖資料!';
+                }
+            }else{
+                $hospital_no = HospitalNo::find($uuid);
+                if($hospital_no != null){
+                    $hospital_no = $hospital_no->where('patient_user_id', '=', $users->id)->orWhere('nurse_user_id', '=', $users->id)->first();
+                }
+                if($hospital_no == null){
+                    $err_msg = '您沒有權限查看此血糖資料!';
+                }
+            }
+
+            if($hospital_no == null){
+                return view('bdata.error', compact('err_msg'));
+            }
+
             if($end > date('Y-m-d')){
                 return redirect('/bdata/'.$uuid);
             }
@@ -55,9 +79,6 @@ use Input;
             $start = date('Y-m-d', strtotime("-2 week", strtotime($end)));
             $data['previous'] = "/bdata/".$uuid."/".$start;
 
-            $users = Auth::user();
-
-            $hospital_no = HospitalNo::find($uuid)->where('patient_user_id', '=', $users->id)->orWhere('nurse_user_id', '=', $users->id)->first();
 
             if($hospital_no->count() ==0 ) {
                 $invalid = true;
@@ -100,7 +121,6 @@ use Input;
 
         public function get_food_stat(){
             $uuid = Session::get('uuid');
-            $nodes = ['early_morning', 'morning', 'breakfast_before', 'breakfast_after', 'lunch_before', 'lunch_after', 'dinner_before', 'dinner_after', 'sleep_before'];
             $calendar_date = date('Y-m-d');
             $start = date('Y-m-d', strtotime("-2 month", strtotime($calendar_date)));
 

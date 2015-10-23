@@ -63,5 +63,5 @@ Route::post('bdata/batch_update', 'BData\BDataController@batch_update');
 Route::post('bdata/upsert', 'BData\BDataController@upsert');
 Route::post('bdata/upsertfood', 'BData\BDataController@upsertfood');
 Route::get('bdata/food/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_food_detail');
-Route::get('bdata/{uuid}/{end?}', 'BData\BDataController@page');
+Route::get('bdata/{uuid?}/{end?}', 'BData\BDataController@page');
 
