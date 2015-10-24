@@ -46,10 +46,22 @@ Route::resource('hasfeature', 'Hasfeature\HasfeatureController');
 #轨迹纪录
 Route::resource('event', 'Event\EventController');
 
-
 #一般人员入口
 #患者基本资料
 Route::resource("patient", "Patient\PatientprofileController");
 
 #方案管理
 Route::resource("case", "Cases\CasesController");
+
+#血糖
+Route::get('bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');
+Route::get('bdata/food/statics', 'BData\BDataController@get_food_stat');
+Route::delete('bdata/foods/{calendar_date}', 'BData\BDataController@delete_food');
+Route::get('bdata/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_detail');
+Route::get('bdata/message', 'BData\BDataController@message');
+Route::post('bdata/post_message', 'BData\BDataController@post_message');
+Route::post('bdata/batch_update', 'BData\BDataController@batch_update');
+Route::post('bdata/upsert', 'BData\BDataController@upsert');
+Route::post('bdata/upsertfood', 'BData\BDataController@upsertfood');
+Route::get('bdata/food/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_food_detail');
+Route::get('bdata/{uuid?}/{end?}', 'BData\BDataController@page');
