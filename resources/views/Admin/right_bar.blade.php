@@ -8,5 +8,5 @@
     <br />
     <a href="/event"><button class="btn btn-danger btn-lg">轨迹纪录</button></a>
     <br />
-    <a href="{{ URL::route('download_dm_list_excel') }}"><button class="btn btn-warning btn-lg">下载名单</button></a>
+    <a href="{{ URL::route('download_dm_list_excel') }}"><button class="btn btn-warning btn-lg" onclick="return confirm('确定下载?')">下载名单</button></a>
 </div>
