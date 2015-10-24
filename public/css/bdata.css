@@ -1,0 +1,32 @@
+table.statics , th, td, tr {
+    text-align: center;
+}
+.table tbody>th.vert-align{
+    vertical-align: middle;
+}
+
+.change{
+    visibility: hidden;
+}
+.hover:hover a.change{
+    visibility: visible;
+}
+.borderless>tbody>tr>td, .borderless tbody tr, .borderless tbody th, .borderless td{
+    border: none !important;
+    border-spacing: 0px;
+}
+.timepicker{
+    width: 100px !important;
+}
+.area{
+    width: 90%!important;
+    height: 200px!important;
+}
+.error{
+    border-color: red !important;
+}
+.batchInput{
+    width: 70px !important;
+    margin: 0 auto !important;
+}
+/*# sourceMappingURL=bdata.css.map */

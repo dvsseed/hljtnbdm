@@ -138,6 +138,7 @@ return [
 		'Illuminate\Html\HtmlServiceProvider',
 		'Maatwebsite\Excel\ExcelServiceProvider',
                 'Barryvdh\Debugbar\ServiceProvider',
+		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
                 'Laralib\L5scaffold\GeneratorsServiceProvider',
                 'yajra\Oci8\Oci8ServiceProvider',
 
