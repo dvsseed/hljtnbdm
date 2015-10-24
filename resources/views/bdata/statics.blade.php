@@ -1,0 +1,3 @@
+<div id="statics" class="content" style="display: none">
+    Loading...
+</div>
