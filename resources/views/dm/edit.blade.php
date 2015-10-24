@@ -20,13 +20,13 @@
                         <div class="form-group">
                             {!! Form::label('id', '编号: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::text('id', Auth::user()->id, ['class' => 'form-control', 'readonly'])!!}
+                                {!! Form::text('id', Auth::user()->id, ['class' => 'form-control', 'readonly']) !!}
                             </div>
                         </div>
                         <div class="form-group">
                             {!! Form::label('name', '姓名: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::text('name', Auth::user()->name, ['class' => 'form-control', 'readonly'])!!}
+                                {!! Form::text('name', Auth::user()->name, ['class' => 'form-control', 'readonly']) !!}
                             </div>
                         </div>
 {{--
@@ -43,18 +43,33 @@
                                 {!! Form::password('password', null, ['class' => 'form-control']) !!}
                             </div>
                         </div>
-                        <div class="form-group">
-                            {!! Form::label('department', '部门: ', ['class' => 'col-md-2 control-label']) !!}
-                            <div class="col-md-6">
-                                {!! Form::text('department', Auth::user()->department, ['class' => 'form-control']) !!}
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            {!! Form::label('position', '职务: ', ['class' => 'col-md-2 control-label']) !!}
-                            <div class="col-md-6">
-                                {!! Form::text('position', Auth::user()->position, ['class' => 'form-control']) !!}
-                            </div>
-                        </div>
+                        @if (strlen(Auth::user()->id) >= 18)
+                          <div class="form-group">
+                              {!! Form::label('department', '部门: ', ['class' => 'col-md-2 control-label']) !!}
+                              <div class="col-md-6">
+                                  {!! Form::text('department', Auth::user()->department, ['class' => 'form-control', 'readonly']) !!}
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              {!! Form::label('position', '职务: ', ['class' => 'col-md-2 control-label']) !!}
+                              <div class="col-md-6">
+                                  {!! Form::text('position', Auth::user()->position, ['class' => 'form-control', 'readonly']) !!}
+                              </div>
+                          </div>
+                        @else
+                          <div class="form-group">
+                              {!! Form::label('department', '部门: ', ['class' => 'col-md-2 control-label']) !!}
+                              <div class="col-md-6">
+                                  {!! Form::text('department', Auth::user()->department, ['class' => 'form-control']) !!}
+                              </div>
+                          </div>
+                          <div class="form-group">
+                              {!! Form::label('position', '职务: ', ['class' => 'col-md-2 control-label']) !!}
+                              <div class="col-md-6">
+                                  {!! Form::text('position', Auth::user()->position, ['class' => 'form-control']) !!}
+                              </div>
+                          </div>
+                        @endif
                         <div class="form-group">
                             {!! Form::label('phone', '手机: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">

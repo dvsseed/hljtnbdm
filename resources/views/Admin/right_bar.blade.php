@@ -1,5 +1,5 @@
 <div class="col-md-2">
-    <h3>总{{ $countstr }}数: {{ $count }}</h3>
+    <h3>总{{ $countstr }}数: <span class="badge">{{ $count }}</span></h3>
     <a href="/admin"><button class="btn btn-success btn-lg">人员列表</button></a>
     <br />
     <a href="/feature"><button class="btn btn-primary btn-lg">功能管理</button></a>

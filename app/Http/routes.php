@@ -48,5 +48,8 @@ Route::resource('event', 'Event\EventController');
 
 
 #一般人员入口
-#病患基本数据
+#患者基本资料
 Route::resource("patient", "Patient\PatientprofileController");
+
+#方案管理
+Route::resource("case", "Cases\CasesController");

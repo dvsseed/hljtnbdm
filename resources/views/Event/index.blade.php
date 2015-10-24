@@ -8,9 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10">
-
                 @include('errors.list')
-
                 <h3 align="center">轨迹纪录表</h3>
                 <!-- a href="/event/create"><button class="btn btn-primary">添加操作</button></a -->
                 <table class="table table-striped table-hover">

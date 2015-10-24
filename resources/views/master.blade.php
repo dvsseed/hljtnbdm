@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-	<meta charset="utf-8">
+	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title> @yield('title') </title>
 	<!-- Bootstrap Core CSS -->
-	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<!-- Custom CSS -->
-        <link href="/css/completer.min.css" rel="stylesheet">
-        <link href="/css/main.css" rel="stylesheet">
+        <link rel="stylesheet" href="/css/completer.min.css">
+        <link rel="stylesheet" href="/css/main.css">
 	<!-- Fonts -->
-	<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
-	<link href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic">
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -25,7 +25,7 @@
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Toggle Navigation</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -52,7 +52,7 @@
 					@if (Auth::guest())
 					@else
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+							<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="{{ url('/logout') }}">退出</a></li>
 							</ul>
@@ -69,16 +69,14 @@
 
 	@yield('content')
 
-<!-- script -->
-<!-- script type="text/javascript" src="/js/all.js"></script -->
 <!-- script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script -->
 <!-- script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
+<script src="/js/jquery.tablesorter.min.js"></script>
 <script src="/js/completer.min.js"></script>
-<script type="text/javascript" src="/js/main.js"></script>
-<script>@yield('scripts')</script>
+<script src="/js/main.js"></script>
+<script> @yield('scripts') </script>
 </body>
 
 </html>

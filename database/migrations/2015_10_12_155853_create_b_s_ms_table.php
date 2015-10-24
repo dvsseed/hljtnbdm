@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEventsTable extends Migration {
+class CreateBSMsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,12 @@ class CreateEventsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('events', function(Blueprint $table)
+		Schema::create('bsm', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->string('tablename');
-			$table->string('action');
-			$table->integer('user_id')->unsigned();
+			$table->string('bm_name', 20)->nullable();
+			$table->string('bm_model', 20)->nullable();
+			$table->integer('bm_order')->nullable();
 			$table->timestamps();
 		});
 	}
@@ -29,7 +29,7 @@ class CreateEventsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('events');
+		Schema::drop('bsm');
 	}
 
 }
