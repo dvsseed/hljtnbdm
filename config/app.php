@@ -139,6 +139,7 @@ return [
 		'Maatwebsite\Excel\ExcelServiceProvider',
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
                 'Barryvdh\Debugbar\ServiceProvider',
+		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
                 'Laralib\L5scaffold\GeneratorsServiceProvider',
                 'yajra\Oci8\Oci8ServiceProvider',
 

@@ -37,6 +37,7 @@ Route::post('admin/upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminC
 #下载人员名单
 Route::get('download/dmList', ['as' => 'download_dm_list_excel', 'uses' => 'Admin\ExcelController@dmList']);
 #Route::get('download/grade', ['as' => 'download_grade_list_excel', 'uses' => 'Admin\ExcelController@grade']);
+
 #功能管理
 Route::resource('feature', 'Feature\FeatureController');
 Route::post('feature/upload_feature', ['as' => 'upload_feature', 'uses' => 'Feature\FeatureController@upload_feature']);
