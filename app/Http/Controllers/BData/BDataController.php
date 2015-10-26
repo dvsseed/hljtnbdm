@@ -147,7 +147,6 @@ use Input;
                 $food_stat[$key]["below"] = "0 (0%)";
             }
 
-
             return view('bdata.food_statics', compact('food_stat'));
         }
 

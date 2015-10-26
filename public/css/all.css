@@ -25,7 +25,6 @@
  * version 0.0.4 : Removed width:100% on tables
  * version 0.1.1 : set width 0 on tables to fix an ie6 bug
  */
-
 .ui-timepicker-inline { display: inline; }
 
 #ui-timepicker-div { padding: 0.2em; }
@@ -69,7 +68,5 @@
 
 /* the deselect button */
 .ui-timepicker .ui-timepicker-deselect { float: left; }
-
-
 
 /*# sourceMappingURL=all.css.map */
