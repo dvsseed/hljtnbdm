@@ -139,6 +139,7 @@ function checkContent(){
         if(active == '#batchInsert'){
 
             $('#batch_save_btn').click(function(event){
+                $(this).prop('disabled', true);
                 var flag = true;
                 var batch_data = [];
                 var trs = $("#sugartable > tbody").children("tr");
@@ -152,6 +153,7 @@ function checkContent(){
                                 flag = false;
                                 $(this).children('#sugar_batch').addClass('error');
                             }else if(sugar_value != ''){
+
                                 single_record[$(this).children('#sugar_batch').attr('data')] = sugar_value;
                             }
                         }
@@ -165,7 +167,7 @@ function checkContent(){
                         batch_data.push(single_record);
                     }
                 }
-
+                console.log(batch_data);
                 event.preventDefault();
                 $(this).blur();
                 var inputdata = {};
@@ -173,7 +175,7 @@ function checkContent(){
                 inputdata['_token'] = $('#batch_form > input[ name=_token]').val();;
                 $.ajax({
                     type: 'POST',
-                    url: 'batch_update',
+                    url: '/bdata/batch_update',
                     data: inputdata,
                     success: function(result){
                         if(result == 'success'){
@@ -245,7 +247,7 @@ function setUpMessage(){
         }else{
             $.ajax({
                 type: 'POST',
-                url: 'post_message',
+                url: '/bdata/post_message',
                 data: inputdata,
                 success: function(result){
                     if(result == 'success'){
@@ -262,7 +264,7 @@ function setUpMessage(){
         if($('#messages').scrollTop() + $('#messages').height() == $("#message_table").height()) {
             $.ajax({
                 type: 'GET',
-                url: 'message?start=' + $('#message_count').val(),
+                url: '/bdata/message?start=' + $('#message_count').val(),
                 success: function(result){
                     var trs = $(result).find("tr");
                     for(var i = 0; i < trs.length; i++){
@@ -281,7 +283,7 @@ function setUpMessage(){
 function getStaticsData(){
     $.ajax({
         type: 'GET',
-        url: 'food/statics',
+        url: '/bdata/food/statics',
         success: function(result){
             $("#statics").html(result);
         }
@@ -291,7 +293,7 @@ function getStaticsData(){
 function getMessageData(){
     $.ajax({
         type: 'GET',
-        url: 'message',
+        url: '/bdata/message',
         success: function(result){
             $("#messages").html(result);
         }
@@ -312,7 +314,7 @@ function foodHandler(event){
 
         $.ajax({
             type: 'GET',
-            url: 'foods/'+food_category.val(),
+            url: '/bdata/foods/'+food_category.val(),
             success: function(result){
                 var html ="";
 
@@ -476,7 +478,7 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
     if (sugar_value != null) {
         $.ajax({
             method: "GET",
-            url: "detail/" + calendar_date + "/" + type
+            url: "/bdata/detail/" + calendar_date + "/" + type
         }).done(function (result) {
 
             $("#filter").show();
@@ -593,7 +595,7 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
             insert_data['_token'] = $('input[name=_token]').val();
             $.ajax({
                 type: 'POST',
-                url: 'upsert',
+                url: '/bdata/upsert',
                 data: insert_data,
                 success: function(result){
                     if(result == "success"){
@@ -646,7 +648,7 @@ function insertFood(calendar_date, type) {
 
     $.ajax({
         type: 'GET',
-        url: 'food/detail/' + calendar_date + '/' + type,
+        url: '/bdata/food/detail/' + calendar_date + '/' + type,
         success: function(result){
             if(result != null && result["summary"] != null) {
                 if (result["summary"]["food_time"])
@@ -720,7 +722,7 @@ function insertFood(calendar_date, type) {
 
             $.ajax({
                 type: 'POST',
-                url: 'upsertfood',
+                url: '/bdata/upsertfood',
                 data: insert_data,
                 success: function(result){
                     if(result == "success"){
@@ -761,7 +763,7 @@ function insertFood(calendar_date, type) {
         if (confirm("確定要刪除嗎?") == true) {
             $.ajax({
                 type: 'DELETE',
-                url: 'foods/'+$("#food_calendar_date").html(),
+                url: '/bdata/foods/'+$("#food_calendar_date").html(),
                 data: { _token : $('input[name=_token]').val()},
                 success: function(result){
                     if(result == "success"){

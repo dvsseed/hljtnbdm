@@ -90,6 +90,7 @@ use Input;
             $data['patient_displayname'] = User::find($hospital_no->patient_user_id)->name;
 
             $blood_records = $hospital_no->blood_sugar()->where('calendar_date', '<=', $end)->where('calendar_date', '>', $start)->orderBy('calendar_date', 'DESC')->get();
+
             $stat = $this -> get_stat($blood_records);
             $blood_records = $this->fillup($blood_records,$start,$end);
 
@@ -225,6 +226,7 @@ use Input;
             $current = $end;
 
             for($current = $end; $current != $start; $current = date('Y-m-d', strtotime('-1 day', strtotime($current)))){
+
                 if($index<count($data) && $data[$index]->calendar_date == $current){
                     array_push($filled_date,$data[$index]);
                     $index ++;
@@ -413,12 +415,14 @@ use Input;
                 }
                 else{
                     $blood_sugar = HospitalNo::find($uuid)->blood_sugar()->firstOrNew(array('calendar_date' => $calendar_date));
+
                     foreach( $one_data as $key => $value){
                         $blood_sugar[$key] = $value;
                     }
                     $blood_sugar -> calendar_date = $calendar_date;
                     $blood_sugar -> user_id = $user_id;
                     $blood_sugar -> save();
+
                 }
             }
 

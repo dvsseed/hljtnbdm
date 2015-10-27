@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Patientprofile;
 use Illuminate\Http\Request;
 
+use App\Model\Pdata\HospitalNo;
+use Auth;
+
 class PatientprofileController extends Controller {
 
 	/**
@@ -56,6 +59,20 @@ class PatientprofileController extends Controller {
                 $patientprofile->pp_email = $request->input("pp_email");
 
 		$patientprofile->save();
+
+        //create the hospital_no
+        while(1){
+            $uuid = uniqid('cn_');
+            if(HospitalNo::find($uuid) == null){
+                break;
+            }
+        }
+        $hospital_no = new HospitalNo();
+        $hospital_no -> hospital_no_uuid = $uuid;
+        $hospital_no -> patient_user_id = $request->input("pp_personid");
+        $hospital_no -> nurse_user_id = Auth::user() -> id;
+        $hospital_no -> hospital_no_displayname = substr($request->input("pp_patientid"),0,-6).'xxxxxx';
+        $hospital_no -> save();
 
 		return redirect()->route('patient.index')->with('message', '项目成功创建。');
 	}
