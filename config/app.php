@@ -138,12 +138,14 @@ return [
 		'Illuminate\Html\HtmlServiceProvider',
 		'Maatwebsite\Excel\ExcelServiceProvider',
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-                'Barryvdh\Debugbar\ServiceProvider',
+        'Barryvdh\Debugbar\ServiceProvider',
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-                'Laralib\L5scaffold\GeneratorsServiceProvider',
-                'yajra\Oci8\Oci8ServiceProvider',
+        'Laralib\L5scaffold\GeneratorsServiceProvider',
+        'yajra\Oci8\Oci8ServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
         'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
+
+
 		/*
 		 * Application Service Providers...
 		 *
@@ -153,6 +155,7 @@ return [
 		'App\Providers\ConfigServiceProvider',
 		'App\Providers\EventServiceProvider',
 		'App\Providers\RouteServiceProvider',
+		'App\Providers\HelperServiceProvider',
 
 	],
 
@@ -205,6 +208,7 @@ return [
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Excel'     => 'Maatwebsite\Excel\Facades\Excel',
 		'Debugbar'  => 'Barryvdh\Debugbar\Facade',
+		'Text'      => 'App\Helpers\Text',
 	],
 
 ];

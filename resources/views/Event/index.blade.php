@@ -13,7 +13,7 @@
                 <!-- a href="/event/create"><button class="btn btn-primary">添加操作</button></a -->
                 <table class="table table-striped table-hover">
                     <tr style="background: silver;">
-                        <th>编号</th>
+                        <th>#</th>
                         <th>数据表</th>
                         <th>行为</th>
                         <th>人员编号</th>

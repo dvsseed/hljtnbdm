@@ -38,9 +38,20 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="/patient">患者资料</a></li>
-                <li><a href="#about">关于</a></li>
-                <li><a href="{{ url('/logout') }}">退出</a></li>
+                <li class="@yield('pactive')"><a href="/patient">患者资料</a></li>
+                <li class="@yield('aactive')"><a href="/aboutpatient">关于</a></li>
+                <!-- li><a href="{{ url('/logout') }}">退出</a></li -->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @if (Auth::guest())
+                @else
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ url('/logout') }}">退出</a></li>
+                        </ul>
+                    </li>
+                @endif
             </ul>
         </div><!--/.nav-collapse -->
     </div>
@@ -63,6 +74,7 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/bootstrap-datepicker.min.js"></script>
 <script src="/js/locales/bootstrap-datepicker.zh-TW.js" charset="UTF-8"></script>
+<!-- script src="/js/angular.min.js"></script -->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
 <script src="/js/completer.min.js"></script>

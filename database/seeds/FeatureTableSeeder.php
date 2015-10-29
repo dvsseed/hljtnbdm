@@ -4,7 +4,8 @@ use Illuminate\Database\Seeder;
 use App\Feature;
 use App\Hasfeature;
 
-class FeatureTableSeeder extends Seeder {
+class FeatureTableSeeder extends Seeder
+{
 
     /**
      * Run the database seeds.
@@ -13,57 +14,52 @@ class FeatureTableSeeder extends Seeder {
      */
     public function run()
     {
+        DB::statement('SET FOREIGN_KEY_CHECKS = 0'); // disable foreign key constraints
+
         DB::table('features')->truncate();
 
-        Feature::create([
-        'href' => '/dm/home',
-        'btnclass' => 'btn-success',
-        'innerhtml' => '个人信息'
-        ]);
+        /*
+                Feature::create([
+                    'href' => '/dm/home',
+                    'btnclass' => 'btn-success',
+                    'innerhtml' => '个人信息'
+                ]);
+        */
 
         Feature::create([
-        'href' => '/patient',
-        'btnclass' => 'btn-primary',
-        'innerhtml' => '患者资料'
+            'href' => '/patient',
+            'btnclass' => 'btn-primary',
+            'innerhtml' => '患者资料'
         ]);
 
-	Feature::create([
-        'href' => '/case',
-        'btnclass' => 'btn-info',
-        'innerhtml' => '方案管理'
+        Feature::create([
+            'href' => '/case',
+            'btnclass' => 'btn-info',
+            'innerhtml' => '方案管理'
         ]);
 
-     	DB::table('hasfeatures')->truncate();
+        DB::table('hasfeatures')->truncate();
 
         Hasfeature::create([
-        'user_id' => 100,
-        'feature_id' => 1
-        ]);
-
-        Hasfeature::create([
-        'user_id' => 100,
-        'feature_id' => 2
+            'user_id' => 2,
+            'feature_id' => 1
         ]);
 
         Hasfeature::create([
-        'user_id' => 100,
-        'feature_id' => 3
+            'user_id' => 2,
+            'feature_id' => 2
         ]);
 
         Hasfeature::create([
-        'user_id' => 128,
-        'feature_id' => 1             
+            'user_id' => 3,
+            'feature_id' => 1
         ]);
 
         Hasfeature::create([
-        'user_id' => 128,
-        'feature_id' => 2 
+            'user_id' => 3,
+            'feature_id' => 2
         ]);
 
-        Hasfeature::create([
-        'user_id' => 128,
-        'feature_id' => 3
-        ]);
-
+        DB::statement('SET FOREIGN_KEY_CHECKS = 1'); // enable foreign key constraints
     }
 }

@@ -36,15 +36,16 @@
 				@else
 					@if (Auth::user()->is_admin)
 						<a class="navbar-brand" href="/admin">糖尿病共同照护</a>
-						<a class="navbar-brand" href="/about">关于</a>
 					@else
 						<a class="navbar-brand" href="/">糖尿病共同照护</a>
 					@endif
 				@endif
-
 			</div>
 
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+					<li class="@yield('aactive')"><a href="/about">关于</a></li>
+				</ul>
 				<ul class="nav navbar-nav">
 					<li><a href="http://www.hljtnb.com" target="__blank">黑龙江瑞京</a></li>
 				</ul>

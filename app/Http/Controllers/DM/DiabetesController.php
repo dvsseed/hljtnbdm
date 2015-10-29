@@ -10,26 +10,27 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-class DiabetesController extends Controller {
+class DiabetesController extends Controller
+{
 
     /**
      * 只允许登录用户访问
      */
     public function __construct()
     {
-     	$this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
      * 返回DM主页
      */
-       	public function home()
+    public function home()
     {
-//	$diabetes = Auth::user()->diabetes;
-//	return view('dm.home', compact('diabetes'));
+        // $diabetes = Auth::user()->diabetes;
+        // return view('dm.home', compact('diabetes'));
         $users = Auth::user();
-//	$hasfeatures = Hasfeature::where('user_id', '=', $users->id)->get();
-	$features = DB::table('users')
+        // $hasfeatures = Hasfeature::where('user_id', '=', $users->id)->get();
+        $features = DB::table('users')
             ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
             ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
             ->select('features.href', 'features.btnclass', 'features.innerhtml')
@@ -44,7 +45,7 @@ class DiabetesController extends Controller {
      */
     public function edit()
     {
-     	return view('dm.edit');
+        return view('dm.edit');
     }
 
     public function update(DiabetesMesRequest $request)

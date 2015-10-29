@@ -12,7 +12,7 @@
 
                 {!! Form::hidden('hasfeature_id', $hasfeature->id) !!}
                 <h6>
-                  {!! Form::label('id', '编号: ', ['class' => 'control-label']) !!}
+                  {!! Form::label('id', '#: ', ['class' => 'control-label']) !!}
                   {!! Form::text('id', null, ['class' => 'form-control', 'readonly']) !!}
                 </h6>
                 <h6>

@@ -4,6 +4,7 @@ use Redirect;
 use Input;
 use Hash;
 use Auth;
+//use Session;
 use App\User;
 use App\Http\Controllers\Event\EventController;
 use App\Http\Requests;
@@ -11,7 +12,8 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-class AdminController extends Controller {
+class AdminController extends Controller
+{
 
     public function __construct()
     {
@@ -21,37 +23,57 @@ class AdminController extends Controller {
     public function index(Request $request)
     {
         // Gets the query string from our form submission 
-        // $query = Input::get('search', '');
-        $query = $request->search;
+        // $query = Input::get('adsearch', '');
+
+        $search = $request->search;
         $category = $request->category;
-        // Returns an array of users that have the query string located somewhere within 
+//        if (Session::has('adsearch')) {
+//             if($search == null)
+//                $search = Session::get('adsearch');
+//            else
+//                if($search != Session::get('adsearch')) Session::put('adsearch', $search);
+//        } else {
+//            // $search = $request->search;
+//            Session::put('adsearch', $search);
+//        }
+//        if (Session::has('adcategory')) {
+//            if($category == null)
+//                $category = Session::get('adcategory');
+//            else
+//                if($category != Session::get('adcategory')) Session::put('adcategory', $category);
+//        } else {
+//            // $category = $request->category;
+//            Session::put('adcategory', $category);
+//        }
+
+        // Returns an array of users that have the query string located somewhere within
         // our users names. Paginates them so we can break up lots of search results.
-        if (count($query) >= 1)
-        {
-           switch ($category) {
-             case 1:
-               $field = 'name';
-               break;
-             case 2:
-               $field = 'department';
-               break;
-             case 3:
-               $field = 'position';
-               break;
-           }
-           $result = User::where('is_admin', 0)->where($field, 'like', '%' . $query . '%');
+        if ($search) {
+            switch ($category) {
+                case 1:
+                    $field = 'name';
+                    break;
+                case 2:
+                    $field = 'department';
+                    break;
+                case 3:
+                    $field = 'position';
+                    break;
+            }
+            $result = User::where('is_admin', 0)->where($field, 'like', '%' . $search . '%');
+        } else {
+            $result = User::where('is_admin', 0);
         }
-        else
-           $result = User::where('is_admin', 0);
         $countstr = '人';
         $count = $result->count();
-        $users = $result->paginate(10);
-	// returns a view and passes the view the list of users and the original query.
-        $categories = array('0' => '请选择', '1' => '姓名', '2' => '部门', '3' => '职务');
-        return view('Admin.index', compact('users', 'countstr', 'count', 'categories'));
+        $users = $result->paginate(10)->appends(['search' => $search, 'category' => $category]);
+        // returns a view and passes the view the list of users and the original query.
+        $categories = array('' => '请选择', '1' => '姓名', '2' => '部门', '3' => '职务');
+        return view('Admin.index', compact('users', 'countstr', 'count', 'categories', 'search', 'category'));
     }
 
-    public function create(){
+    public function create()
+    {
         $result = User::where('is_admin', 0);
         $countstr = '人';
         $count = $result->count();
@@ -62,14 +84,14 @@ class AdminController extends Controller {
     public function store(Request $request)
     {
         $this->validate($request, [
-            'id' => 'required|numeric|unique:users',
-            ]);
+            'account' => 'required|alpha_num|unique:users,account',
+        ]);
         $user = new User;
-        $user->id = $request->id;
+        $user->account = $request->account;
         $user->name = $request->name;
-        $user->password = Hash::make($user->id);
+        $user->password = Hash::make($user->account);
         $user->save();
-        session()->flash('message', $user->name."人员添加成功");
+        session()->flash('message', $user->name . "人员添加成功");
         EventController::SaveEvent('users', 'store(保存)');
         return Redirect::to('admin');
     }
@@ -78,7 +100,7 @@ class AdminController extends Controller {
     {
         $name = $user->name;
         $user->delete();
-        session()->flash('message', $name."人员已经被移除");
+        session()->flash('message', $name . "人员已经被移除");
         EventController::SaveEvent('users', 'destroy(删除)');
         return Redirect::back();
     }
@@ -87,11 +109,12 @@ class AdminController extends Controller {
     {
         $this->validate($request, User::rules());
         $user = User::where('id', $request->user_id)->first();
+        $user->account = $request->account;
         $user->name = $request->name;
         $user->password = Hash::make($request->password);
         $user->departmentno = $request->departmentno;
-       	$user->department = $request->department;
-  	$user->positionno = $request->positionno;
+        $user->department = $request->department;
+        $user->positionno = $request->positionno;
         $user->position = $request->position;
         $user->phone = $request->phone;
         $user->email = $request->email;
@@ -100,5 +123,20 @@ class AdminController extends Controller {
         EventController::SaveEvent('users', 'update(更新)');
         return Redirect::back();
     }
+
+    /**
+     * Session forget.
+     *
+     * @param  int $key
+     * @return Response
+     */
+//    public function forget($key)
+//    {
+//        if ($key) {
+//            Session::forget('adsearch');
+//            Session::forget('adcategory');
+//        }
+//        return redirect()->route('admin.index')->with('message', '搜寻文字已清除。');
+//    }
 
 }
