@@ -1,5 +1,13 @@
 @extends('layout')
 
+@section('title')
+    患者资料-改
+@stop
+
+@section('pactive')
+    active
+@stop
+
 @section('css')
 .form-horizontal .form-group {
         margin-top: 3px;
@@ -32,6 +40,10 @@
                 <div class="form-group">
                      <label for="pp_personid" class="col-md-2 control-label">身份证号</label>
                      <div class="col-md-10" form-control-static>{{ $patientprofile->pp_personid }}</div>
+                </div>
+                <div class="form-group">
+                    <label for="account" class="col-md-2 control-label">登入帐号</label>
+                    <div class="col-md-10" form-control-static>{{ $account }}</div>
                 </div>
                 <div class="form-group">
                      <label for="pp_name" class="col-md-2 control-label">姓名</label>

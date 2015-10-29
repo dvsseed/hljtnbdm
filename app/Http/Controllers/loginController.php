@@ -23,9 +23,9 @@ class loginController extends Controller {
     public function loginPost(Request $request)
     {
         $this->validate($request, User::rules());
-        $id = $request->get('id');
+        $account = $request->get('account');
         $password = $request->get('password');
-        if (Auth::attempt(['id' => $id, 'password' => $password], $request->get('remember'))) {
+        if (Auth::attempt(['account' => $account, 'password' => $password], $request->get('remember'))) {
             if (!Auth::user()->is_admin) {
                 return Redirect::route('dm_home');
             } else {

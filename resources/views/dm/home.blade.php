@@ -12,14 +12,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <a href="/dm/home"><button class="btn btn-info">个人信息</button></a>
-
                     {{-- @include('dm.diabetes') --}}
-
                 </div>
 
                 <div class="panel-body">
                     <div class="personal-mes">
-                        编号: {{ Auth::user()->id }}
+                        #: {{ Auth::user()->id }}
+                        <br />
+                        帐号: {{ Auth::user()->account }}
                         <br />
                         姓名: {{ Auth::user()->name }}
                         <br />

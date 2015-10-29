@@ -16,7 +16,7 @@
                 <div class="form-group">
                     {!! Form::model($hasfeature = new \App\Hasfeature, ['url' => 'hasfeature/', 'class' => 'form-horizontal']) !!}
                         <div class="form-group">
-                            {!! Form::label('id', '编号: ', ['class' => 'control-label col-md-1']) !!}
+                            {!! Form::label('id', '#: ', ['class' => 'control-label col-md-1']) !!}
                             <div class="col-md-4">
                                 {!! Form::text('id', '系统自动编号', ['class' => 'form-control', 'readonly']) !!}
                             </div>
@@ -40,7 +40,8 @@
                         <h4></h4>
                         <div class="form-group">
                             <div class="col-md-5">
-                                {!! Form::submit('完成,创建', ['class' => 'btn btn-success form-control']) !!}
+                                <a class="btn btn-default" href="{{ route('hasfeature.index') }}" role="button">返回</a>
+                                {!! Form::submit('完成,创建', ['class' => 'btn btn-success']) !!}
                             </div>
                         </div>
                     {!! Form::close() !!}

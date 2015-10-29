@@ -15,7 +15,7 @@
                 <a href="/feature/create"><button class="btn btn-primary">添加功能</button></a>
                 <table class="table table-striped table-hover">
                     <tr style="background: silver;">
-                        <th>编号</th>
+                        <th>#</th>
                         <th>方法名</th>
                         <th>按钮类</th>
                         <th>描述</th>

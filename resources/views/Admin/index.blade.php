@@ -12,27 +12,30 @@
                 <h3 align="center">人员信息表</h3>
                 <a href="/admin/create"><button class="btn btn-primary">添加人员</button></a>
                 {!! Form::open(array('route'=>'admin.index', 'method'=>'get', 'class'=>'form navbar-form navbar-right searchform')) !!}
-                    {!! Form::select('category', $categories, null, ['class' => 'form-control']) !!}
-                    {!! Form::text('search', null, array('required', 'class'=>'form-control', 'placeholder'=>'按栏位搜索...')) !!}
+                    {!! Form::select('category', $categories, $category, ['required', 'class' => 'form-control']) !!}
+                    {!! Form::text('search', $search, array('required', 'class'=>'form-control', 'placeholder'=>'按栏位搜索...')) !!}
                     {!! Form::submit('搜寻', array('class'=>'btn btn-default')) !!}
+                    <!-- a class="btn btn-info" href="{{-- route('admin.forget', 1) --}}">清除</a -->
                 {!! Form::close() !!}
                 <table class="table table-striped table-hover">
                     <tr style="background: silver;">
-                        <th>编号</th>
+                        <th>#</th>
+                        <th>帐号</th>
                         <th>姓名</th>
+                        <th>医院</th>
                         <th>部门</th>
-                        <!-- th>职务</th -->
                         <th>手机</th>
                         <th>邮箱</th>
-                        <th>操作</th>
+                        <th class="text-center">操作</th>
                     </tr>
                     @if (count($users))
                         @foreach ($users as $user)
                             <tr>
                                 <td>{{ $user->id }}</td>
+                                <td>{{ $user->account }}</td>
                                 <td>{{ $user->name }}</td>
+                                <td>{{ $user->hospital == "hljtnb" ? "黑龙江" : "" }}</td>
                                 <td>{{ $user->department }}</td>
-                                <!-- td>{{-- $user->position --}}</td -->
                                 <td>{{ $user->phone }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>
@@ -49,7 +52,7 @@
 
                         @endforeach
                     @else
-                        <h1>没有人员名单,请管理员添加</h1>
+                        <h1>没有人员名单,请管理员添加...</h1>
                     @endif
                 </table>
                 <?php echo $users->render(); ?>

@@ -50,7 +50,8 @@
                         <h4></h4>
                         <div class="form-group">
                             <div class="col-md-5">
-                                {!! Form::submit('完成,创建', ['class' => 'btn btn-success form-control']) !!}
+                                <a class="btn btn-default" href="{{ route('feature.index') }}" role="button">返回</a>
+                                {!! Form::submit('完成,创建', ['class' => 'btn btn-success']) !!}
                             </div>
                         </div>
                     {!! Form::close() !!}

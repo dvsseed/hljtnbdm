@@ -15,12 +15,12 @@
                 <a href="/hasfeature/create"><button class="btn btn-primary">添加操作</button></a>
                 <table class="table table-striped table-hover">
                     <tr style="background: silver;">
-                        <th>编号</th>
+                        <th>#</th>
                         <th>人员编号</th>
                         <th>姓名</th>
                         <th>功能编号</th>
                         <th>描述</th>
-                        <th>操作</th>
+                        <th class="text-center">操作</th>
                     </tr>
                     @if (count($hasfeatures))
                         @foreach ($hasfeatures as $hasfeature)

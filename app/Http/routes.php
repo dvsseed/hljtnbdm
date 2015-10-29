@@ -46,9 +46,10 @@ Route::post('dm/update', ['as' => 'dm_update', 'uses' => 'DM\DiabetesController@
 Route::resource('admin', 'Admin\AdminController');
 #更新信息
 Route::post('admin/upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminController@upload_user']);
+#清除搜寻字
+#Route::get('admin/forget/{key}', ['as' => 'admin.forget', 'uses' => 'Admin\AdminController@forget']);
 #下载人员名单
 Route::get('download/dmList', ['as' => 'download_dm_list_excel', 'uses' => 'Admin\ExcelController@dmList']);
-#Route::get('download/grade', ['as' => 'download_grade_list_excel', 'uses' => 'Admin\ExcelController@grade']);
 
 #功能管理
 Route::resource('feature', 'Feature\FeatureController');
@@ -62,6 +63,10 @@ Route::resource('event', 'Event\EventController');
 #一般人员入口
 #患者基本资料
 Route::resource("patient", "Patient\PatientprofileController");
+#清除搜寻字
+#Route::get('patient/forget/{key}', ['as' => 'patient.forget', 'uses' => 'Patient\PatientprofileController@forget']);
+#关于
+Route::get('/aboutpatient', ['as' => 'aboutpatient', 'uses' => 'Patient\PatientprofileController@about']);
 
 #方案管理
 Route::resource("case", "Cases\CasesController");

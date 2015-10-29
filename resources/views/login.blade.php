@@ -16,9 +16,9 @@
 
                     {!! Form::open(['url' => '/login', 'class' => 'form-horizontal', 'role' => 'form']) !!}
                         <div class="form-group">
-                            {!! Form::label('id', '编号', ['class' => 'col-md-4 control-label']) !!}
+                            {!! Form::label('account', '帐号', ['class' => 'col-md-4 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::text('id', old('id'), ['class' => 'form-control', 'required']) !!}
+                                {!! Form::text('account', old('account'), ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
                         <div class="form-group">
