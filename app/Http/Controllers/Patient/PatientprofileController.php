@@ -15,6 +15,8 @@ use App\User;
 use App\Http\Controllers\Event\EventController;
 use Illuminate\Http\Request;
 
+use App\Model\Pdata\HospitalNo;
+
 class PatientprofileController extends Controller
 {
 
@@ -231,7 +233,8 @@ class PatientprofileController extends Controller
             }
             $hospital_no = new HospitalNo();
             $hospital_no -> hospital_no_uuid = $uuid;
-            $hospital_no -> patient_user_id = $patientprofile -> id;
+            $hospital_no -> patient_profile_id = $patientprofile -> id;
+            $hospital_no -> patient_user_id = $patientprofile -> user_id;
             $hospital_no -> nurse_user_id = Auth::user() -> id;
             $hospital_no -> hospital_no_displayname = substr($request->input("pp_patientid"),0,-6).'xxxxxx';
             $hospital_no -> save();
@@ -425,7 +428,7 @@ class PatientprofileController extends Controller
                 $casecare->delete();
                 $patientprofile = Patientprofile::find($id);
                 if ($patientprofile) {
-                    cleanUpHospital($patientprofile -> hospital_no);
+                    $this->cleanUpHospital($patientprofile -> hospital_no);
                     $patientprofile->delete();
                     $user = User::find($patientprofile->user_id);
                     if ($user) {
@@ -442,6 +445,7 @@ class PatientprofileController extends Controller
             }
 
             DB::statement('SET FOREIGN_KEY_CHECKS = 1');
+            DB::commit();
             EventController::SaveEvent('patientprofile', 'destroy(删除)');
         } catch (\Exception $e) {
             $msg = '资料删除失败。';
@@ -451,7 +455,7 @@ class PatientprofileController extends Controller
         return redirect()->back()->with('message', $msg);
     }
 
-    public function cleanUpHospital($hospital){
+    private function cleanUpHospital($hospital){
 
         if($hospital != null){
             $blood_sugars = $hospital -> blood_sugar;
@@ -476,6 +480,7 @@ class PatientprofileController extends Controller
             foreach( $messages as $message){
                 $message -> delete();
             }
+            $hospital -> delete();
         }
     }
 

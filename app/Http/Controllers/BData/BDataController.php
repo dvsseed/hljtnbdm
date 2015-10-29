@@ -22,6 +22,7 @@ use Session;
 use Auth;
 use Cache;
 use Input;
+use DB;
 
 
     class BDataController extends Controller{
@@ -37,14 +38,22 @@ use Input;
             $users = Auth::user();
 
             if($uuid == null){
-                $hospital_no = HospitalNo::where('patient_user_id', '=', $users->id) -> first();
-                if($hospital_no != null){
+                $patient = Patientprofile::where('user_id', '=', $users->id) -> first();
+                if($patient != null){
+                    $hospital_no = $patient-> hospital_no;
+                }else{
+                    $err_msg = '請重新登入!';
+                }
+
+                if(isset($hospital_no) && $hospital_no != null){
                     $uuid = $hospital_no -> hospital_no_uuid;
                 }else{
                     $err_msg = '沒有血糖資料!';
                 }
             }else{
+
                 $hospital_no = HospitalNo::find($uuid);
+                $patient = $hospital_no -> patient;
                 if($hospital_no != null){
                     $hospital_no = $hospital_no->where('patient_user_id', '=', $users->id)->orWhere('nurse_user_id', '=', $users->id)->first();
                 }
@@ -53,7 +62,7 @@ use Input;
                 }
             }
 
-            if($hospital_no == null){
+            if(!isset($hospital_no) || $hospital_no == null){
                 return view('bdata.error', compact('err_msg'));
             }
 
@@ -85,7 +94,7 @@ use Input;
             }
 
             $data['displayname'] = $hospital_no->hospital_no_displayname;
-            $patient = Patientprofile::where('pp_personid', '=', $hospital_no->patient_user_id) -> first();
+
             $data['patient_displayname'] = $patient -> pp_name;
             $data['patient_bday'] =  $patient -> pp_birthday;
             $data['patient_age'] =  $patient -> pp_age;
@@ -256,68 +265,84 @@ use Input;
             $uuid = Session::get('uuid');
             $hospital_no = HospitalNo::find($uuid);
 
-            $blood_sugar = $hospital_no->blood_sugar()->firstOrNew(array('calendar_date' => $request->calendar_date));
-            $blood_sugar -> calendar_date = $request -> calendar_date;
-            $blood_sugar[$request->measure_type] = $request -> blood_sugar;
-            $blood_sugar -> user_id = $hospital_no-> patient_user_id;
-            $blood_sugar -> note = $request -> note;
-            $blood_sugar -> save();
+            DB::beginTransaction();
+            try{
+                $blood_sugar = $hospital_no->blood_sugar()->firstOrNew(array('calendar_date' => $request->calendar_date));
+                $blood_sugar -> calendar_date = $request -> calendar_date;
+                $blood_sugar[$request->measure_type] = $request -> blood_sugar;
+                $blood_sugar -> user_id = $hospital_no-> patient_user_id;
+                $blood_sugar -> note = $request -> note;
+                $blood_sugar -> save();
 
-            $this->validate($request, BloodSugarDetail::rules());
-            $blood_sugar_detail = new BloodSugarDetail();
-            $blood_sugar_detail -> measure_time = date('Y-m-d H:i', strtotime($request -> measure_time)) ;
-            $blood_sugar_detail -> measure_type = $request -> measure_type ;
-            $blood_sugar_detail -> exercise_type = $request -> exercise_type ;
-            $blood_sugar_detail -> exercise_duration = $request -> exercis_duration ;
-            $blood_sugar_detail -> insulin_type_1 = $request -> insulin_type_1 ;
-            $blood_sugar_detail -> insulin_value_1 = $request -> insulin_value_1 ;
-            $blood_sugar_detail -> insulin_type_2 = $request -> insulin_type_2 ;
-            $blood_sugar_detail -> insulin_value_2 = $request -> insulin_value_2 ;
-            $blood_sugar_detail -> insulin_type_3 = $request -> insulin_type_3 ;
-            $blood_sugar_detail -> insulin_value_3 = $request -> insulin_value_3 ;
-            $blood_sugar_detail -> sugar = $request -> sugar ;
-            $blood_sugar_detail -> note = $request -> note ;
-            $blood_sugar_detail -> low_blood_sugar = $request -> low_blood_sugar ;
-            $blood_sugar_detail -> blood_sugar_pk = $blood_sugar -> blood_sugar_pk;
-            $blood_sugar_detail -> save();
+                $this->validate($request, BloodSugarDetail::rules());
+                $blood_sugar_detail = new BloodSugarDetail();
+                $blood_sugar_detail -> measure_time = date('Y-m-d H:i', strtotime($request -> measure_time)) ;
+                $blood_sugar_detail -> measure_type = $request -> measure_type ;
+                $blood_sugar_detail -> exercise_type = $request -> exercise_type ;
+                $blood_sugar_detail -> exercise_duration = $request -> exercis_duration ;
+                $blood_sugar_detail -> insulin_type_1 = $request -> insulin_type_1 ;
+                $blood_sugar_detail -> insulin_value_1 = $request -> insulin_value_1 ;
+                $blood_sugar_detail -> insulin_type_2 = $request -> insulin_type_2 ;
+                $blood_sugar_detail -> insulin_value_2 = $request -> insulin_value_2 ;
+                $blood_sugar_detail -> insulin_type_3 = $request -> insulin_type_3 ;
+                $blood_sugar_detail -> insulin_value_3 = $request -> insulin_value_3 ;
+                $blood_sugar_detail -> sugar = $request -> sugar ;
+                $blood_sugar_detail -> note = $request -> note ;
+                $blood_sugar_detail -> low_blood_sugar = $request -> low_blood_sugar ;
+                $blood_sugar_detail -> blood_sugar_pk = $blood_sugar -> blood_sugar_pk;
+                $blood_sugar_detail -> save();
 
-            return "success";
+                DB::commit();
+                return "success";
+            }catch (\Exception $e){
+
+                DB::rollback();
+                return "fail";
+            }
+
         }
 
         public function upsertfood(Request $request){
             $uuid = Session::get('uuid');
             $hospital_no = HospitalNo::find($uuid);
 
-            $food_record = $hospital_no->food_record()->firstOrNew(array('calendar_date' => $request->calendar_date));
-            $food_record -> calendar_date = $request -> calendar_date;
-            $food_record -> measure_type= $request -> type;
-            $food_record -> user_id = $hospital_no -> patient_user_id;
-            $food_record -> sugar_amount = $request -> sugar_amount;
-            $food_record -> food_note = $request -> food_note;
-            $food_record -> note = $request -> overall_note;
-            $food_record -> food_time = date('Y-m-d H:i', strtotime($request -> food_time));
-            $food_record -> save();
+            DB::beginTransaction();
+            try{
+                $food_record = $hospital_no->food_record()->firstOrNew(array('calendar_date' => $request->calendar_date));
+                $food_record -> calendar_date = $request -> calendar_date;
+                $food_record -> measure_type= $request -> type;
+                $food_record -> user_id = $hospital_no -> patient_user_id;
+                $food_record -> sugar_amount = $request -> sugar_amount;
+                $food_record -> food_note = $request -> food_note;
+                $food_record -> note = $request -> overall_note;
+                $food_record -> food_time = date('Y-m-d H:i', strtotime($request -> food_time));
+                $food_record -> save();
 
-            //delete old
-            $food_record -> food_detail() -> delete();
+                //delete old
+                $food_record -> food_detail() -> delete();
 
-            if($request -> details != null){
-                //rule check
-                foreach($request -> details as $detail){
-                    $user_food_detail = new UserFoodDetail();
-                    $user_food_detail -> food_pk = $detail['food_type_option'];
-                    if($detail['food_unit'] == "gram")
-                        $user_food_detail -> amount_gram = $detail['amount'];
-                    elseif($detail['food_unit'] == "set"){
-                        $user_food_detail -> amount_set = $detail['amount'];
+                if($request -> details != null){
+                    //rule check
+                    foreach($request -> details as $detail){
+                        $user_food_detail = new UserFoodDetail();
+                        $user_food_detail -> food_pk = $detail['food_type_option'];
+                        if($detail['food_unit'] == "gram")
+                            $user_food_detail -> amount_gram = $detail['amount'];
+                        elseif($detail['food_unit'] == "set"){
+                            $user_food_detail -> amount_set = $detail['amount'];
+                        }
+                        $user_food_detail -> food_category_pk = $detail['food_category'];
+                        $user_food_detail -> user_food_pk = $food_record -> user_food_pk;
+                        $user_food_detail -> save();
                     }
-                    $user_food_detail -> food_category_pk = $detail['food_category'];
-                    $user_food_detail -> user_food_pk = $food_record -> user_food_pk;
-                    $user_food_detail -> save();
                 }
-            }
+                DB::commit();
+                return "success";
+            }catch (\Exception $e){
 
-            return "success";
+                DB::rollback();
+                return "fail";
+            }
         }
 
         public function get_food_detail( $calendar_date, $measure_type){
@@ -364,10 +389,12 @@ use Input;
 
         public function message(){
             $uuid = Session::get('uuid');
+
             $hospital_no = HospitalNo::find($uuid);
 
             $user = array();
-            $user[$hospital_no-> pateint_user_id] = User::find($hospital_no-> patient_user_id) -> name;
+            $patient = $hospital_no -> patient;
+            $user[$patient -> user_id] = $patient -> pp_name;
             $user[$hospital_no-> nurse_user_id] =  User::find($hospital_no-> nurse_user_id) -> name ;
 
             $start = Input::get('start');
@@ -383,14 +410,21 @@ use Input;
         public function post_message(Request $request){
             $uuid = Session::get('uuid');
             $user_id = Auth::user()->id;
+            DB::beginTransaction();
+            try{
+                $message = new Message();
+                $message -> hospital_no_uuid = $uuid;
+                $message -> sender_id = $user_id;
+                $message -> message = $request->message_body;
+                $message -> save();
 
-            $message = new Message();
-            $message -> hospital_no_uuid = $uuid;
-            $message -> sender_id = $user_id;
-            $message -> message = $request->message_body;
-            $message -> save();
+                DB::commit();
+                return "success";
+            }catch (\Exception $e){
 
-            return "success";
+                DB::rollback();
+                return "fail";
+            }
 
         }
 
@@ -400,32 +434,40 @@ use Input;
             $hospital_no = HospitalNo::find($uuid);
             $user_id = $hospital_no->patient_user_id;
 
-            foreach($sugar_data as $one_data){
-                $calendar_date = $one_data['calendar_date'];
-                if(count(array_keys($one_data)) == 1){
-                    $blood_sugar_data = $hospital_no->blood_sugar()->where('calendar_date', '=' , $calendar_date) ->first();
-                    if($blood_sugar_data !=null ){
-                        $details = $blood_sugar_data -> blood_sugar_detail;
-                        foreach( $details as $detail){
-                            $detail -> delete();
+            DB::beginTransaction();
+            try{
+                foreach($sugar_data as $one_data){
+                    $calendar_date = $one_data['calendar_date'];
+                    if(count(array_keys($one_data)) == 1){
+                        $blood_sugar_data = $hospital_no->blood_sugar()->where('calendar_date', '=' , $calendar_date) ->first();
+                        if($blood_sugar_data !=null ){
+                            $details = $blood_sugar_data -> blood_sugar_detail;
+                            foreach( $details as $detail){
+                                $detail -> delete();
+                            }
+                            $blood_sugar_data -> delete();
                         }
-                        $blood_sugar_data -> delete();
+                    }
+                    else{
+                        $blood_sugar = HospitalNo::find($uuid)->blood_sugar()->firstOrNew(array('calendar_date' => $calendar_date));
+
+                        foreach( $one_data as $key => $value){
+                            $blood_sugar[$key] = $value;
+                        }
+                        $blood_sugar -> calendar_date = $calendar_date;
+                        $blood_sugar -> user_id = $user_id;
+                        $blood_sugar -> save();
+
                     }
                 }
-                else{
-                    $blood_sugar = HospitalNo::find($uuid)->blood_sugar()->firstOrNew(array('calendar_date' => $calendar_date));
 
-                    foreach( $one_data as $key => $value){
-                        $blood_sugar[$key] = $value;
-                    }
-                    $blood_sugar -> calendar_date = $calendar_date;
-                    $blood_sugar -> user_id = $user_id;
-                    $blood_sugar -> save();
+                DB::commit();
+                return "success";
+            }catch (\Exception $e){
 
-                }
+                DB::rollback();
+                return "fail";
             }
-
-            return "success";
         }
 
         public function delete_food($calendar_date){
@@ -433,14 +475,22 @@ use Input;
             $uuid = Session::get('uuid');
             $user_food = HospitalNo::find($uuid) -> food_record() -> where('calendar_date', '=', $calendar_date) -> first();
 
-            if($user_food != null){
-                $details = $user_food -> food_detail;
-                foreach( $details as $detail){
-                    $detail -> delete();
+            DB::beginTransaction();
+            try{
+                if($user_food != null){
+                    $details = $user_food -> food_detail;
+                    foreach( $details as $detail){
+                        $detail -> delete();
+                    }
+                    $user_food -> delete();
                 }
-                $user_food -> delete();
-            }
 
-            return "success";
+                DB::commit();
+                return "success";
+            }catch (\Exception $e){
+
+                DB::rollback();
+                return "fail";
+            }
         }
     }

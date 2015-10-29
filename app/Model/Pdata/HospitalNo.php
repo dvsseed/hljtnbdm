@@ -22,4 +22,9 @@ class HospitalNo extends Model
     {
         return $this->hasMany('App\Model\Pdata\Message','hospital_no_uuid');
     }
+
+    public function patient()
+    {
+        return $this->belongsTo('App\PatientProfile', 'patient_profile_id');
+    }
 }

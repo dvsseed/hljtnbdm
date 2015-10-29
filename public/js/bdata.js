@@ -603,11 +603,11 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
                         //$("#insert_data").hide();
                         location.reload();
                     }else{
-                        alert(儲存失敗);
+                        alert("儲存失敗");
                     }
                 },
                 error: function(){
-                    alert(儲存失敗);
+                    alert("儲存失敗");
                 }
             });
         }

@@ -33,7 +33,7 @@ class Patientprofile extends Model
 
     public function hospital_no()
     {
-        return $this->hasOne('App\Model\Pdata\HospitalNo','id');
+        return $this->hasOne('App\Model\Pdata\HospitalNo','patient_profile_id');
     }
 
 
