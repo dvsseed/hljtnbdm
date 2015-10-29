@@ -4,11 +4,19 @@ use Carbon\Carbon;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use DB;
+use Auth;
+use Hash;
+use Session;
 use App\Patientprofile;
+use App\BSM;
+use App\CaseCare;
+use App\User;
+use App\Http\Controllers\Event\EventController;
 use Illuminate\Http\Request;
 
 use App\Model\Pdata\HospitalNo;
-use Auth;
+
 
 class PatientprofileController extends Controller {
 
@@ -197,21 +205,6 @@ class PatientprofileController extends Controller {
                 $casecare->cc_appexp = $request->cc_appexp;
                 $casecare->cc_lastexam = $request->cc_lastexam;
 		$casecare->save();
-		$patientprofile->save();
-
-        //create the hospital_no
-        while(1){
-            $uuid = uniqid('cn_');
-            if(HospitalNo::find($uuid) == null){
-                break;
-            }
-        }
-        $hospital_no = new HospitalNo();
-        $hospital_no -> hospital_no_uuid = $uuid;
-        $hospital_no -> patient_user_id = $request->input("pp_personid");
-        $hospital_no -> nurse_user_id = Auth::user() -> id;
-        $hospital_no -> hospital_no_displayname = substr($request->input("pp_patientid"),0,-6).'xxxxxx';
-        $hospital_no -> save();
 
                 // bsm 血糖仪新增
                 if ($request->cc_usebsm && $request->cc_usebsm_name==0 && $request->cc_otherbsm)
@@ -238,6 +231,21 @@ class PatientprofileController extends Controller {
 		$user->phone = $request->pp_mobile1;
 		$user->email = $request->pp_email;
 		$user->save();
+
+
+        //create the hospital_no
+        while(1){
+            $uuid = uniqid('cn_');
+            if(HospitalNo::find($uuid) == null){
+                break;
+            }
+        }
+        $hospital_no = new HospitalNo();
+        $hospital_no -> hospital_no_uuid = $uuid;
+        $hospital_no -> patient_user_id = $patientprofile -> id;
+        $hospital_no -> nurse_user_id = Auth::user() -> id;
+        $hospital_no -> hospital_no_displayname = substr($request->input("pp_patientid"),0,-6).'xxxxxx';
+        $hospital_no -> save();
 
 		EventController::SaveEvent('patientprofile', 'store(保存)');
 		return redirect()->route('patient.index')->with('message', '项目成功创建。');
@@ -405,6 +413,7 @@ class PatientprofileController extends Controller {
 	public function destroy($id)
 	{
 		$patientprofile = Patientprofile::findOrFail($id);
+        cleanUpHospital($patientprofile -> hospital_no);
 		$patientprofile->delete();
 
 		$casecare = CaseCare::where('patientprofile1_id', '=', $id)->firstOrFail();
@@ -417,4 +426,32 @@ class PatientprofileController extends Controller {
 		return redirect()->route('patient.index')->with('message', '项目成功删除。');
 	}
 
+
+    public function cleanUpHospital($hospital){
+
+        if($hospital != null){
+            $blood_sugars = $hospital -> blood_sugar;
+            foreach( $blood_sugars as $blood_sugar){
+                $details = $blood_sugar -> blood_sugar_detail;
+                foreach( $details as $detail){
+                    $detail -> delete();
+                }
+                $blood_sugar -> delete();
+            }
+
+            $food_records = $hospital -> food_record;
+            foreach( $food_records as $food_record){
+                $details = $food_record -> food_detail;
+                foreach( $details as $detail){
+                    $detail -> delete();
+                }
+                $food_record -> delete();
+            }
+
+            $messages = $hospital -> messages;
+            foreach( $messages as $message){
+                $message -> delete();
+            }
+        }
+    }
 }

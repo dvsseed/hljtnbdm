@@ -11,11 +11,11 @@
         <br/>
         <div class="row">
             <div class="col-md-2"><h4>病歷號碼</h4></div>
-            <div class="col-md-2"><h4>{{$data['displayname']}}</h4></div>
-            <div class="col-md-2"><h4>姓 名</h4></div>
-            <div class="col-md-2"><h4>{{$data['patient_displayname']}}</h4></div>
-            <div class="col-md-2"><h4>生 日</h4></div>
-            <div class="col-md-2"><h4>西元2000年1月1日 , 16歲</h4></div>
+            <div class="col-md-3"><h4>{{$data['displayname']}}</h4></div>
+            <div class="col-md-1"><h4>姓 名</h4></div>
+            <div class="col-md-3"><h4>{{$data['patient_displayname']}}</h4></div>
+            <div class="col-md-1"><h4>生 日</h4></div>
+            <div class="col-md-2"><h4>{{$data['patient_bday']}} , {{$data['patient_age']}}歲</h4></div>
         </div>
         <br/>
         <ul class="nav nav-tabs" id="top">

@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'debug' => false,
+	'debug' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -142,7 +142,8 @@ return [
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
                 'Laralib\L5scaffold\GeneratorsServiceProvider',
                 'yajra\Oci8\Oci8ServiceProvider',
-
+        'Way\Generators\GeneratorsServiceProvider',
+        'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
 		/*
 		 * Application Service Providers...
 		 *

@@ -11,8 +11,8 @@ use App\Http\Controllers\Controller;
 use App\Model\Pdata\FoodCategory;
 use App\Model\Pdata\Food;
 use App\Model\Pdata\Message;
-use App\Model\Pdata\UserFood;
 use App\Model\Pdata\UserFoodDetail;
+use App\Patientprofile;
 use Illuminate\Http\Request;
 use App\Model\Pdata\BloodSugar;
 use App\Model\Pdata\BloodSugarDetail;
@@ -79,15 +79,16 @@ use Input;
             $start = date('Y-m-d', strtotime("-2 week", strtotime($end)));
             $data['previous'] = "/bdata/".$uuid."/".$start;
 
-
             if($hospital_no->count() ==0 ) {
                 $invalid = true;
                 return view('bdata.bdata', compact('invalid'));
             }
-            $hospital_no = $hospital_no->first();
 
             $data['displayname'] = $hospital_no->hospital_no_displayname;
-            $data['patient_displayname'] = User::find($hospital_no->patient_user_id)->name;
+            $patient = Patientprofile::where('pp_personid', '=', $hospital_no->patient_user_id) -> first();
+            $data['patient_displayname'] = $patient -> pp_name;
+            $data['patient_bday'] =  $patient -> pp_birthday;
+            $data['patient_age'] =  $patient -> pp_age;
 
             $blood_records = $hospital_no->blood_sugar()->where('calendar_date', '<=', $end)->where('calendar_date', '>', $start)->orderBy('calendar_date', 'DESC')->get();
 
@@ -97,7 +98,6 @@ use Input;
             $data['food_categories'] = FoodCategory::all();
 
             $food_records = $this->get_has_food($uuid);
-            Session::put('blood_records', $blood_records);
             Session::put('uuid', $uuid);
 
             return view('bdata.bdata', compact('blood_records', 'data', 'food_categories', 'stat', 'food_records'));
@@ -204,9 +204,9 @@ use Input;
         }
 
         public function get_detail( $calendar_date, $measure_type){
-            $blood_records = Session::get('blood_records', function() {
-                return null;
-            });
+            $uuid = Session::get('uuid');
+            $hospital_no = HospitalNo::find($uuid)->first();
+            $blood_records = $hospital_no->blood_sugar()->where('calendar_date', '<=', $calendar_date)->get();
 
             if($blood_records != null){
                 foreach($blood_records as $blood_record){

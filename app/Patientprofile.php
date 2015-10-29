@@ -30,6 +30,11 @@ class Patientprofile extends Model {
 		return $result;
 	}
 
+    public function hospital_no()
+    {
+        return $this->hasOne('App\Model\Pdata\HospitalNo','id');
+    }
+
   	/**
          * 登录验证规则
          * @return [type] [description]
