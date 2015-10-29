@@ -7,10 +7,22 @@
 */
 
 #测试
-Route::get('/test', 'TestController@index');
-Route::post('/test', ['as' => 'test_upload', 'uses' => 'TestController@post']);
-Route::get('/users/export', 'TestController@export');
-Route::get('users', 'TestController@users');
+#Route::get('/test', 'TestController@index');
+#Route::post('/test', ['as' => 'test_upload', 'uses' => 'TestController@post']);
+#Route::get('/users/export', 'TestController@export');
+#Route::get('users', 'TestController@users');
+#redis
+Route::get('test', function(){
+    if (\Cache::has('test')) {
+        echo '存在chche,读取'.'<br />';
+        echo \Cache::get('test');
+    } else {
+        echo '不存在cache,现在创建'.'<br />';
+        $time = \Carbon\Carbon::now()->addMinutes(10);
+        $redis = \Cache::add('test', '这是缓存资源', $time);
+        echo \Cache::get('test');
+    }
+});
 
 #主页
 Route::get('/', 'WelcomeController@index');
@@ -47,10 +59,12 @@ Route::resource('hasfeature', 'Hasfeature\HasfeatureController');
 #轨迹纪录
 Route::resource('event', 'Event\EventController');
 
-
 #一般人员入口
-#病患基本数据
+#患者基本资料
 Route::resource("patient", "Patient\PatientprofileController");
+
+#方案管理
+Route::resource("case", "Cases\CasesController");
 
 #血糖
 Route::get('bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');
@@ -64,4 +78,3 @@ Route::post('bdata/upsert', 'BData\BDataController@upsert');
 Route::post('bdata/upsertfood', 'BData\BDataController@upsertfood');
 Route::get('bdata/food/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_food_detail');
 Route::get('bdata/{uuid?}/{end?}', 'BData\BDataController@page');
-

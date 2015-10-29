@@ -8,9 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10">
-
                 @include('errors.list')
-
                 <h3 align="center">人员信息表</h3>
                 <a href="/admin/create"><button class="btn btn-primary">添加人员</button></a>
                 {!! Form::open(array('route'=>'admin.index', 'method'=>'get', 'class'=>'form navbar-form navbar-right searchform')) !!}
@@ -23,7 +21,7 @@
                         <th>编号</th>
                         <th>姓名</th>
                         <th>部门</th>
-                        <th>职务</th>
+                        <!-- th>职务</th -->
                         <th>手机</th>
                         <th>邮箱</th>
                         <th>操作</th>
@@ -34,7 +32,7 @@
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->department }}</td>
-                                <td>{{ $user->position }}</td>
+                                <!-- td>{{-- $user->position --}}</td -->
                                 <td>{{ $user->phone }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>

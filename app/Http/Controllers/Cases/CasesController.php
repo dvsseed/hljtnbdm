@@ -1,16 +1,11 @@
-<?php namespace App\Http\Controllers\Feature;
+<?php namespace App\Http\Controllers\Cases;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
-class HasfeatureController extends Controller {
-
-	public function __construct()
-	{
-		$this->middleware('admin');
-	}
+class CasesController extends Controller {
 
 	/**
 	 * Display a listing of the resource.
@@ -19,7 +14,7 @@ class HasfeatureController extends Controller {
 	 */
 	public function index()
 	{
-		//
+                return view('case.index');
 	}
 
 	/**

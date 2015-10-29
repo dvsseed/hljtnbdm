@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
-use App\Event;
 
 class UserTableSeeder extends Seeder {
 
@@ -13,8 +12,7 @@ class UserTableSeeder extends Seeder {
      */
     public function run()
     {
-     	// DB::table('events')->truncate();
-        DB::table('users')->delete();
+        DB::table('users')->truncate();
 
         User::create([
         'id' => 128,

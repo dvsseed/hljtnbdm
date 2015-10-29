@@ -84,6 +84,17 @@ return [
 			'prefix'   => '',
 		],
 
+		'oracle' => [
+			'driver' => 'oracle',
+			'host' => '192.168.1.99',
+			'port' => '1521',
+			'database' => 'orcl',
+			'username' => 'system',
+			'password' => '4r3e2w1q',
+			'charset' => 'AL32UTF8',
+			'prefix' => '',
+		],
+
 	],
 
 	/*
