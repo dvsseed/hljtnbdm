@@ -24,9 +24,6 @@ var mapping_time = {
     'dinner_after': '19:01',
     'sleep_before': '20:01'
 };
-$("document").on("pageshow",function(event){
-    alert('123!');
-})
 var patt = /\d{4}-\d{2}-\d{2}/;
 $( document ).ready(function() {
 
@@ -172,7 +169,7 @@ function checkContent(){
                 $(this).blur();
                 var inputdata = {};
                 inputdata['sugar_data'] = batch_data;
-                inputdata['_token'] = $('#batch_form > input[ name=_token]').val();;
+                inputdata['_token'] = $('#batch_form > input[ name=_token]').val();
                 $.ajax({
                     type: 'POST',
                     url: '/bdata/batch_update',
