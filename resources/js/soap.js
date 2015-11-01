@@ -73,6 +73,7 @@ $( document ).ready(function() {
                 if(result == 'success'){
                     setCustomize($("#customize_type").val());
                     $("#customize_text").val("");
+                    $("#customize_btn").blur();
                 }
             }
         });
@@ -95,6 +96,7 @@ $( document ).ready(function() {
             success: function(result){
                 if(result == 'success'){
                     alert("儲存成功");
+                    $("#soap_save_btn").blur();
                 }
             }
         });

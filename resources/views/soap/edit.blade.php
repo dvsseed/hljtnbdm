@@ -5,8 +5,8 @@
         <td>個人化字串</td>
     </tr>
     <tr>
-        <td><textarea class="form-control" style=" height: 150px;" id="s_text"></textarea></td>
-        <td><textarea class="form-control" style=" height: 150px;" id="o_text"></textarea></td>
+        <td><textarea class="form-control" style=" height: 150px;" id="s_text">{{$user_data['S']}}</textarea></td>
+        <td><textarea class="form-control" style=" height: 150px;" id="o_text">{{$user_data['O']}}</textarea></td>
         <td rowspan="5">
             <select class="form-control" id="customize_type">
                 <option value="S">S</option>
@@ -33,16 +33,16 @@
         <td>P</td>
     </tr>
     <tr>
-        <td><textarea class="form-control" style=" height: 150px;" id="a_text"></textarea></td>
-        <td><textarea class="form-control" style=" height: 150px;" id="p_text"></textarea></td>
+        <td><textarea class="form-control" style=" height: 150px;" id="a_text">{{$user_data['A']}}</textarea></td>
+        <td><textarea class="form-control" style=" height: 150px;" id="p_text">{{$user_data['P']}}</textarea></td>
     </tr>
     <tr>
         <td>E</td>
         <td>R</td>
     </tr>
     <tr>
-        <td><textarea class="form-control" style=" height: 150px;" id="e_text">{{$user_soap['E']}}</textarea></td>
-        <td><textarea class="form-control" style=" height: 150px;" id="r_text">{{$user_soap['R']}}</textarea></td>
+        <td><textarea class="form-control" style=" height: 150px;" id="e_text">{{$user_data['E']}}</textarea></td>
+        <td><textarea class="form-control" style=" height: 150px;" id="r_text">{{$user_data['R']}}</textarea></td>
     </tr>
     <tr>
         <td colspan="3">

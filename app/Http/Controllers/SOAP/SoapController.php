@@ -7,6 +7,7 @@
  */
 
 use App\Http\Controllers\Controller;
+use App\Model\Pdata\HospitalNo;
 use App\Model\SOAP\SubClass;
 use App\Model\SOAP\SoaClass;
 use App\Model\SOAP\MainClass;
@@ -30,20 +31,33 @@ class SoapController extends Controller
         $main_classes = MainClass::all();
         $sub_classes = $this->get_sub_class($main_classes -> first() -> main_class_pk);
         $soa_classes = $this->get_soa_class($sub_classes -> first() -> sub_class_pk);
-        Session::put('uuid', $uuid);
 
-        $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid);
-
-        if($user_soap == null){
-            $user_soap['S'] = "";
-            $user_soap['O'] = "";
-            $user_soap['A'] = "";
-            $user_soap['P'] = "";
-            $user_soap['E'] = "";
-            $user_soap['R'] = "";
+        if(HospitalNo::find($uuid) == null){
+            $err_msg = "無效的病歷";
+            return view('soap.soap', compact('err_msg'));
         }
 
-        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_soap'));
+        $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid)->first();
+
+        $user_data = array();
+        if($user_soap == null){
+            $user_data['S'] = "";
+            $user_data['O'] = "";
+            $user_data['A'] = "";
+            $user_data['P'] = "";
+            $user_data['E'] = "";
+            $user_data['R'] = "";
+        }else{
+            $user_data['S'] = $user_soap -> s_text;
+            $user_data['O'] = $user_soap -> o_text;
+            $user_data['A'] = $user_soap -> a_text;
+            $user_data['P'] = $user_soap -> p_text;
+            $user_data['E'] = $user_soap -> e_text;
+            $user_data['R'] = $user_soap -> r_text;
+        }
+        Session::put('uuid', $uuid);
+
+        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data'));
     }
 
     public function get_sub_class($main_class_pk){
@@ -111,7 +125,7 @@ class SoapController extends Controller
 
     public function post_user_soap(Request $request){
         $uuid = Session::get('uuid');
-        $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid);
+        $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid) -> first();
 
         if($user_soap == null){
             $user_soap = new UserSoap();

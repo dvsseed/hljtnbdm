@@ -6,8 +6,12 @@
 
 @section('content')
     <div class="container">
-        @include('soap.option')
-        @include('soap.edit')
+        @if(isset($err_msg))
+            @include('soap.error')
+        @else
+            @include('soap.option')
+            @include('soap.edit')
+        @endif
     </div>
 @stop
 @section('loadScripts')
