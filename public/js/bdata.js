@@ -24,9 +24,6 @@ var mapping_time = {
     'dinner_after': '19:01',
     'sleep_before': '20:01'
 };
-$("document").on("pageshow",function(event){
-    alert('123!');
-})
 var patt = /\d{4}-\d{2}-\d{2}/;
 $( document ).ready(function() {
 
@@ -139,6 +136,7 @@ function checkContent(){
         if(active == '#batchInsert'){
 
             $('#batch_save_btn').click(function(event){
+                $(this).prop('disabled', true);
                 var flag = true;
                 var batch_data = [];
                 var trs = $("#sugartable > tbody").children("tr");
@@ -152,6 +150,7 @@ function checkContent(){
                                 flag = false;
                                 $(this).children('#sugar_batch').addClass('error');
                             }else if(sugar_value != ''){
+
                                 single_record[$(this).children('#sugar_batch').attr('data')] = sugar_value;
                             }
                         }
@@ -165,12 +164,12 @@ function checkContent(){
                         batch_data.push(single_record);
                     }
                 }
-
+                console.log(batch_data);
                 event.preventDefault();
                 $(this).blur();
                 var inputdata = {};
                 inputdata['sugar_data'] = batch_data;
-                inputdata['_token'] = $('#batch_form > input[ name=_token]').val();;
+                inputdata['_token'] = $('#batch_form > input[ name=_token]').val();
                 $.ajax({
                     type: 'POST',
                     url: '/bdata/batch_update',
@@ -601,11 +600,11 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
                         //$("#insert_data").hide();
                         location.reload();
                     }else{
-                        alert(儲存失敗);
+                        alert("儲存失敗");
                     }
                 },
                 error: function(){
-                    alert(儲存失敗);
+                    alert("儲存失敗");
                 }
             });
         }

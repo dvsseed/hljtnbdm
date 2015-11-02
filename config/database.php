@@ -86,7 +86,7 @@ return [
 
 		'oracle' => [
 			'driver' => 'oracle',
-			'host' => '192.168.1.99',
+			'host' => '1.34.73.244',
 			'port' => '1521',
 			'database' => 'orcl',
 			'username' => 'system',

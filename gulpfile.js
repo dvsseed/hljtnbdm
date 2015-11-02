@@ -29,7 +29,9 @@ elixir(function(mix) {
         "bdata.js"
     ], 'public/js/bdata.js').scripts([
         "jquery.ui.timepicker.js"
-    ], 'public/js/timepicker.js');
+    ], 'public/js/timepicker.js').scripts([
+        "soap.js"
+    ], 'public/js/soap.js');
 });
 
 

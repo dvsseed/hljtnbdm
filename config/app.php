@@ -13,7 +13,7 @@ return [
 	|
 	*/
 
-	'debug' => false,
+	'debug' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -138,9 +138,13 @@ return [
 		'Illuminate\Html\HtmlServiceProvider',
 		'Maatwebsite\Excel\ExcelServiceProvider',
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-		'Barryvdh\Debugbar\ServiceProvider',
-		'Laralib\L5scaffold\GeneratorsServiceProvider',
-		'yajra\Oci8\Oci8ServiceProvider',
+        'Barryvdh\Debugbar\ServiceProvider',
+		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'Laralib\L5scaffold\GeneratorsServiceProvider',
+        'yajra\Oci8\Oci8ServiceProvider',
+        'Way\Generators\GeneratorsServiceProvider',
+        'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
+
 
 		/*
 		 * Application Service Providers...

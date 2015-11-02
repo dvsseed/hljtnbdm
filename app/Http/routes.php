@@ -83,3 +83,12 @@ Route::post('bdata/upsert', 'BData\BDataController@upsert');
 Route::post('bdata/upsertfood', 'BData\BDataController@upsertfood');
 Route::get('bdata/food/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_food_detail');
 Route::get('bdata/{uuid?}/{end?}', 'BData\BDataController@page');
+
+#SOAP
+Route::get('/soap/get_sub/{main_class_pk}', 'SOAP\SoapController@get_sub_class');
+Route::get('/soap/get_soa/{sub_class_pk}', 'SOAP\SoapController@get_soa_class');
+Route::get('/soap/get_soa_detail/{soa_class_pk}', 'SOAP\SoapController@get_soa_detail');
+Route::get('/soap/get_customize/{type}', 'SOAP\SoapController@get_customize');
+Route::post('/soap/get_customize', 'SOAP\SoapController@post_customize');
+Route::post('/soap/post_soap', 'SOAP\SoapController@post_user_soap');
+Route::get('/soap/{uuid}', 'SOAP\SoapController@page');
