@@ -9,34 +9,34 @@
 @stop
 
 @section('css')
-.form-horizontal .form-group {
+    .form-horizontal .form-group {
     margin-top: 3px;
     margin-bottom: 3px;
-}
-input {
+    }
+    input {
     padding: 8px;
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
     border-radius: 3px;
-}
-input:focus {
+    }
+    input:focus {
     outline: none;
-}
-input:focus:invalid {
+    }
+    input:focus:invalid {
     /* background: #fff url(/img/invalid.png) no-repeat 98% center; */
     box-shadow: 0 0 5px #d45252;
     border-color: #b03535;
     border:1px solid red;
-}
-input:focus:valid {
+    }
+    input:focus:valid {
     /* background: #fff url(/img/valid.png) no-repeat 98% center; */
     box-shadow: 0 0 5px #5cd053;
     border-color: #28921f;
     border:1px solid green;
-}
-input:focus:invalid {
+    }
+    input:focus:invalid {
     background: #ffecec;
-}
+    }
 @stop
 
 @section('content')
@@ -49,15 +49,22 @@ input:focus:invalid {
 
             @include('errors.list')
 
-            <form action="{{ route('patient.store') }}" method="POST" class="form-horizontal" role="form">
+            <form action="{{ route('patient.store') }}" method="POST" class="form-horizontal" role="form"
+                  data-toggle="validator">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                <div class="form-group">
+                <div class="form-group has-feedback">
                     <label for="pp_patientid" class="col-md-2 control-label">病历号码</label>
 
-                    <div class="col-md-10"><input type="text" name="pp_patientid" class="form-control input-sm"
-                                                  value="{{ old('pp_patientid') }}" placeholder="请输入身份证号"
-                                                  onblur="pp_personid.value=this.value; account.value=this.value; var currentYear=new Date().getFullYear(); pp_age.value=currentYear-this.value.substr(6,4)" required>
+                    <div class="col-md-10">
+                        <input type="text" name="pp_patientid" class="form-control input-sm"
+                               pattern="^[_A-z0-9]{1,}$" maxlength="18" data-minlength="18"
+                               data-minlength-error="输入文字长度不足"
+                               value="{{ old('pp_patientid') }}" placeholder="请输入身份证号"
+                               onblur="pp_personid.value=this.value; account.value=this.value; var currentYear=new Date().getFullYear(); pp_age.value=currentYear-this.value.substr(6,4)"
+                               required>
+                        <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
+                        <span class="help-block with-errors"></span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -74,11 +81,15 @@ input:focus:invalid {
                                                   class="form-control input-sm" value="{{ old('account') }}"
                                                   placeholder="输入病历号码后会带入此处" readonly></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group has-feedback">
                     <label for="pp_name" class="col-md-2 control-label">姓名</label>
 
-                    <div class="col-md-10"><input type="text" name="pp_name" class="form-control input-sm"
-                                                  value="{{ old('pp_name') }}" required></div>
+                    <div class="col-md-10">
+                        <input type="text" name="pp_name" class="form-control input-sm"
+                               value="{{ old('pp_name') }}" required>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <span class="help-block with-errors"></span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="pp_birthday" class="col-md-2 control-label">生日</label>
@@ -87,12 +98,13 @@ input:focus:invalid {
                                                   class="form-control input-sm datepicker" data-date-format="yyyy-mm-dd"
                                                   data-date-autoclose="true" data-date-clear-btn="true"
                                                   data-date-today-highlight="true" data-date-today-btn="linked"
-                                                  data-date-language="zh-TW" value="{{ old('pp_birthday') }}"></div>
+                                                  data-date-language="zh-TW" value="{{ old('pp_birthday') }}">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="pp_age" class="col-md-2 control-label">年龄</label>
 
-                    <div class="col-md-10"><input type="text" name="pp_age" id="pp_age" class="form-control input-sm"
+                    <div class="col-md-10"><input type="number" name="pp_age" id="pp_age" class="form-control input-sm"
                                                   value="{{ old('pp_age') }}" placeholder="输入身分证号后会自动计算此处"></div>
                 </div>
                 <div class="form-group">
@@ -103,18 +115,28 @@ input:focus:invalid {
                             <option value="1">男</option>
                         </select></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group has-feedback">
                     <label for="pp_height" class="col-md-2 control-label">身高(cm)</label>
 
-                    <div class="col-md-10"><input type="text" name="pp_height" id="pp_height"
-                                                  class="form-control input-sm" value="{{ old('pp_height') }}" required></div>
+                    <div class="col-md-10">
+                        <input type="number" min="10.0" max="200.0" step="any" name="pp_height"
+                               id="pp_height"
+                               class="form-control input-sm" value="{{ old('pp_height') }}" required>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <span class="help-block with-errors"></span>
+                    </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group has-feedback">
                     <label for="pp_weight" class="col-md-2 control-label">体重(kg)</label>
 
-                    <div class="col-md-10"><input type="text" name="pp_weight" id="pp_weight"
-                                                  class="form-control input-sm" value="{{ old('pp_weight') }}"
-                                                  onblur="var hh=pp_height.value, ww=pp_weight.value; if(hh>0 && ww>0) {cc_ibw.value=Math.round((((hh/100)*(hh/100))*22)*10)/10; cc_bmi.value=Math.round((this.value/(hh/100)/(hh/100))*10)/10;}" required>
+                    <div class="col-md-10">
+                        <input type="number" min="10.0" max="200.0" step="any" name="pp_weight"
+                               id="pp_weight"
+                               class="form-control input-sm" value="{{ old('pp_weight') }}"
+                               onblur="var hh=pp_height.value, ww=pp_weight.value; if(hh>0 && ww>0) {cc_ibw.value=Math.round((((hh/100)*(hh/100))*22)*10)/10; cc_bmi.value=Math.round((this.value/(hh/100)/(hh/100))*10)/10;}"
+                               required>
+                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                        <span class="help-block with-errors"></span>
                     </div>
                 </div>
                 <div class="form-group">
@@ -144,100 +166,24 @@ input:focus:invalid {
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="pp_area">地区</label>
 
-                    <div class="col-md-10"><select name="pp_area" class="form-control input-sm">
-                            <option value="-1">不详</option>
-                            <option value="0">道里区</option>
-                            <option value="1">道外区</option>
-                            <option value="2">南岗区</option>
-                            <option value="3">香坊区</option>
-                            <option value="4">平房区</option>
-                            <option value="5">松北区</option>
-                            <option value="6">阿城区</option>
-                            <option value="7">宾县</option>
-                            <option value="8">方正县</option>
-                            <option value="9">依兰县</option>
-                            <option value="10">巴彦县</option>
-                            <option value="11">木兰县</option>
-                            <option value="12">延寿县</option>
-                            <option value="13">通河县</option>
-                            <option value="14">双城市</option>
-                            <option value="15">尚志市</option>
-                            <option value="16">五常市</option>
-                            <option value="17">齐齐哈尔市</option>
-                            <option value="18">佳木斯市</option>
-                            <option value="19">鹤岗市</option>
-                            <option value="20">大庆市</option>
-                            <option value="21">鸡西市</option>
-                            <option value="22">双鸭山市</option>
-                            <option value="23">伊春市</option>
-                            <option value="24">牡丹江市</option>
-                            <option value="25">黑河市</option>
-                            <option value="26">七台河市</option>
-                            <option value="27">绥化市</option>
-                            <option value="28">大兴安岭地区</option>
-                            <option value="29">友谊县</option>
-                            <option value="30">林口县</option>
-                            <option value="31">清河</option>
-                            <option value="32">肇东市</option>
-                            <option value="33">肇州</option>
-                            <option value="34">肇源</option>
-                            <option value="35">海伦市</option>
-                            <option value="36">建三江</option>
-                            <option value="37">安达市</option>
-                            <option value="38">宝清县</option>
-                            <option value="39">青岗县</option>
-                            <option value="40">克山县</option>
-                            <option value="41">庆安</option>
-                            <option value="42">明水</option>
-                            <option value="43">嫩江</option>
-                            <option value="44">虎林</option>
-                            <option value="45">加格达奇</option>
-                            <option value="46">嘉荫</option>
-                            <option value="47">北安</option>
-                            <option value="48">密山市</option>
-                            <option value="49">铁岭</option>
-                            <option value="50">通河县</option>
-                            <option value="51">兰西县</option>
-                            <option value="52">群力</option>
-                            <option value="53">海伦</option>
-                            <option value="54">拜泉县</option>
-                            <option value="55">绥棱县</option>
-                            <option value="56">绥芬河</option>
-                            <option value="57">铁力</option>
-                            <option value="58">方正</option>
-                            <option value="59">富锦县</option>
-                        </select></div>
+                    <div class="col-md-10">
+                        <select name="pp_area" class="form-control input-sm">
+                            @foreach($areas as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="pp_doctor">负责医生</label>
 
-                    <div class="col-md-10"><select name="pp_doctor" class="form-control input-sm">
-                            <option value="-1">不详</option>
-                            <option value="0">王颖</option>
-                            <option value="1">王秀萍</option>
-                            <option value="2">李晓星</option>
-                            <option value="3">肖树芹</option>
-                            <option value="4">姜宝华</option>
-                            <option value="5">代志行</option>
-                            <option value="6">刘雨田</option>
-                            <option value="7">刘国信</option>
-                            <option value="8">王玉美</option>
-                            <option value="9">侯淑敏</option>
-                            <option value="10">兰晓</option>
-                            <option value="11">张丽丽</option>
-                            <option value="12">宋淑清</option>
-                            <option value="13">王薇</option>
-                            <option value="14">范文爽</option>
-                            <option value="15">李羚</option>
-                            <option value="16">张丽华</option>
-                            <option value="17">于秋芝</option>
-                            <option value="18">袁爽</option>
-                            <option value="19">孙立婷</option>
-                            <option value="20">孙丹丹</option>
-                            <option value="21">徐丰磊</option>
-                            <option value="22">韩宏盛</option>
-                            <option value="23">王国楠</option>
-                        </select></div>
+                    <div class="col-md-10">
+                        <select name="pp_doctor" class="form-control input-sm">
+                            @foreach($doctors as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="pp_remark" class="col-md-2 control-label">备注</label>
@@ -248,38 +194,24 @@ input:focus:invalid {
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="pp_source">患者来源</label>
 
-                    <div class="col-md-10"><select name="pp_source" class="form-control input-sm">
-                            <option value="-1">不详</option>
-                            <option value="0">电视</option>
-                            <option value="1">户外广告</option>
-                            <option value="2">电话回访</option>
-                            <option value="3">网络浏览</option>
-                            <option value="4">生活报</option>
-                            <option value="5">新晚报</option>
-                            <option value="6">400网站</option>
-                            <option value="7">朋友介绍</option>
-                            <option value="8">网站</option>
-                        </select></div>
+                    <div class="col-md-10">
+                        <select name="pp_source" class="form-control input-sm">
+                            @foreach($sources as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="pp_occupation">职业</label>
 
-                    <div class="col-md-10"><select name="pp_occupation" class="form-control input-sm">
-                            <option value="-1">不详</option>
-                            <option value="0">工人</option>
-                            <option value="1">农民</option>
-                            <option value="2">教师</option>
-                            <option value="3">学生</option>
-                            <option value="4">公务员</option>
-                            <option value="5">文职人员</option>
-                            <option value="6">个体</option>
-                            <option value="7">医生</option>
-                            <option value="8">工程师</option>
-                            <option value="9">会计</option>
-                            <option value="10">司机</option>
-                            <option value="11">建筑</option>
-                            <option value="12">厨师</option>
-                        </select></div>
+                    <div class="col-md-10">
+                        <select name="pp_occupation" class="form-control input-sm">
+                            @foreach($occupations as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="pp_address" class="col-md-2 control-label">联络地址</label>
@@ -287,11 +219,15 @@ input:focus:invalid {
                     <div class="col-md-10"><input type="text" name="pp_address" class="form-control input-sm"
                                                   value="{{ old('pp_address') }}"></div>
                 </div>
-                <div class="form-group">
+                <div class="form-group has-feedback">
                     <label for="pp_email" class="col-md-2 control-label">电子邮件</label>
 
-                    <div class="col-md-10"><input type="email" name="pp_email" id="pp_email"
-                                                  class="form-control input-sm" value="{{ old('pp_email') }}" required></div>
+                    <div class="col-md-10">
+                        <input type="email" name="pp_email" id="pp_email"
+                               class="form-control input-sm" value="{{ old('pp_email') }}" required>
+                        <span class="glyphicon glyphicon-envelope form-control-feedback" aria-hidden="true"></span>
+                        <span class="help-block with-errors"></span>
+                    </div>
                 </div>
                 <hr>
                 <div class="form-group">
@@ -309,24 +245,20 @@ input:focus:invalid {
                 <div class="form-group">
                     <label for="cc_language" class="col-md-2 control-label">语言</label>
 
-                    <div class="col-md-10"><select name="cc_language" class="form-control input-sm">
-                            <option value="0">请选择语言</option>
-                            <option value="1">国语</option>
-                            <option value="2">台语</option>
-                            <option value="3">客语</option>
-                            <option value="4">原住民语</option>
-                            <option value="5">美(英)语</option>
-                            <option value="6">越语</option>
-                            <option value="7">泰语</option>
-                            <option value="8">其它语言</option>
-                        </select></div>
+                    <div class="col-md-10">
+                        <select name="cc_language" class="form-control input-sm">
+                            @foreach($languages as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="cc_mdate" class="col-md-2 control-label">诊断日期</label>
 
                     <div class="col-md-10">
                         发生于 西元年
-                        <select name="cc_mdate" class="input-sm">
+                        <select name="cc_mdate" id="cc_mdate" class="input-sm">
                             <option value="-1">不详</option>
                             @for ($i = $year; $i > 1910; $i--)
                                 <option value="{{ $i }}">{{ $i }}</option>
@@ -356,26 +288,28 @@ input:focus:invalid {
                 <div class="form-group">
                     <label for="cc_ibw" class="col-md-2 control-label">IBW</label>
 
-                    <div class="col-md-10"><input type="text" name="cc_ibw" id="cc_ibw" class="form-control input-sm"
+                    <div class="col-md-10"><input type="number" name="cc_ibw" id="cc_ibw" min="1.0" max="200.0"
+                                                  step="any" class="form-control input-sm"
                                                   value="{{ old('cc_ibw') }}" placeholder="输入身高、体重后会自动计算此处"></div>
                 </div>
                 <div class="form-group">
                     <label for="cc_bmi" class="col-md-2 control-label">BMI</label>
 
-                    <div class="col-md-10"><input type="text" name="cc_bmi" id="cc_bmi" class="form-control input-sm"
+                    <div class="col-md-10"><input type="number" name="cc_bmi" id="cc_bmi" min="1.0" max="200.0"
+                                                  step="any" class="form-control input-sm"
                                                   value="{{ old('cc_bmi') }}" placeholder="输入身高、体重后会自动计算此处"></div>
                 </div>
                 <div class="form-group">
                     <label for="cc_waist" class="col-md-2 control-label">腰围</label>
 
-                    <div class="col-md-10"><input type="text" name="cc_waist" class="input-sm"
+                    <div class="col-md-10"><input type="number" name="cc_waist" class="input-sm"
                                                   value="{{ old('cc_waist') }}">公分
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="cc_butt" class="col-md-2 control-label">臀围</label>
 
-                    <div class="col-md-10"><input type="text" name="cc_butt" class="input-sm"
+                    <div class="col-md-10"><input type="number" name="cc_butt" class="input-sm"
                                                   value="{{ old('cc_butt') }}">公分
                     </div>
                 </div>
@@ -416,7 +350,7 @@ input:focus:invalid {
                 <div class="form-group">
                     <label for="cc_wineq" class="col-md-2 control-label">酒量c.c.</label>
 
-                    <div class="col-md-10"><input type="text" name="cc_wineq" class="input-sm"
+                    <div class="col-md-10"><input type="number" name="cc_wineq" class="input-sm"
                                                   value="{{ old('cc_wineq') }}">c.c./天
                     </div>
                 </div>
@@ -513,7 +447,7 @@ input:focus:invalid {
                         <label class="checkbox-inline"><input type="checkbox" value="1"
                                                               name="cc_current_use4">中药治疗</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use5">以上方式有持续<font color='#ff0000'><b>规则治疗</b></font></label>
+                                                              name="cc_current_use5">以上方式有持续<span class="text-danger">规则治疗</span></label>
                         <label class="checkbox-inline">开始年月
                             <select name="cc_starty" class="input-sm">
                                 <option value="-1">不详</option>
@@ -756,7 +690,20 @@ input:focus:invalid {
 
 @section('scripts')
     $(function () {
-    $("#pp_birthday").datepicker();
+    $("#pp_birthday").datepicker({
+    onClose: function() {
+    $(this).trigger("change");
+    }
+    });
+
+    $("#pp_birthday").bind("change", function(){
+    $("#cc_mdate").empty().append("<option value='-1'>不详</option>");
+    var year = (new Date).getFullYear();
+    var thisyear = $("#pp_birthday").val().substr(0, 4);
+    for (var i = year; i >= thisyear; i--){
+    $("#cc_mdate").append("<option value='" + i + "'>" + i + "</option>");
+    }
+    });
 
     $("#pp_email").completer({
     separator: "@",

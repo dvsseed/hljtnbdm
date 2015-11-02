@@ -8,6 +8,14 @@
     active
 @stop
 
+@section('navstr')
+    <a href="/patient">患者资料</a>
+@stop
+
+@section('navabout')
+    /aboutpatient
+@stop
+
 @section('content')
     <div class="page-header">
         <h3>患者基本资料表 <span class="badge">{{ $count }}</span></h3>

@@ -120,10 +120,11 @@ return [
                         'required' => '描述必须填写',
                 ],
                 'user_id' => [
-                        'unique' => '人员编号不可重复',
+                        'unique' => '人员#不可重复',
                 ],
                 'feature_id' => [
                        	'required' => '操作功能必须填写',
+                        'unique' => '功能#不可重复',
                 ],
                 'pp_patientid' => [
                         'required' => '病历号码必须填写',

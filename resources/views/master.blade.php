@@ -75,6 +75,7 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.tablesorter.min.js"></script>
+<script src="/js/validator.min.js"></script>
 <script src="/js/completer.min.js"></script>
 <script src="/js/main.js"></script>
 <script> @yield('scripts') </script>

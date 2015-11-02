@@ -1,8 +1,10 @@
 <?php namespace App\Http\Controllers\Hasfeature;
 
 use DB;
+use Debugbar;
 use Input;
 use Redirect;
+use Validator;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Hasfeature;
@@ -31,7 +33,7 @@ class HasfeatureController extends Controller
             ->join('users', 'hasfeatures.user_id', '=', 'users.id')
             ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
             ->select('hasfeatures.id', 'hasfeatures.user_id', 'users.name', 'hasfeatures.feature_id', 'features.innerhtml')
-            ->orderBy('hasfeatures.id', 'ASC');
+            ->orderBy('hasfeatures.user_id', 'ASC')->orderBy('hasfeatures.feature_id', 'ASC');
         $countstr = '操作';
         $count = $result->count();
         $hasfeatures = $result->paginate(10);
@@ -48,7 +50,7 @@ class HasfeatureController extends Controller
         $result = Hasfeature::orderBy('id', 'ASC');
         $countstr = '操作';
         $count = $result->count();
-        $users = User::where('is_admin', 0)->lists('name', 'id');
+        $users = User::where('is_admin', 0)->orderBy('id', 'DESC')->lists('name', 'id');
         $features = Feature::all(); // lists('innerhtml', 'id');
         return view('Hasfeature.create', compact('countstr', 'count', 'users', 'features'));
     }
@@ -60,14 +62,22 @@ class HasfeatureController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, Hasfeature::rules());
+        // $this->validate($request, Hasfeature::rules());
+        $uid = $request->user_id;
         $featureids = Input::get('feature_id', true);
         if (is_array($featureids)) {
+            // validate
             foreach ($featureids as $featureid) {
-                $hasfeature = new Hasfeature;
-                $hasfeature->user_id = $request->user_id;
-                $hasfeature->feature_id = $featureid;
-                $hasfeature->save();
+                $count = DB::table('hasfeatures')->where('user_id', $uid)->where('feature_id', $featureid)->count();
+                if ($count) {
+                    return redirect()->back()->with('message', '功能:'.$featureid.' 已重复');
+                } else {
+                    // insert
+                    $hasfeature = new Hasfeature;
+                    $hasfeature->user_id = $uid;
+                    $hasfeature->feature_id = $featureid;
+                    $hasfeature->save();
+                }
             }
         }
         session()->flash('message', "操作添加成功");

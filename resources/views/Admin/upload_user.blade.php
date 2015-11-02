@@ -28,7 +28,7 @@
                 <h6>
                     {!! Form::label('password', '密码: ', ['class' => 'control-label']) !!}
                     <br/>
-                    {!! Form::password('password', '', ['class' => 'form-control', 'required']) !!}
+                    {!! Form::text('password', '', ['class' => 'form-control', 'required']) !!}
                 </h6>
                 <h6>
                     {!! Form::label('departmentno', '部门编号: ', ['class' => 'control-label']) !!}

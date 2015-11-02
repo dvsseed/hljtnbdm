@@ -8,6 +8,7 @@ use DB;
 use Auth;
 use Hash;
 //use Session;
+//use Debugbar;
 use App\Patientprofile;
 use App\BSM;
 use App\CaseCare;
@@ -32,26 +33,8 @@ class PatientprofileController extends Controller
     public function index(Request $request)
     {
         // $user = Auth::user();
-        $search = $request->search;
+        $search = urldecode($request->search);
         $category = $request->category;
-//        if (Session::has('pasearch')) {
-//            if ($search == null)
-//                $search = Session::get('pasearch');
-//            else
-//                if ($search != Session::get('pasearch')) Session::put('pasearch', $search);
-//        } else {
-//            // $search = $request->search;
-//            Session::put('pasearch', $search);
-//        }
-//        if (Session::has('pacategory')) {
-//            if ($category == null)
-//                $category = Session::get('pacategory');
-//            else
-//                if ($category != Session::get('pacategory')) Session::put('pacategory', $category);
-//        } else {
-//            // $category = $request->category;
-//            Session::put('pacategory', $category);
-//        }
         if ($search) {
             switch ($category) {
                 case 1:
@@ -72,7 +55,6 @@ class PatientprofileController extends Controller
         $count = $result->count();
         $patientprofiles = $result->paginate(10)->appends(['search' => $search, 'category' => $category]);
         $hiss = DB::connection('oracle')->select('select * from pub_class_office'); // from HIS's db
-
         // return view('patient.index', compact('patientprofiles', 'count', 'hiss'));
         return view('patient.index', compact('patientprofiles', 'count', 'hiss', 'search', 'category'));
     }
@@ -87,11 +69,15 @@ class PatientprofileController extends Controller
         $carbon = Carbon::today();
         // $format = $carbon->format('Y-m-d H:i:s');
         $year = $carbon->year;
-
         $bsms = BSM::orderBy('bm_order')->get();
+        $areas = Patientprofile::$_area;
+        $doctors = Patientprofile::$_doctor;
+        $sources = Patientprofile::$_source;
+        $occupations = Patientprofile::$_occupation;
+        $languages = Patientprofile::$_language;
 
         EventController::SaveEvent('patientprofile', 'create(创建)');
-        return view('patient.create', compact('year', 'bsms'));
+        return view('patient.create', compact('year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
     }
 
     /**
@@ -106,7 +92,7 @@ class PatientprofileController extends Controller
         try {
             // validate
             $this->validate($request, [
-                'account' => 'required|alpha_num|unique:users,account',
+                'account' => 'required|alpha_num|size:18|unique:users,account',
             ]);
             $this->validate($request, Patientprofile::rules());
             $this->validate($request, CaseCare::rules());
@@ -247,9 +233,14 @@ class PatientprofileController extends Controller
         $year = $carbon->year;
         $bsms = BSM::orderBy('bm_order')->get();
         $account = User::findOrFail($patientprofile->user_id)->account;
+        $areas = Patientprofile::$_area;
+        $doctors = Patientprofile::$_doctor;
+        $sources = Patientprofile::$_source;
+        $occupations = Patientprofile::$_occupation;
+        $languages = Patientprofile::$_language;
 
         EventController::SaveEvent('patientprofile', 'show(显示)');
-        return view('patient.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account'));
+        return view('patient.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
     }
 
     /**
@@ -266,9 +257,14 @@ class PatientprofileController extends Controller
         $year = $carbon->year;
         $bsms = BSM::orderBy('bm_order')->get();
         $account = User::findOrFail($patientprofile->user_id)->account;
+        $areas = Patientprofile::$_area;
+        $doctors = Patientprofile::$_doctor;
+        $sources = Patientprofile::$_source;
+        $occupations = Patientprofile::$_occupation;
+        $languages = Patientprofile::$_language;
 
         EventController::SaveEvent('patientprofile', 'edit(编辑)');
-        return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account'));
+        return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
     }
 
     /**
@@ -423,9 +419,9 @@ class PatientprofileController extends Controller
                     $msg = '患者资料删除失败。';
                 }
             } else {
-                $msg = '患者细项资料删除失败。';
+                $msg = '患者资料删除失败。';
             }
-
+            DB::commit();
             DB::statement('SET FOREIGN_KEY_CHECKS = 1');
             EventController::SaveEvent('patientprofile', 'destroy(删除)');
         } catch (\Exception $e) {

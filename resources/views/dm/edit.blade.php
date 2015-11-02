@@ -38,7 +38,7 @@
                         <div class="form-group">
                             {!! Form::label('password', '密码: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::password('password', null, ['class' => 'form-control']) !!}
+                                {!! Form::text('password', '', ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
                         @if (strlen(Auth::user()->id) >= 18)
@@ -71,13 +71,13 @@
                         <div class="form-group">
                             {!! Form::label('phone', '手机: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::text('phone', Auth::user()->phone, ['class' => 'form-control']) !!}
+                                {!! Form::text('phone', Auth::user()->phone, ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
                         <div class="form-group">
                             {!! Form::label('email', '邮箱: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::email('email', Auth::user()->email, ['class' => 'form-control']) !!}
+                                {!! Form::email('email', Auth::user()->email, ['class' => 'form-control', 'required']) !!}
                             </div>
                         </div>
                         <div class="group">

@@ -25,7 +25,7 @@ class AdminController extends Controller
         // Gets the query string from our form submission 
         // $query = Input::get('adsearch', '');
 
-        $search = $request->search;
+        $search = urldecode($request->search);
         $category = $request->category;
 //        if (Session::has('adsearch')) {
 //             if($search == null)

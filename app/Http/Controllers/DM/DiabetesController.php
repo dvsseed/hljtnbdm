@@ -4,6 +4,7 @@ use DB;
 use Auth;
 use Redirect;
 use Hash;
+use App\User;
 use App\Http\Requests\DiabetesMesRequest;
 use App\Http\Controllers\Event\EventController;
 use App\Http\Controllers\Controller;
@@ -51,6 +52,7 @@ class DiabetesController extends Controller
     public function update(DiabetesMesRequest $request)
     {
         // Auth::user()->update($request->all());
+        $this->validate($request, User::rules());
         $user = Auth::user();
         $user->name = $request->name;
         $user->password = Hash::make($request->password);

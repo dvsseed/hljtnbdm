@@ -48,7 +48,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected static function rules()
 	{
 		return [
-			'account' => 'required|alpha_num',  // |unique:users,account',
+			'account' => 'required|alpha_num',
 			'password' => 'required'
 		];
 	}

@@ -56,7 +56,7 @@ Route::resource('feature', 'Feature\FeatureController');
 Route::post('feature/upload_feature', ['as' => 'upload_feature', 'uses' => 'Feature\FeatureController@upload_feature']);
 #操作管理
 Route::resource('hasfeature', 'Hasfeature\HasfeatureController');
-#Route::post('hasfeature/upload_hasfeature', ['as' => 'upload_hasfeature', 'uses' => 'Hasfeature\HasfeatureController@upload_hasfeature']);
+##Route::post('hasfeature/upload_hasfeature', ['as' => 'upload_hasfeature', 'uses' => 'Hasfeature\HasfeatureController@upload_hasfeature']);
 #轨迹纪录
 Route::resource('event', 'Event\EventController');
 
