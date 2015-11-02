@@ -23,28 +23,8 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         // Gets the query string from our form submission 
-        // $query = Input::get('adsearch', '');
-
         $search = urldecode($request->search);
         $category = $request->category;
-//        if (Session::has('adsearch')) {
-//             if($search == null)
-//                $search = Session::get('adsearch');
-//            else
-//                if($search != Session::get('adsearch')) Session::put('adsearch', $search);
-//        } else {
-//            // $search = $request->search;
-//            Session::put('adsearch', $search);
-//        }
-//        if (Session::has('adcategory')) {
-//            if($category == null)
-//                $category = Session::get('adcategory');
-//            else
-//                if($category != Session::get('adcategory')) Session::put('adcategory', $category);
-//        } else {
-//            // $category = $request->category;
-//            Session::put('adcategory', $category);
-//        }
 
         // Returns an array of users that have the query string located somewhere within
         // our users names. Paginates them so we can break up lots of search results.
