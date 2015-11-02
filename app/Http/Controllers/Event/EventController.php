@@ -24,7 +24,7 @@ class EventController extends Controller {
 	{
 		$result = DB::table('events')
 			->join('users', 'events.user_id', '=', 'users.id')
-			->select('events.id', 'events.tablename', 'events.action', 'events.user_id', 'users.name', 'events.updated_at')
+			->select('events.id', 'events.tablename', 'events.action', 'events.user_id', 'users.name', 'users.account', 'events.updated_at')
 			->orderBy('events.updated_at', 'DESC');
                 $countstr = '纪录';
                 $count = $result->count();
