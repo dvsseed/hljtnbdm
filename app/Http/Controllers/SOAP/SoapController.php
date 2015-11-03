@@ -17,6 +17,7 @@ use Auth;
 use DB;
 use Session;
 use Illuminate\Http\Request;
+use Redirect;
 
 class SoapController extends Controller
 {
@@ -32,8 +33,22 @@ class SoapController extends Controller
         $sub_classes = $this->get_sub_class($main_classes -> first() -> main_class_pk);
         $soa_classes = $this->get_soa_class($sub_classes -> first() -> sub_class_pk);
 
-        if(HospitalNo::find($uuid) == null){
+        $hospital_no = HospitalNo::find($uuid);
+        $users = Auth::user();
+
+        if( $hospital_no == null){
             $err_msg = "無效的病歷";
+        }else{
+            if($hospital_no -> patient_user_id == $users -> id ){
+                return Redirect::route('bdata');
+            }
+            if($hospital_no -> nurse_user_id != $users -> id){
+                $hospital_no = null;
+                $err_msg = "您沒有權限查看此資料";
+            }
+        }
+
+        if($hospital_no == null){
             return view('soap.soap', compact('err_msg'));
         }
 

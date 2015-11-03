@@ -53,9 +53,12 @@ use DB;
             }else{
 
                 $hospital_no = HospitalNo::find($uuid);
-                $patient = $hospital_no -> patient;
+
                 if($hospital_no != null){
-                    $hospital_no = $hospital_no->where('patient_user_id', '=', $users->id)->orWhere('nurse_user_id', '=', $users->id)->first();
+                    $patient = $hospital_no -> patient;
+                    if($hospital_no -> patient_user_id != $users -> id && $hospital_no -> nurse_user_id != $users -> id){
+                        $hospital_no = null;
+                    }
                 }
                 if($hospital_no == null){
                     $err_msg = '您沒有權限查看此血糖資料!';
@@ -107,9 +110,15 @@ use DB;
             $data['food_categories'] = FoodCategory::all();
 
             $food_records = $this->get_has_food($uuid);
+
+            $soap_link = "";
+            if($hospital_no->nurse_user_id == $users->id){
+                $soap_link = '/soap/'.$uuid ;
+            }
+
             Session::put('uuid', $uuid);
 
-            return view('bdata.bdata', compact('blood_records', 'data', 'food_categories', 'stat', 'food_records'));
+            return view('bdata.bdata', compact('blood_records', 'data', 'food_categories', 'stat', 'food_records', 'soap_link'));
         }
 
         private function get_has_food($uuid){
