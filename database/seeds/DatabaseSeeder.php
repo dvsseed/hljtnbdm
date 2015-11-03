@@ -19,6 +19,6 @@ class DatabaseSeeder extends Seeder
 //        $this->call('EventTableSeeder');
 //        $this->call('BSMTableSeeder');
         /* faker */
-        $this->call('FakerTableSeeder');
+//        $this->call('FakerTableSeeder');
     }
 }

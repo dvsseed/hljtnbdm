@@ -25,6 +25,6 @@ class HospitalNo extends Model
 
     public function patient()
     {
-        return $this->belongsTo('App\PatientProfile', 'patient_profile_id');
+        return $this->belongsTo('App\Patientprofile', 'patient_profile_id');
     }
 }

@@ -15,3 +15,10 @@ Order allow,deny
 Allow from all
 </Directory>
 </VirtualHost>
+
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib64:/usr/lib/oracle/12.1/client64/lib
+export LD_LIBRARY_PATH
+
+NLS_LANG="TRADITIONAL CHINESE_TAIWAN.ZHS16GBK"
+export NLS_LANG
+
