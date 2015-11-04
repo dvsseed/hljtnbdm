@@ -33,7 +33,7 @@ Route::post('login', ['middleware' => 'guest', 'uses' => 'loginController@loginP
 Route::get('logout', ['middleware' => 'auth', 'as' => 'logout', 'uses' => 'loginController@logout']);
 Route::controller('password', 'PasswordController');
 #关于
-Route::get('/about', ['middleware' => 'admin', 'as' => 'about', 'uses' => 'Pages\PagesController@about']);
+Route::get('/about', ['middleware' => 'auth', 'as' => 'about', 'uses' => 'Pages\PagesController@about']);
 
 #人员的登录详情(包括资料修改，查询)
 Route::get('dm/home', ['as' => 'dm_home', 'uses' => 'DM\DiabetesController@home']);
