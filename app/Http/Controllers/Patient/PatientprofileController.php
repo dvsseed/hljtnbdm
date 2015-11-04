@@ -439,6 +439,10 @@ class PatientprofileController extends Controller
                 $patientprofile = Patientprofile::find($id);
                 if ($patientprofile) {
                     $this->cleanUpHospital($patientprofile -> hospital_no);
+                    $hasfeature = Hasfeature::where('user_id', '=', $patientprofile->user_id) -> first();
+                    if($hasfeature != null){
+                        $hasfeature -> delete();
+                    }
                     $patientprofile->delete();
                     $user = User::find($patientprofile->user_id);
                     if ($user) {
