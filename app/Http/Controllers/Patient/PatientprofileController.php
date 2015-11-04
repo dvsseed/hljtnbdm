@@ -1,5 +1,7 @@
 <?php namespace App\Http\Controllers\Patient;
 
+use App\Feature;
+use App\Hasfeature;
 use Carbon\Carbon;
 //use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -57,8 +59,9 @@ class PatientprofileController extends Controller
         $count = $result->count();
         $patientprofiles = $result->paginate(10)->appends(['search' => $search, 'category' => $category]);
         $hiss = DB::connection('oracle')->select('select * from pub_class_office'); // from HIS's db
+        $current_user_id = Auth::user() -> id;
         // return view('patient.index', compact('patientprofiles', 'count', 'hiss'));
-        return view('patient.index', compact('patientprofiles', 'count', 'hiss', 'search', 'category'));
+        return view('patient.index', compact('patientprofiles', 'count', 'hiss', 'search', 'category', 'current_user_id'));
     }
 
     /**
@@ -224,6 +227,13 @@ class PatientprofileController extends Controller
             $hospital_no -> nurse_user_id = Auth::user() -> id;
             $hospital_no -> hospital_no_displayname = substr($request->input("pp_patientid"),0,-6).'xxxxxx';
             $hospital_no -> save();
+
+            //enable feature
+            $featurs_id = Feature::where('href', '=', '/bdata') -> first() -> id;
+            $hasfeatures = new Hasfeature();
+            $hasfeatures -> user_id =  $patientprofile -> user_id;
+            $hasfeatures -> feature_id =  $featurs_id;
+            $hasfeatures -> save();
 
             $msg = '项目成功创建。';
             DB::commit();

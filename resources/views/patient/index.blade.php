@@ -66,7 +66,11 @@
                     @foreach($patientprofiles as $patientprofile)
                         <tr>
                             <td>{{ $patientprofile->id }}</td>
-                            <td>{{ $patientprofile->pp_patientid }}</td>
+                            @if($patientprofile->hospital_no != null && $patientprofile->hospital_no->nurse_user_id == $current_user_id)
+                                <td><a href="/bdata/{{ $patientprofile->hospital_no-> hospital_no_uuid}}">{{ $patientprofile->pp_patientid}}</a></td>
+                            @else
+                                <td>{{ $patientprofile->pp_patientid}}</td>
+                            @endif
                             <!-- td>{{-- $patientprofile->account --}}</td -->
                             <td>{{ $patientprofile->pp_name }}</td>
                             <td>{{ $patientprofile->pp_birthday }}</td>

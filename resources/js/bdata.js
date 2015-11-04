@@ -31,8 +31,12 @@ $( document ).ready(function() {
         $(this).parent().parent().find('.active').removeClass('active');
         $('.nav').find('.active').removeClass('active');
         $(this).parent().addClass('active');
-        e.preventDefault();
         $('.content').hide();
+
+        if(!$(this).hasClass("real")){
+            e.preventDefault();
+        }
+
         var link = $(this).attr('href');
         if( link == '#batchInsert'){
             link = '#data';
