@@ -38,6 +38,12 @@ class FeatureTableSeeder extends Seeder
             'innerhtml' => '方案管理'
         ]);
 
+        Feature::create([
+            'href' => '/bdata',
+            'btnclass' => 'btn-danger',
+            'innerhtml' => '血糖管理'
+        ]);
+
         DB::table('hasfeatures')->truncate();
 
         Hasfeature::create([
@@ -51,13 +57,8 @@ class FeatureTableSeeder extends Seeder
         ]);
 
         Hasfeature::create([
-            'user_id' => 3,
-            'feature_id' => 1
-        ]);
-
-        Hasfeature::create([
-            'user_id' => 3,
-            'feature_id' => 2
+            'user_id' => 2,
+            'feature_id' => 3
         ]);
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1'); // enable foreign key constraints

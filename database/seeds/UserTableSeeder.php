@@ -26,17 +26,10 @@ class UserTableSeeder extends Seeder
         ]);
 
         User::create([
-            'account' => '128',
-            'name' => '王媛媛',
+            'account' => '0000',
+            'name' => '测试员',
             'position' => '卫教师',
-            'password' => Hash::make('128')
-        ]);
-
-        User::create([
-            'account' => '100',
-            'name' => '邱美玲',
-            'position' => '卫教师',
-            'password' => Hash::make('100')
+            'password' => Hash::make('0000')
         ]);
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1'); // enable foreign key constraints
