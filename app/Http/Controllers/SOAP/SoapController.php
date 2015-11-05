@@ -160,7 +160,7 @@ class SoapController extends Controller
             return "success";
         }catch (\Exception $e){
             DB::rollback();
-            return "fail";
+	    return "fail";
         }
     }
 
