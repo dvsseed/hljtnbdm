@@ -26,7 +26,7 @@ class PatientprofileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        // \Debugbar::disable();
+        $this->middleware('patient');
     }
 
     /**
@@ -94,15 +94,15 @@ class PatientprofileController extends Controller
      */
     public function store(Request $request)
     {
-        DB::beginTransaction();
-        try {
-            // validate
-            $this->validate($request, [
-                'account' => 'required|alpha_num|size:18|unique:users,account',
-            ]);
-            $this->validate($request, Patientprofile::rules());
-            $this->validate($request, CaseCare::rules());
+        // validate
+        $this->validate($request, [
+            'account' => 'required|alpha_num|size:18|unique:users,account',
+        ]);
+        $this->validate($request, Patientprofile::rules());
+        $this->validate($request, CaseCare::rules());
 
+     	DB::beginTransaction();
+        try {
             // users
             $user = new User;
             $user->account = trim($request->account);
@@ -147,16 +147,20 @@ class PatientprofileController extends Controller
             $casecare->cc_mdate = $request->cc_mdate;
             $casecare->cc_mdatem = $request->cc_mdatem;
             $casecare->cc_type = $request->cc_type;
+            $casecare->cc_type_other = $request->cc_type_other;
             $casecare->cc_ibw = $request->cc_ibw;
             $casecare->cc_bmi = $request->cc_bmi;
             $casecare->cc_waist = $request->cc_waist;
             $casecare->cc_butt = $request->cc_butt;
+
             if ($request->cc_status) {
                 $casecare->cc_status = ($request->cc_status_c1 ? "1" : "0") . ($request->cc_status_c2 ? "1" : "0") . ($request->cc_status_c3 ? "1" : "0") . ($request->cc_status_c4 ? "1" : "0") . ($request->cc_status_c5 ? "1" : "0");
+                $casecare->cc_status_other = $request->cc_status_other;
             } else {
                 $casecare->cc_status = "";
                 $casecare->cc_status_other = "";
             }
+
             $casecare->cc_drink = $request->cc_drink;
             $casecare->cc_wine = $request->cc_wine;
             $casecare->cc_wineq = $request->cc_wineq;
@@ -169,11 +173,25 @@ class PatientprofileController extends Controller
             $casecare->cc_activity = $request->cc_activity;
             $casecare->cc_medicaretype = $request->cc_medicaretype;
             $casecare->cc_jobtime = $request->cc_jobtime;
-            $casecare->cc_current_use = ($request->cc_current_use0 ? "1" : "0") . ($request->cc_current_use1 ? "1" : "0") . ($request->cc_current_use2 ? "1" : "0") . ($request->cc_current_use3 ? "1" : "0") . ($request->cc_current_use4 ? "1" : "0") . ($request->cc_current_use5 ? "1" : "0");
-            $casecare->cc_starty = $request->cc_starty;
-            $casecare->cc_startm = $request->cc_startm;
-            $casecare->cc_hinder = ($request->cc_hinder0 ? "1" : "0") . ($request->cc_hinder1 ? "1" : "0") . ($request->cc_hinder2 ? "1" : "0") . ($request->cc_hinder3 ? "1" : "0") . ($request->cc_hinder4 ? "1" : "0") . ($request->cc_hinder5 ? "1" : "0") . ($request->cc_hinder6 ? "1" : "0") . ($request->cc_hinder7 ? "1" : "0") . ($request->cc_hinder8 ? "1" : "0") . ($request->cc_hinder9 ? "1" : "0");
-            $casecare->cc_hinder_desc = $request->cc_hinder_desc;
+
+            if ($request->cc_current_use) {
+                $casecare->cc_current_use = ($request->cc_current_use1 ? "1" : "0") . ($request->cc_current_use2 ? "1" : "0") . ($request->cc_current_use3 ? "1" : "0") . ($request->cc_current_use4 ? "1" : "0") . ($request->cc_current_use5 ? "1" : "0");
+                $casecare->cc_starty = $request->cc_starty;
+                $casecare->cc_startm = $request->cc_startm;
+            } else {
+                $casecare->cc_current_use = "";
+                $casecare->cc_starty = -1;
+                $casecare->cc_startm = -1;
+            }
+
+            if ($request->cc_hinder) {
+                $casecare->cc_hinder = ($request->cc_hinder_1 ? "1" : "0") . ($request->cc_hinder_2 ? "1" : "0") . ($request->cc_hinder_3 ? "1" : "0") . ($request->cc_hinder_4 ? "1" : "0") . ($request->cc_hinder_5 ? "1" : "0") . ($request->cc_hinder_6 ? "1" : "0") . ($request->cc_hinder_7 ? "1" : "0") . ($request->cc_hinder_8 ? "1" : "0") . ($request->cc_hinder_9 ? "1" : "0");
+                $casecare->cc_hinder_desc = $request->cc_hinder_desc;
+            } else {
+                $casecare->cc_hinder = "";
+                $casecare->cc_hinder_desc = "";
+            }
+
             $casecare->cc_act_time = $request->cc_act_time;
             $casecare->cc_act_kind = $request->cc_act_kind;
             $casecare->cc_edu = $request->cc_edu;
@@ -304,11 +322,11 @@ class PatientprofileController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // validate
+        $this->validate($request, Patientprofile::updaterules());
+
         DB::beginTransaction();
         try {
-            // validate
-            $this->validate($request, Patientprofile::updaterules());
-
             // patientprofile1
             $patientprofile = Patientprofile::findOrFail($id);
             $patientprofile->pp_name = $request->pp_name;
@@ -341,16 +359,20 @@ class PatientprofileController extends Controller
             $casecare->cc_mdate = $request->cc_mdate;
             $casecare->cc_mdatem = $request->cc_mdatem;
             $casecare->cc_type = $request->cc_type;
+            $casecare->cc_type_other = $request->cc_type_other;
             $casecare->cc_ibw = $request->cc_ibw;
             $casecare->cc_bmi = $request->cc_bmi;
             $casecare->cc_waist = $request->cc_waist;
             $casecare->cc_butt = $request->cc_butt;
+
             if ($request->cc_status) {
                 $casecare->cc_status = ($request->cc_status_c1 ? "1" : "0") . ($request->cc_status_c2 ? "1" : "0") . ($request->cc_status_c3 ? "1" : "0") . ($request->cc_status_c4 ? "1" : "0") . ($request->cc_status_c5 ? "1" : "0");
+                $casecare->cc_status_other = $request->cc_status_other;
             } else {
                 $casecare->cc_status = "";
                 $casecare->cc_status_other = "";
             }
+
             $casecare->cc_drink = $request->cc_drink;
             $casecare->cc_wine = $request->cc_wine;
             $casecare->cc_wineq = $request->cc_wineq;
@@ -363,11 +385,25 @@ class PatientprofileController extends Controller
             $casecare->cc_activity = $request->cc_activity;
             $casecare->cc_medicaretype = $request->cc_medicaretype;
             $casecare->cc_jobtime = $request->cc_jobtime;
-            $casecare->cc_current_use = ($request->cc_current_use0 ? "1" : "0") . ($request->cc_current_use1 ? "1" : "0") . ($request->cc_current_use2 ? "1" : "0") . ($request->cc_current_use3 ? "1" : "0") . ($request->cc_current_use4 ? "1" : "0") . ($request->cc_current_use5 ? "1" : "0");
-            $casecare->cc_starty = $request->cc_starty;
-            $casecare->cc_startm = $request->cc_startm;
-            $casecare->cc_hinder = ($request->cc_hinder0 ? "1" : "0") . ($request->cc_hinder1 ? "1" : "0") . ($request->cc_hinder2 ? "1" : "0") . ($request->cc_hinder3 ? "1" : "0") . ($request->cc_hinder4 ? "1" : "0") . ($request->cc_hinder5 ? "1" : "0") . ($request->cc_hinder6 ? "1" : "0") . ($request->cc_hinder7 ? "1" : "0") . ($request->cc_hinder8 ? "1" : "0") . ($request->cc_hinder9 ? "1" : "0");
-            $casecare->cc_hinder_desc = $request->cc_hinder_desc;
+
+            if ($request->cc_current_use) {
+                $casecare->cc_current_use = ($request->cc_current_use1 ? "1" : "0") . ($request->cc_current_use2 ? "1" : "0") . ($request->cc_current_use3 ? "1" : "0") . ($request->cc_current_use4 ? "1" : "0") . ($request->cc_current_use5 ? "1" : "0");
+                $casecare->cc_starty = $request->cc_starty;
+                $casecare->cc_startm = $request->cc_startm;
+            } else {
+                $casecare->cc_current_use = "";
+                $casecare->cc_starty = -1;
+                $casecare->cc_startm = -1;
+            }
+
+            if ($request->cc_hinder) {
+                $casecare->cc_hinder = ($request->cc_hinder_1 ? "1" : "0") . ($request->cc_hinder_2 ? "1" : "0") . ($request->cc_hinder_3 ? "1" : "0") . ($request->cc_hinder_4 ? "1" : "0") . ($request->cc_hinder_5 ? "1" : "0") . ($request->cc_hinder_6 ? "1" : "0") . ($request->cc_hinder_7 ? "1" : "0") . ($request->cc_hinder_8 ? "1" : "0") . ($request->cc_hinder_9 ? "1" : "0");
+                $casecare->cc_hinder_desc = $request->cc_hinder_desc;
+            } else {
+                $casecare->cc_hinder = "";
+                $casecare->cc_hinder_desc = "";
+            }
+
             $casecare->cc_act_time = $request->cc_act_time;
             $casecare->cc_act_kind = $request->cc_act_kind;
             $casecare->cc_edu = $request->cc_edu;

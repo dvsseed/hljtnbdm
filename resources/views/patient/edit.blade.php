@@ -230,13 +230,14 @@
 
                     <div class="col-md-10">
                         <label class="radio-inline"><input type="radio" value="0" name="cc_type"
-                                                           id="cc_type0" {{!$casecare->cc_type ? "checked='checked'" : ""}}>其它</label>
+                                                           id="cc_type0" {{$casecare->cc_type==0 ? "checked='checked'" : ""}}>Type1</label>
                         <label class="radio-inline"><input type="radio" value="1" name="cc_type"
-                                                           id="cc_type1" {{$casecare->cc_type==1 ? "checked='checked'" : ""}}>Type1</label>
+                                                           id="cc_type1" {{$casecare->cc_type==1 ? "checked='checked'" : ""}}>Type2</label>
                         <label class="radio-inline"><input type="radio" value="2" name="cc_type"
-                                                           id="cc_type2" {{$casecare->cc_type==2 ? "checked='checked'" : ""}}>Type2</label>
+                                                           id="cc_type2" {{$casecare->cc_type==2 ? "checked='checked'" : ""}}>GDM</label>
                         <label class="radio-inline"><input type="radio" value="3" name="cc_type"
-                                                           id="cc_type3" {{$casecare->cc_type==3 ? "checked='checked'" : ""}}>GDM</label>
+                                                           id="cc_type3" {{$casecare->cc_type==3 ? "checked='checked'" : ""}}>其它</label>
+                        <input type="text" name="cc_type_other" class="input-sm" value="{{ $casecare->cc_type_other }}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -269,22 +270,14 @@
                     <label for="cc_status" class="col-md-2 control-label">发病状况</label>
 
                     <div class="col-md-10">
-                        <label class="radio-inline"><input type="radio" value="0" name="cc_status"
-                                                           id="cc_status0" {{empty($casecare->cc_status) ? "checked='checked'" : ""}}>无</label>
-                        <label for="cc_status1" class="radio-inline"><input type="radio" value="1" name="cc_status"
-                                                                            id="cc_status1" {{$casecare->cc_status ? "checked='checked'" : ""}}>有下列症状：</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_status_c1" {{substr($casecare->cc_status.'000000',0,1)=='1' ? "checked='checked'" : ""}}>口干</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_status_c2" {{substr($casecare->cc_status.'000000',1,1)=='1' ? "checked='checked'" : ""}}>多尿</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_status_c3" {{substr($casecare->cc_status.'000000',2,1)=='1' ? "checked='checked'" : ""}}>饥饿</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_status_c4" {{substr($casecare->cc_status.'000000',3,1)=='1' ? "checked='checked'" : ""}}>疲倦</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_status_c5" {{substr($casecare->cc_status.'000000',4,1)=='1' ? "checked='checked'" : ""}}>其他</label>
-                        <input type="text" name="cc_status_other" class="input-sm"
-                               value="{{ $casecare->cc_status_other }}">
+                        <label class="radio-inline"><input type="radio" value="0" name="cc_status" id="cc_status0" {{empty($casecare->cc_status) ? "checked='checked'" : ""}}>无</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_status" id="cc_status1" {{$casecare->cc_status ? "checked='checked'" : ""}}>有下列症状：</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c1" {{substr($casecare->cc_status.'00000',0,1)=='1' ? "checked='checked'" : ""}}>口干</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c2" {{substr($casecare->cc_status.'00000',1,1)=='1' ? "checked='checked'" : ""}}>多尿</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c3" {{substr($casecare->cc_status.'00000',2,1)=='1' ? "checked='checked'" : ""}}>饥饿</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c4" {{substr($casecare->cc_status.'00000',3,1)=='1' ? "checked='checked'" : ""}}>疲倦</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c5" {{substr($casecare->cc_status.'00000',4,1)=='1' ? "checked='checked'" : ""}}>其他</label>
+                        <label class="checkbox-inline"><input type="text" name="cc_status_other" class="input-sm" value="{{ $casecare->cc_status_other }}"></label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -327,7 +320,7 @@
                     <label for="cc_mh" class="col-md-2 control-label">疾病史</label>
 
                     <div class="col-md-10"><input type="text" name="cc_mh" class="input-sm"
-                                                  value="{{ $casecare->cc_mh }}">(诊断码)
+                                                  value="{{ $casecare->cc_mh }}" placeholder="诊断码">
                     </div>
                 </div>
                 <div class="form-group">
@@ -344,7 +337,7 @@
                     <label for="cc_fh_desc" class="col-md-2 control-label">上列病史</label>
 
                     <div class="col-md-10"><input type="text" name="cc_fh_desc" class="input-sm"
-                                                  value="{{ $casecare->cc_fh_desc }}">备注描述
+                                                  value="{{ $casecare->cc_fh_desc }}" placeholder="备注描述">
                     </div>
                 </div>
                 <div class="form-group">
@@ -356,7 +349,7 @@
                         <label class="radio-inline"><input type="radio" value="1" name="cc_drug_allergy"
                                                            id="cc_drug_allergy1" {{$casecare->cc_drug_allergy==1 ? "checked='checked'" : ""}}>有</label>
                         <input type="text" name="cc_drug_allergy_name" class="input-sm"
-                               value="{{ $casecare->cc_drug_allergy_name }}">对何种药物名称
+                               value="{{ $casecare->cc_drug_allergy_name }}" placeholder="对何种药物名称">
                     </div>
                 </div>
                 <div class="form-group">
@@ -401,19 +394,13 @@
                     <label for="cc_current_use" class="col-md-2 control-label">目前治疗方式</label>
 
                     <div class="col-md-10">
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use0" {{substr($casecare->cc_current_use.'000000',0,1)=='1' ? "checked='checked'" : ""}}>无</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use1" {{substr($casecare->cc_current_use.'000000',1,1)=='1' ? "checked='checked'" : ""}}>口服药</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use2" {{substr($casecare->cc_current_use.'000000',2,1)=='1' ? "checked='checked'" : ""}}>胰岛素</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use3" {{substr($casecare->cc_current_use.'000000',3,1)=='1' ? "checked='checked'" : ""}}>饮食控制</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use4" {{substr($casecare->cc_current_use.'000000',4,1)=='1' ? "checked='checked'" : ""}}>中药治疗</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use5" {{substr($casecare->cc_current_use.'000000',5,1)=='1' ? "checked='checked'" : ""}}>以上方式有持续<span
-                                    class="text-danger">规则治疗</span></label>
+                        <label class="radio-inline"><input type="radio" value="0" name="cc_current_use" id="cc_current_use0" {{empty($casecare->cc_current_use) ? "checked='checked'" : ""}}>无</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_current_use" id="cc_current_use1" {{$casecare->cc_current_use ? "checked='checked'" : ""}}>有下列症状：</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use1" {{substr($casecare->cc_current_use.'00000',0,1)=='1' ? "checked='checked'" : ""}}>口服药</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use2" {{substr($casecare->cc_current_use.'00000',1,1)=='1' ? "checked='checked'" : ""}}>胰岛素</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use3" {{substr($casecare->cc_current_use.'00000',2,1)=='1' ? "checked='checked'" : ""}}>饮食控制</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use4" {{substr($casecare->cc_current_use.'00000',3,1)=='1' ? "checked='checked'" : ""}}>中药治疗</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use5" {{substr($casecare->cc_current_use.'00000',4,1)=='1' ? "checked='checked'" : ""}}>以上方式有持续<span class="text-danger">规则治疗</span></label>
                         <label class="checkbox-inline">开始年月
                             <select name="cc_starty" class="input-sm">
                                 <option value="-1" {{-1==$casecare->cc_starty ? "selected='selected'" : ""}}>不详</option>
@@ -434,28 +421,18 @@
                     <label class="col-md-2 control-label" for="cc_hinder">影响学习之因素</label>
 
                     <div class="col-md-10">
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_hinder0" {{substr($casecare->cc_hinder.'0000000000',0,1)=='1' ? "checked='checked'" : ""}}>无</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_hinder1" {{substr($casecare->cc_hinder.'0000000000',1,1)=='1' ? "checked='checked'" : ""}}>失聪</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_hinder2" {{substr($casecare->cc_hinder.'0000000000',2,1)=='1' ? "checked='checked'" : ""}}>失明</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_hinder3" {{substr($casecare->cc_hinder.'0000000000',3,1)=='1' ? "checked='checked'" : ""}}>手部不灵活</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_hinder4" {{substr($casecare->cc_hinder.'0000000000',4,1)=='1' ? "checked='checked'" : ""}}>听力障碍</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_hinder5" {{substr($casecare->cc_hinder.'0000000000',5,1)=='1' ? "checked='checked'" : ""}}>视力障碍</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_hinder6" {{substr($casecare->cc_hinder.'0000000000',6,1)=='1' ? "checked='checked'" : ""}}>智力障碍</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_hinder7" {{substr($casecare->cc_hinder.'0000000000',7,1)=='1' ? "checked='checked'" : ""}}>情绪因素</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_hinder8" {{substr($casecare->cc_hinder.'0000000000',8,1)=='1' ? "checked='checked'" : ""}}>疾病因素</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_hinder9" {{substr($casecare->cc_hinder.'0000000000',9,1)=='1' ? "checked='checked'" : ""}}>其他</label>
-                        <label class="checkbox-inline">简略说明：<input class="input-sm" type="text" name="cc_hinder_desc"
-                                                                   value="{{ $casecare->cc_hinder_desc }}">(20字内)</label>
+                        <label class="radio-inline"><input type="radio" value="0" name="cc_hinder" id="cc_hinder0" {{empty($casecare->cc_hinder) ? "checked='checked'" : ""}}>无</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_hinder" id="cc_hinder1" {{$casecare->cc_hinder ? "checked='checked'" : ""}}>有下列症状：</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_1" {{substr($casecare->cc_hinder.'000000000',0,1)=='1' ? "checked='checked'" : ""}}>失聪</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_2" {{substr($casecare->cc_hinder.'000000000',1,1)=='1' ? "checked='checked'" : ""}}>失明</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_3" {{substr($casecare->cc_hinder.'000000000',2,1)=='1' ? "checked='checked'" : ""}}>手部不灵活</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_4" {{substr($casecare->cc_hinder.'000000000',3,1)=='1' ? "checked='checked'" : ""}}>听力障碍</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_5" {{substr($casecare->cc_hinder.'000000000',4,1)=='1' ? "checked='checked'" : ""}}>视力障碍</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_6" {{substr($casecare->cc_hinder.'000000000',5,1)=='1' ? "checked='checked'" : ""}}>智力障碍</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_7" {{substr($casecare->cc_hinder.'000000000',6,1)=='1' ? "checked='checked'" : ""}}>情绪因素</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_8" {{substr($casecare->cc_hinder.'000000000',7,1)=='1' ? "checked='checked'" : ""}}>疾病因素</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_9" {{substr($casecare->cc_hinder.'000000000',8,1)=='1' ? "checked='checked'" : ""}}>其他</label>
+                        <label class="checkbox-inline">简略说明：<input class="input-sm" type="text" name="cc_hinder_desc" value="{{ $casecare->cc_hinder_desc }}" placeholder="20字内"></label>
                     </div>
                 </div>
                 <div class="form-group">

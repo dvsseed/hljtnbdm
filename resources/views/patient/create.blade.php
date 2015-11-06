@@ -61,8 +61,8 @@
                                pattern="^[_A-z0-9]{1,}$" maxlength="18" data-minlength="18"
                                data-minlength-error="输入文字长度不足"
                                value="{{ old('pp_patientid') }}" placeholder="请输入身份证号"
-                               onblur="pp_personid.value=this.value; account.value=this.value; var currentYear=new Date().getFullYear(); pp_age.value=currentYear-this.value.substr(6,4)"
-                               required>
+                               onblur="pp_personid.value=this.value; account.value=this.value; pp_birthday.value=this.value.substr(6,4)+'-'+this.value.substr(10,2)+'-'+this.value.substr(12,2); var currentYear=new Date().getFullYear(); pp_age.value=currentYear-this.value.substr(6,4);
+$('#cc_mdate').empty().append('<option value=-1>不详</option>'); var year = (new Date).getFullYear(); var thisyear = $('#pp_birthday').val().substr(0, 4); for (var i = year; i >= thisyear; i--){$('#cc_mdate').append('<option value=' + i + '>' + i + '</option>');}" required>
                         <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
                         <span class="help-block with-errors"></span>
                     </div>
@@ -224,7 +224,7 @@
 
                     <div class="col-md-10">
                         <input type="email" name="pp_email" id="pp_email"
-                               class="form-control input-sm" value="{{ old('pp_email') }}" required>
+                               class="form-control input-sm" value="{{ old('pp_email') }}">
                         <span class="glyphicon glyphicon-envelope form-control-feedback" aria-hidden="true"></span>
                         <span class="help-block with-errors"></span>
                     </div>
@@ -277,12 +277,13 @@
 
                     <div class="col-md-10">
                         <label class="radio-inline"><input type="radio" value="0" name="cc_type"
-                                                           id="cc_type0">其它</label>
-                        <label class="radio-inline"><input type="radio" value="1" name="cc_type"
-                                                           id="cc_type1">Type1</label>
-                        <label class="radio-inline"><input type="radio" value="2" name="cc_type" id="cc_type2" checked>Type2</label>
+                                                           id="cc_type0">Type1</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_type" id="cc_type1" checked>Type2</label>
+                        <label class="radio-inline"><input type="radio" value="2" name="cc_type"
+                                                           id="cc_type2">GDM</label>
                         <label class="radio-inline"><input type="radio" value="3" name="cc_type"
-                                                           id="cc_type3">GDM</label>
+                                                           id="cc_type3">其它</label>
+                        <input type="text" name="cc_type_other" class="input-sm" value="{{ old('cc_type_other') }}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -317,16 +318,14 @@
                     <label for="cc_status" class="col-md-2 control-label">发病状况</label>
 
                     <div class="col-md-10">
-                        <label class="radio-inline"><input type="radio" value="0" name="cc_status" id="cc_status0"
-                                                           checked>无</label>
-                        <label for="cc_status1" class="radio-inline"><input type="radio" value="1" name="cc_status"
-                                                                            id="cc_status1">有下列症状：</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c1">口干</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c2">多尿</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c3">饥饿</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c4">疲倦</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c5">其他</label>
-                        <input type="text" name="cc_status_other" class="input-sm" value="{{ old('cc_status_other') }}">
+                        <label class="radio-inline"><input type="radio" value="0" name="cc_status" id="cc_status0" checked onclick="cc_status_c1.disabled=true;cc_status_c2.disabled=true;cc_status_c3.disabled=true;cc_status_c4.disabled=true;cc_status_c5.disabled=true;cc_status_other.disabled=true;cc_status_c1.checked=false;cc_status_c2.checked=false;cc_status_c3.checked=false;cc_status_c4.checked=false;cc_status_c5.checked=false;cc_status_other.value=''">无</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_status" id="cc_status1" onclick="cc_status_c1.disabled=false;cc_status_c2.disabled=false;cc_status_c3.disabled=false;cc_status_c4.disabled=false;cc_status_c5.disabled=false;cc_status_other.disabled=false;">有下列症状：</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c1" id="cc_status_c1" disabled="disabled">口干</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c2" id="cc_status_c2" disabled="disabled">多尿</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c3" id="cc_status_c3" disabled="disabled">饥饿</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c4" id="cc_status_c4" disabled="disabled">疲倦</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c5" id="cc_status_c5" disabled="disabled">其他</label>
+                        <input type="text" name="cc_status_other" id="cc_status_other" class="input-sm" value="{{ old('cc_status_other') }}" disabled="disabled">
                     </div>
                 </div>
                 <div class="form-group">
@@ -368,7 +367,7 @@
                 <div class="form-group">
                     <label for="cc_mh" class="col-md-2 control-label">疾病史</label>
 
-                    <div class="col-md-10"><input type="text" name="cc_mh" class="input-sm" value="{{ old('cc_mh') }}">(诊断码)
+                    <div class="col-md-10"><input type="text" name="cc_mh" class="input-sm" value="{{ old('cc_mh') }}" placeholder="诊断码">
                     </div>
                 </div>
                 <div class="form-group">
@@ -384,7 +383,7 @@
                     <label for="cc_fh_desc" class="col-md-2 control-label">上列病史</label>
 
                     <div class="col-md-10"><input type="text" name="cc_fh_desc" class="input-sm"
-                                                  value="{{ old('cc_fh_desc') }}">备注描述
+                                                  value="{{ old('cc_fh_desc') }}" placeholder="备注描述">
                     </div>
                 </div>
                 <div class="form-group">
@@ -396,7 +395,7 @@
                         <label class="radio-inline"><input type="radio" value="1" name="cc_drug_allergy"
                                                            id="cc_drug_allergy1">有</label>
                         <input type="text" name="cc_drug_allergy_name" class="input-sm"
-                               value="{{ old('cc_drug_allergy_name') }}">对何种药物名称
+                               value="{{ old('cc_drug_allergy_name') }}" placeholder="对何种药物名称">
                     </div>
                 </div>
                 <div class="form-group">
@@ -437,25 +436,21 @@
                     <label for="cc_current_use" class="col-md-2 control-label">目前治疗方式</label>
 
                     <div class="col-md-10">
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use0">无</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use1">口服药</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use2">胰岛素</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use3">饮食控制</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use4">中药治疗</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1"
-                                                              name="cc_current_use5">以上方式有持续<span class="text-danger">规则治疗</span></label>
+                        <label class="radio-inline"><input type="radio" value="0" name="cc_current" id="cc_current0" checked onclick="cc_current_use1.disabled=true;cc_current_use2.disabled=true;cc_current_use3.disabled=true;cc_current_use4.disabled=true;cc_current_use5.disabled=true;cc_starty.disabled=true;cc_startm.disabled=true;cc_current_use1.checked=false;cc_current_use2.checked=false;cc_current_use3.checked=false;cc_current_use4.checked=false;cc_current_use5.checked=false;cc_starty.value=-1;cc_startm.value=-1">无</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_current" id="cc_current1" onclick="cc_current_use1.disabled=false;cc_current_use2.disabled=false;cc_current_use3.disabled=false;cc_current_use4.disabled=false;cc_current_use5.disabled=false;cc_starty.disabled=false;cc_startm.disabled=false">有：</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use1" id="cc_current_use1" disabled="disabled">口服药</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use2" id="cc_current_use2" disabled="disabled">胰岛素</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use3" id="cc_current_use3" disabled="disabled">饮食控制</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use4" id="cc_current_use4" disabled="disabled">中药治疗</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use5" id="cc_current_use5" disabled="disabled">以上方式有持续<span class="text-danger">规则治疗</span></label>
                         <label class="checkbox-inline">开始年月
-                            <select name="cc_starty" class="input-sm">
+                            <select name="cc_starty" class="input-sm" id="cc_starty" disabled="disabled">
                                 <option value="-1">不详</option>
                                 @for ($i = $year; $i > 1910; $i--)
                                     <option value='{{ $i }}'>{{ $i }}</option>
                                 @endfor
                             </select>年
-                            <select name="cc_startm" class="input-sm">
+                            <select name="cc_startm" class="input-sm" id="cc_startm" disabled="disabled">
                                 <option value="-1">不详</option>
                                 @for ($i = 1; $i < 13; $i++)
                                     <option value='{{ $i }}'>{{ $i }}</option>
@@ -468,18 +463,20 @@
                     <label class="col-md-2 control-label" for="cc_hinder">影响学习之因素</label>
 
                     <div class="col-md-10">
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder0">无</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder1">失聪</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder2">失明</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder3">手部不灵活</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder4">听力障碍</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder5">视力障碍</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder6">智力障碍</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder7">情绪因素</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder8">疾病因素</label>
-                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder9">其他</label>
-                        <label class="checkbox-inline">简略说明：<input class="input-sm" type="text" name="cc_hinder_desc"
-                                                                   value="{{ old('cc_hinder_desc') }}">(20字内)</label>
+                        <label class="radio-inline"><input type="radio" value="0" name="cc_hinder" id="cc_hinder0" checked onclick="
+cc_hinder_1.disabled=true;cc_hinder_2.disabled=true;cc_hinder_3.disabled=true;cc_hinder_4.disabled=true;cc_hinder_5.disabled=true;cc_hinder_6.disabled=true;cc_hinder_7.disabled=true;cc_hinder_8.disabled=true;cc_hinder_9.disabled=true;cc_hinder_desc.disabled=true;
+cc_hinder_1.checked=false;cc_hinder_2.checked=false;cc_hinder_3.checked=false;cc_hinder_4.checked=false;cc_hinder_5.checked=false;cc_hinder_6.checked=false;cc_hinder_7.checked=false;cc_hinder_8.checked=false;cc_hinder_9.checked=false;cc_hinder_desc.value=''">无</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_hinder" id="cc_hinder1" onclick="cc_hinder_1.disabled=false;cc_hinder_2.disabled=false;cc_hinder_3.disabled=false;cc_hinder_4.disabled=false;cc_hinder_5.disabled=false;cc_hinder_6.disabled=false;cc_hinder_7.disabled=false;cc_hinder_8.disabled=false;cc_hinder_9.disabled=false;cc_hinder_desc.disabled=false">有：</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_1" id="cc_hinder_1" disabled="disabled">失聪</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_2" id="cc_hinder_2" disabled="disabled">失明</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_3" id="cc_hinder_3" disabled="disabled">手部不灵活</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_4" id="cc_hinder_4" disabled="disabled">听力障碍</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_5" id="cc_hinder_5" disabled="disabled">视力障碍</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_6" id="cc_hinder_6" disabled="disabled">智力障碍</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_7" id="cc_hinder_7" disabled="disabled">情绪因素</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_8" id="cc_hinder_8" disabled="disabled">疾病因素</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_9" id="cc_hinder_9" disabled="disabled">其他</label>
+                        <label class="checkbox-inline">简略说明：<input class="input-sm" type="text" name="cc_hinder_desc" id="cc_hinder_desc" value="{{ old('cc_hinder_desc') }}" placeholder="20字内" disabled="disabled"></label>
                     </div>
                 </div>
                 <div class="form-group">

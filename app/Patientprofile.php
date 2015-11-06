@@ -83,8 +83,7 @@ class Patientprofile extends Model
             'pp_personid' => 'required|unique:patientprofile1,pp_personid|alpha_num',
             'pp_name' => 'required',
             'pp_height' => 'required|numeric|min:0|max:200',
-            'pp_weight' => 'required|numeric|min:0|max:200',
-            'pp_email' => 'required|email'
+            'pp_weight' => 'required|numeric|min:0|max:200'
         ];
     }
 
@@ -93,8 +92,7 @@ class Patientprofile extends Model
         return [
             'pp_name' => 'required',
             'pp_height' => 'required|numeric|min:0|max:200',
-            'pp_weight' => 'required|numeric|min:0|max:200',
-            'pp_email' => 'required|email'
+            'pp_weight' => 'required|numeric|min:0|max:200'
         ];
     }
 

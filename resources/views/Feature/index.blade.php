@@ -30,11 +30,11 @@
                                 <td>{{ $feature->innerhtml }}</td>
                                 <td>
                                     <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal{{$feature->id}}">更新</button>
-                                    <form action="{{ url('feature/'.$feature->id) }}" style='display: inline' method="post">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{csrf_token()}}">
-                                        <button class="btn btn-sm btn-danger" onclick="return confirm('确定删除?')">删除</button>
-                                    </form>
+                                    <!-- form action="{{ url('feature/'.$feature->id) }}" style='display: inline' method="post" -->
+                                        <!-- input type="hidden" name="_method" value="DELETE" -->
+                                        <!-- input type="hidden" name="_token" value="{{-- csrf_token() --}}" -->
+                                        <!-- button class="btn btn-sm btn-danger" onclick="return confirm('确定删除?')">删除</button -->
+                                    <!-- /form -->
                                 </td>
                             </tr>
 

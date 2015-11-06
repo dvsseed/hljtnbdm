@@ -24,6 +24,7 @@ class CreateCaseCaresTable extends Migration
             $table->integer('cc_mdate')->nullable();
             $table->integer('cc_mdatem')->nullable();
             $table->integer('cc_type')->unsigned()->default(2);
+            $table->string('cc_type_other', 20)->nullable();
             $table->float('cc_ibw')->nullable();
             $table->float('cc_bmi')->nullable();
             $table->float('cc_waist')->nullable();
