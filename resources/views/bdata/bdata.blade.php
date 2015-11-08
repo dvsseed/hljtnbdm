@@ -47,6 +47,7 @@
     </div>
     @include('bdata.insert')
     @include('bdata.insertfood')
+    @include('bdata.insertnote')
 
 
 @stop

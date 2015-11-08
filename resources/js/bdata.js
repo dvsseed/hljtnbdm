@@ -72,6 +72,9 @@ $( document ).ready(function() {
             manual: []
         }
     });
+    $("#dialog").dialog({
+        autoOpen: false
+    });
 
     var mode = getUrlParameter("mode");
     if(mode){
@@ -86,6 +89,19 @@ $( document ).ready(function() {
         $('[href =' + ' #data]').click();
     }
 });
+
+function openDialog(text, event){
+
+
+    $("#dialog").html(text);
+    $("#dialog").dialog("option", "position", {
+        my: "left+20 top+10",
+        of: event
+    });
+    $("#dialog").dialog("open");
+    $(this).blur();
+    event.preventDefault();
+}
 
 function getUrlParameter(sParam) {
     var sPageURL = decodeURIComponent(window.location.search.substring(1)),
@@ -102,6 +118,47 @@ function getUrlParameter(sParam) {
     }
 };
 
+function updateNote(calendar_date, ele){
+    var text = "";
+    if(ele != null)
+        text = $(ele).attr('title');
+    $("#day_note").val(text);
+    $("#calendar_date_note").html(calendar_date);
+
+    $("#note_filter").show();
+    $("#insert_note_data").show();
+
+    $("#save_note").unbind('click').click(function(event){
+        var insert_data = {};
+        insert_data['day_note'] = $("#day_note").val();
+        insert_data['calendar_date'] = calendar_date;
+        insert_data['_token'] = $('input[name=_token]').val();
+        $.ajax({
+            type: 'POST',
+            url: '/bdata/upsert_note',
+            data: insert_data,
+            success: function(result){
+                if(result == "success"){
+                    location.reload();
+                }else{
+                    alert("儲存失敗");
+                }
+            },
+            error: function(){
+                alert("儲存失敗");
+            }
+        });
+        event.preventDefault();
+    });
+
+    $("#cancel_note").unbind('click').click(function(event){
+        $("#note_filter").hide();
+        $("#insert_note_data").hide();
+        event.preventDefault();
+    });
+
+}
+
 function checkContent(){
     if($(this).attr('id') == 'data'){
         var active = $("#top").find('.active').children('a').attr('href');
@@ -113,6 +170,7 @@ function checkContent(){
                 if(active == '#data'){
                     $(this).children('#normal').show();
                     $(this).children('#sugar_batch').hide();
+                    $(this).children('#sugar_batch_empty').hide();
                 }else if(active == '#batchInsert'){
                     $(this).children('#normal').hide();
                     $(this).children('#sugar_batch').show();
@@ -139,7 +197,7 @@ function checkContent(){
 
         if(active == '#batchInsert'){
 
-            $('#batch_save_btn').click(function(event){
+            $('#batch_save_btn').unbind('click').click(function(event){
                 $(this).prop('disabled', true);
                 var flag = true;
                 var batch_data = [];
@@ -525,7 +583,7 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
         $("#insert_data").show();
     }
 
-    $("#save").click(function(){
+    $("#save").unbind('click').click(function(){
 
         var flag = true;
 
@@ -614,12 +672,13 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
         }
     });
 
-    $("#cancel").click(function(event){
+    $("#cancel").unbind('click').click(function(event){
         event.preventDefault();
 
         $("#sport").val("none");
         $("#duration").val("none");
         $("#low").val("0");
+        $("#blood_sugar").val();
         $("#insulin_type_1").val("0");
         $("#insulin_type_2").val("0");
         $("#insulin_type_3").val("0");
@@ -688,7 +747,7 @@ function insertFood(calendar_date, type) {
         }
     });
 
-    $("#food_save").click(function(event){
+    $("#food_save").unbind('click').click(function(event){
         var flag = true;
 
         event.preventDefault();
@@ -742,7 +801,7 @@ function insertFood(calendar_date, type) {
         }
     });
 
-    $("#food_cancel").click(function(){
+    $("#food_cancel").unbind('click').click(function(){
         event.preventDefault();
         $("#filter").hide();
         $("#insert_food_data").hide();
@@ -759,7 +818,7 @@ function insertFood(calendar_date, type) {
 
     });
 
-    $("#delete_food_all").click(function(){
+    $("#delete_food_all").unbind('click').click(function(){
 
         if (confirm("確定要刪除嗎?") == true) {
             $.ajax({
