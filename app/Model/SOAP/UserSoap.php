@@ -15,4 +15,8 @@ class UserSoap extends Model
 
     protected $primaryKey = 'user_soap_pk';
 
+    public function history()
+    {
+        return $this->hasMany('App\Model\SOAP\UserSoapHistory','user_soap_pk');
+    }
 }

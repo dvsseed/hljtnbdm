@@ -13,6 +13,7 @@ use App\Model\SOAP\SoaClass;
 use App\Model\SOAP\MainClass;
 use App\Model\SOAP\UserCustomize;
 use App\Model\SOAP\UserSoap;
+use App\Model\SOAP\UserSoapHistory;
 use Auth;
 use DB;
 use Session;
@@ -72,7 +73,48 @@ class SoapController extends Controller
         }
         Session::put('uuid', $uuid);
 
-        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data'));
+        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid'));
+    }
+
+    public function delete_history(Request $request){
+        $user_soap_history = UserSoapHistory::find($request['history']);
+        if($user_soap_history != null){
+            DB::beginTransaction();
+            try{
+                $user_soap_history -> delete();
+                DB::commit();
+                return "success";
+            }catch (\Exception $e){
+
+                DB::rollback();
+                return "fail";
+            }
+        }
+    }
+
+    public function get_history($uuid){
+
+        $hospital_no = HospitalNo::find($uuid);
+        $users = Auth::user();
+        if( $hospital_no == null){
+            $err_msg = "無效的病歷";
+            if($hospital_no -> nurse_user_id != $users -> id){
+                $hospital_no = null;
+                $err_msg = "您沒有權限查看此資料";
+            }
+        }
+
+        if($hospital_no == null){
+            return view('soap.soap', compact('err_msg'));
+        }
+
+        $hospital_no_displayname = $hospital_no -> patient -> pp_patientid;
+        $user_soap = $hospital_no -> user_soap;
+        $histories = array();
+        if($user_soap != null){
+            $histories = $user_soap -> history() -> orderBy('updated_at', 'desc') -> get();
+        }
+        return view('soap.history', compact('histories', 'hospital_no_displayname', 'uuid'));
     }
 
     public function get_sub_class($main_class_pk){
@@ -156,9 +198,23 @@ class SoapController extends Controller
             $user_soap -> e_text = $request -> e_text;
             $user_soap -> r_text = $request -> r_text;
             $user_soap -> save();
+
+            $user_soap_history = new UserSoapHistory();
+            $user_soap_history -> s_text = $request -> s_text;
+            $user_soap_history -> o_text = $request -> o_text;
+            $user_soap_history -> a_text = $request -> a_text;
+            $user_soap_history -> p_text = $request -> p_text;
+            $user_soap_history -> e_text = $request -> e_text;
+            $user_soap_history -> r_text = $request -> r_text;
+            $user_soap_history -> user_soap_pk = $user_soap -> user_soap_pk;
+            $user_soap_history -> user_id = Auth::user() -> id;
+            $user_soap_history -> created_at = $user_soap -> created_at;
+            $user_soap_history -> save();
+
             DB::commit();
             return "success";
         }catch (\Exception $e){
+
             DB::rollback();
             return "fail";
         }

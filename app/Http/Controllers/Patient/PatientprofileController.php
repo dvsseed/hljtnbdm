@@ -495,6 +495,13 @@ class PatientprofileController extends Controller
                 $message -> delete();
             }
             $hospital -> delete();
+
+            $user_soap = $hospital -> user_soap;
+            $histories = $user_soap -> history;
+            foreach( $histories as $history){
+                $histories -> delete();
+            }
+            $user_soap -> delete();
         }
     }
 

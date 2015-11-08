@@ -90,6 +90,8 @@ Route::get('/soap/get_sub/{main_class_pk}', 'SOAP\SoapController@get_sub_class')
 Route::get('/soap/get_soa/{sub_class_pk}', 'SOAP\SoapController@get_soa_class');
 Route::get('/soap/get_soa_detail/{soa_class_pk}', 'SOAP\SoapController@get_soa_detail');
 Route::get('/soap/get_customize/{type}', 'SOAP\SoapController@get_customize');
+Route::get('/soap_history/{uuid}', 'SOAP\SoapController@get_history');
 Route::post('/soap/get_customize', 'SOAP\SoapController@post_customize');
 Route::post('/soap/post_soap', 'SOAP\SoapController@post_user_soap');
+Route::post('/soap/delete_history', 'SOAP\SoapController@delete_history');
 Route::get('/soap/{uuid}', 'SOAP\SoapController@page');

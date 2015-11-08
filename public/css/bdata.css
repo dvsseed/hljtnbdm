@@ -29,4 +29,8 @@ table.statics , th, td, tr {
     width: 70px !important;
     margin: 0 auto !important;
 }
+.table-hover > tbody > tr.select-row:hover > td,
+.select-row > td {
+    background-color: transparent;
+}
 /*# sourceMappingURL=bdata.css.map */

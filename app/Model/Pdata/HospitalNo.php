@@ -27,4 +27,10 @@ class HospitalNo extends Model
     {
         return $this->belongsTo('App\PatientProfile', 'patient_profile_id');
     }
+
+    public function user_soap()
+    {
+        return $this->hasOne('App\Model\SOAP\UserSoap', 'hospital_no_uuid');
+    }
+
 }

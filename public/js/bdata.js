@@ -515,7 +515,7 @@ function init_food_input(){
 }
 
 function setfoodRemove(delete_food){
-    delete_food.click({button:delete_food },function(event){
+    delete_food.unbind("click").click({button:delete_food },function(event){
         event.preventDefault();
 
         var delete_food = event.data.button;

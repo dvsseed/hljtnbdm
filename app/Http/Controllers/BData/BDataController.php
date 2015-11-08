@@ -209,7 +209,7 @@ use DB;
             $goal_low = 110;
 
             $types = ["breakfast", "lunch", "dinner"];
-            $goals = ["above", "normal", "dinner"];
+            $goals = ["above", "normal", "below"];
             $data_types = ["count", "avg"];
 
             foreach($types as $type){
