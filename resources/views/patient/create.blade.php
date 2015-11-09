@@ -57,12 +57,10 @@
                     <label for="pp_patientid" class="col-md-2 control-label">病历号码</label>
 
                     <div class="col-md-10">
-                        <input type="text" name="pp_patientid" class="form-control input-sm"
+                        <input type="text" name="pp_patientid" id="pp_patientid" class="form-control input-sm"
                                pattern="^[_A-z0-9]{1,}$" maxlength="18" data-minlength="18"
                                data-minlength-error="输入文字长度不足"
-                               value="{{ old('pp_patientid') }}" placeholder="请输入身份证号"
-                               onblur="pp_personid.value=this.value; account.value=this.value; pp_birthday.value=this.value.substr(6,4)+'-'+this.value.substr(10,2)+'-'+this.value.substr(12,2); var currentYear=new Date().getFullYear(); pp_age.value=currentYear-this.value.substr(6,4);
-$('#cc_mdate').empty().append('<option value=-1>不详</option>'); var year = (new Date).getFullYear(); var thisyear = $('#pp_birthday').val().substr(0, 4); for (var i = year; i >= thisyear; i--){$('#cc_mdate').append('<option value=' + i + '>' + i + '</option>');}" required>
+                               value="{{ old('pp_patientid') }}" placeholder="请输入身份证号" required>
                         <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
                         <span class="help-block with-errors"></span>
                     </div>
@@ -85,7 +83,7 @@ $('#cc_mdate').empty().append('<option value=-1>不详</option>'); var year = (n
                     <label for="pp_name" class="col-md-2 control-label">姓名</label>
 
                     <div class="col-md-10">
-                        <input type="text" name="pp_name" class="form-control input-sm"
+                        <input type="text" name="pp_name" id="pp_name" class="form-control input-sm"
                                value="{{ old('pp_name') }}" required>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <span class="help-block with-errors"></span>
@@ -317,9 +315,9 @@ $('#cc_mdate').empty().append('<option value=-1>不详</option>'); var year = (n
                 <div class="form-group">
                     <label for="cc_status" class="col-md-2 control-label">发病状况</label>
 
-                    <div class="col-md-10">
-                        <label class="radio-inline"><input type="radio" value="0" name="cc_status" id="cc_status0" checked onclick="cc_status_c1.disabled=true;cc_status_c2.disabled=true;cc_status_c3.disabled=true;cc_status_c4.disabled=true;cc_status_c5.disabled=true;cc_status_other.disabled=true;cc_status_c1.checked=false;cc_status_c2.checked=false;cc_status_c3.checked=false;cc_status_c4.checked=false;cc_status_c5.checked=false;cc_status_other.value=''">无</label>
-                        <label class="radio-inline"><input type="radio" value="1" name="cc_status" id="cc_status1" onclick="cc_status_c1.disabled=false;cc_status_c2.disabled=false;cc_status_c3.disabled=false;cc_status_c4.disabled=false;cc_status_c5.disabled=false;cc_status_other.disabled=false;">有下列症状：</label>
+                    <div class="col-md-10" id="ccstatus">
+                        <label class="radio-inline"><input type="radio" value="0" name="cc_status" id="cc_status0" checked>无</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_status" id="cc_status1">有下列症状：</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c1" id="cc_status_c1" disabled="disabled">口干</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c2" id="cc_status_c2" disabled="disabled">多尿</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c3" id="cc_status_c3" disabled="disabled">饥饿</label>
@@ -686,25 +684,52 @@ cc_hinder_1.checked=false;cc_hinder_2.checked=false;cc_hinder_3.checked=false;cc
 @endsection
 
 @section('scripts')
-    $(function () {
+    $(function(){
     $("#pp_birthday").datepicker({
-    onClose: function() {
+    onClose: function(){
     $(this).trigger("change");
     }
     });
 
     $("#pp_birthday").bind("change", function(){
-    $("#cc_mdate").empty().append("<option value='-1'>不详</option>");
-    var year = (new Date).getFullYear();
-    var thisyear = $("#pp_birthday").val().substr(0, 4);
-    for (var i = year; i >= thisyear; i--){
-    $("#cc_mdate").append("<option value='" + i + "'>" + i + "</option>");
-    }
+    var thisyear = (new Date).getFullYear();
+    var lastyear = $("#pp_birthday").val().substr(0, 4);
+    appendyear("cc_mdate", thisyear, lastyear);
     });
+
+    $("#pp_patientid").blur(function(){
+    var pid = $("#pp_patientid").val();
+    $("#pp_personid").val(pid);
+    $("#account").val(pid);
+    $("#pp_birthday").val(pid.substr(6, 4) + '-' + pid.substr(10, 2) + '-' + pid.substr(12, 2));
+    var thisyear = (new Date).getFullYear();
+    $("#pp_age").val(thisyear - pid.substr(6, 4));
+    var lastyear = $("#pp_birthday").val().substr(0, 4);
+    appendyear("cc_mdate", thisyear, lastyear);
+    });
+
+    var appendyear = function(obj, thisyear, lastyear) {
+    $("#" + obj).empty().append("<option value='-1'>不详</option>");
+    for (var i = thisyear; i >= lastyear; i--){
+    $("#" + obj).append("<option value='" + i + "'>" + i + "</option>");
+    }
+    }
 
     $("#pp_email").completer({
     separator: "@",
     source: ["126.com", "163.com", "yeah.net", "qq.com", "gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "live.com", "aol.com", "mail.com"]
     });
+
+    $("#cc_status0").click(function(){
+        $("#ccstatus input[type=checkbox]").attr("disabled", "disabled");
+        $("#ccstatus input[type=text]").attr("disabled", "disabled");
+        $("#ccstatus input[type=checkbox]").attr("checked", false);
+        $("#ccstatus input[type=text]").val("");
+    });
+    $("#cc_status1").click(function(){
+        $("#ccstatus input[type=checkbox]").attr("disabled", false);
+        $("#ccstatus input[type=text]").attr("disabled", false);
+    });
+
     });
 @stop

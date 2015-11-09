@@ -12,17 +12,17 @@
 #Route::get('/users/export', 'TestController@export');
 #Route::get('users', 'TestController@users');
 #redis
-Route::get('test', function(){
-    if (\Cache::has('test')) {
-        echo '存在chche,读取'.'<br />';
-        echo \Cache::get('test');
-    } else {
-        echo '不存在cache,现在创建'.'<br />';
-        $time = \Carbon\Carbon::now()->addMinutes(10);
-        $redis = \Cache::add('test', '这是缓存资源', $time);
-        echo \Cache::get('test');
-    }
-});
+#Route::get('test', function(){
+#    if (\Cache::has('test')) {
+#        echo '存在chche,读取'.'<br />';
+#        echo \Cache::get('test');
+#    } else {
+#        echo '不存在cache,现在创建'.'<br />';
+#        $time = \Carbon\Carbon::now()->addMinutes(10);
+#        $redis = \Cache::add('test', '这是缓存资源', $time);
+#        echo \Cache::get('test');
+#    }
+#});
 
 #主页
 Route::get('/', 'WelcomeController@index');

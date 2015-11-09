@@ -22,24 +22,16 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-        // Gets the query string from our form submission 
         $search = urldecode($request->search);
         $category = $request->category;
 
-        // Returns an array of users that have the query string located somewhere within
-        // our users names. Paginates them so we can break up lots of search results.
         if ($search) {
-            switch ($category) {
-                case 1:
-                    $field = 'name';
-                    break;
-                case 2:
-                    $field = 'department';
-                    break;
-                case 3:
-                    $field = 'position';
-                    break;
-            }
+            $categoryList = [
+                1 => "name",
+                2 => "department",
+                3 => "position",
+            ];
+            $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
             $result = User::where('is_admin', 0)->where($field, 'like', '%' . $search . '%');
         } else {
             $result = User::where('is_admin', 0);
@@ -47,7 +39,6 @@ class AdminController extends Controller
         $countstr = '人';
         $count = $result->count();
         $users = $result->paginate(10)->appends(['search' => $search, 'category' => $category]);
-        // returns a view and passes the view the list of users and the original query.
         $categories = array('' => '请选择', '1' => '姓名', '2' => '部门', '3' => '职务');
         return view('Admin.index', compact('users', 'countstr', 'count', 'categories', 'search', 'category'));
     }
