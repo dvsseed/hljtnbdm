@@ -73,10 +73,11 @@ Route::resource("case", "Cases\CasesController");
 
 #血糖
 Route::get('/bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');
-Route::get('/bdata/food/statics', 'BData\BDataController@get_food_stat');
+Route::get('/bdata/food/statics', 'BData\BDataController@get_all_stat');
 Route::delete('/bdata/foods/{calendar_date}', 'BData\BDataController@delete_food');
 Route::get('/bdata/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_detail');
 Route::get('/bdata/message', 'BData\BDataController@message');
+Route::post('/bdata/upsert_note', 'BData\BDataController@upsert_note');
 Route::post('/bdata/post_message', 'BData\BDataController@post_message');
 Route::post('/bdata/batch_update', 'BData\BDataController@batch_update');
 Route::post('/bdata/upsert', 'BData\BDataController@upsert');
@@ -89,6 +90,8 @@ Route::get('/soap/get_sub/{main_class_pk}', 'SOAP\SoapController@get_sub_class')
 Route::get('/soap/get_soa/{sub_class_pk}', 'SOAP\SoapController@get_soa_class');
 Route::get('/soap/get_soa_detail/{soa_class_pk}', 'SOAP\SoapController@get_soa_detail');
 Route::get('/soap/get_customize/{type}', 'SOAP\SoapController@get_customize');
+Route::get('/soap_history/{uuid}', 'SOAP\SoapController@get_history');
 Route::post('/soap/get_customize', 'SOAP\SoapController@post_customize');
 Route::post('/soap/post_soap', 'SOAP\SoapController@post_user_soap');
+Route::post('/soap/delete_history', 'SOAP\SoapController@delete_history');
 Route::get('/soap/{uuid}', 'SOAP\SoapController@page');

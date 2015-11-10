@@ -97,6 +97,9 @@ $( document ).ready(function() {
                 if(result == 'success'){
                     alert("儲存成功");
                     $("#soap_save_btn").blur();
+                }else{
+                    alert("儲存失敗");
+                    $("#soap_save_btn").blur();
                 }
             }
         });
@@ -104,6 +107,25 @@ $( document ).ready(function() {
 
     setCustomize($("#customize_type").val());
 });
+
+function delete_soap(soap_history_pk){
+
+    if (confirm("確定要刪除嗎?") == true) {
+        var inputdata = {};
+        inputdata['_token'] = $('#soap_save > input[ name=_token]').val();
+        inputdata['history'] = soap_history_pk;
+        $.ajax({
+            type: 'POST',
+            url: '/soap/delete_history/',
+            data: inputdata,
+            success: function(result){
+                if(result == "success"){
+                    location.reload();
+                }
+            }
+        });
+    }
+}
 
 function setSOAClass( sub_class_pk){
     $.ajax({

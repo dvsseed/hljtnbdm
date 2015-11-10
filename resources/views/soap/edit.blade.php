@@ -1,4 +1,4 @@
-<table class="table table-hover borderless" id="edit_class" style="text-align: center">
+<table class="table borderless" id="edit_class" style="text-align: center">
     <tr>
         <td>S</td>
         <td>0</td>
@@ -48,6 +48,7 @@
         <td colspan="3">
             {!! Form::open(array('url'=>'/soap/','method'=>'POST', 'id'=>'soap_save')) !!}
             {!! Form::button('儲 存', array('class'=>'btn btn-default', 'id'=>'soap_save_btn', 'style' => 'width: 150px; margin: 0 auto')) !!}
+            <a href="/soap_history/{{$uuid}}" class="btn btn-default" style="width: 150px;">歷史紀錄</a>
             {!! Form::close() !!}
         </td>
     </tr>

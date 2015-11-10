@@ -1,6 +1,6 @@
 {!! Html::style('css/bdata.css') !!}
 
-<table class="table table-hover borderless" id="main_class">
+<table class="table borderless" id="main_class">
     <tr>
         @foreach($main_classes as $main_class)
             @if($main_class -> main_class_pk == 1)
@@ -11,7 +11,7 @@
         @endforeach
     </tr>
 </table>
-<table class="table table-hover borderless" id="other_class" style="text-align: center">
+<table class="table borderless" id="other_class" style="text-align: center; background-color: lightpink">
     <tr >
         <td></td>
         <td>S</td>
