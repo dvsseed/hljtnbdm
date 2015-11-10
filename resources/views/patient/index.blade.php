@@ -115,7 +115,7 @@
 @endsection
 
 @section('scripts')
-    $(function (){
+    $(function(){
     $("[data-toggle='popover']").popover();
     });
 @stop

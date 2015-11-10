@@ -92,8 +92,7 @@
                     <label for="pp_weight" class="col-md-2 control-label">体重(kg)</label>
 
                     <div class="col-md-10"><input type="text" name="pp_weight" id="pp_weight"
-                                                  class="form-control input-sm" value="{{ $patientprofile->pp_weight }}"
-                                                  onblur="var hh=pp_height.value, ww=pp_weight.value; if(hh>0 && ww>0) {cc_ibw.value=Math.round((((hh/100)*(hh/100))*22)*10)/10; cc_bmi.value=Math.round((this.value/(hh/100)/(hh/100))*10)/10;}">
+                                                  class="form-control input-sm" value="{{ $patientprofile->pp_weight }}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -269,7 +268,7 @@
                 <div class="form-group">
                     <label for="cc_status" class="col-md-2 control-label">发病状况</label>
 
-                    <div class="col-md-10">
+                    <div class="col-md-10" id="ccstatus">
                         <label class="radio-inline"><input type="radio" value="0" name="cc_status" id="cc_status0" {{empty($casecare->cc_status) ? "checked='checked'" : ""}}>无</label>
                         <label class="radio-inline"><input type="radio" value="1" name="cc_status" id="cc_status1" {{$casecare->cc_status ? "checked='checked'" : ""}}>有下列症状：</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_status_c1" {{substr($casecare->cc_status.'00000',0,1)=='1' ? "checked='checked'" : ""}}>口干</label>
@@ -393,9 +392,9 @@
                 <div class="row">
                     <label for="cc_current_use" class="col-md-2 control-label">目前治疗方式</label>
 
-                    <div class="col-md-10">
-                        <label class="radio-inline"><input type="radio" value="0" name="cc_current_use" id="cc_current_use0" {{empty($casecare->cc_current_use) ? "checked='checked'" : ""}}>无</label>
-                        <label class="radio-inline"><input type="radio" value="1" name="cc_current_use" id="cc_current_use1" {{$casecare->cc_current_use ? "checked='checked'" : ""}}>有下列症状：</label>
+                    <div class="col-md-10" id="cccurrent">
+                        <label class="radio-inline"><input type="radio" value="0" name="cc_current_use" id="cc_current0" {{empty($casecare->cc_current_use) ? "checked='checked'" : ""}}>无</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_current_use" id="cc_current1" {{$casecare->cc_current_use ? "checked='checked'" : ""}}>有下列症状：</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use1" {{substr($casecare->cc_current_use.'00000',0,1)=='1' ? "checked='checked'" : ""}}>口服药</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use2" {{substr($casecare->cc_current_use.'00000',1,1)=='1' ? "checked='checked'" : ""}}>胰岛素</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use3" {{substr($casecare->cc_current_use.'00000',2,1)=='1' ? "checked='checked'" : ""}}>饮食控制</label>
@@ -420,7 +419,7 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="cc_hinder">影响学习之因素</label>
 
-                    <div class="col-md-10">
+                    <div class="col-md-10" id="cchinder">
                         <label class="radio-inline"><input type="radio" value="0" name="cc_hinder" id="cc_hinder0" {{empty($casecare->cc_hinder) ? "checked='checked'" : ""}}>无</label>
                         <label class="radio-inline"><input type="radio" value="1" name="cc_hinder" id="cc_hinder1" {{$casecare->cc_hinder ? "checked='checked'" : ""}}>有下列症状：</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_1" {{substr($casecare->cc_hinder.'000000000',0,1)=='1' ? "checked='checked'" : ""}}>失聪</label>
@@ -661,8 +660,56 @@
 @endsection
 
 @section('scripts')
-    $(function () {
+    $(function() {
     $("#pp_birthday").datepicker();
+
+    $("#pp_weight").blur(function() {
+    var hh = $("#pp_height").val() / 100;
+    var ww = $("#pp_weight").val();
+    if(hh > 0 && ww > 0) {
+    $("#cc_ibw").val(Math.round(hh * hh * 22 * 10) / 10);
+    $("#cc_bmi").val(Math.round(ww / (hh * hh) * 10) / 10);
+    }
+    });
+
+    $("input:radio[name=cc_status]").on("change", function() {
+    if($(this).val() === "1") {
+    $("#ccstatus input[type='checkbox']").attr("disabled", false);
+    $("#ccstatus input[type='text']").attr("disabled", false);
+    } else {
+    $("#ccstatus input[type='checkbox']").attr("disabled", true);
+    $("#ccstatus input[type='checkbox']").attr("checked", false);
+    $("#ccstatus input[type='text']").attr("disabled", true);
+    $("#ccstatus input[type='text']").val("");
+    }
+    });
+
+    $("input:radio[name=cc_current_use]").on("change", function() {
+    if($(this).val() === "1") {
+    $("#cccurrent input[type='checkbox']").attr("disabled", false);
+    $("select[name='cc_starty']").prop("disabled", false);
+    $("select[name='cc_startm']").prop("disabled", false);
+    } else {
+    $("#cccurrent input[type='checkbox']").attr("disabled", true);
+    $("select[name='cc_starty']").prop("disabled", true);
+    $("select[name='cc_startm']").prop("disabled", true);
+    $("#cccurrent input[type='checkbox']").attr("checked", false);
+    $("select[name='cc_starty']").val(-1);
+    $("select[name='cc_startm']").val(-1);
+    }
+    });
+
+    $("input:radio[name=cc_hinder]").on("change", function() {
+    if($(this).val() === "1") {
+    $("#cchinder input[type='checkbox']").attr("disabled", false);
+    $("#cchinder input[type='text']").attr("disabled", false);
+    } else {
+    $("#cchinder input[type='checkbox']").attr("disabled", true);
+    $("#cchinder input[type='checkbox']").attr("checked", false);
+    $("#cchinder input[type='text']").attr("disabled", true);
+    $("#cchinder input[type='text']").val("");
+    }
+    });
 
     $("#pp_email").completer({
     separator: "@",

@@ -40,17 +40,12 @@ class PatientprofileController extends Controller
         $search = urldecode($request->search);
         $category = $request->category;
         if ($search) {
-            switch ($category) {
-                case 1:
-                    $field = 'pp_name';
-                    break;
-                case 2:
-                    $field = 'pp_patientid';
-                    break;
-                case 3:
-                    $field = 'pp_personid';
-                    break;
-            }
+            $categoryList = [
+                1 => "pp_name",
+                2 => "pp_patientid",
+                3 => "pp_personid",
+            ];
+            $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
             $result = Patientprofile::where($field, 'like', '%' . $search . '%')->orderBy('created_at', 'desc');
         } else {
             $result = Patientprofile::orderBy('created_at', 'desc');

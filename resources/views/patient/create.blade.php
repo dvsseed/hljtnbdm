@@ -128,11 +128,8 @@
                     <label for="pp_weight" class="col-md-2 control-label">体重(kg)</label>
 
                     <div class="col-md-10">
-                        <input type="number" min="10.0" max="200.0" step="any" name="pp_weight"
-                               id="pp_weight"
-                               class="form-control input-sm" value="{{ old('pp_weight') }}"
-                               onblur="var hh=pp_height.value, ww=pp_weight.value; if(hh>0 && ww>0) {cc_ibw.value=Math.round((((hh/100)*(hh/100))*22)*10)/10; cc_bmi.value=Math.round((this.value/(hh/100)/(hh/100))*10)/10;}"
-                               required>
+                        <input type="number" min="10.0" max="200.0" step="any" name="pp_weight" id="pp_weight"
+                               class="form-control input-sm" value="{{ old('pp_weight') }}" required>
                         <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                         <span class="help-block with-errors"></span>
                     </div>
@@ -433,9 +430,9 @@
                 <div class="row">
                     <label for="cc_current_use" class="col-md-2 control-label">目前治疗方式</label>
 
-                    <div class="col-md-10">
-                        <label class="radio-inline"><input type="radio" value="0" name="cc_current" id="cc_current0" checked onclick="cc_current_use1.disabled=true;cc_current_use2.disabled=true;cc_current_use3.disabled=true;cc_current_use4.disabled=true;cc_current_use5.disabled=true;cc_starty.disabled=true;cc_startm.disabled=true;cc_current_use1.checked=false;cc_current_use2.checked=false;cc_current_use3.checked=false;cc_current_use4.checked=false;cc_current_use5.checked=false;cc_starty.value=-1;cc_startm.value=-1">无</label>
-                        <label class="radio-inline"><input type="radio" value="1" name="cc_current" id="cc_current1" onclick="cc_current_use1.disabled=false;cc_current_use2.disabled=false;cc_current_use3.disabled=false;cc_current_use4.disabled=false;cc_current_use5.disabled=false;cc_starty.disabled=false;cc_startm.disabled=false">有：</label>
+                    <div class="col-md-10" id="cccurrent">
+                        <label class="radio-inline"><input type="radio" value="0" name="cc_current_use" id="cc_current0" checked>无</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_current_use" id="cc_current1">有：</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use1" id="cc_current_use1" disabled="disabled">口服药</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use2" id="cc_current_use2" disabled="disabled">胰岛素</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_current_use3" id="cc_current_use3" disabled="disabled">饮食控制</label>
@@ -460,11 +457,9 @@
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="cc_hinder">影响学习之因素</label>
 
-                    <div class="col-md-10">
-                        <label class="radio-inline"><input type="radio" value="0" name="cc_hinder" id="cc_hinder0" checked onclick="
-cc_hinder_1.disabled=true;cc_hinder_2.disabled=true;cc_hinder_3.disabled=true;cc_hinder_4.disabled=true;cc_hinder_5.disabled=true;cc_hinder_6.disabled=true;cc_hinder_7.disabled=true;cc_hinder_8.disabled=true;cc_hinder_9.disabled=true;cc_hinder_desc.disabled=true;
-cc_hinder_1.checked=false;cc_hinder_2.checked=false;cc_hinder_3.checked=false;cc_hinder_4.checked=false;cc_hinder_5.checked=false;cc_hinder_6.checked=false;cc_hinder_7.checked=false;cc_hinder_8.checked=false;cc_hinder_9.checked=false;cc_hinder_desc.value=''">无</label>
-                        <label class="radio-inline"><input type="radio" value="1" name="cc_hinder" id="cc_hinder1" onclick="cc_hinder_1.disabled=false;cc_hinder_2.disabled=false;cc_hinder_3.disabled=false;cc_hinder_4.disabled=false;cc_hinder_5.disabled=false;cc_hinder_6.disabled=false;cc_hinder_7.disabled=false;cc_hinder_8.disabled=false;cc_hinder_9.disabled=false;cc_hinder_desc.disabled=false">有：</label>
+                    <div class="col-md-10" id="cchinder">
+                        <label class="radio-inline"><input type="radio" value="0" name="cc_hinder" id="cc_hinder0" checked>无</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_hinder" id="cc_hinder1">有：</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_1" id="cc_hinder_1" disabled="disabled">失聪</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_2" id="cc_hinder_2" disabled="disabled">失明</label>
                         <label class="checkbox-inline"><input type="checkbox" value="1" name="cc_hinder_3" id="cc_hinder_3" disabled="disabled">手部不灵活</label>
@@ -684,20 +679,19 @@ cc_hinder_1.checked=false;cc_hinder_2.checked=false;cc_hinder_3.checked=false;cc
 @endsection
 
 @section('scripts')
-    $(function(){
-    $("#pp_birthday").datepicker({
+    $(function() {
+    $("#pp_birthday").datepicker( {
     onClose: function(){
     $(this).trigger("change");
     }
     });
-
-    $("#pp_birthday").bind("change", function(){
+    $("#pp_birthday").bind("change", function() {
     var thisyear = (new Date).getFullYear();
     var lastyear = $("#pp_birthday").val().substr(0, 4);
     appendyear("cc_mdate", thisyear, lastyear);
     });
 
-    $("#pp_patientid").blur(function(){
+    $("#pp_patientid").blur(function() {
     var pid = $("#pp_patientid").val();
     $("#pp_personid").val(pid);
     $("#account").val(pid);
@@ -707,7 +701,6 @@ cc_hinder_1.checked=false;cc_hinder_2.checked=false;cc_hinder_3.checked=false;cc
     var lastyear = $("#pp_birthday").val().substr(0, 4);
     appendyear("cc_mdate", thisyear, lastyear);
     });
-
     var appendyear = function(obj, thisyear, lastyear) {
     $("#" + obj).empty().append("<option value='-1'>不详</option>");
     for (var i = thisyear; i >= lastyear; i--){
@@ -715,20 +708,57 @@ cc_hinder_1.checked=false;cc_hinder_2.checked=false;cc_hinder_3.checked=false;cc
     }
     }
 
+    $("#pp_weight").blur(function() {
+    var hh = $("#pp_height").val() / 100;
+    var ww = $("#pp_weight").val();
+    if(hh > 0 && ww > 0) {
+    $("#cc_ibw").val(Math.round(hh * hh * 22 * 10) / 10);
+    $("#cc_bmi").val(Math.round(ww / (hh * hh) * 10) / 10);
+    }
+    });
+
+    $("input:radio[name=cc_status]").on("change", function() {
+    if($(this).val() === "1") {
+    $("#ccstatus input[type='checkbox']").attr("disabled", false);
+    $("#ccstatus input[type='text']").attr("disabled", false);
+    } else {
+    $("#ccstatus input[type='checkbox']").attr("disabled", true);
+    $("#ccstatus input[type='checkbox']").attr("checked", false);
+    $("#ccstatus input[type='text']").attr("disabled", true);
+    $("#ccstatus input[type='text']").val("");
+    }
+    });
+
+    $("input:radio[name=cc_current_use]").on("change", function() {
+    if($(this).val() === "1") {
+    $("#cccurrent input[type='checkbox']").attr("disabled", false);
+    $("select[name='cc_starty']").prop("disabled", false);
+    $("select[name='cc_startm']").prop("disabled", false);
+    } else {
+    $("#cccurrent input[type='checkbox']").attr("disabled", true);
+    $("select[name='cc_starty']").prop("disabled", true);
+    $("select[name='cc_startm']").prop("disabled", true);
+    $("#cccurrent input[type='checkbox']").attr("checked", false);
+    $("select[name='cc_starty']").val(-1);
+    $("select[name='cc_startm']").val(-1);
+    }
+    });
+
+    $("input:radio[name=cc_hinder]").on("change", function() {
+    if($(this).val() === "1") {
+    $("#cchinder input[type='checkbox']").attr("disabled", false);
+    $("#cchinder input[type='text']").attr("disabled", false);
+    } else {
+    $("#cchinder input[type='checkbox']").attr("disabled", true);
+    $("#cchinder input[type='checkbox']").attr("checked", false);
+    $("#cchinder input[type='text']").attr("disabled", true);
+    $("#cchinder input[type='text']").val("");
+    }
+    });
+
     $("#pp_email").completer({
     separator: "@",
     source: ["126.com", "163.com", "yeah.net", "qq.com", "gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "live.com", "aol.com", "mail.com"]
-    });
-
-    $("#cc_status0").click(function(){
-        $("#ccstatus input[type=checkbox]").attr("disabled", "disabled");
-        $("#ccstatus input[type=text]").attr("disabled", "disabled");
-        $("#ccstatus input[type=checkbox]").attr("checked", false);
-        $("#ccstatus input[type=text]").val("");
-    });
-    $("#cc_status1").click(function(){
-        $("#ccstatus input[type=checkbox]").attr("disabled", false);
-        $("#ccstatus input[type=text]").attr("disabled", false);
     });
 
     });
