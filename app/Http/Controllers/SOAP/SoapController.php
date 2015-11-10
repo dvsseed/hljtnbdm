@@ -6,6 +6,7 @@
  * Time: 10:30 PM
  */
 
+use App\Feature;
 use App\Http\Controllers\Controller;
 use App\Model\Pdata\HospitalNo;
 use App\Model\SOAP\SubClass;
@@ -43,7 +44,9 @@ class SoapController extends Controller
             if($hospital_no -> patient_user_id == $users -> id ){
                 return Redirect::route('bdata');
             }
-            if($hospital_no -> nurse_user_id != $users -> id){
+            $user_feature = Feature::where('href', '=', '/patient') -> first() -> hasfeatures() -> where('user_id', '=', $users -> id)->first();
+
+            if($user_feature == null){
                 $hospital_no = null;
                 $err_msg = "您沒有權限查看此資料";
             }

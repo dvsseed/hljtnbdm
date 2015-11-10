@@ -77,6 +77,7 @@ Route::get('/bdata/food/statics', 'BData\BDataController@get_all_stat');
 Route::delete('/bdata/foods/{calendar_date}', 'BData\BDataController@delete_food');
 Route::get('/bdata/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_detail');
 Route::get('/bdata/message', 'BData\BDataController@message');
+Route::get('/bdata/filter', 'BData\BDataController@get_filter');
 Route::post('/bdata/upsert_note', 'BData\BDataController@upsert_note');
 Route::post('/bdata/post_message', 'BData\BDataController@post_message');
 Route::post('/bdata/batch_update', 'BData\BDataController@batch_update');
