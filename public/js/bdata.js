@@ -840,4 +840,23 @@ function insertFood(calendar_date, type) {
         event.preventDefault();
     });
 }
+
+function filter(text, event){
+    if(text != ""){
+        var insert_data = {"filter": text};
+        $.ajax({
+            type: 'GET',
+            url: '/bdata/filter',
+            data: insert_data,
+            success: function(result){
+                if(result){
+                    $("#filter_data").html(result);
+                }
+            },
+            error: function(){
+            }
+        });
+    }
+    event.preventDefault();
+}
 //# sourceMappingURL=bdata.js.map

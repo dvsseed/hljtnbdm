@@ -156,6 +156,24 @@ use DB;
             return $notes;
         }
 
+        public function get_filter(Request $request){
+            $pks = explode(" ",$request['filter']);
+            $uuid = Session::get('uuid');
+            $hospital_no = HospitalNo::find($uuid);
+
+            $blood_records = array();
+            if($hospital_no != null){
+                $blood_sugars = $hospital_no -> blood_sugar;
+                foreach($blood_sugars as $blood_sugar){
+                    if(in_array($blood_sugar->blood_sugar_pk, $pks)){
+                        array_push($blood_records, $blood_sugar);
+                    }
+                }
+            }
+
+            return view('bdata.filter_data', compact('blood_records'));
+        }
+
         public function upsert_note(Request $request){
             $uuid = Session::get('uuid');
             $hospital_no = HospitalNo::find($uuid);
@@ -217,58 +235,82 @@ use DB;
                     foreach($data_types as $data_type){
                         $pc_arr[$type][$goal][$data_type] = 0;
                     }
+                    $pc_arr[$type][$goal]["filter_str"] = "";
                 }
             }
 
             $records = HospitalNo::find($uuid)->blood_sugar()->where('calendar_date','<=',$calendar_date)-> where('calendar_date','>',$start)->get();
-
             $blood_tmp = array();
 
             foreach($records as $record){
                 foreach( $this -> nodes as $node){
-                    if(isset($blood_tmp[$node])){
-                        array_push($blood_tmp[$node],$record[$node]);
-                    }else{
-                        if($record[$node] != null){
+                    if($record[$node] != null) {
+                        if(isset($blood_tmp[$node]) && $record[$node] ){
+                            array_push($blood_tmp[$node],$record[$node]);
+                        }else{
                             $blood_tmp[$node] = [$record[$node]];
                         }
                     }
                 }
 
-                $pc_breakfast = $record -> breakfast_after - $record -> breakfast_before;
-                $pc_lunch = $record -> lunch_after - $record -> lunch_before;
-                $pc_dinner = $record -> dinner_after - $record -> dinner_before;
-                $target = "normal";
-                if($pc_breakfast >= 60){
-                    $target = "above";
-                }elseif( $pc_breakfast < 30 ) {
-                    $target = "below";
-                }
-                $pc_arr["breakfast"][$target]["count"] ++;
-                $pc_arr["breakfast"][$target]["avg"] += $pc_breakfast;
+                if($record -> breakfast_after != null && $record -> breakfast_before != null){
+                    $pc_breakfast = $record -> breakfast_after - $record -> breakfast_before;
 
-                $target = "normal";
-                if($pc_lunch >= 60){
-                    $target = "above";
-                }elseif( $pc_lunch < 30 ) {
-                    $target = "below";
-                }
-                $pc_arr["lunch"][$target]["count"] ++;
-                $pc_arr["lunch"][$target]["avg"] += $pc_lunch;
+                    $target = "normal";
+                    if($pc_breakfast >= 60){
+                        $target = "above";
+                    }elseif( $pc_breakfast < 30 ) {
+                        $target = "below";
+                    }
 
-                $target = "normal";
-                if($pc_dinner >= 60){
-                    $target = "above";
-                }elseif( $pc_dinner < 30 ) {
-                    $target = "below";
+                    $pc_arr["breakfast"][$target]["count"] ++;
+                    $pc_arr["breakfast"][$target]["avg"] += $pc_breakfast;
+                    $pc_arr["breakfast"][$target]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
                 }
-                $pc_arr["dinner"][$target]["count"] ++;
-                $pc_arr["dinner"][$target]["avg"] += $pc_dinner;
+
+                if($record -> lunch_after != null && $record -> lunch_before != null) {
+                    $pc_lunch = $record -> lunch_after - $record -> lunch_before;
+                    $target = "normal";
+                    if($pc_lunch >= 60){
+                        $target = "above";
+                    }elseif( $pc_lunch < 30 ) {
+                        $target = "below";
+                    }
+                    $pc_arr["lunch"][$target]["count"]++;
+                    $pc_arr["lunch"][$target]["avg"] += $pc_lunch;
+                    $pc_arr["lunch"][$target]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                }
+
+                if($record -> dinner_after != null && $record -> dinner_before != null) {
+                    $pc_dinner = $record -> dinner_after - $record -> dinner_before;
+                    $target = "normal";
+                    if($pc_dinner >= 60){
+                        $target = "above";
+                    }elseif( $pc_dinner < 30 ) {
+                        $target = "below";
+                    }
+                    $pc_arr["dinner"][$target]["count"]++;
+                    $pc_arr["dinner"][$target]["avg"] += $pc_dinner;
+                    $pc_arr["dinner"][$target]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                }
             }
 
-            $pc_arr["breakfast"][$target]["avg"] = round($pc_arr["breakfast"][$target]["avg"] / $pc_arr["breakfast"][$target]["count"]);
-            $pc_arr["lunch"][$target]["avg"] = round($pc_arr["lunch"][$target]["avg"] / $pc_arr["lunch"][$target]["count"]);
-            $pc_arr["dinner"][$target]["avg"] = round($pc_arr["dinner"][$target]["avg"] / $pc_arr["dinner"][$target]["count"]);
+
+
+            foreach($goals as $target){
+                if($pc_arr["breakfast"][$target]["count"] != 0){
+                    $pc_arr["breakfast"][$target]["avg"] = round($pc_arr["breakfast"][$target]["avg"] / $pc_arr["breakfast"][$target]["count"]);
+                    $pc_arr["breakfast"][$target]["filter_str"] = trim($pc_arr["breakfast"][$target]["filter_str"]);
+                }
+                if($pc_arr["lunch"][$target]["count"] != 0){
+                    $pc_arr["lunch"][$target]["avg"] = round($pc_arr["lunch"][$target]["avg"] / $pc_arr["lunch"][$target]["count"]);
+                    $pc_arr["lunch"][$target]["filter_str"] = trim($pc_arr["lunch"][$target]["filter_str"]);
+                }
+                if($pc_arr["dinner"][$target]["count"] != 0){
+                    $pc_arr["dinner"][$target]["avg"] = round($pc_arr["dinner"][$target]["avg"] / $pc_arr["dinner"][$target]["count"]);
+                    $pc_arr["dinner"][$target]["filter_str"] = trim($pc_arr["dinner"][$target]["filter_str"]);
+                }
+            }
 
             $blood_stat = array();
             foreach($blood_tmp as $key => $blood_array){
