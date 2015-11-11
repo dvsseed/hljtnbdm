@@ -23,6 +23,7 @@ use Auth;
 use Cache;
 use Input;
 use DB;
+use App\Feature;
 
 
     class BDataController extends Controller{
@@ -58,8 +59,11 @@ use DB;
 
                 if($hospital_no != null){
                     $patient = $hospital_no -> patient;
-                    if($hospital_no -> patient_user_id != $users -> id && $hospital_no -> nurse_user_id != $users -> id){
-                        $hospital_no = null;
+                    if($hospital_no -> patient_user_id != $users -> id){
+                        $user_feature = Feature::where('href', '=', '/patient') -> first() -> hasfeatures() -> where('user_id', '=', $users -> id)->first();
+                        if($user_feature == null){
+                            $hospital_no = null;
+                        }
                     }
                 }
                 if($hospital_no == null){

@@ -410,9 +410,9 @@ function set_sugar_option_value(){
     var gram_sugar_value = $("#food_type_option option:selected").attr('gram');
     var set_sugar_value = $("#food_type_option option:selected").attr('set');
 
-    var html = "<option value=\"gram\">公克 < " + gram_sugar_value + "克 ></option>";
+    var html = "<option value=\"gram\">公克 </option>";
     if(set_sugar_value){
-        html += "<option value=\"gram\">份 < " + set_sugar_value + "克 ></option>";
+        html += "<option value=\"set\">份 </option>";
     }
 
     $("#food_unit").html(html);
