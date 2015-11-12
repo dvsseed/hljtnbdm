@@ -9,10 +9,8 @@
         <div class="row">
             <div class="col-md-10">
                 <h2>添加功能</h2>
-                <hr />
-
+                <hr>
                 @include('errors.list')
-
                 <div class="form-group">
                     {!! Form::model($feature = new \App\Feature, ['url' => 'feature/', 'class' => 'form-horizontal']) !!}
                         <div class="form-group">
@@ -31,7 +29,7 @@
                        	<div class="form-group">
                             {!! Form::label('btnclass', '按钮类: ', ['class' => 'control-label col-md-1']) !!}
                             <div class="col-md-4">
-                               	{!! Form::text('btnclass', old('btnclass'), ['class' => 'form-control', 'required', 'placeholder' => 'Bootstrap按钮类']) !!}
+                               	{ !! Form::text('btnclass', old('btnclass'), ['class' => 'form-control', 'required', 'placeholder' => 'Bootstrap按钮类']) !! }
                             </div>
                         </div>
 --}}

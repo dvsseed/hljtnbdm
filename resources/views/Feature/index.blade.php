@@ -8,9 +8,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-10">
-
                 @include('errors.list')
-
                 <h3 align="center">功能信息表</h3>
                 <a href="/feature/create"><button class="btn btn-primary">添加功能</button></a>
                 <table class="table table-striped table-hover">
@@ -37,9 +35,7 @@
                                     <!-- /form -->
                                 </td>
                             </tr>
-
                             @include('Feature.upload_feature')
-
                         @endforeach
                     @else
                         <h1>没有功能,请管理员添加</h1>
@@ -49,6 +45,5 @@
             </div>
             @include('Admin.right_bar')
         </div>
-
     </div>
 @stop

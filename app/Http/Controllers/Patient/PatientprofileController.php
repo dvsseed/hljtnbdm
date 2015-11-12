@@ -487,7 +487,6 @@ class PatientprofileController extends Controller
             }
             DB::commit();
             DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-            DB::commit();
             EventController::SaveEvent('patientprofile', 'destroy(删除)');
         } catch (\Exception $e) {
             $msg = '资料删除失败。';

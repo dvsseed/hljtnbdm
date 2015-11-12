@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/css/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" href="/css/completer.min.css">
     <link rel="stylesheet" href="/css/dm.css">
-    <style> @yield('css') </style>
+    @yield('css')
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -80,6 +80,6 @@
 <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
 <script src="/js/completer.min.js"></script>
 <script src="/js/dm.js"></script>
-<script> @yield('scripts') </script>
+@yield('scripts')
 </body>
 </html>

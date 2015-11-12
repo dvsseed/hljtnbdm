@@ -105,8 +105,6 @@
                 @endif
                 </tbody>
             </table>
-
-            {{-- <a class="btn btn-success" href="{{ route('patient.create') }}">增</a> --}}
             <?php echo $patientprofiles->render(); ?>
         </div>
         {{-- @include('dm.right_bar') --}}
@@ -115,7 +113,5 @@
 @endsection
 
 @section('scripts')
-    $(function(){
-    $("[data-toggle='popover']").popover();
-    });
+
 @stop

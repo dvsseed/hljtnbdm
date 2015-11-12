@@ -9,10 +9,8 @@
         <div class="row">
             <div class="col-md-10">
                 <h2>添加人员</h2>
-                <hr/>
-
+                <hr>
                 @include('errors.list')
-
                 <div class="form-group">
                     {!! Form::model($user = new \App\User, ['url' => 'admin/', 'class' => 'form-horizontal', 'role' => 'form',
                   'data-toggle' => 'validator']) !!}
@@ -30,6 +28,12 @@
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
+                    <div class="form-group">
+                        {!! Form::label('pwd', '密码: ', ['class' => 'control-label col-md-1']) !!}
+                        <div class="col-md-4">
+                            {!! Form::text('pwd', null, ['class' => 'form-control', 'readonly', 'placeholder' => '默认为帐号']) !!}
+                        </div>
+                    </div>
                     <div class="form-group has-feedback">
                         {!! Form::label('name', '姓名: ', ['class' => 'control-label col-md-1']) !!}
                         <div class="col-md-4">
@@ -38,13 +42,14 @@
                             <span class="help-block with-errors"></span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        {!! Form::label('pwd', '密码: ', ['class' => 'control-label col-md-1']) !!}
+                    <div class="form-group has-feedback">
+                        {!! Form::label('position', '职务: ', ['class' => 'control-label col-md-1']) !!}
                         <div class="col-md-4">
-                            {!! Form::text('pwd', null, ['class' => 'form-control', 'readonly', 'placeholder' => '默认为帐号']) !!}
+                            {!! Form::select('position', ['院长' => '院长', '副院长' => '副院长', '住院处主任' => '住院处主任', '药剂科长' => '药剂科长', '病区科主任' => '病区科主任', '医师' => '医师', '医助' => '医助', '营养师' => '营养师', '护理师' => '护理师'], '营养师', ['class' => 'form-control', 'required']) !!}
+                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                            <span class="help-block with-errors"></span>
                         </div>
                     </div>
-                    <h4></h4>
 
                     <div class="form-group">
                         <div class="col-md-5">
