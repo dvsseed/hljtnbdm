@@ -7,7 +7,7 @@
             <td>進食時段：</td><td class="form-line"><span id="food_range"></span> <input type="text" id="food_timepicker" class="timepicker form-control"/></td>
         </tr>
         <tr>
-            <td style="vertical-align: middle" id="food_type" rowspan="1">點 心：</td>
+            <td style="vertical-align: middle" id="food_type" rowspan="1">正 餐：</td>
             <td>
                 <table id="sample" class="table borderless" style="background-color: transparent; margin-bottom: 0px">
                     <tr >
