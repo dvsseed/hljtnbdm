@@ -44,9 +44,18 @@ class Text
         return ($string == $value ? "selected='selected'" : "");
     }
 
+    public static function checked($str, $val)
+    {
+        return ($str == $val ? "checked='checked'" : "");
+    }
+
     public static function showSelected($row, $n)
     {
         return (ord($row) == $n ? "selected" : "");
     }
 
+    public static function behidden($row, $val)
+    {
+        return ($row == $val ? '' : 'hidden');
+    }
 }

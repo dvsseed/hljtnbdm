@@ -30,15 +30,15 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('name', '姓名: ', ['class' => 'col-md-2 control-label']) !!}
-                            <div class="col-md-6">
-                                {!! Form::text('name', Auth::user()->name, ['class' => 'form-control', 'readonly']) !!}
-                            </div>
-                        </div>
-                        <div class="form-group">
                             {!! Form::label('password', '密码: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
                                 {!! Form::text('password', '', ['class' => 'form-control', 'required']) !!}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('name', '姓名: ', ['class' => 'col-md-2 control-label']) !!}
+                            <div class="col-md-6">
+                                {!! Form::text('name', Auth::user()->name, ['class' => 'form-control', 'readonly']) !!}
                             </div>
                         </div>
                         @if (strlen(Auth::user()->id) >= 18)
@@ -64,7 +64,7 @@
                             <div class="form-group">
                                 {!! Form::label('position', '职务: ', ['class' => 'col-md-2 control-label']) !!}
                                 <div class="col-md-6">
-                                    {!! Form::text('position', Auth::user()->position, ['class' => 'form-control']) !!}
+                                    {!! Form::select('position', ['院长' => '院长', '副院长' => '副院长', '住院处主任' => '住院处主任', '药剂科长' => '药剂科长', '病区科主任' => '病区科主任', '医师' => '医师', '医助' => '医助', '营养师' => '营养师', '护理师' => '护理师'], Auth::user()->position, ['class' => 'form-control']) !!}
                                 </div>
                             </div>
                         @endif

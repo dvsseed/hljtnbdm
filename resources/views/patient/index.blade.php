@@ -26,10 +26,10 @@
     <a class="btn btn-success" href="{{ route('patient.create') }}">增</a>
     <form method="GET" action="/patient" accept-charset="UTF-8" class="form navbar-form navbar-right searchform">
         <select class="form-control" name="category" required>
-            <option value="" {{ Text::selected($category, '') }}>请选择</option>
-            <option value="1" {{ Text::selected($category, 1) }}>姓名</option>
-            <option value="2" {{ Text::selected($category, 2) }}>病历号码</option>
-            <option value="3" {{ Text::selected($category, 3) }}>身份证号</option>
+            <option value="" {{Text::selected($category, '')}}>请选择</option>
+            <option value="1" {{Text::selected($category, 1)}}>姓名</option>
+            <option value="2" {{Text::selected($category, 2)}}>病历号码</option>
+            <option value="3" {{Text::selected($category, 3)}}>身份证号</option>
         </select>
         <input class="form-control" placeholder="按栏位搜索..." name="search" type="text"
                value="{{ $search }}" required>
@@ -66,7 +66,7 @@
                     @foreach($patientprofiles as $patientprofile)
                         <tr>
                             <td>{{ $patientprofile->id }}</td>
-                            @if($patientprofile->hospital_no != null)
+                            @if($patientprofile->hospital_no != null && $patientprofile->hospital_no->nurse_user_id == $current_user_id)
                                 <td><a href="/bdata/{{ $patientprofile->hospital_no-> hospital_no_uuid}}">{{ $patientprofile->pp_patientid}}</a></td>
                             @else
                                 <td>{{ $patientprofile->pp_patientid}}</td>
@@ -85,16 +85,10 @@
                             <!-- td>{{ $patientprofile->pp_email }}</td -->
                             <td>
                                 <a class="btn btn-primary" href="{{ route('patient.show', $patientprofile->id) }}">查</a>
-                                <a
-                                        class="btn btn-warning"
-                                        href="{{ route('patient.edit', $patientprofile->id) }}">改</a>
-
-                                <form action="{{ route('patient.destroy', $patientprofile->id) }}" method="POST"
-                                      style="display: inline-block;"
-                                      onsubmit="return confirm('确定删除?')"><input
-                                            type="hidden" name="_method" value="DELETE"><input type="hidden"
-                                                                                               name="_token"
-                                                                                               value="{{ csrf_token() }}">
+                                <a class="btn btn-warning" href="{{ route('patient.edit', $patientprofile->id) }}">改</a>
+                                <form action="{{ route('patient.destroy', $patientprofile->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('确定删除?')">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <button class="btn btn-danger" type="submit">删</button>
                                 </form>
                             </td>
@@ -111,7 +105,3 @@
     </div>
 
 @endsection
-
-@section('scripts')
-
-@stop
