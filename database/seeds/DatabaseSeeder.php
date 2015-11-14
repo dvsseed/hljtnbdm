@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call('FeatureTableSeeder');
         $this->call('EventTableSeeder');
         $this->call('BSMTableSeeder');
-//        $this->call('DeleteTableSeeder');
+        $this->call('DeleteTableSeeder');
         /* faker */
 //        $this->call('FakerTableSeeder');
     }

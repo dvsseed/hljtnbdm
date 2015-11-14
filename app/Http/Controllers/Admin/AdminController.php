@@ -40,7 +40,8 @@ class AdminController extends Controller
         $count = $result->count();
         $users = $result->paginate(10)->appends(['search' => $search, 'category' => $category]);
         $categories = array('' => '请选择', '1' => '姓名', '2' => '部门', '3' => '职务');
-        return view('Admin.index', compact('users', 'countstr', 'count', 'categories', 'search', 'category'));
+        $positions = User::$_position;
+        return view('Admin.index', compact('users', 'countstr', 'count', 'categories', 'search', 'category', 'positions'));
     }
 
     public function create()
@@ -48,8 +49,9 @@ class AdminController extends Controller
         $result = User::where('is_admin', 0);
         $countstr = '人';
         $count = $result->count();
+        $positions = User::$_position;
         EventController::SaveEvent('users', 'create(创建)');
-        return view('Admin.create', compact('countstr', 'count'));
+        return view('Admin.create', compact('countstr', 'count', 'positions'));
     }
 
     public function store(Request $request)
@@ -59,8 +61,9 @@ class AdminController extends Controller
         ]);
         $user = new User;
         $user->account = $request->account;
-        $user->name = $request->name;
         $user->password = Hash::make($user->account);
+        $user->name = $request->name;
+        $user->position = $request->position;
         $user->save();
         session()->flash('message', $user->name . "人员添加成功");
         EventController::SaveEvent('users', 'store(保存)');

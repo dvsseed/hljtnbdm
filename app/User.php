@@ -10,6 +10,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	use Authenticatable, CanResetPassword;
 
+	// 职务
+	public static $_position = array(
+		'院长' => '院长', '副院长' => '副院长', '住院处主任' => '住院处主任', '药剂科长' => '药剂科长', '病区科主任' => '病区科主任', '医师' => '医师', '医助' => '医助', '营养师' => '营养师', '护理师' => '护理师'
+	);
+
 	/**
 	 * The database table used by the model.
 	 *

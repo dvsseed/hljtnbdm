@@ -32,7 +32,7 @@
                         <div class="form-group">
                             {!! Form::label('password', '密码: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::text('password', '', ['class' => 'form-control', 'required']) !!}
+                                {!! Form::text('password', '', ['class' => 'form-control', 'required', 'placeholder' => '请输入密码']) !!}
                             </div>
                         </div>
                         <div class="form-group">

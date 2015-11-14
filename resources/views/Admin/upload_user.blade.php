@@ -25,7 +25,7 @@
                   {{-- !! Form::label('positionno', '职务代码: ', ['class' => 'control-label']) !! --}}
                   {{-- !! Form::text('positionno', null, ['class' => 'form-control']) !! --}}
                   {!! Form::label('position', '职务: ', ['class' => 'control-label']) !!}
-                  {!! Form::select('position', ['院长' => '院长', '副院长' => '副院长', '住院处主任' => '住院处主任', '药剂科长' => '药剂科长', '病区科主任' => '病区科主任', '医师' => '医师', '医助' => '医助', '营养师' => '营养师', '护理师' => '护理师'], (isset($user->position)?null:'营养师'), ['class' => 'form-control']) !!}
+                  {!! Form::select('position', $positions , (isset($user->position)?null:'护理师'), ['class' => 'form-control']) !!}
                   {!! Form::label('phone', '手机号: ', ['class' => 'control-label']) !!}
                   {!! Form::text('phone', null, ['class' => 'form-control']) !!}
                   {!! Form::label('email', '邮箱: ', ['class' => 'control-label']) !!}

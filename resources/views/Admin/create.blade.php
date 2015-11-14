@@ -45,7 +45,7 @@
                     <div class="form-group has-feedback">
                         {!! Form::label('position', '职务: ', ['class' => 'control-label col-md-1']) !!}
                         <div class="col-md-4">
-                            {!! Form::select('position', ['院长' => '院长', '副院长' => '副院长', '住院处主任' => '住院处主任', '药剂科长' => '药剂科长', '病区科主任' => '病区科主任', '医师' => '医师', '医助' => '医助', '营养师' => '营养师', '护理师' => '护理师'], '营养师', ['class' => 'form-control', 'required']) !!}
+                            {!! Form::select('position', $positions, '护理师', ['class' => 'form-control', 'required']) !!}
                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                             <span class="help-block with-errors"></span>
                         </div>
