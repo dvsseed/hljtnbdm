@@ -138,8 +138,6 @@ return [
 		'Illuminate\Html\HtmlServiceProvider',
 		'Maatwebsite\Excel\ExcelServiceProvider',
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-        'Barryvdh\Debugbar\ServiceProvider',
-		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
         'Laralib\L5scaffold\GeneratorsServiceProvider',
         'yajra\Oci8\Oci8ServiceProvider',
         'Way\Generators\GeneratorsServiceProvider',
@@ -207,7 +205,6 @@ return [
 		'Html'      => 'Illuminate\Html\HtmlFacade',
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Excel'     => 'Maatwebsite\Excel\Facades\Excel',
-		'Debugbar'  => 'Barryvdh\Debugbar\Facade',
 		'Text'      => 'App\Helpers\Text',
 	],
 
