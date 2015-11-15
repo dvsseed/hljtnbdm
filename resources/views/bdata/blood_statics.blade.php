@@ -141,6 +141,52 @@
         <td>@if(isset($blood_records['pc']["dinner"]["above"]["avg"])){{$blood_records['pc']["dinner"]["above"]["avg"]}}@endif</td>
         <td></td>
     </tr>
+    <tr>
+        <td>PC-AC</td>
+        <td></td>
+        <td></td>
+        <td>@if(isset($blood_records['pc']["breakfast"]["all"]["count"])){{$blood_records['pc']["breakfast"]["all"]["count"]}} 筆@endif</td>
+        <td>@if(isset($blood_records['pc']["breakfast"]["all"]["avg"])){{$blood_records['pc']["breakfast"]["above"]["avg"]}}@endif</td>
+        <td>@if(isset($blood_records['pc']["lunch"]["all"]["count"])){{$blood_records['pc']["lunch"]["all"]["count"]}} 筆@endif</td>
+        <td>@if(isset($blood_records['pc']["lunch"]["all"]["avg"])){{$blood_records['pc']["lunch"]["all"]["avg"]}}@endif</td>
+        <td>@if(isset($blood_records['pc']["dinner"]["all"]["count"])){{$blood_records['pc']["dinner"]["all"]["count"]}} 筆@endif</td>
+        <td>@if(isset($blood_records['pc']["dinner"]["all"]["avg"])){{$blood_records['pc']["dinner"]["all"]["avg"]}}@endif</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>B - B</td>
+        <td></td>
+        <td></td>
+        <td>+@if(isset($blood_records['bb']["breakfast"]["normal_p"]["count"])){{$blood_records['bb']["breakfast"]["normal_p"]["count"]}} 筆,@endif
+            -@if(isset($blood_records['bb']["breakfast"]["normal_m"]["count"])){{$blood_records['bb']["breakfast"]["normal_m"]["count"]}} 筆,@endif
+        </td>
+        <td>@if(isset($blood_records['bb']["breakfast"]["normal_p"]["avg"])){{$blood_records['bb']["breakfast"]["normal_p"]["avg"]}}@endif</td>
+        <td>+@if(isset($blood_records['bb']["lunch"]["normal_p"]["count"])){{$blood_records['bb']["lunch"]["normal_p"]["count"]}} 筆,@endif
+            -@if(isset($blood_records['bb']["lunch"]["normal_m"]["count"])){{$blood_records['bb']["lunch"]["normal_m"]["count"]}} 筆,@endif
+        </td>
+        <td>@if(isset($blood_records['bb']["lunch"]["normal_p"]["avg"])){{$blood_records['bb']["lunch"]["normal_p"]["avg"]}}@endif</td>
+        <td>+@if(isset($blood_records['bb']["dinner"]["normal_p"]["count"])){{$blood_records['bb']["dinner"]["normal_p"]["count"]}} 筆,@endif
+            -@if(isset($blood_records['bb']["dinner"]["normal_m"]["count"])){{$blood_records['bb']["dinner"]["normal_m"]["count"]}} 筆,@endif
+        </td>
+        <td>@if(isset($blood_records['bb']["dinner"]["normal_p"]["avg"])){{$blood_records['bb']["dinner"]["normal_p"]["avg"]}}@endif</td>
+    </tr>
+    <tr>
+        <td>B - B > 30</td>
+        <td></td>
+        <td></td>
+        <td>+@if(isset($blood_records['bb']["breakfast"]["above_p"]["count"])){{$blood_records['bb']["breakfast"]["above_p"]["count"]}} 筆,@endif
+            -@if(isset($blood_records['bb']["breakfast"]["above_m"]["count"])){{$blood_records['bb']["breakfast"]["above_m"]["count"]}} 筆,@endif
+        </td>
+        <td>@if(isset($blood_records['bb']["breakfast"]["above_p"]["avg"])){{$blood_records['bb']["breakfast"]["above_p"]["avg"]}}@endif</td>
+        <td>+@if(isset($blood_records['bb']["lunch"]["above_p"]["count"])){{$blood_records['bb']["lunch"]["above_p"]["count"]}} 筆,@endif
+            -@if(isset($blood_records['bb']["lunch"]["above_m"]["count"])){{$blood_records['bb']["lunch"]["above_m"]["count"]}} 筆,@endif
+        </td>
+        <td>@if(isset($blood_records['bb']["lunch"]["above_p"]["avg"])){{$blood_records['bb']["lunch"]["above_p"]["avg"]}}@endif</td>
+        <td>+@if(isset($blood_records['bb']["dinner"]["above_p"]["count"])){{$blood_records['bb']["dinner"]["above_p"]["count"]}} 筆,@endif
+            -@if(isset($blood_records['bb']["dinner"]["above_m"]["count"])){{$blood_records['bb']["dinner"]["above_m"]["count"]}} 筆,@endif
+        </td>
+        <td>@if(isset($blood_records['bb']["dinner"]["above_p"]["avg"])){{$blood_records['bb']["dinner"]["above_p"]["avg"]}}@endif</td>
+    </tr>
 </table>
 
 <br/>

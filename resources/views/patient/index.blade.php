@@ -11,7 +11,7 @@
 @section('content')
     <div class="page-header">
         <h3>患者基本资料表 <span class="badge">{{ $count }}</span></h3>
-        @include('patient.his')
+
     </div>
 
     @include('errors.list')

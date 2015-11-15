@@ -1,0 +1,3 @@
+<div id="hba1c" class="content" style="display: none">
+    Working...
+</div>

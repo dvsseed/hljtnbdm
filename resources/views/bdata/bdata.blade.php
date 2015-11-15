@@ -23,17 +23,19 @@
             <li role="presentation"><a id="batch" class="menuLink" href="#batchInsert">批次輸入</a></li>
             <li role="presentation"><a class="menuLink" href="#statics">統計資料</a></li>
             @if($soap_link != "")
-                <li role="presentation"><a class="menuLink real" href="{{$soap_link}}">soap</a></li>
+                <li role="presentation"><a class="menuLink real" href="{{$soap_link}}">SOAP</a></li>
             @endif
             <li role="presentation"><a class="menuLink" href="#hba1c">HbA1C</a></li>
             <li role="presentation"><a class="menuLink" href="#message">留言</a></li>
-            <li role="presentation"><a href="#print">列印本頁</a></li>
+            <li role="presentation"><a class="no-hover" href="#" onclick="print_page(this)">列印本頁</a></li>
         </ul>
         <br/>
 
         @include('bdata.sugar')
 
         @include('bdata.statics')
+
+        @include('bdata.hba1c')
 
         @include('bdata.message')
         <div id="hba1c" class="content" style="display: none">

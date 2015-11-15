@@ -30,7 +30,7 @@
                 <td class="form-inline">
                     <div id="normal">
                     @if ($day->early_morning != null)
-                        <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'early_morning', '{{$day->early_morning}}')" >{{$day->early_morning}}</a>@if(isset($notes[$day->calendar_date]["early_morning"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["early_morning"]}}', this)">*</a>@endif&nbsp;
+                        <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'early_morning', '{{$day->early_morning}}')" >{{$day->early_morning}}</a>@if(isset($notes[$day->calendar_date]["early_morning"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["early_morning"]}}', event)">*</a>@endif&nbsp;
                     @else
                         <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'early_morning');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
                     @endif
@@ -42,7 +42,7 @@
                 <td>
                     <div id="normal">
                     @if ($day->morning != null)
-                        <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'morning', '{{$day->morning}}')" >{{$day->morning}}</a>@if(isset($notes[$day->calendar_date]["morning"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["morning"]}}', this)">*</a>@endif&nbsp;
+                        <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'morning', '{{$day->morning}}')" >{{$day->morning}}</a>@if(isset($notes[$day->calendar_date]["morning"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["morning"]}}', event)">*</a>@endif&nbsp;
                     @else
                         <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'morning');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
                     @endif
@@ -54,7 +54,7 @@
                 <td>
                     <div id="normal">
                         @if ($day->breakfast_before != null)
-                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_before', '{{$day->breakfast_before}}')" >{{$day->breakfast_before}}</a>@if(isset($notes[$day->calendar_date]["breakfast_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["breakfast_before"]}}', this)">*</a>@endif&nbsp;
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_before', '{{$day->breakfast_before}}')" >{{$day->breakfast_before}}</a>@if(isset($notes[$day->calendar_date]["breakfast_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["breakfast_before"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
                                 @endif
@@ -66,7 +66,7 @@
                 <td>
                     <div id="normal">
                         @if ($day->breakfast_after != null)
-                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_after', '{{$day->breakfast_after}}')" >{{$day->breakfast_after}}</a>@if(isset($notes[$day->calendar_date]["breakfast_after"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["breakfast_after"]}}', this)">*</a>@endif&nbsp;
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_after', '{{$day->breakfast_after}}')" >{{$day->breakfast_after}}</a>@if(isset($notes[$day->calendar_date]["breakfast_after"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["breakfast_after"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_after');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
                                 @endif
@@ -78,7 +78,7 @@
                 <td>
                     <div id="normal">
                         @if ($day->lunch_before != null)
-                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_before', '{{$day->lunch_before}}')" >{{$day->lunch_before}}</a>@if(isset($notes[$day->calendar_date]["lunch_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["lunch_before"]}}', this)">*</a>@endif&nbsp;
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_before', '{{$day->lunch_before}}')" >{{$day->lunch_before}}</a>@if(isset($notes[$day->calendar_date]["lunch_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["lunch_before"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
                                 @endif
@@ -90,7 +90,7 @@
                 <td>
                     <div id="normal">
                         @if ($day->lunch_after != null)
-                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_after', '{{$day->lunch_after}}')" >{{$day->lunch_after}}</a>@if(isset($notes[$day->calendar_date]["lunch_after"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["lunch_after"]}}', this)">*</a>@endif&nbsp;
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_after', '{{$day->lunch_after}}')" >{{$day->lunch_after}}</a>@if(isset($notes[$day->calendar_date]["lunch_after"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["lunch_after"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_after');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
                                 @endif
@@ -102,7 +102,7 @@
                 <td>
                     <div id="normal">
                         @if ($day->dinner_before != null)
-                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_before', '{{$day->dinner_before}}')" >{{$day->dinner_before}}</a>@if(isset($notes[$day->calendar_date]["dinner_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["dinner_before"]}}', this)">*</a>@endif&nbsp;
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_before', '{{$day->dinner_before}}')" >{{$day->dinner_before}}</a>@if(isset($notes[$day->calendar_date]["dinner_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["dinner_before"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
                                 @endif
@@ -114,7 +114,7 @@
                 <td>
                     <div id="normal">
                         @if ($day->dinner_after != null)
-                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_after', '{{$day->dinner_after}}')" >{{$day->dinner_after}}</a>@if(isset($notes[$day->calendar_date]["dinner_after"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["dinner_after"]}}', this)">*</a>@endif&nbsp;
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_after', '{{$day->dinner_after}}')" >{{$day->dinner_after}}</a>@if(isset($notes[$day->calendar_date]["dinner_after"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["dinner_after"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_after');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
                                 @endif
@@ -126,7 +126,7 @@
                 <td>
                     <div id="normal">
                         @if ($day->sleep_before != null)
-                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'sleep_before', '{{$day->sleep_before}}')" >{{$day->sleep_before}}</a>@if(isset($notes[$day->calendar_date]["sleep_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["sleep_before"]}}', this)">*</a>@endif&nbsp;
+                            <div class="hover"><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'sleep_before', '{{$day->sleep_before}}')" >{{$day->sleep_before}}</a>@if(isset($notes[$day->calendar_date]["sleep_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["sleep_before"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'sleep_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
                                 @endif

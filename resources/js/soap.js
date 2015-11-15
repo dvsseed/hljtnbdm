@@ -32,7 +32,7 @@ $( document ).ready(function() {
         appendText( $(this).find('option:selected').text(), $("#s_text"));
     });
 
-    $("#o").change(function(){
+    $("#o").click(function(){
         appendText( $(this).find('option:selected').text(), $("#o_text"));
     });
 
@@ -134,25 +134,16 @@ function setSOAClass( sub_class_pk){
         success: function(result){
             if(result){
                 var html = "";
-                for(var i = 0; i< result["S"].length; i++){
-                    html += '<option value="' + result["S"][i].soa_class_pk + '">' + result["S"][i].class_name + '</option>';
+                var soaps = ["S", "O", "A", "E"];
+                for(var j = 0; j < soaps.length; j++){
+                    var soap = soaps[j];
+                    for(var i = 0; i< result[soap].length; i++){
+                        html += '<option value="' + result[soap][i].soa_class_pk + '">' + result[soap][i].class_name + '</option>';
+                    }
+                    $("#"+soap.toLowerCase()).html(html);
+
+                    html = "";
                 }
-                $("#s").html(html);
-                html = "";
-                for(var i = 0; i< result["O"].length; i++){
-                    html += '<option value="' + result["O"][i].soa_class_pk + '">' + result["O"][i].class_name + '</option>';
-                }
-                $("#o").html(html);
-                html = "";
-                for(var i = 0; i< result["A"].length; i++){
-                    html += '<option value="' + result["A"][i].soa_class_pk + '">' + result["A"][i].class_name + '</option>';
-                }
-                $("#a").html(html);
-                html = "";
-                for(var i = 0; i< result["E"].length; i++){
-                    html += '<option value="' + result["E"][i].soa_class_pk + '">' + result["E"][i].class_name + '</option>';
-                }
-                $("#e").html(html);
             }
         }
     });
@@ -192,4 +183,5 @@ function setCustomize( type){
 
 function appendText( text, textarea){
     textarea.val(textarea.val() + text + "\n");
+    textarea.scrollTop(textarea[0].scrollHeight);
 }

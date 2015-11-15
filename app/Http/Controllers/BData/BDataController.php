@@ -120,7 +120,7 @@ use App\Feature;
             $food_records = $this->get_has_food($uuid);
 
             $soap_link = "";
-            if($hospital_no->nurse_user_id == $users->id){
+            if(isset($user_feature) && $user_feature != null){
                 $soap_link = '/soap/'.$uuid ;
             }
 
@@ -152,7 +152,7 @@ use App\Feature;
                 $details = $blood_sugar -> blood_sugar_detail;
                 foreach($details as $detail){
                     if($detail -> note != null){
-                        $notes[$blood_sugar -> calendar_date][$detail -> measure_type] = $detail -> note;
+                        $notes[$blood_sugar -> calendar_date][$detail -> measure_type] = str_replace(["\r\n", "\r", "\n"], "<br/>", $detail -> note);
                     }
                 }
             }
@@ -231,7 +231,8 @@ use App\Feature;
             $goal_low = 110;
 
             $types = ["breakfast", "lunch", "dinner"];
-            $goals = ["above", "normal", "below"];
+            $goals = ["above", "normal", "below", "all"];
+            $bb_goals = ["above_p", "above_m", "normal_p", "normal_m"];
             $data_types = ["count", "avg"];
 
             foreach($types as $type){
@@ -241,12 +242,22 @@ use App\Feature;
                     }
                     $pc_arr[$type][$goal]["filter_str"] = "";
                 }
+
+                foreach($data_types as $data_type){
+                    foreach($bb_goals as $bb_goal){
+                        $bb_arr[$type][$bb_goal][$data_type] = 0;
+                    }
+                }
             }
+
 
             $records = HospitalNo::find($uuid)->blood_sugar()->where('calendar_date','<=',$calendar_date)-> where('calendar_date','>',$start)->get();
             $blood_tmp = array();
 
-            foreach($records as $record){
+            for($i = 0; $i < count($records); $i++){
+                $record = $records[i];
+
+                //normal statistics
                 foreach( $this -> nodes as $node){
                     if($record[$node] != null) {
                         if(isset($blood_tmp[$node]) && $record[$node] ){
@@ -257,6 +268,7 @@ use App\Feature;
                     }
                 }
 
+                //PC-AC
                 if($record -> breakfast_after != null && $record -> breakfast_before != null){
                     $pc_breakfast = $record -> breakfast_after - $record -> breakfast_before;
 
@@ -270,6 +282,9 @@ use App\Feature;
                     $pc_arr["breakfast"][$target]["count"] ++;
                     $pc_arr["breakfast"][$target]["avg"] += $pc_breakfast;
                     $pc_arr["breakfast"][$target]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+
+                    $pc_arr["breakfast"]["all"]["count"] ++;
+                    $pc_arr["breakfast"]["all"]["avg"] += $pc_breakfast;
                 }
 
                 if($record -> lunch_after != null && $record -> lunch_before != null) {
@@ -283,6 +298,9 @@ use App\Feature;
                     $pc_arr["lunch"][$target]["count"]++;
                     $pc_arr["lunch"][$target]["avg"] += $pc_lunch;
                     $pc_arr["lunch"][$target]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+
+                    $pc_arr["lunch"]["all"]["count"]++;
+                    $pc_arr["lunch"]["all"]["avg"] += $pc_lunch;
                 }
 
                 if($record -> dinner_after != null && $record -> dinner_before != null) {
@@ -296,23 +314,76 @@ use App\Feature;
                     $pc_arr["dinner"][$target]["count"]++;
                     $pc_arr["dinner"][$target]["avg"] += $pc_dinner;
                     $pc_arr["dinner"][$target]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+
+                    $pc_arr["dinner"]["all"]["count"]++;
+                    $pc_arr["dinner"]["all"]["avg"] += $pc_dinner;
+                }
+
+                //B-B
+                if($i > 0 && $record -> breakfast_before != null && $records[$i-1] -> dinner_before != null){
+                    $bb = $record -> breakfast_before - $records[$i-1] -> dinner_before;
+                    if($bb >= 30 || $bb <= 30){
+                        if($bb >= 0)
+                            $bb_arr["breakfast"]["above_p"]["count"] ++;
+                        else
+                            $bb_arr["breakfast"]["above_m"]["count"] ++;
+                        $bb_arr["breakfast"]["above_p"]["avg"] += $bb;
+                    }else{
+                        if($bb >= 0)
+                            $bb_arr["breakfast"]["normal_p"]["count"] ++;
+                        else
+                            $bb_arr["breakfast"]["normal_m"]["count"] ++;
+                        $bb_arr["breakfast"]["normal_p"]["avg"] += $bb;
+                    }
+                }
+                if($record -> lunch_before != null && $record -> breakfast_before != null){
+                    $bb = $record -> lunch_before - $record -> breakfast_before;
+                    if($bb >= 30 || $bb <= 30){
+                        if($bb >= 0)
+                            $bb_arr["lunch"]["above_p"]["count"] ++;
+                        else
+                            $bb_arr["lunch"]["above_m"]["count"] ++;
+                        $bb_arr["lunch"]["above_p"]["avg"] += $bb;
+                    }else{
+                        if($bb >= 0)
+                            $bb_arr["lunch"]["normal_p"]["count"] ++;
+                        else
+                            $bb_arr["lunch"]["normal_m"]["count"] ++;
+                        $bb_arr["lunch"]["normal_p"]["avg"] += $bb;
+                    }
+                }
+                if($record -> dinner_before != null && $record -> lunch_before != null){
+                    $bb = $record -> breakfast_before - $record[$i-1] -> dinner_before;
+                    if($bb >= 30 || $bb <= 30){
+                        if($bb >= 0)
+                            $bb_arr["dinner"]["above_p"]["count"] ++;
+                        else
+                            $bb_arr["dinner"]["above_m"]["count"] ++;
+                        $bb_arr["dinner"]["above_p"]["avg"] += $bb;
+                    }else{
+                        if($bb >= 0)
+                            $bb_arr["dinner"]["normal_p"]["count"] ++;
+                        else
+                            $bb_arr["dinner"]["normal_m"]["count"] ++;
+                        $bb_arr["dinner"]["normal_p"]["avg"] += $bb;
+                    }
                 }
             }
 
-
-
-            foreach($goals as $target){
-                if($pc_arr["breakfast"][$target]["count"] != 0){
-                    $pc_arr["breakfast"][$target]["avg"] = round($pc_arr["breakfast"][$target]["avg"] / $pc_arr["breakfast"][$target]["count"]);
-                    $pc_arr["breakfast"][$target]["filter_str"] = trim($pc_arr["breakfast"][$target]["filter_str"]);
+            foreach($types as $type){
+                foreach($bb_goals as $target){
+                    if($bb_arr[$type][$target]["count"] != 0){
+                        $bb_arr[$type][$target]["avg"] = round($bb_arr[$type][$target]["avg"] / $bb_arr[$type][$target]["count"]);
+                    }
                 }
-                if($pc_arr["lunch"][$target]["count"] != 0){
-                    $pc_arr["lunch"][$target]["avg"] = round($pc_arr["lunch"][$target]["avg"] / $pc_arr["lunch"][$target]["count"]);
-                    $pc_arr["lunch"][$target]["filter_str"] = trim($pc_arr["lunch"][$target]["filter_str"]);
-                }
-                if($pc_arr["dinner"][$target]["count"] != 0){
-                    $pc_arr["dinner"][$target]["avg"] = round($pc_arr["dinner"][$target]["avg"] / $pc_arr["dinner"][$target]["count"]);
-                    $pc_arr["dinner"][$target]["filter_str"] = trim($pc_arr["dinner"][$target]["filter_str"]);
+            }
+
+            foreach($types as $type){
+                foreach($goals as $target){
+                    if($pc_arr[$type][$target]["count"] != 0){
+                        $pc_arr[$type][$target]["avg"] = round($pc_arr[$type][$target]["avg"] / $pc_arr[$type][$target]["count"]);
+                        $pc_arr[$type][$target]["filter_str"] = trim($pc_arr[$type][$target]["filter_str"]);
+                    }
                 }
             }
 
@@ -331,6 +402,7 @@ use App\Feature;
             }
 
             $blood_stat["pc"] = $pc_arr;
+            $blood_stat["bb"] = $bb_arr;
 
             $blood_stat["start"] = $start;
             $blood_stat["end"] = $calendar_date;
@@ -511,7 +583,10 @@ use App\Feature;
                 $blood_sugar -> save();
 
                 $this->validate($request, BloodSugarDetail::rules());
-                $blood_sugar_detail = new BloodSugarDetail();
+                $blood_sugar_detail = $blood_sugar -> blood_sugar_detail() -> where('measure_type', '=', $request -> measure_type) -> first();
+                if($blood_sugar_detail == null){
+                    $blood_sugar_detail = new BloodSugarDetail();
+                }
                 $blood_sugar_detail -> measure_time = date('Y-m-d H:i', strtotime($request -> measure_time)) ;
                 $blood_sugar_detail -> measure_type = $request -> measure_type ;
                 $blood_sugar_detail -> exercise_type = $request -> exercise_type ;
@@ -533,7 +608,8 @@ use App\Feature;
             }catch (\Exception $e){
 
                 DB::rollback();
-                return "fail";
+
+                return $e;
             }
 
         }

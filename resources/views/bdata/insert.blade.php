@@ -13,7 +13,7 @@
             <td>量測時段：</td><td id="range"></td>
         </tr>
         <tr>
-            <td style="vertical-align: middle" >血 糖：</td><td class="form-inline"><input type="text" id="blood_sugar" class="form-control" style="width: 100px"/> mg/dl
+            <td style="vertical-align: middle" >血 糖：</td><td class="form-inline"><input type="text" id="blood_sugar" class="form-control" style="width: 100px"/> mmol/l
             <div id="blood_sugar_err" style="color: red">&nbsp;</div></td>
         </tr>
         <tr>

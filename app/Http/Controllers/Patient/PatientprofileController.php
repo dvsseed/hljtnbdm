@@ -75,7 +75,7 @@ class PatientprofileController extends Controller
 
         $count = $result->count();
         $patientprofiles = $result->paginate(10)->appends(['search' => $search, 'category' => $category]);
-        $hiss = DB::connection('oracle')->select('select * from pub_class_office'); // from HIS's db
+        //$hiss = DB::connection('oracle')->select('select * from pub_class_office'); // from HIS's db
 
         $current_user_id = Auth::user() -> id;
         // return view('patient.index', compact('patientprofiles', 'count', 'hiss'));
