@@ -711,9 +711,13 @@ use App\Feature;
 
             $start = Input::get('start');
             if($start != null && is_numeric($start)){
-                $messages = $hospital_no->messages()-> orderBy('message_pk','desc')-> skip($start) -> take(20)->get();
+                $messages = $hospital_no->messages()-> orderBy('created_at','desc')-> skip($start) -> take(20)->get();
             }else{
-                $messages = $hospital_no->messages()-> orderBy('message_pk','desc') ->take(20)->get();
+                $messages = $hospital_no->messages()-> orderBy('created_at','desc') ->take(20)->get();
+            }
+
+            foreach($messages as $message){
+                $message -> sender_id = User::find($message -> sender_id) -> name;
             }
 
             return view('bdata.messagetemplate', compact('messages', 'user'));

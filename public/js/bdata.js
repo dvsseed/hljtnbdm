@@ -300,7 +300,7 @@ function setUpBatch(){
 function setUpMessage(){
     //setting for message
     $("#messages").css('height', $( window ).height() - $("#top").offset().top - $("#top").height() - 150 );
-    $("#reply").click(function(event){
+    $("#reply").unbind('click').click(function(event){
         var inputdata = {};
         inputdata['message_body'] = $("#messagearea").val();
         inputdata['_token'] = $('#message_form > input[ name=_token]').val();
