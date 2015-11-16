@@ -1,22 +1,22 @@
-<h3>食物統計</h3>
+<h3>食物统计</h3>
 <span> {{$food_records['start']}} ~ {{$food_records['end']}} </span>
 <br/>
 <br/>
 <table class="table table-hover statics">
     <tr>
-        <th style="vertical-align: middle; text-align: center;">統計資料</th>
+        <th style="vertical-align: middle; text-align: center;">统计资料</th>
         <th style="vertical-align: middle; text-align: center;">凌晨</th>
         <th style="vertical-align: middle; text-align: center;">晨起</th>
         <th style="vertical-align: middle; text-align: center;">早餐</th>
-        <th style="vertical-align: middle; text-align: center;">早點</th>
+        <th style="vertical-align: middle; text-align: center;">早点</th>
         <th style="vertical-align: middle; text-align: center;">午餐</th>
-        <th style="vertical-align: middle; text-align: center;">午點</th>
+        <th style="vertical-align: middle; text-align: center;">午点</th>
         <th style="vertical-align: middle; text-align: center;">晚餐</th>
-        <th style="vertical-align: middle; text-align: center;">晚點</th>
+        <th style="vertical-align: middle; text-align: center;">晚点</th>
         <th style="vertical-align: middle; text-align: center;">睡前</td>
     </tr>
     <tr>
-        <td>資料筆數</td>
+        <td>资料笔数</td>
         <td>@if(isset($food_records['early_morning']['count'])){{$food_records['early_morning']['count']}}@endif</td>
         <td>@if(isset($food_records['morning']['count'])){{$food_records['morning']['count']}}@endif</td>
         <td>@if(isset($food_records['breakfast_before']['count'])){{$food_records['breakfast_before']['count']}}@endif</td>
@@ -64,7 +64,7 @@
         <td>@if(isset($food_records['sleep_before']['min'])){{$food_records['sleep_before']['min']}}@endif</td>
     </tr>
     <tr>
-        <td>高於目標值</td>
+        <td>高于目标值</td>
         <td>@if(isset($food_records['early_morning']['above'])){{$food_records['early_morning']['above']}}@endif</td>
         <td>@if(isset($food_records['morning']['above'])){{$food_records['morning']['above']}}@endif</td>
         <td>@if(isset($food_records['breakfast_before']['above'])){{$food_records['breakfast_before']['above']}}@endif</td>
@@ -88,7 +88,7 @@
         <td>@if(isset($food_records['sleep_before']['normal'])){{$food_records['sleep_before']['normal']}}@endif</td>
     </tr>
     <tr>
-        <td>低於目標值</td>
+        <td>低于目标值</td>
         <td>@if(isset($food_records['early_morning']['below'])){{$food_records['early_morning']['below']}}@endif</td>
         <td>@if(isset($food_records['morning']['below'])){{$food_records['morning']['below']}}@endif</td>
         <td>@if(isset($food_records['breakfast_before']['below'])){{$food_records['breakfast_before']['below']}}@endif</td>

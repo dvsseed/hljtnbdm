@@ -2,27 +2,27 @@
 {!! Html::style('css/bdata.css') !!}
 {!! Html::style('css/all.css') !!}
 <div id="data" class="content" style="display: none;">
-    <div style="text-align: center"><a href="{{$data['previous']}}" style="float: left; margin-bottom: 10px" class="btn btn-default" id="before_two_week">兩周前</a>@if($data['next'] != null)<a href="{{$data['next'] }}" class="btn btn-default" style="float: right; margin-bottom: 10px" id="after_two_week">兩周後</a>@endif
-        總次數:{{$stat['total']}} | 次/週:{{$stat['total']/2}}  | 次/日:{{round($stat['total']/14,2)}}
+    <div style="text-align: center"><a href="{{$data['previous']}}" style="float: left; margin-bottom: 10px" class="btn btn-default" id="before_two_week">两周前</a>@if($data['next'] != null)<a href="{{$data['next'] }}" class="btn btn-default" style="float: right; margin-bottom: 10px" id="after_two_week">两周后</a>@endif
+        总次数:{{$stat['total']}} | 次/週:{{$stat['total']/2}}  | 次/日:{{round($stat['total']/14,2)}}
     </div>
     <table class="table table-hover statics" id="sugartable">
         <tr >
-            <th rowspan="2" style="vertical-align: middle; text-align: center;">檢驗日期</th>
+            <th rowspan="2" style="vertical-align: middle; text-align: center;">检验日期</th>
             <th rowspan="2" style="vertical-align: middle; text-align: center;">凌晨</th>
             <th rowspan="2" style="vertical-align: middle; text-align: center;">晨起</th>
             <th colspan="2" style="text-align: center;">早餐</th>
             <th colspan="2" style="text-align: center;">中餐</th>
             <th colspan="2" style="text-align: center;">晚餐</th>
             <th rowspan="2" style="vertical-align: middle;text-align: center;">睡前</th>
-            @if($soap_link != "")<th rowspan="2" style="vertical-align: middle;text-align: center;">備註</th>@endif
+            @if($soap_link != "")<th rowspan="2" style="vertical-align: middle;text-align: center;">备注</th>@endif
         </tr>
         <tr>
-            <td>飯前</td>
-            <td>飯後</td>
-            <td>飯前</td>
-            <td>飯後</td>
-            <td>飯前</td>
-            <td>飯後</td>
+            <td>饭前</td>
+            <td>饭后</td>
+            <td>饭前</td>
+            <td>饭后</td>
+            <td>饭前</td>
+            <td>饭后</td>
         </tr>
         @foreach ($blood_records as $day)
             <tr>
@@ -183,12 +183,12 @@
         <tr class="batch_save_tr" style="display: none">
             <td colspan="11">
                 {!! Form::open(array('url'=>'batch_update','method'=>'POST', 'id'=>'batch_form')) !!}
-                {!! Form::button('儲存', array('class'=>'btn btn-default', 'id'=>'batch_save_btn', 'style' => 'margin: 0 auto')) !!}
+                {!! Form::button('储存', array('class'=>'btn btn-default', 'id'=>'batch_save_btn', 'style' => 'margin: 0 auto')) !!}
                 {!! Form::close() !!}
             </td>
         </tr>
     </table>
 
-    <div id="dialog" title="備註">
+    <div id="dialog" title="备注">
     </div>
 </div>

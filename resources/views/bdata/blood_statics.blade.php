@@ -1,11 +1,11 @@
 <div id="filter_data"></div>
-<h3>血糖統計</h3>
+<h3>血糖统计</h3>
 <span> {{$blood_records['start']}} ~ {{$blood_records['end']}} </span>
 <br/>
 <br/>
 <table class="table table-hover statics">
     <tr>
-        <th style="vertical-align: middle; text-align: center;" rowspan="2">統計資料</th>
+        <th style="vertical-align: middle; text-align: center;" rowspan="2">统计资料</th>
         <th style="vertical-align: middle; text-align: center;" rowspan="2">凌晨</th>
         <th style="vertical-align: middle; text-align: center;" rowspan="2">晨起</th>
         <th style="vertical-align: middle; text-align: center;" colspan="2">早餐</th>
@@ -14,15 +14,15 @@
         <th style="vertical-align: middle; text-align: center;" rowspan="2">睡前</td>
     </tr>
     <tr>
-        <th style="vertical-align: middle; text-align: center;">飯前</th>
-        <th style="vertical-align: middle; text-align: center;">飯後</th>
-        <th style="vertical-align: middle; text-align: center;">飯前</th>
-        <th style="vertical-align: middle; text-align: center;">飯後</th>
-        <th style="vertical-align: middle; text-align: center;">飯前</th>
-        <th style="vertical-align: middle; text-align: center;">飯後</th>
+        <th style="vertical-align: middle; text-align: center;">饭前</th>
+        <th style="vertical-align: middle; text-align: center;">饭后</th>
+        <th style="vertical-align: middle; text-align: center;">饭前</th>
+        <th style="vertical-align: middle; text-align: center;">饭后</th>
+        <th style="vertical-align: middle; text-align: center;">饭前</th>
+        <th style="vertical-align: middle; text-align: center;">饭后</th>
     </tr>
     <tr>
-        <td>資料筆數</td>
+        <td>资料笔数</td>
         <td>@if(isset($blood_records['early_morning']['count'])){{$blood_records['early_morning']['count']}}@endif</td>
         <td>@if(isset($blood_records['morning']['count'])){{$blood_records['morning']['count']}}@endif</td>
         <td>@if(isset($blood_records['breakfast_before']['count'])){{$blood_records['breakfast_before']['count']}}@endif</td>
@@ -70,7 +70,7 @@
         <td>@if(isset($blood_records['sleep_before']['min'])){{$blood_records['sleep_before']['min']}}@endif</td>
     </tr>
     <tr>
-        <td>高於目標值</td>
+        <td>高于目标值</td>
         <td>@if(isset($blood_records['early_morning']['above'])){{$blood_records['early_morning']['above']}}@endif</td>
         <td>@if(isset($blood_records['morning']['above'])){{$blood_records['morning']['above']}}@endif</td>
         <td>@if(isset($blood_records['breakfast_before']['above'])){{$blood_records['breakfast_before']['above']}}@endif</td>
@@ -94,7 +94,7 @@
         <td>@if(isset($blood_records['sleep_before']['normal'])){{$blood_records['sleep_before']['normal']}}@endif</td>
     </tr>
     <tr>
-        <td>低於目標值</td>
+        <td>低于目标值</td>
         <td>@if(isset($blood_records['early_morning']['below'])){{$blood_records['early_morning']['below']}}@endif</td>
         <td>@if(isset($blood_records['morning']['below'])){{$blood_records['morning']['below']}}@endif</td>
         <td>@if(isset($blood_records['breakfast_before']['below'])){{$blood_records['breakfast_before']['below']}}@endif</td>
@@ -109,11 +109,11 @@
         <td>PC-AC<30</td>
         <td></td>
         <td></td>
-        <td>@if(isset($blood_records['pc']["breakfast"]["below"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["breakfast"]["below"]["filter_str"]}}', event)">{{$blood_records['pc']["breakfast"]["below"]["count"]}} 筆</a>@endif</td>
+        <td>@if(isset($blood_records['pc']["breakfast"]["below"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["breakfast"]["below"]["filter_str"]}}', event)">{{$blood_records['pc']["breakfast"]["below"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["breakfast"]["below"]["avg"])){{$blood_records['pc']["breakfast"]["below"]["avg"]}}@endif</td>
-        <td>@if(isset($blood_records['pc']["lunch"]["below"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["lunch"]["below"]["filter_str"]}}', event)">{{$blood_records['pc']["lunch"]["below"]["count"]}} 筆</a>@endif</td>
+        <td>@if(isset($blood_records['pc']["lunch"]["below"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["lunch"]["below"]["filter_str"]}}', event)">{{$blood_records['pc']["lunch"]["below"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["lunch"]["below"]["avg"])){{$blood_records['pc']["lunch"]["below"]["avg"]}}@endif</td>
-        <td>@if(isset($blood_records['pc']["dinner"]["below"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["lunch"]["below"]["filter_str"]}}', event)">{{$blood_records['pc']["dinner"]["below"]["count"]}} 筆</a>@endif</td>
+        <td>@if(isset($blood_records['pc']["dinner"]["below"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["lunch"]["below"]["filter_str"]}}', event)">{{$blood_records['pc']["dinner"]["below"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["dinner"]["below"]["avg"])){{$blood_records['pc']["dinner"]["below"]["avg"]}}@endif</td>
         <td></td>
     </tr>
@@ -121,11 +121,11 @@
         <td>PC-AC(30~60)</td>
         <td></td>
         <td></td>
-        <td>@if(isset($blood_records['pc']["breakfast"]["normal"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["breakfast"]["normal"]["filter_str"]}}', event)">{{$blood_records['pc']["breakfast"]["normal"]["count"]}} 筆</a>@endif</td>
+        <td>@if(isset($blood_records['pc']["breakfast"]["normal"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["breakfast"]["normal"]["filter_str"]}}', event)">{{$blood_records['pc']["breakfast"]["normal"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["breakfast"]["normal"]["avg"])){{$blood_records['pc']["breakfast"]["normal"]["avg"]}}@endif</td>
-        <td>@if(isset($blood_records['pc']["lunch"]["normal"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["lunch"]["normal"]["filter_str"]}}', event)">{{$blood_records['pc']["lunch"]["normal"]["count"]}} 筆</a>@endif</td>
+        <td>@if(isset($blood_records['pc']["lunch"]["normal"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["lunch"]["normal"]["filter_str"]}}', event)">{{$blood_records['pc']["lunch"]["normal"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["lunch"]["normal"]["avg"])){{$blood_records['pc']["lunch"]["normal"]["avg"]}}@endif</td>
-        <td>@if(isset($blood_records['pc']["dinner"]["normal"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["dinner"]["normal"]["filter_str"]}}', event)">{{$blood_records['pc']["dinner"]["normal"]["count"]}} 筆</a>@endif</td>
+        <td>@if(isset($blood_records['pc']["dinner"]["normal"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["dinner"]["normal"]["filter_str"]}}', event)">{{$blood_records['pc']["dinner"]["normal"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["dinner"]["normal"]["avg"])){{$blood_records['pc']["dinner"]["normal"]["avg"]}}@endif</td>
         <td></td>
     </tr>
@@ -133,11 +133,11 @@
         <td>PC-AC≧60</td>
         <td></td>
         <td></td>
-        <td>@if(isset($blood_records['pc']["breakfast"]["above"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["breakfast"]["above"]["filter_str"]}}', event)">{{$blood_records['pc']["breakfast"]["above"]["count"]}} 筆</a>@endif</td>
+        <td>@if(isset($blood_records['pc']["breakfast"]["above"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["breakfast"]["above"]["filter_str"]}}', event)">{{$blood_records['pc']["breakfast"]["above"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["breakfast"]["above"]["avg"])){{$blood_records['pc']["breakfast"]["above"]["avg"]}}@endif</td>
-        <td>@if(isset($blood_records['pc']["lunch"]["above"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["lunch"]["above"]["filter_str"]}}', event)">{{$blood_records['pc']["lunch"]["above"]["count"]}} 筆</a>@endif</td>
+        <td>@if(isset($blood_records['pc']["lunch"]["above"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["lunch"]["above"]["filter_str"]}}', event)">{{$blood_records['pc']["lunch"]["above"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["lunch"]["above"]["avg"])){{$blood_records['pc']["lunch"]["above"]["avg"]}}@endif</td>
-        <td>@if(isset($blood_records['pc']["dinner"]["above"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["dinner"]["above"]["filter_str"]}}', event)">{{$blood_records['pc']["dinner"]["above"]["count"]}} 筆</a>@endif</td>
+        <td>@if(isset($blood_records['pc']["dinner"]["above"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["dinner"]["above"]["filter_str"]}}', event)">{{$blood_records['pc']["dinner"]["above"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["dinner"]["above"]["avg"])){{$blood_records['pc']["dinner"]["above"]["avg"]}}@endif</td>
         <td></td>
     </tr>
@@ -145,11 +145,11 @@
         <td>PC-AC</td>
         <td></td>
         <td></td>
-        <td>@if(isset($blood_records['pc']["breakfast"]["all"]["count"])){{$blood_records['pc']["breakfast"]["all"]["count"]}} 筆@endif</td>
-        <td>@if(isset($blood_records['pc']["breakfast"]["all"]["avg"])){{$blood_records['pc']["breakfast"]["above"]["avg"]}}@endif</td>
-        <td>@if(isset($blood_records['pc']["lunch"]["all"]["count"])){{$blood_records['pc']["lunch"]["all"]["count"]}} 筆@endif</td>
+        <td>@if(isset($blood_records['pc']["breakfast"]["all"]["count"])){{$blood_records['pc']["breakfast"]["all"]["count"]}} 笔@endif</td>
+        <td>@if(isset($blood_records['pc']["breakfast"]["all"]["avg"])){{$blood_records['pc']["breakfast"]["all"]["avg"]}}@endif</td>
+        <td>@if(isset($blood_records['pc']["lunch"]["all"]["count"])){{$blood_records['pc']["lunch"]["all"]["count"]}} 笔@endif</td>
         <td>@if(isset($blood_records['pc']["lunch"]["all"]["avg"])){{$blood_records['pc']["lunch"]["all"]["avg"]}}@endif</td>
-        <td>@if(isset($blood_records['pc']["dinner"]["all"]["count"])){{$blood_records['pc']["dinner"]["all"]["count"]}} 筆@endif</td>
+        <td>@if(isset($blood_records['pc']["dinner"]["all"]["count"])){{$blood_records['pc']["dinner"]["all"]["count"]}} 笔@endif</td>
         <td>@if(isset($blood_records['pc']["dinner"]["all"]["avg"])){{$blood_records['pc']["dinner"]["all"]["avg"]}}@endif</td>
         <td></td>
     </tr>
@@ -157,35 +157,37 @@
         <td>B - B</td>
         <td></td>
         <td></td>
-        <td>+@if(isset($blood_records['bb']["breakfast"]["normal_p"]["count"])){{$blood_records['bb']["breakfast"]["normal_p"]["count"]}} 筆,@endif
-            -@if(isset($blood_records['bb']["breakfast"]["normal_m"]["count"])){{$blood_records['bb']["breakfast"]["normal_m"]["count"]}} 筆,@endif
+        <td>+@if(isset($blood_records['bb']["breakfast"]["normal_p"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["breakfast"]["normal_p"]["filter_str"]}}', event)">{{$blood_records['bb']["breakfast"]["normal_p"]["count"]}} 笔</a>,@endif
+            -@if(isset($blood_records['bb']["breakfast"]["normal_m"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["breakfast"]["normal_m"]["filter_str"]}}', event)">{{$blood_records['bb']["breakfast"]["normal_m"]["count"]}} 笔</a>,@endif
         </td>
         <td>@if(isset($blood_records['bb']["breakfast"]["normal_p"]["avg"])){{$blood_records['bb']["breakfast"]["normal_p"]["avg"]}}@endif</td>
-        <td>+@if(isset($blood_records['bb']["lunch"]["normal_p"]["count"])){{$blood_records['bb']["lunch"]["normal_p"]["count"]}} 筆,@endif
-            -@if(isset($blood_records['bb']["lunch"]["normal_m"]["count"])){{$blood_records['bb']["lunch"]["normal_m"]["count"]}} 筆,@endif
+        <td>+@if(isset($blood_records['bb']["lunch"]["normal_p"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["lunch"]["normal_p"]["filter_str"]}}', event)">{{$blood_records['bb']["lunch"]["normal_p"]["count"]}} 笔</a>,@endif
+            -@if(isset($blood_records['bb']["lunch"]["normal_m"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["lunch"]["normal_m"]["filter_str"]}}', event)">{{$blood_records['bb']["lunch"]["normal_m"]["count"]}} 笔</a>,@endif
         </td>
         <td>@if(isset($blood_records['bb']["lunch"]["normal_p"]["avg"])){{$blood_records['bb']["lunch"]["normal_p"]["avg"]}}@endif</td>
-        <td>+@if(isset($blood_records['bb']["dinner"]["normal_p"]["count"])){{$blood_records['bb']["dinner"]["normal_p"]["count"]}} 筆,@endif
-            -@if(isset($blood_records['bb']["dinner"]["normal_m"]["count"])){{$blood_records['bb']["dinner"]["normal_m"]["count"]}} 筆,@endif
+        <td>+@if(isset($blood_records['bb']["dinner"]["normal_p"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["dinner"]["normal_p"]["filter_str"]}}', event)">{{$blood_records['bb']["dinner"]["normal_p"]["count"]}} 笔</a>,@endif
+            -@if(isset($blood_records['bb']["dinner"]["normal_m"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["dinner"]["normal_m"]["filter_str"]}}', event)">{{$blood_records['bb']["dinner"]["normal_m"]["count"]}} 笔</a>,@endif
         </td>
         <td>@if(isset($blood_records['bb']["dinner"]["normal_p"]["avg"])){{$blood_records['bb']["dinner"]["normal_p"]["avg"]}}@endif</td>
+        <td></td>
     </tr>
     <tr>
         <td>B - B > 30</td>
         <td></td>
         <td></td>
-        <td>+@if(isset($blood_records['bb']["breakfast"]["above_p"]["count"])){{$blood_records['bb']["breakfast"]["above_p"]["count"]}} 筆,@endif
-            -@if(isset($blood_records['bb']["breakfast"]["above_m"]["count"])){{$blood_records['bb']["breakfast"]["above_m"]["count"]}} 筆,@endif
+        <td>+@if(isset($blood_records['bb']["breakfast"]["above_p"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["breakfast"]["above_p"]["filter_str"]}}', event)">{{$blood_records['bb']["breakfast"]["above_p"]["count"]}} 笔</a>,@endif
+            -@if(isset($blood_records['bb']["breakfast"]["above_m"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["breakfast"]["above_m"]["filter_str"]}}', event)">{{$blood_records['bb']["breakfast"]["above_m"]["count"]}} 笔</a>,@endif
         </td>
         <td>@if(isset($blood_records['bb']["breakfast"]["above_p"]["avg"])){{$blood_records['bb']["breakfast"]["above_p"]["avg"]}}@endif</td>
-        <td>+@if(isset($blood_records['bb']["lunch"]["above_p"]["count"])){{$blood_records['bb']["lunch"]["above_p"]["count"]}} 筆,@endif
-            -@if(isset($blood_records['bb']["lunch"]["above_m"]["count"])){{$blood_records['bb']["lunch"]["above_m"]["count"]}} 筆,@endif
+        <td>+@if(isset($blood_records['bb']["lunch"]["above_p"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["lunch"]["above_p"]["filter_str"]}}', event)">{{$blood_records['bb']["lunch"]["above_p"]["count"]}} 笔</a>,@endif
+            -@if(isset($blood_records['bb']["lunch"]["above_m"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["lunch"]["above_m"]["filter_str"]}}', event)">{{$blood_records['bb']["lunch"]["above_m"]["count"]}} 笔</a>,@endif
         </td>
         <td>@if(isset($blood_records['bb']["lunch"]["above_p"]["avg"])){{$blood_records['bb']["lunch"]["above_p"]["avg"]}}@endif</td>
-        <td>+@if(isset($blood_records['bb']["dinner"]["above_p"]["count"])){{$blood_records['bb']["dinner"]["above_p"]["count"]}} 筆,@endif
-            -@if(isset($blood_records['bb']["dinner"]["above_m"]["count"])){{$blood_records['bb']["dinner"]["above_m"]["count"]}} 筆,@endif
+        <td>+@if(isset($blood_records['bb']["dinner"]["above_p"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["dinner"]["above_p"]["filter_str"]}}', event)">{{$blood_records['bb']["dinner"]["above_p"]["count"]}} 笔</a>,@endif
+            -@if(isset($blood_records['bb']["dinner"]["above_m"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["dinner"]["above_m"]["filter_str"]}}', event)">{{$blood_records['bb']["dinner"]["above_m"]["count"]}} 笔</a>,@endif
         </td>
         <td>@if(isset($blood_records['bb']["dinner"]["above_p"]["avg"])){{$blood_records['bb']["dinner"]["above_p"]["avg"]}}@endif</td>
+        <td></td>
     </tr>
 </table>
 

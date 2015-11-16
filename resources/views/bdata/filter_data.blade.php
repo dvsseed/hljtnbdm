@@ -1,9 +1,9 @@
-<h3>血糖資料</h3>
+<h3>血糖资料</h3>
 <br/>
 <br/>
 <table class="table statics">
     <tr >
-        <th rowspan="2" style="vertical-align: middle; text-align: center;">檢驗日期</th>
+        <th rowspan="2" style="vertical-align: middle; text-align: center;">检验日期</th>
         <th rowspan="2" style="vertical-align: middle; text-align: center;">凌晨</th>
         <th rowspan="2" style="vertical-align: middle; text-align: center;">晨起</th>
         <th colspan="2" style="text-align: center;">早餐</th>
@@ -12,12 +12,12 @@
         <th rowspan="2" style="vertical-align: middle;text-align: center;">睡前</th>
     </tr>
     <tr>
-        <th style="vertical-align: middle; text-align: center;">飯前</th>
-        <th style="vertical-align: middle; text-align: center;">飯後</th>
-        <th style="vertical-align: middle; text-align: center;">飯前</th>
-        <th style="vertical-align: middle; text-align: center;">飯後</th>
-        <th style="vertical-align: middle; text-align: center;">飯前</th>
-        <th style="vertical-align: middle; text-align: center;">飯後</th>
+        <th style="vertical-align: middle; text-align: center;">饭前</th>
+        <th style="vertical-align: middle; text-align: center;">饭后</th>
+        <th style="vertical-align: middle; text-align: center;">饭前</th>
+        <th style="vertical-align: middle; text-align: center;">饭后</th>
+        <th style="vertical-align: middle; text-align: center;">饭前</th>
+        <th style="vertical-align: middle; text-align: center;">饭后</th>
     </tr>
     @foreach ($blood_records as $day)
         <tr>
@@ -33,6 +33,6 @@
             <td>{{$day -> sleep_before}}</td>
         </tr>
     @endforeach
- </table>
+</table>
 <br/>
 <br/>

@@ -1,7 +1,7 @@
 @extends('master')
 
 @section('title')
-    血糖資料
+    血糖资料
 @stop
 
 @section('content')

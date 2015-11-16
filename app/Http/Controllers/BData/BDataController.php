@@ -45,13 +45,13 @@ use App\Feature;
                 if($patient != null){
                     $hospital_no = $patient-> hospital_no;
                 }else{
-                    $err_msg = '請重新登入!';
+                    $err_msg = '请重新登入!';
                 }
 
                 if(isset($hospital_no) && $hospital_no != null){
                     $uuid = $hospital_no -> hospital_no_uuid;
                 }else{
-                    $err_msg = '沒有血糖資料!';
+                    $err_msg = '没有血糖资料!';
                 }
             }else{
 
@@ -67,7 +67,7 @@ use App\Feature;
                     }
                 }
                 if($hospital_no == null){
-                    $err_msg = '您沒有權限查看此血糖資料!';
+                    $err_msg = '您没有权限查看此血糖资料!';
                 }
             }
 
@@ -215,7 +215,8 @@ use App\Feature;
 
             if($hospital_no -> patient_user_id == $user_id){
                 return view('bdata.food_statics', compact('food_records'));
-            }else if($hospital_no -> nurse_user_id == $user_id){
+            //}else if($hospital_no -> nurse_user_id == $user_id){
+            }else{
                 $blood_records = $this -> get_blood_stat($uuid);
                 return view('bdata.blood_statics', compact('food_records', 'blood_records'));
             }
@@ -243,19 +244,20 @@ use App\Feature;
                     $pc_arr[$type][$goal]["filter_str"] = "";
                 }
 
-                foreach($data_types as $data_type){
-                    foreach($bb_goals as $bb_goal){
+                foreach($bb_goals as $bb_goal){
+                    foreach($data_types as $data_type) {
                         $bb_arr[$type][$bb_goal][$data_type] = 0;
                     }
+                    $bb_arr[$type][$bb_goal]["filter_str"] = "";
                 }
             }
 
 
-            $records = HospitalNo::find($uuid)->blood_sugar()->where('calendar_date','<=',$calendar_date)-> where('calendar_date','>',$start)->get();
+            $records = HospitalNo::find($uuid)->blood_sugar()->where('calendar_date','<=',$calendar_date)-> where('calendar_date','>',$start)->orderby('calendar_date')->get();
             $blood_tmp = array();
 
             for($i = 0; $i < count($records); $i++){
-                $record = $records[i];
+                $record = $records[$i];
 
                 //normal statistics
                 foreach( $this -> nodes as $node){
@@ -320,19 +322,32 @@ use App\Feature;
                 }
 
                 //B-B
-                if($i > 0 && $record -> breakfast_before != null && $records[$i-1] -> dinner_before != null){
+                if($i > 0 && $record -> breakfast_before != null && $records[$i-1] -> dinner_before != null && $records[$i-1] -> calendar_date == date('Y-m-d', strtotime('-1 day', strtotime($record -> calendar_date)))){
                     $bb = $record -> breakfast_before - $records[$i-1] -> dinner_before;
                     if($bb >= 30 || $bb <= 30){
-                        if($bb >= 0)
+                        if($bb >= 0){
                             $bb_arr["breakfast"]["above_p"]["count"] ++;
-                        else
+                            $bb_arr["breakfast"]["above_p"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                            $bb_arr["breakfast"]["above_p"]["filter_str"] .= ((string)$records[$i-1] -> blood_sugar_pk." ");
+                        }
+
+                        else{
                             $bb_arr["breakfast"]["above_m"]["count"] ++;
+                            $bb_arr["breakfast"]["above_m"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                            $bb_arr["breakfast"]["above_m"]["filter_str"] .= ((string)$records[$i-1] -> blood_sugar_pk." ");
+                        }
                         $bb_arr["breakfast"]["above_p"]["avg"] += $bb;
                     }else{
-                        if($bb >= 0)
+                        if($bb >= 0){
                             $bb_arr["breakfast"]["normal_p"]["count"] ++;
-                        else
+                            $bb_arr["breakfast"]["normal_p"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                            $bb_arr["breakfast"]["normal_p"]["filter_str"] .= ((string)$records[$i-1] -> blood_sugar_pk." ");
+                        }
+                        else{
                             $bb_arr["breakfast"]["normal_m"]["count"] ++;
+                            $bb_arr["breakfast"]["normal_m"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                            $bb_arr["breakfast"]["normal_m"]["filter_str"] .= ((string)$records[$i-1] -> blood_sugar_pk." ");
+                        }
                         $bb_arr["breakfast"]["normal_p"]["avg"] += $bb;
                     }
                 }
@@ -340,31 +355,50 @@ use App\Feature;
                     $bb = $record -> lunch_before - $record -> breakfast_before;
                     if($bb >= 30 || $bb <= 30){
                         if($bb >= 0)
-                            $bb_arr["lunch"]["above_p"]["count"] ++;
-                        else
-                            $bb_arr["lunch"]["above_m"]["count"] ++;
+                            if($bb >= 0){
+                                $bb_arr["lunch"]["above_p"]["count"] ++;
+                                $bb_arr["lunch"]["above_p"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                            }
+
+                            else{
+                                $bb_arr["lunch"]["above_m"]["count"] ++;
+                                $bb_arr["lunch"]["above_m"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                            }
                         $bb_arr["lunch"]["above_p"]["avg"] += $bb;
                     }else{
-                        if($bb >= 0)
+                        if($bb >= 0){
                             $bb_arr["lunch"]["normal_p"]["count"] ++;
-                        else
+                            $bb_arr["lunch"]["normal_p"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                        }
+                        else{
                             $bb_arr["lunch"]["normal_m"]["count"] ++;
+                            $bb_arr["lunch"]["normal_m"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                        }
                         $bb_arr["lunch"]["normal_p"]["avg"] += $bb;
                     }
                 }
                 if($record -> dinner_before != null && $record -> lunch_before != null){
-                    $bb = $record -> breakfast_before - $record[$i-1] -> dinner_before;
+                    $bb = $record -> dinner_before - $record -> lunch_before;
                     if($bb >= 30 || $bb <= 30){
-                        if($bb >= 0)
+                        if($bb >= 0){
                             $bb_arr["dinner"]["above_p"]["count"] ++;
-                        else
+                            $bb_arr["dinner"]["above_p"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                        }
+
+                        else{
                             $bb_arr["dinner"]["above_m"]["count"] ++;
+                            $bb_arr["dinner"]["above_m"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                        }
                         $bb_arr["dinner"]["above_p"]["avg"] += $bb;
                     }else{
-                        if($bb >= 0)
+                        if($bb >= 0){
                             $bb_arr["dinner"]["normal_p"]["count"] ++;
-                        else
+                            $bb_arr["dinner"]["normal_p"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                        }
+                        else{
                             $bb_arr["dinner"]["normal_m"]["count"] ++;
+                            $bb_arr["dinner"]["normal_m"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
+                        }
                         $bb_arr["dinner"]["normal_p"]["avg"] += $bb;
                     }
                 }
@@ -374,6 +408,7 @@ use App\Feature;
                 foreach($bb_goals as $target){
                     if($bb_arr[$type][$target]["count"] != 0){
                         $bb_arr[$type][$target]["avg"] = round($bb_arr[$type][$target]["avg"] / $bb_arr[$type][$target]["count"]);
+                        $bb_arr[$type][$target]["filter_str"] = trim($bb_arr[$type][$target]["filter_str"]);
                     }
                 }
             }

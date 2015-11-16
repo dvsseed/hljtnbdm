@@ -40,7 +40,7 @@ class SoapController extends Controller
         $users = Auth::user();
 
         if( $hospital_no == null){
-            $err_msg = "無效的病歷";
+            $err_msg = "无效的病历";
         }else{
             if($hospital_no -> patient_user_id == $users -> id ){
                 return Redirect::route('bdata');
@@ -49,7 +49,7 @@ class SoapController extends Controller
 
             if($user_feature == null){
                 $hospital_no = null;
-                $err_msg = "您沒有權限查看此資料";
+                $err_msg = "您没有权限查看此资料";
             }
         }
 
@@ -112,7 +112,7 @@ class SoapController extends Controller
             $err_msg = "無效的病歷";
             if($hospital_no -> nurse_user_id != $users -> id){
                 $hospital_no = null;
-                $err_msg = "您沒有權限查看此資料";
+                $err_msg = "您没有权限查看此资料";
             }
         }
 
