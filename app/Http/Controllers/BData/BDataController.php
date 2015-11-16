@@ -558,7 +558,7 @@ use App\Feature;
 
         public function get_detail( $calendar_date, $measure_type){
             $uuid = Session::get('uuid');
-            $hospital_no = HospitalNo::find($uuid)->first();
+            $hospital_no = HospitalNo::find($uuid);
             $blood_records = $hospital_no->blood_sugar()->where('calendar_date', '<=', $calendar_date)->get();
 
             if($blood_records != null){

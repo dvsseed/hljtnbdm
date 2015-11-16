@@ -28,7 +28,7 @@ $( document ).ready(function() {
         setSOAClass( $(this).val());
     });
 
-    $("#s").change(function(){
+    $("#s").click(function(){
         appendText( $(this).find('option:selected').text(), $("#s_text"));
     });
 
@@ -36,16 +36,16 @@ $( document ).ready(function() {
         appendText( $(this).find('option:selected').text(), $("#o_text"));
     });
 
-    $("#a").change(function(){
+    $("#a").click(function(){
         setSOADetail( $(this).val() );
         appendText( $(this).find('option:selected').text(), $("#a_text"));
     });
 
-    $("#p").change(function(){
+    $("#p").click(function(){
         appendText( $(this).find('option:selected').text(), $("#p_text"));
     });
 
-    $("#e").change(function(){
+    $("#e").click(function(){
         appendText( $(this).find('option:selected').text(), $("#e_text"));
     });
 
