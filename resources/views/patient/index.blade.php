@@ -63,7 +63,7 @@
                             @else
                                 <td>{{ $patientprofile->pp_patientid}}</td>
                             @endif
-                            <!-- td>{{-- $patientprofile->account --}}</td -->
+                            <!-- td>{{-- $patientprofile->account --}}</td   -->
                             <td>{{ $patientprofile->pp_name }}</td>
                             <td>{{ $patientprofile->pp_birthday }}</td>
                             <td>{{ $patientprofile->pp_sex ? '男' : '女' }}</td>
