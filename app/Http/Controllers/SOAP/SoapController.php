@@ -7,6 +7,7 @@
  */
 
 use App\Feature;
+use App\User;
 use App\Http\Controllers\Controller;
 use App\Model\Pdata\HospitalNo;
 use App\Model\SOAP\SubClass;
@@ -29,7 +30,7 @@ class SoapController extends Controller
         $this->middleware('auth');
     }
 
-    public function page($uuid){
+    public function page($uuid, Request $request){
 
         $main_classes = MainClass::all();
         $sub_classes = $this->get_sub_class($main_classes -> first() -> main_class_pk);
@@ -39,7 +40,7 @@ class SoapController extends Controller
         $users = Auth::user();
 
         if( $hospital_no == null){
-            $err_msg = "無效的病歷";
+            $err_msg = "无效的病历";
         }else{
             if($hospital_no -> patient_user_id == $users -> id ){
                 return Redirect::route('bdata');
@@ -48,7 +49,7 @@ class SoapController extends Controller
 
             if($user_feature == null){
                 $hospital_no = null;
-                $err_msg = "您沒有權限查看此資料";
+                $err_msg = "您没有权限查看此资料";
             }
         }
 
@@ -59,7 +60,15 @@ class SoapController extends Controller
         $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid)->first();
 
         $user_data = array();
-        if($user_soap == null){
+
+        if($user_soap != null && isset($request['history'])){
+            $history = $user_soap -> history() -> find($request['history']);
+            if($history != null){
+                $user_soap = $history;
+            }
+        }
+
+        if($user_soap == null || (isset($request['new']) && $request['new'] == true)){
             $user_data['S'] = "";
             $user_data['O'] = "";
             $user_data['A'] = "";
@@ -103,7 +112,7 @@ class SoapController extends Controller
             $err_msg = "無效的病歷";
             if($hospital_no -> nurse_user_id != $users -> id){
                 $hospital_no = null;
-                $err_msg = "您沒有權限查看此資料";
+                $err_msg = "您没有权限查看此资料";
             }
         }
 
@@ -116,6 +125,9 @@ class SoapController extends Controller
         $histories = array();
         if($user_soap != null){
             $histories = $user_soap -> history() -> orderBy('updated_at', 'desc') -> get();
+        }
+        foreach($histories as $history){
+            $history -> user_id = User::find($history -> user_id) -> name;
         }
         return view('soap.history', compact('histories', 'hospital_no_displayname', 'uuid'));
     }

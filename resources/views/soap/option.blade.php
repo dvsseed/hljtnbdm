@@ -26,14 +26,14 @@
             </select>
         </td>
         <td class="col-md-3">
-            <select multiple class="form-control" id="s" >
+            <select size = 5 class="form-control" id="s" style="overflow-x: auto; height: 120px">
                 @foreach($soa_classes['S'] as $soa_class)
                     <option value="{{$soa_class -> soa_class_pk}}">{{$soa_class -> class_name}}</option>
                 @endforeach
             </select>
         </td>
         <td class="col-md-3">
-            <select multiple class="form-control" id="o">
+            <select size = 5 class="form-control" id="o" style="overflow-x: auto; height: 120px">
                 @foreach($soa_classes['O'] as $soa_class)
                     <option value="{{$soa_class -> soa_class_pk}}">{{$soa_class -> class_name}}</option>
                 @endforeach
@@ -47,21 +47,21 @@
     </tr>
     <tr>
         <td class="col-md-3">
-            <select multiple class="form-control" id="a">
+            <select size = 5 class="form-control" id="a" style="overflow-x: auto; height: 120px">
                 @foreach($soa_classes['A'] as $soa_class)
                     <option value="{{$soa_class -> soa_class_pk}}">{{$soa_class -> class_name}}</option>
                 @endforeach
             </select>
         </td>
         <td class="col-md-3">
-            <select multiple class="form-control" id="p">
+            <select size = 5 class="form-control" id="p" style="overflow-x: auto; height: 120px">
                 @foreach($soa_classes['P'] as $soa_class)
                     <option value="{{$soa_class -> soa_class_pk}}">{{$soa_class -> class_name}}</option>
                 @endforeach
             </select>
         </td>
         <td class="col-md-3">
-            <select multiple class="form-control" id="e">
+            <select size = 5 class="form-control" id="e" style="overflow-x: auto; height: 120px">
                 @foreach($soa_classes['E'] as $soa_class)
                     <option value="{{$soa_class -> soa_class_pk}}">{{$soa_class -> class_name}}</option>
                 @endforeach

@@ -2,7 +2,7 @@
     <tr>
         <td>S</td>
         <td>0</td>
-        <td>個人化字串</td>
+        <td>个人化字串</td>
     </tr>
     <tr>
         <td><textarea class="form-control" style=" height: 150px;" id="s_text">{{$user_data['S']}}</textarea></td>
@@ -47,8 +47,8 @@
     <tr>
         <td colspan="3">
             {!! Form::open(array('url'=>'/soap/','method'=>'POST', 'id'=>'soap_save')) !!}
-            {!! Form::button('儲 存', array('class'=>'btn btn-default', 'id'=>'soap_save_btn', 'style' => 'width: 150px; margin: 0 auto')) !!}
-            <a href="/soap_history/{{$uuid}}" class="btn btn-default" style="width: 150px;">歷史紀錄</a>
+            {!! Form::button('储 存', array('class'=>'btn btn-default', 'id'=>'soap_save_btn', 'style' => 'width: 150px; margin: 0 auto')) !!}
+            <a href="/soap_history/{{$uuid}}" class="btn btn-default" style="width: 150px;">历史纪录</a>
             {!! Form::close() !!}
         </td>
     </tr>

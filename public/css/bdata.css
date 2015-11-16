@@ -33,4 +33,18 @@ table.statics , th, td, tr {
 .select-row > td {
     background-color: transparent;
 }
+<<<<<<< HEAD
 /*# sourceMappingURL=bdata.css.map */
+=======
+@media print {
+  a[href]:after {
+        content: none!important;
+    }
+}
+.no-hover:hover{
+    background-color: transparent!important;
+    border:0px!important;
+
+}
+/*# sourceMappingURL=bdata.css.map */
+>>>>>>> d6037d42d353ad0d854bbe7715be7bb8beab7778

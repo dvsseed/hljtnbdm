@@ -19,7 +19,7 @@ class BloodSugarDetail extends Model
     protected static function rules()
     {
         return [
-            'measure_time' => 'required|date_format:Y-m-d h:i',
+            'measure_time' => 'required|date_format:Y-m-d H:i',
             'measure_type' => 'required',
             'exercise_type' => 'in:slight,medium,heavy',
             'exercise_duration' => 'numeric|min:0',

@@ -5,12 +5,12 @@
 var mapping = {
     'early_morning': '凌晨',
     'morning': '晨起',
-    'breakfast_before': '早餐飯前',
-    'breakfast_after': '早餐飯後',
-    'lunch_before': '中餐飯前',
-    'lunch_after': '中餐飯後',
-    'dinner_before': '晚餐飯前',
-    'dinner_after': '晚餐飯後',
+    'breakfast_before': '早餐饭前',
+    'breakfast_after': '早餐饭后',
+    'lunch_before': '中餐饭前',
+    'lunch_after': '中餐饭后',
+    'dinner_before': '晚餐饭前',
+    'dinner_after': '晚餐饭后',
     'sleep_before': '睡前'
 };
 var mapping_time = {
@@ -46,9 +46,9 @@ $( document ).ready(function() {
             duration: 1,
             always: checkContent
         });
-        if($(this).attr('href') == "#message"){
+        if(link == "#message"){
             setUpMessage();
-        }else if($(this).attr('href') == "#statics"){
+        }else if(link == "#statics"){
             getStaticsData();
         }
     });
@@ -89,6 +89,11 @@ $( document ).ready(function() {
         $('[href =' + ' #data]').click();
     }
 });
+
+function print_page(link){
+    $(link).blur();
+    window.print();
+}
 
 function openDialog(text, event){
 
@@ -141,11 +146,11 @@ function updateNote(calendar_date, ele){
                 if(result == "success"){
                     location.reload();
                 }else{
-                    alert("儲存失敗");
+                    alert("储存失败");
                 }
             },
             error: function(){
-                alert("儲存失敗");
+                alert("储存失败");
             }
         });
         event.preventDefault();
@@ -295,7 +300,7 @@ function setUpBatch(){
 function setUpMessage(){
     //setting for message
     $("#messages").css('height', $( window ).height() - $("#top").offset().top - $("#top").height() - 150 );
-    $("#reply").click(function(event){
+    $("#reply").unbind('click').click(function(event){
         var inputdata = {};
         inputdata['message_body'] = $("#messagearea").val();
         inputdata['_token'] = $('#message_form > input[ name=_token]').val();
@@ -386,7 +391,7 @@ function foodHandler(event){
                     }
                 }
                 else{
-                    html = "<option value=\"0\">無</option>";
+                    html = "<option value=\"0\">无</option>";
                 }
 
                 food_type.html(html);
@@ -397,7 +402,7 @@ function foodHandler(event){
         });
     }
     else{
-        food_type.html("<option value=\"0\">無</option>");
+        food_type.html("<option value=\"0\">无</option>");
     }
 
 
@@ -508,7 +513,7 @@ function init_food_input(){
     tr.find("#add_food").blur();
 
     tr.find("#food_category").val("0");
-    tr.find("#food_type_option").html("<option value=\"0\">無</option>");
+    tr.find("#food_type_option").html("<option value=\"0\">无</option>");
     tr.find("#amount").val("");
     tr.find("#food_unit").val("gram");
 
@@ -598,27 +603,27 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
             flag = false;
         }
         else if (isNaN($('#blood_sugar').val() / 1)) {
-            $("#blood_sugar_err").html("必須是數字");
+            $("#blood_sugar_err").html("必须是数字");
             flag = false;
         }
         if ($('#insulin_type_1').val() != 0 &&  isNaN($('#insulin_value_1').val() / 1)) {
-            $("#insulin_1_err").html("必須是數字");
+            $("#insulin_1_err").html("必须是数字");
             flag = false;
         }
         if ($('#insulin_type_2').val() != 0 && isNaN($('#insulin_value_2').val() / 1)) {
-            $("#insulin_2_err").html("必須是數字");
+            $("#insulin_2_err").html("必须是数字");
             flag = false;
         }
         if ($('#insulin_type_3').val() != 0 && isNaN($('#insulin_value_3').val() / 1)) {
-            $("#insulin_3_err").html("必須是數字");
+            $("#insulin_3_err").html("必须是数字");
             flag = false;
         }
         if (isNaN($('#sugar').val() / 1) ) {
-            $("#sugar_err").html("必須是數字");
+            $("#sugar_err").html("必须是数字");
             flag = false;
         }
         if($("#sport").val() != "none" && $("#duration").val() == "none"){
-            $("#sport_err").html("必須填入時間");
+            $("#sport_err").html("必须填入时间");
             flag = false;
         }
 
@@ -662,11 +667,11 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
                         //$("#insert_data").hide();
                         location.reload();
                     }else{
-                        alert("儲存失敗");
+                        alert("储存失败");
                     }
                 },
                 error: function(){
-                    alert("儲存失敗");
+                    alert("储存失败");
                 }
             });
         }
@@ -678,7 +683,7 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
         $("#sport").val("none");
         $("#duration").val("none");
         $("#low").val("0");
-        $("#blood_sugar").val();
+        $("#blood_sugar").val("");
         $("#insulin_type_1").val("0");
         $("#insulin_type_2").val("0");
         $("#insulin_type_3").val("0");
@@ -789,11 +794,11 @@ function insertFood(calendar_date, type) {
 
                         location.reload();
                     }else{
-                        alert("儲存失敗");
+                        alert("储存失败");
                     }
                 },
                 error: function(){
-                    alert("儲存失敗");
+                    alert("储存失败");
                 }
             });
         }else{
@@ -820,7 +825,7 @@ function insertFood(calendar_date, type) {
 
     $("#delete_food_all").unbind('click').click(function(){
 
-        if (confirm("確定要刪除嗎?") == true) {
+        if (confirm("确定要删除吗?") == true) {
             $.ajax({
                 type: 'DELETE',
                 url: '/bdata/foods/'+$("#food_calendar_date").html(),
@@ -829,11 +834,11 @@ function insertFood(calendar_date, type) {
                     if(result == "success"){
                         location.reload();
                     }else{
-                        alert("刪除失敗");
+                        alert("删除失败");
                     }
                 },
                 error: function(){
-                    alert("刪除失敗");
+                    alert("删除失败");
                 }
             });
         }

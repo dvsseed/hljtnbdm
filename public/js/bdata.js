@@ -46,9 +46,9 @@ $( document ).ready(function() {
             duration: 1,
             always: checkContent
         });
-        if($(this).attr('href') == "#message"){
+        if(link == "#message"){
             setUpMessage();
-        }else if($(this).attr('href') == "#statics"){
+        }else if(link == "#statics"){
             getStaticsData();
         }
     });
@@ -89,6 +89,11 @@ $( document ).ready(function() {
         $('[href =' + ' #data]').click();
     }
 });
+
+function print_page(link){
+    $(link).blur();
+    window.print();
+}
 
 function openDialog(text, event){
 
@@ -295,7 +300,7 @@ function setUpBatch(){
 function setUpMessage(){
     //setting for message
     $("#messages").css('height', $( window ).height() - $("#top").offset().top - $("#top").height() - 150 );
-    $("#reply").click(function(event){
+    $("#reply").unbind('click').click(function(event){
         var inputdata = {};
         inputdata['message_body'] = $("#messagearea").val();
         inputdata['_token'] = $('#message_form > input[ name=_token]').val();
@@ -678,7 +683,7 @@ function updateBloodSugar(calendar_date, type, sugar_value) {
         $("#sport").val("none");
         $("#duration").val("none");
         $("#low").val("0");
-        $("#blood_sugar").val();
+        $("#blood_sugar").val("");
         $("#insulin_type_1").val("0");
         $("#insulin_type_2").val("0");
         $("#insulin_type_3").val("0");

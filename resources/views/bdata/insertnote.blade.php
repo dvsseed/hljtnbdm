@@ -7,12 +7,12 @@
             <td>日 期：</td><td id="calendar_date_note"></td>
         </tr>
         <tr>
-            <td style="vertical-align:middle;">備 註：</td><td class="form-inline"><textarea id="day_note" style="width: 330px; height: 150px" class="form-control"></textarea></td>
+            <td style="vertical-align:middle;">备 注：</td><td class="form-inline"><textarea id="day_note" style="width: 330px; height: 150px" class="form-control"></textarea></td>
         </tr>
         <tr>
             <td colspan="2">
                 {!! Form::open(array('url'=>'upsert','method'=>'POST', 'id'=>'mynoteform')) !!}
-                {!! Form::button('存 檔', array('class'=>'btn btn-default', 'id'=>'save_note')) !!}
+                {!! Form::button('存 档', array('class'=>'btn btn-default', 'id'=>'save_note')) !!}
                 <button class="btn btn-default" id="cancel_note">取 消</button>
                 {!! Form::close() !!}
             </td>
