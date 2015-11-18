@@ -2,7 +2,7 @@
 {!! Html::style('css/bdata.css') !!}
 {!! Html::style('css/all.css') !!}
 <div id="data" class="content" style="display: none;">
-    <div style="text-align: center"><a href="{{$data['previous']}}" style="float: left; margin-bottom: 10px" class="btn btn-default" id="before_two_week">两周前</a>@if($data['next'] != null)<a href="{{$data['next'] }}" class="btn btn-default" style="float: right; margin-bottom: 10px" id="after_two_week">两周后</a>@endif
+    <div style="text-align: center"><a href="{{$data['previous']}}" style="float: left; margin-bottom: 10px" class="btn btn-default" id="before_two_week">一个月前</a>@if($data['next'] != null)<a href="{{$data['next'] }}" class="btn btn-default" style="float: right; margin-bottom: 10px" id="after_two_week">一个月后</a>@endif
         总次数:{{$stat['total']}} | 次/週:{{$stat['total']/2}}  | 次/日:{{round($stat['total']/14,2)}}
     </div>
     <table class="table table-hover statics" id="sugartable">

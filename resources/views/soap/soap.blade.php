@@ -9,9 +9,14 @@
         @if(isset($err_msg))
             @include('soap.error')
         @else
-            @include('soap.option')
-            @include('soap.edit')
+            <table>
+                <tr>
+                    <td>@include('soap.option')</td>
+                    <td>@include('soap.edit')</td>
+                </tr>
+            </table>
         @endif
+        <input id="history_pk" type="hidden" value="{{$history_pk}}"/>
     </div>
 @stop
 @section('loadScripts')
