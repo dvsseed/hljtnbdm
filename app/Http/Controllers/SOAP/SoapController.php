@@ -60,11 +60,13 @@ class SoapController extends Controller
         $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid)->first();
 
         $user_data = array();
+        $history_pk = null;
 
         if($user_soap != null && isset($request['history'])){
             $history = $user_soap -> history() -> find($request['history']);
             if($history != null){
                 $user_soap = $history;
+                $history_pk = $history -> user_soap_history_pk;
             }
         }
 
@@ -85,7 +87,7 @@ class SoapController extends Controller
         }
         Session::put('uuid', $uuid);
 
-        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid'));
+        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid', 'history_pk'));
     }
 
     public function delete_history(Request $request){
@@ -124,7 +126,7 @@ class SoapController extends Controller
         $user_soap = $hospital_no -> user_soap;
         $histories = array();
         if($user_soap != null){
-            $histories = $user_soap -> history() -> orderBy('updated_at', 'desc') -> get();
+            $histories = $user_soap -> history() -> where('is_visible', '=', '1') -> orderBy('updated_at', 'desc') -> get();
         }
         foreach($histories as $history){
             $history -> user_id = User::find($history -> user_id) -> name;
@@ -224,12 +226,23 @@ class SoapController extends Controller
             $user_soap_history -> user_soap_pk = $user_soap -> user_soap_pk;
             $user_soap_history -> user_id = Auth::user() -> id;
             $user_soap_history -> created_at = $user_soap -> created_at;
+
+            if(isset($request["history"])){
+                $history = $user_soap -> history() -> find($request["history"]);
+
+                if($history != null){
+                    $user_soap_history -> old_pk = $history -> user_soap_history_pk;
+                    $history -> is_visible = 0;
+
+                    $history -> save();
+                }
+            }
+
             $user_soap_history -> save();
 
             DB::commit();
             return "success";
         }catch (\Exception $e){
-
             DB::rollback();
 	    return "fail";
         }

@@ -9,7 +9,7 @@
     <div class="container">
         <h3>病历号码: <a href="/soap/{{$uuid}}?new=true">{{$hospital_no_displayname}}</a></h3>
         <br/>
-        <table class="table borderless" id="history">
+        <table class="table" id="history">
             <tr>
                 <td style="width: 150px; min-width: 150px;">卫教日期</td>
                 <td style="width: 150px; min-width: 150px;">修改日期</td>
@@ -23,15 +23,15 @@
                 <td>删除</td>
             </tr>
             @foreach($histories as $history)
-                <tr>
+                <tr >
                     <td>{{$history -> created_at}}</td>
                     <td>{{$history -> updated_at}}</td>
-                    <td><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{{$history -> s_text}}</a></td>
-                    <td><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{{$history -> o_text}}</a></td>
-                    <td><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{{$history -> a_text}}</a></td>
-                    <td><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{{$history -> p_text}}</a></td>
-                    <td><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{{$history -> e_text}}</a></td>
-                    <td><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{{$history -> r_text}}</a></td>
+                    <td style="text-align: left"><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{!! nl2br($history -> s_text)!!}</a></td>
+                    <td style="text-align: left"><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{!! nl2br($history -> o_text)!!}</a></td>
+                    <td style="text-align: left"><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{!! nl2br($history -> a_text)!!}</a></td>
+                    <td style="text-align: left"><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{!! nl2br($history -> p_text)!!}</a></td>
+                    <td style="text-align: left"><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{!! nl2br($history -> e_text)!!}</a></td>
+                    <td style="text-align: left"><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{!! nl2br($history -> r_text)!!}</a></td>
                     <td><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{{$history -> user_id}}</a></td>
                     <td><button class="btn btn-default" onclick="delete_soap({{$history -> user_soap_history_pk}})">删除</button></td>
                 </tr>

@@ -83,7 +83,7 @@ use App\Feature;
                 $data['next'] = null;
                 $end = date('Y-m-d');
             }else{
-                $next = date('Y-m-d',strtotime("2 week", strtotime($end)));
+                $next = date('Y-m-d',strtotime("1 month", strtotime($end)));
                 if($end == date('Y-m-d')){
                     $data['next'] = null;
                 }
@@ -94,7 +94,7 @@ use App\Feature;
                 }
             }
 
-            $start = date('Y-m-d', strtotime("-2 week", strtotime($end)));
+            $start = date('Y-m-d', strtotime("-1 month", strtotime($end)));
             $data['previous'] = "/bdata/".$uuid."/".$start;
 
             if($hospital_no->count() ==0 ) {
@@ -131,7 +131,7 @@ use App\Feature;
 
         private function get_has_food($uuid){
             $calendar_date = date('Y-m-d');
-            $start = date('Y-m-d', strtotime("-2 week", strtotime($calendar_date)));
+            $start = date('Y-m-d', strtotime("-1 month", strtotime($calendar_date)));
             $records = HospitalNo::find($uuid)->food_record()->where('calendar_date','<=',$calendar_date)-> where('calendar_date','>',$start)->get();
 
             $food_all_calendar = array();
