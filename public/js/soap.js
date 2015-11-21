@@ -28,7 +28,7 @@ $( document ).ready(function() {
         setSOAClass( $(this).val());
     });
 
-    $("#s").change(function(){
+    $("#s").click(function(){
         appendText( $(this).find('option:selected').text(), $("#s_text"));
     });
 
@@ -36,16 +36,16 @@ $( document ).ready(function() {
         appendText( $(this).find('option:selected').text(), $("#o_text"));
     });
 
-    $("#a").change(function(){
+    $("#a").click(function(){
         setSOADetail( $(this).val() );
         appendText( $(this).find('option:selected').text(), $("#a_text"));
     });
 
-    $("#p").change(function(){
+    $("#p").click(function(){
         appendText( $(this).find('option:selected').text(), $("#p_text"));
     });
 
-    $("#e").change(function(){
+    $("#e").click(function(){
         appendText( $(this).find('option:selected').text(), $("#e_text"));
     });
 
@@ -54,7 +54,7 @@ $( document ).ready(function() {
         $("#customize_text").val("");
     });
 
-    $("#customize_select").change(function(){
+    $("#customize_select").click(function(){
         var select_id = "#" + $("#customize_type").val().toLowerCase() + "_text";
         appendText( $(this).find('option:selected').text(), $(select_id));
     });
@@ -89,6 +89,10 @@ $( document ).ready(function() {
         inputdata['e_text'] = $("#e_text").val();
         inputdata['r_text'] = $("#r_text").val();
         inputdata['_token'] = $('#customize > input[ name=_token]').val();
+
+        if($("#history_pk").val() != ""){
+            inputdata['history'] = $("#history_pk").val();
+        }
         $.ajax({
             type: 'POST',
             url: '/soap/post_soap',
@@ -173,7 +177,7 @@ function setCustomize( type){
             if(result){
                 var html = "";
                 for(var i = 0; i< result.length; i++){
-                    html += '<option value="' + result[i].user_customerize_pk + '">' + result[i].text + '</option>';
+                    html += '<option value="' + result[i].user_customize_pk + '">' + result[i].text + '</option>';
                 }
                 $("#customize_select").html(html);
             }
@@ -182,7 +186,22 @@ function setCustomize( type){
 }
 
 function appendText( text, textarea){
-    textarea.val(textarea.val() + text + "\n");
+    var old = textarea.val();
+    textarea.val( old + get_number(old)+ ". " + text + "\n");
     textarea.scrollTop(textarea[0].scrollHeight);
+}
+
+function get_number(text){
+    if(text){
+        lines = text.split("\n");
+        for(var i = lines.length-1; i >= 0; i--){
+            heads = lines[i].split(".");
+            if(!isNaN(heads[0]) && heads[0] != ""){
+                return parseInt(heads[0])+1;
+            }
+        }
+    }
+
+    return 1;
 }
 //# sourceMappingURL=soap.js.map
