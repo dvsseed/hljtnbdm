@@ -74,6 +74,7 @@ Route::resource("case", "Cases\CasesController");
 #血糖
 Route::get('/bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');
 Route::get('/bdata/food/statics', 'BData\BDataController@get_all_stat');
+Route::get('/bdata/blood/chart', 'BData\BDataController@get_blood_chart');
 Route::delete('/bdata/foods/{calendar_date}', 'BData\BDataController@delete_food');
 Route::get('/bdata/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_detail');
 Route::get('/bdata/message', 'BData\BDataController@message');

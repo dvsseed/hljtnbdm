@@ -31,7 +31,8 @@ elixir(function(mix) {
         "jquery.ui.timepicker.js"
     ], 'public/js/timepicker.js').scripts([
         "soap.js"
-    ], 'public/js/soap.js');
+    ], 'public/js/soap.js').scripts([
+        "Chart.js"], 'public/js/chart.js');
 });
 
 

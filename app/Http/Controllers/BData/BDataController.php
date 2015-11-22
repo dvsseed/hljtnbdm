@@ -220,8 +220,12 @@ use App\Feature;
                 $blood_records = $this -> get_blood_stat($uuid);
                 return view('bdata.blood_statics', compact('food_records', 'blood_records'));
             }
+        }
 
-
+        public function get_blood_chart(){
+            $uuid = Session::get('uuid');
+            $blood_records = $this -> get_blood_stat($uuid);
+            return $blood_records;
         }
 
         private function get_blood_stat($uuid){
