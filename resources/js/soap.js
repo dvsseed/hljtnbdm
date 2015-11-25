@@ -67,6 +67,7 @@ $( document ).ready(function() {
     $("#customize_btn").click(function(e){
         e.preventDefault();
         var inputdata = {};
+        inputdata['main_class'] = $("#customize_class").val();
         inputdata['types'] = $("#customize_type").val();
         inputdata['text'] = $("#customize_text").val();
         inputdata['_token'] = $('#customize > input[ name=_token]').val();
@@ -76,7 +77,7 @@ $( document ).ready(function() {
             data: inputdata,
             success: function(result){
                 if(result == 'success'){
-                    setCustomize($("#customize_type").val());
+                    setCustomize($("#customize_class").val(),$("#customize_type").val());
                     $("#customize_text").val("");
                     $("#customize_btn").blur();
                 }
@@ -114,7 +115,7 @@ $( document ).ready(function() {
         });
     });
 
-    setCustomize($("#customize_type").val());
+    setCustomize($("#customize_class").val(), $("#customize_type").val());
 });
 
 function delete_soap(soap_history_pk){

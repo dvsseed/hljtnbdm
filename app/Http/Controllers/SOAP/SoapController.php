@@ -185,6 +185,7 @@ class SoapController extends Controller
         DB::beginTransaction();
         try{
             $userCustomize = new UserCustomize();
+            $userCustomize -> main_class_pk = $request -> main_class;
             $userCustomize -> type = $request -> types;
             $userCustomize -> text = $request -> text;
             $userCustomize -> user_id = $user_id;
