@@ -174,9 +174,9 @@ class SoapController extends Controller
         return null;
     }
 
-    public function get_customize($type){
+    public function get_customize($class,$type){
         $user_id = Auth::user() -> id;
-        return UserCustomize::where('user_id', '=' , $user_id) -> where('type', '=', $type) -> get();
+        return UserCustomize::where('user_id', '=' , $user_id) -> where('main_class_pk', '=', $class) -> where('type', '=', $type) -> get();
     }
 
     public function post_customize(Request $request){

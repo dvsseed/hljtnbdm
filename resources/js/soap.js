@@ -49,8 +49,13 @@ $( document ).ready(function() {
         appendText( $(this).find('option:selected').text(), $("#e_text"));
     });
 
+    $("#customize_class").change(function(){
+        setCustomize($("#customize_class").val(),$("#customize_type").val());
+        $("#customize_text").val("");
+    });
+
     $("#customize_type").change(function(){
-        setCustomize($("#customize_type").val());
+        setCustomize($("#customize_class").val(),$("#customize_type").val());
         $("#customize_text").val("");
     });
 
@@ -169,10 +174,10 @@ function setSOADetail(soa_class_pk){
     });
 }
 
-function setCustomize( type){
+function setCustomize( main_class, type){
     $.ajax({
         type: 'GET',
-        url: '/soap/get_customize/' + type,
+        url: '/soap/get_customize/' + main_class + '/' + type,
         success: function(result){
             if(result){
                 var html = "";

@@ -8,6 +8,12 @@
         <td><textarea class="form-control" style=" height: 150px;" id="s_text">{{$user_data['S']}}</textarea></td>
         <td><textarea class="form-control" style=" height: 150px;" id="o_text">{{$user_data['O']}}</textarea></td>
         <td rowspan="5">
+            <select class="form-control" id="customize_class">
+                @foreach($main_classes as $main_class)
+                        <option value="{{$main_class -> main_class_pk}}">{{$main_class -> class_name}}</option>
+                @endforeach
+            </select>
+            <br/>
             <select class="form-control" id="customize_type">
                 <option value="S">S</option>
                 <option value="O">O</option>
