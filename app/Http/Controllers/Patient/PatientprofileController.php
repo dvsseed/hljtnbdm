@@ -26,7 +26,8 @@ class PatientprofileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('patient');
+//        $this->middleware('patient');
+	    // \Debugbar::enable();
     }
 
     /**
@@ -76,9 +77,33 @@ class PatientprofileController extends Controller
         $sources = Patientprofile::$_source;
         $occupations = Patientprofile::$_occupation;
         $languages = Patientprofile::$_language;
+        $patientid = null;
 
         EventController::SaveEvent('patientprofile', 'create(创建)');
-        return view('patient.create', compact('year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
+        return view('patient.create', compact('year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
+    }
+
+    public function ccreate($patientid)
+    {
+        $pps = Patientprofile::where('pp_patientid', '=', $patientid)->first();
+        if (!is_null($pps)) {
+            $err_msg = '患者资料已存在!!';
+            return view('patient.create', compact('err_msg'));
+        } else {
+            $carbon = Carbon::today();
+            // $format = $carbon->format('Y-m-d H:i:s');
+            $year = $carbon->year;
+            $bsms = BSM::orderBy('bm_order')->get();
+            $areas = Patientprofile::$_area;
+            $doctors = Patientprofile::$_doctor;
+            $sources = Patientprofile::$_source;
+            $occupations = Patientprofile::$_occupation;
+            $languages = Patientprofile::$_language;
+            $err_msg = null;
+
+            EventController::SaveEvent('patientprofile', 'create(创建)');
+            return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
+        }
     }
 
     /**
@@ -129,6 +154,7 @@ class PatientprofileController extends Controller
             $patientprofile->pp_occupation = $request->pp_occupation;
             $patientprofile->pp_address = $request->pp_address;
             $patientprofile->pp_email = $request->pp_email;
+            $patientprofile->educator = Auth::user()->name;
             $patientprofile->save();
 
             // casecare
@@ -341,6 +367,7 @@ class PatientprofileController extends Controller
             $patientprofile->pp_occupation = $request->pp_occupation;
             $patientprofile->pp_address = $request->pp_address;
             $patientprofile->pp_email = $request->pp_email;
+            $patientprofile->educator = Auth::user()->name;
             $patientprofile->save();
 
             // casecare

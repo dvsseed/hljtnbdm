@@ -48,7 +48,7 @@ class Patientprofile extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'pp_patientid', 'pp_personid', 'pp_name', 'pp_birthday', 'pp_age', 'pp_sex', 'pp_height', 'pp_weight', 'pp_tel1', 'pp_tel2', 'pp_mobile1', 'pp_mobile2', 'pp_area', 'pp_doctor', 'pp_remark', 'pp_source', 'pp_occupation', 'pp_address', 'pp_email'];
+    protected $fillable = ['user_id', 'pp_patientid', 'pp_personid', 'pp_name', 'pp_birthday', 'pp_age', 'pp_sex', 'pp_height', 'pp_weight', 'pp_tel1', 'pp_tel2', 'pp_mobile1', 'pp_mobile2', 'pp_area', 'pp_doctor', 'pp_remark', 'pp_source', 'pp_occupation', 'pp_address', 'pp_email', 'educator'];
 
     protected $dates = ['pp_birthday'];
 

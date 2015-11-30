@@ -10,7 +10,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a href="/dm/home">
+                        <a href="/dm/personal">
                             <button class="btn btn-info">个人信息</button>
                         </a>
                     </div>
@@ -41,33 +41,18 @@
                                 {!! Form::text('name', Auth::user()->name, ['class' => 'form-control', 'readonly']) !!}
                             </div>
                         </div>
-                        @if (strlen(Auth::user()->id) >= 18)
-                            <div class="form-group">
-                                {!! Form::label('department', '部门: ', ['class' => 'col-md-2 control-label']) !!}
-                                <div class="col-md-6">
-                                    {!! Form::text('department', Auth::user()->department, ['class' => 'form-control', 'readonly']) !!}
-                                </div>
+                        <div class="form-group">
+                            {!! Form::label('department', '部门: ', ['class' => 'col-md-2 control-label']) !!}
+                            <div class="col-md-6">
+                                {!! Form::text('department', Auth::user()->department, ['class' => 'form-control', 'readonly']) !!}
                             </div>
-                            <div class="form-group">
-                                {!! Form::label('position', '职务: ', ['class' => 'col-md-2 control-label']) !!}
-                                <div class="col-md-6">
-                                    {!! Form::text('position', Auth::user()->position, ['class' => 'form-control', 'readonly']) !!}
-                                </div>
+                        </div>
+                        <div class="form-group">
+                            {!! Form::label('position', '职务: ', ['class' => 'col-md-2 control-label']) !!}
+                            <div class="col-md-6">
+                                {!! Form::text('position', Auth::user()->position, ['class' => 'form-control', 'readonly']) !!}
                             </div>
-                        @else
-                            <div class="form-group">
-                                {!! Form::label('department', '部门: ', ['class' => 'col-md-2 control-label']) !!}
-                                <div class="col-md-6">
-                                    {!! Form::text('department', Auth::user()->department, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                {!! Form::label('position', '职务: ', ['class' => 'col-md-2 control-label']) !!}
-                                <div class="col-md-6">
-                                    {!! Form::select('position', ['院长' => '院长', '副院长' => '副院长', '住院处主任' => '住院处主任', '药剂科长' => '药剂科长', '病区科主任' => '病区科主任', '医师' => '医师', '医助' => '医助', '营养师' => '营养师', '护理师' => '护理师'], Auth::user()->position, ['class' => 'form-control']) !!}
-                                </div>
-                            </div>
-                        @endif
+                        </div>
                         <div class="form-group">
                             {!! Form::label('phone', '手机: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
@@ -81,7 +66,7 @@
                             </div>
                         </div>
                         <div class="group">
-                            <a class="btn btn-default" href="{{ route('dm_home') }}">返回</a>
+                            <a class="btn btn-default" href="{{ route('dm_personal') }}">返回</a>
                             {!! Form::submit('确认修改', ['class' => 'btn btn-success']) !!}
                         </div>
                         {!! Form::close() !!}

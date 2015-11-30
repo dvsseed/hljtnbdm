@@ -11,21 +11,11 @@
 #Route::post('/test', ['as' => 'test_upload', 'uses' => 'TestController@post']);
 #Route::get('/users/export', 'TestController@export');
 #Route::get('users', 'TestController@users');
-#redis
-#Route::get('test', function(){
-#    if (\Cache::has('test')) {
-#        echo '存在chche,读取'.'<br />';
-#        echo \Cache::get('test');
-#    } else {
-#        echo '不存在cache,现在创建'.'<br />';
-#        $time = \Carbon\Carbon::now()->addMinutes(10);
-#        $redis = \Cache::add('test', '这是缓存资源', $time);
-#        echo \Cache::get('test');
-#    }
-#});
 
 #主页
 Route::get('/', 'WelcomeController@index');
+Route::get('logs', 'LogViewerController@index');
+#Route::get('logs', function(){ return 'Hello World'; });
 
 #登录，登出, 自动跳转, 密码重置
 Route::get('login', ['middleware' => 'guest', 'as' => 'login', 'uses' => 'loginController@loginGet']);
@@ -37,8 +27,15 @@ Route::get('/about', ['middleware' => 'auth', 'as' => 'about', 'uses' => 'Pages\
 
 #人员的登录详情(包括资料修改，查询)
 Route::get('dm/home', ['as' => 'dm_home', 'uses' => 'DM\DiabetesController@home']);
+Route::get('dm/personal', ['as' => 'dm_personal', 'uses' => 'DM\DiabetesController@personal']);
 Route::get('dm/edit', ['as' => 'dm_edit', 'uses' => 'DM\DiabetesController@edit']);
+Route::get('dm/create', ['as' => 'dm_create', 'uses' => 'DM\DiabetesController@create']);
+Route::get('dm/eedit/{id}', ['as' => 'dm_eedit', 'uses' => 'DM\DiabetesController@eedit']);
+Route::delete('dm/destroy/{id}', ['as' => 'dm_destroy', 'uses' => 'DM\DiabetesController@destroy']);
 Route::post('dm/update', ['as' => 'dm_update', 'uses' => 'DM\DiabetesController@update']);
+Route::post('dm/uupdate', ['as' => 'dm_uupdate', 'uses' => 'DM\DiabetesController@uupdate']);
+Route::post('dm/store', ['as' => 'dm_store', 'uses' => 'DM\DiabetesController@store']);
+Route::get('dm/gobd/{pid}', ['as' => 'dm_gobd', 'uses' => 'DM\DiabetesController@gobd']);
 
 #管理员入口(增删改查，上传)
 #Route::get('admin/grade', ['as' => 'grade_list', 'uses' => 'Admin\GradeController@index']);
@@ -56,7 +53,7 @@ Route::resource('feature', 'Feature\FeatureController');
 Route::post('feature/upload_feature', ['as' => 'upload_feature', 'uses' => 'Feature\FeatureController@upload_feature']);
 #操作管理
 Route::resource('hasfeature', 'Hasfeature\HasfeatureController');
-##Route::post('hasfeature/upload_hasfeature', ['as' => 'upload_hasfeature', 'uses' => 'Hasfeature\HasfeatureController@upload_hasfeature']);
+#Route::post('hasfeature/upload_hasfeature', ['as' => 'upload_hasfeature', 'uses' => 'Hasfeature\HasfeatureController@upload_hasfeature']);
 #轨迹纪录
 Route::resource('event', 'Event\EventController');
 
@@ -67,9 +64,12 @@ Route::resource("patient", "Patient\PatientprofileController");
 #Route::get('patient/forget/{key}', ['as' => 'patient.forget', 'uses' => 'Patient\PatientprofileController@forget']);
 #关于
 Route::get('/aboutpatient', ['as' => 'aboutpatient', 'uses' => 'Patient\PatientprofileController@about']);
+Route::get('patient/ccreate/{personid}', ['as' => 'patient_ccreate', 'uses' => 'Patient\PatientprofileController@ccreate']);
 
 #方案管理
-Route::resource("case", "Cases\CasesController");
+Route::resource("case", "Cases\CaseController");
+#关于
+Route::get('/aboutcase', ['as' => 'aboutcase', 'uses' => 'Cases\CaseController@about']);
 
 #血糖
 Route::get('/bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');

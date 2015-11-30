@@ -20,6 +20,7 @@
 
         <div class="col-md-12">
             @include('errors.list')
+            @if(is_null($err_msg))
             <form action="{{ route('patient.store') }}" method="POST" class="form-horizontal" role="form"
                   data-toggle="validator">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
@@ -31,7 +32,7 @@
                         <input type="text" name="pp_patientid" id="pp_patientid" class="form-control input-sm"
                                pattern="^[_A-z0-9]{1,}$" maxlength="18" data-minlength="18"
                                data-minlength-error="输入文字长度不足"
-                               value="{{ old('pp_patientid') }}" placeholder="请输入身份证号" required>
+                               value="{{ $patientid ? $patientid : old('pp_patientid') }}" placeholder="请输入身份证号" required>
                         <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
                         <span class="help-block with-errors"></span>
                     </div>
@@ -644,7 +645,13 @@
                 <a class="btn btn-default" href="{{ route('patient.index') }}">返回</a>
                 <button class="btn btn-primary" type="submit">保存</button>
             </form>
-
+            @else
+                <h4></h4>
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>[注意]</strong><br>{{ $err_msg }}
+                </div>
+            @endif
         </div>
     </div>
 @endsection

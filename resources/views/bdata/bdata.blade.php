@@ -27,6 +27,7 @@
             @endif
             <li role="presentation"><a class="menuLink" href="#hba1c">HbA1C</a></li>
             <li role="presentation"><a class="menuLink" href="#message">留言</a></li>
+            <li role="presentation"><a class="menuLink real" href="/case">方案</a></li>
             <li role="presentation"><a class="no-hover" href="#" onclick="print_page(this)">列印本页</a></li>
         </ul>
         <br/>
