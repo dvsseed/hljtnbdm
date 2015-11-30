@@ -44,7 +44,7 @@
                             </div>
                         </div>
                         <div class="form-group has-feedback">
-                            {!! Form::label('duty', '主卫教: ', ['class' => 'col-md-2 control-label']) !!}
+                            {!! Form::label('duty', '责任卫教: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
                                 {!! Form::select('duty', $dutys, old('duty'), ['class' => 'form-control', 'required']) !!}
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>

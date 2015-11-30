@@ -18,7 +18,7 @@
                     <option value="1" {{ Text::selected($category, 1) }}>身份证</option>
                     <option value="2" {{ Text::selected($category, 2) }}>卡号</option>
                     <option value="3" {{ Text::selected($category, 3) }}>建案人</option>
-                    <option value="4" {{ Text::selected($category, 4) }}>主卫教</option>
+                    <option value="4" {{ Text::selected($category, 4) }}>责任卫教</option>
                     <option value="5" {{ Text::selected($category, 5) }}>护理卫教</option>
                     <option value="6" {{ Text::selected($category, 6) }}>营养卫教</option>
                 </select>
@@ -33,7 +33,7 @@
                     <th>卡号</th>
                     <th>建案日</th>
                     <th>建案人</th>
-                    <th>主卫教</th>
+                    <th>责任卫教</th>
                     <th>进度</th>
                     <th>护理卫教</th>
                     <th>进度</th>
