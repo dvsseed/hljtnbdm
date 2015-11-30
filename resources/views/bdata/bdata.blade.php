@@ -57,6 +57,7 @@
 
 @section('loadScripts')
     {!! Html::script('js/all.js') !!}
+    {!! Html::script('js/chart.js') !!}
     {!! Html::script('js/timepicker.js') !!}
     {!! Html::script('js/bdata.js') !!}
 @stop

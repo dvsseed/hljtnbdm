@@ -74,6 +74,7 @@ Route::get('/aboutcase', ['as' => 'aboutcase', 'uses' => 'Cases\CaseController@a
 #血糖
 Route::get('/bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');
 Route::get('/bdata/food/statics', 'BData\BDataController@get_all_stat');
+Route::get('/bdata/blood/chart', 'BData\BDataController@get_blood_chart');
 Route::delete('/bdata/foods/{calendar_date}', 'BData\BDataController@delete_food');
 Route::get('/bdata/detail/{calendar_date}/{measuretype}', 'BData\BDataController@get_detail');
 Route::get('/bdata/message', 'BData\BDataController@message');
@@ -90,7 +91,7 @@ Route::get('/bdata/{uuid?}/{end?}',['as' => 'bdata', 'uses' => 'BData\BDataContr
 Route::get('/soap/get_sub/{main_class_pk}', 'SOAP\SoapController@get_sub_class');
 Route::get('/soap/get_soa/{sub_class_pk}', 'SOAP\SoapController@get_soa_class');
 Route::get('/soap/get_soa_detail/{soa_class_pk}', 'SOAP\SoapController@get_soa_detail');
-Route::get('/soap/get_customize/{type}', 'SOAP\SoapController@get_customize');
+Route::get('/soap/get_customize/{class}/{type}', 'SOAP\SoapController@get_customize');
 Route::get('/soap_history/{uuid}', 'SOAP\SoapController@get_history');
 Route::post('/soap/get_customize', 'SOAP\SoapController@post_customize');
 Route::post('/soap/post_soap', 'SOAP\SoapController@post_user_soap');

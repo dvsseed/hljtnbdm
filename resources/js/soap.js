@@ -49,8 +49,13 @@ $( document ).ready(function() {
         appendText( $(this).find('option:selected').text(), $("#e_text"));
     });
 
+    $("#customize_class").change(function(){
+        setCustomize($("#customize_class").val(),$("#customize_type").val());
+        $("#customize_text").val("");
+    });
+
     $("#customize_type").change(function(){
-        setCustomize($("#customize_type").val());
+        setCustomize($("#customize_class").val(),$("#customize_type").val());
         $("#customize_text").val("");
     });
 
@@ -62,6 +67,7 @@ $( document ).ready(function() {
     $("#customize_btn").click(function(e){
         e.preventDefault();
         var inputdata = {};
+        inputdata['main_class'] = $("#customize_class").val();
         inputdata['types'] = $("#customize_type").val();
         inputdata['text'] = $("#customize_text").val();
         inputdata['_token'] = $('#customize > input[ name=_token]').val();
@@ -71,7 +77,7 @@ $( document ).ready(function() {
             data: inputdata,
             success: function(result){
                 if(result == 'success'){
-                    setCustomize($("#customize_type").val());
+                    setCustomize($("#customize_class").val(),$("#customize_type").val());
                     $("#customize_text").val("");
                     $("#customize_btn").blur();
                 }
@@ -109,7 +115,7 @@ $( document ).ready(function() {
         });
     });
 
-    setCustomize($("#customize_type").val());
+    setCustomize($("#customize_class").val(), $("#customize_type").val());
 });
 
 function delete_soap(soap_history_pk){
@@ -169,10 +175,10 @@ function setSOADetail(soa_class_pk){
     });
 }
 
-function setCustomize( type){
+function setCustomize( main_class, type){
     $.ajax({
         type: 'GET',
-        url: '/soap/get_customize/' + type,
+        url: '/soap/get_customize/' + main_class + '/' + type,
         success: function(result){
             if(result){
                 var html = "";

@@ -24,6 +24,17 @@ var mapping_time = {
     'dinner_after': '19:01',
     'sleep_before': '20:01'
 };
+var mapping_range = {
+    'early_morning': '00:01~06:00',
+    'morning': '06:01~07:00',
+    'breakfast_before': '07:01~09:00',
+    'breakfast_after': '09:01~11:00',
+    'lunch_before': '11:01~13:00',
+    'lunch_after': '13:01~17:00',
+    'dinner_before': '17:01~19:00',
+    'dinner_after': '19:01~20:00',
+    'sleep_before': '20:01~00:00'
+};
 var patt = /\d{4}-\d{2}-\d{2}/;
 $( document ).ready(function() {
 
@@ -88,6 +99,8 @@ $( document ).ready(function() {
     else{
         $('[href =' + ' #data]').click();
     }
+
+
 });
 
 function print_page(link){
@@ -350,6 +363,69 @@ function getStaticsData(){
         url: '/bdata/food/statics',
         success: function(result){
             $("#statics").html(result);
+
+            var bs_chart = $('#bs_chart');
+
+            var option = {
+                legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\" style=\"margin-top: 10px;\"><% for (var i=0; i<segments.length; i++){%><li style=\"list-style: none; text-align: left\"><span style=\"background-color:<%=segments[i].fillColor%>; display: block; float: left; height: 16px; width: 16px; margin-right: 15px;\"></span><%if(segments[i].label){%><%=segments[i].label%>  <%=segments[i].value%><%}%></li><%}%></ul>"
+            };
+
+            if ( bs_chart.length){
+                $.ajax({
+                    trpe: 'GET',
+                    url: '/bdata/blood/chart',
+                    success: function(result){
+                        for(var key in mapping){
+                            var data = [];
+                            var flag = true;
+                            if(result[key] == undefined){
+                                $("#bs_chart_"+ key).parent().prepend(mapping[key]+"(时间:" + mapping_range[key] + ") 0笔");
+                                data = [
+                                    {
+                                        value: 100,
+                                        color:"#888888",
+                                        highlight: "#888888",
+                                        label: "无"
+                                    }
+                                ];
+                                flag = false;
+                            }else{
+                                $("#bs_chart_"+ key).parent().prepend(mapping[key]+"(时间:" + mapping_range[key] + ")" + result[key]["count"] + "笔");                            data = [
+                                    {
+                                        value: result[key]["above"].split(" ")[0],
+                                        color:"#F7464A",
+                                        highlight: "#FF5A5E",
+                                        label: "高于目标"
+                                    },
+                                    {
+                                        value: result[key]["normal"].split(" ")[0],
+                                        color: "#46BFBD",
+                                        highlight: "#5AD3D1",
+                                        label: "正常值"
+                                    },
+                                    {
+                                        value: result[key]["below"].split(" ")[0],
+                                        color: "#FDB45C",
+                                        highlight: "#FFC870",
+                                        label: "低于目标"
+                                    }
+                                ];
+                            }
+
+                            var ctx = $("#bs_chart_"+ key).get(0).getContext("2d");
+                            var myNewChart = new Chart(ctx).Pie(data,option);
+
+                            if(flag){
+                                var html = myNewChart.generateLegend();
+                                $("#bs_chart_"+ key).parent().append(html);
+                            }else{
+                                $("#bs_chart_"+ key).parent().css('padding-bottom','60px');
+                            }
+                        }
+                        //console.log(result);
+                    }
+                })
+            }
         }
     });
 }

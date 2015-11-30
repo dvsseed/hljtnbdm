@@ -100,3 +100,17 @@
         <td>@if(isset($food_records['sleep_before']['below'])){{$food_records['sleep_before']['below']}}@endif</td>
     </tr>
 </table>
+
+<div id="bs_chart">
+    <table class="table borderless">
+        <tr><td><canvas id="bs_chart_early_morning" width="300" height="300"></canvas></td>
+            <td><canvas id="bs_chart_morning" width="300" height="300"></canvas></td>
+            <td><canvas id="bs_chart_breakfast_before" width="300" height="300"></canvas></td></tr>
+        <tr><td><canvas id="bs_chart_breakfast_after" width="300" height="300"></canvas></td>
+            <td><canvas id="bs_chart_lunch_before" width="300" height="300"></canvas></td>
+            <td><canvas id="bs_chart_lunch_after" width="300" height="300"></canvas></td></tr>
+        <tr><td><canvas id="bs_chart_dinner_before" width="300" height="300"></canvas></td>
+            <td><canvas id="bs_chart_dinner_after" width="300" height="300"></canvas></td>
+            <td><canvas id="bs_chart_sleep_before" width="300" height="300"></canvas></td></tr>
+    </table>
+</div>
