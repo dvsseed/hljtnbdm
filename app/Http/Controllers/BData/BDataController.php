@@ -328,7 +328,7 @@ use App\Feature;
                 //B-B
                 if($i > 0 && $record -> breakfast_before != null && $records[$i-1] -> dinner_before != null && $records[$i-1] -> calendar_date == date('Y-m-d', strtotime('-1 day', strtotime($record -> calendar_date)))){
                     $bb = $record -> breakfast_before - $records[$i-1] -> dinner_before;
-                    if($bb >= 30 || $bb <= 30){
+                    if($bb >= 30 || $bb <= -30){
                         if($bb >= 0){
                             $bb_arr["breakfast"]["above_p"]["count"] ++;
                             $bb_arr["breakfast"]["above_p"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
@@ -357,7 +357,7 @@ use App\Feature;
                 }
                 if($record -> lunch_before != null && $record -> breakfast_before != null){
                     $bb = $record -> lunch_before - $record -> breakfast_before;
-                    if($bb >= 30 || $bb <= 30){
+                    if($bb >= 30 || $bb <= -30){
                         if($bb >= 0)
                             if($bb >= 0){
                                 $bb_arr["lunch"]["above_p"]["count"] ++;
@@ -383,7 +383,7 @@ use App\Feature;
                 }
                 if($record -> dinner_before != null && $record -> lunch_before != null){
                     $bb = $record -> dinner_before - $record -> lunch_before;
-                    if($bb >= 30 || $bb <= 30){
+                    if($bb >= 30 || $bb <= -30){
                         if($bb >= 0){
                             $bb_arr["dinner"]["above_p"]["count"] ++;
                             $bb_arr["dinner"]["above_p"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
