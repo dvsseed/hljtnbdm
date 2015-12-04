@@ -215,6 +215,11 @@ class SoapController extends Controller
             $user_soap -> p_text = $request -> p_text;
             $user_soap -> e_text = $request -> e_text;
             $user_soap -> r_text = $request -> r_text;
+
+            if(isset($request["confirm"]) && $request -> confirm == "true"){
+                $user_soap -> is_finished = true;
+            }
+
             $user_soap -> save();
 
             $user_soap_history = new UserSoapHistory();

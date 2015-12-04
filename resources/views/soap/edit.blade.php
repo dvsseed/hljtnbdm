@@ -53,7 +53,8 @@
     <tr>
         <td colspan="3">
             {!! Form::open(array('url'=>'/soap/','method'=>'POST', 'id'=>'soap_save')) !!}
-            {!! Form::button('储 存', array('class'=>'btn btn-default', 'id'=>'soap_save_btn', 'style' => 'width: 150px; margin: 0 auto')) !!}
+            {!! Form::button('暂 存', array('class'=>'btn btn-default', 'id'=>'soap_save_btn', 'style' => 'width: 150px; margin: 0 auto')) !!}
+            {!! Form::button('完 成', array('class'=>'btn btn-default', 'id'=>'soap_confirm_btn', 'style' => 'width: 150px; margin: 0 auto')) !!}
             <a href="/soap_history/{{$uuid}}" class="btn btn-default" style="width: 150px;">历史纪录</a>
             {!! Form::close() !!}
         </td>
