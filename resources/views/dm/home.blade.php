@@ -50,11 +50,10 @@
                             <td>{{ $buildcase->id }}</td>
                             @if($buildcase->doctor == $users->id || $buildcase->duty == $users->id || $buildcase->nurse == $users->id || $buildcase->dietitian == $users->id)
                                 <td>
-<!-- a href="/patient/ccreate/{{-- $buildcase->personid --}}">{{-- $buildcase->personid --}}</a -->
 <a data-html="true" href="#" data-toggle="popover" title="新增资料选项" data-content=
 "&lt;a href='/patient/ccreate/{{ $buildcase->personid }}' class='btn btn-info' role='button'&gt;患者&lt;/a&gt;
 &lt;a href='/dm/gobd/{{ $buildcase->personid }}' class='btn btn-danger' role='button'&gt;血糖&lt;/a&gt;
-&lt;a href='/case' class='btn btn-warning' role='button'&gt;方案&lt;/a&gt;">{{ $buildcase->personid }}</a>
+&lt;a href='/case/create/{{ $buildcase->personid }}' class='btn btn-warning' role='button'&gt;方案&lt;/a&gt;">{{ $buildcase->personid }}</a>
                                 </td>
                             @else
                                 <td>{{ $buildcase->personid }}</td>

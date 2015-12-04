@@ -78,9 +78,10 @@ class PatientprofileController extends Controller
         $occupations = Patientprofile::$_occupation;
         $languages = Patientprofile::$_language;
         $patientid = null;
+        $err_msg = null;
 
         EventController::SaveEvent('patientprofile', 'create(创建)');
-        return view('patient.create', compact('year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
+        return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
     }
 
     public function ccreate($patientid)

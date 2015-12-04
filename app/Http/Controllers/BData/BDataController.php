@@ -107,6 +107,7 @@ use App\Feature;
             $data['patient_displayname'] = $patient -> pp_name;
             $data['patient_bday'] =  $patient -> pp_birthday;
             $data['patient_age'] =  $patient -> pp_age;
+            $data['patient_id'] =  $patient -> pp_patientid;
 
             $blood_records = $hospital_no->blood_sugar()->where('calendar_date', '<=', $end)->where('calendar_date', '>', $start)->orderBy('calendar_date', 'DESC')->get();
 

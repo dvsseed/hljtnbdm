@@ -15,7 +15,6 @@
 #主页
 Route::get('/', 'WelcomeController@index');
 Route::get('logs', 'LogViewerController@index');
-#Route::get('logs', function(){ return 'Hello World'; });
 
 #登录，登出, 自动跳转, 密码重置
 Route::get('login', ['middleware' => 'guest', 'as' => 'login', 'uses' => 'loginController@loginGet']);
@@ -38,13 +37,10 @@ Route::post('dm/store', ['as' => 'dm_store', 'uses' => 'DM\DiabetesController@st
 Route::get('dm/gobd/{pid}', ['as' => 'dm_gobd', 'uses' => 'DM\DiabetesController@gobd']);
 
 #管理员入口(增删改查，上传)
-#Route::get('admin/grade', ['as' => 'grade_list', 'uses' => 'Admin\GradeController@index']);
 #资源路由,人员的增删改查
 Route::resource('admin', 'Admin\AdminController');
 #更新信息
 Route::post('admin/upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminController@upload_user']);
-#清除搜寻字
-#Route::get('admin/forget/{key}', ['as' => 'admin.forget', 'uses' => 'Admin\AdminController@forget']);
 #下载人员名单
 Route::get('download/dmList', ['as' => 'download_dm_list_excel', 'uses' => 'Admin\ExcelController@dmList']);
 
@@ -60,8 +56,6 @@ Route::resource('event', 'Event\EventController');
 #一般人员入口
 #患者基本资料
 Route::resource("patient", "Patient\PatientprofileController");
-#清除搜寻字
-#Route::get('patient/forget/{key}', ['as' => 'patient.forget', 'uses' => 'Patient\PatientprofileController@forget']);
 #关于
 Route::get('/aboutpatient', ['as' => 'aboutpatient', 'uses' => 'Patient\PatientprofileController@about']);
 Route::get('patient/ccreate/{personid}', ['as' => 'patient_ccreate', 'uses' => 'Patient\PatientprofileController@ccreate']);
@@ -70,6 +64,7 @@ Route::get('patient/ccreate/{personid}', ['as' => 'patient_ccreate', 'uses' => '
 Route::resource("case", "Cases\CaseController");
 #关于
 Route::get('/aboutcase', ['as' => 'aboutcase', 'uses' => 'Cases\CaseController@about']);
+Route::get('case/create/{personid}', ['as' => 'case_create', 'uses' => 'Cases\CaseController@create']);
 
 #血糖
 Route::get('/bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');

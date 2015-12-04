@@ -8,8 +8,10 @@
 	<!-- Bootstrap Core CSS -->
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/bootstrap-datepicker3.min.css">
         <link rel="stylesheet" href="/css/completer.min.css">
         <link rel="stylesheet" href="/css/main.css">
+        @yield('css')
 	<!-- Fonts -->
 	<!-- link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" -->
 	<!-- link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" -->
@@ -75,6 +77,8 @@
 <!-- script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap-datepicker.min.js"></script>
+<script src="/js/locales/bootstrap-datepicker.zh-TW.js" charset="UTF-8"></script>
 <script src="/js/jquery.tablesorter.min.js"></script>
 <script src="/js/validator.min.js"></script>
 <script src="/js/completer.min.js"></script>

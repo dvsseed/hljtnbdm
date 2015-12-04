@@ -25,7 +25,7 @@
                   {{-- !! Form::label('positionno', '职务代码: ', ['class' => 'control-label']) !! --}}
                   {{-- !! Form::text('positionno', null, ['class' => 'form-control']) !! --}}
                   {!! Form::label('position', '职务: ', ['class' => 'control-label']) !!}
-                  {!! Form::select('position', $positions , (isset($user->position)?null:'护理师'), ['class' => 'form-control']) !!}
+                  {!! Form::select('position', $positions , $user->position, ['class' => 'form-control']) !!}
                   {!! Form::label('phone', '手机号: ', ['class' => 'control-label']) !!}
                   {!! Form::text('phone', null, ['class' => 'form-control']) !!}
                   {!! Form::label('email', '邮箱: ', ['class' => 'control-label']) !!}
