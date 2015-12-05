@@ -232,8 +232,8 @@ use App\Feature;
             $calendar_date = date('Y-m-d');
             $start = date('Y-m-d', strtotime("-2 month", strtotime($calendar_date)));
 
-            $goal_up = 120;
-            $goal_low = 110;
+            $goal_up = array();
+            $goal_low = array();
 
             $types = ["breakfast", "lunch", "dinner"];
             $goals = ["above", "normal", "below", "all"];
@@ -271,6 +271,19 @@ use App\Feature;
                         }else{
                             $blood_tmp[$node] = [$record[$node]];
                         }
+                    }
+
+                    if($node == 'breakfast_before' || $node == 'lunch_before' || $node == 'dinner_before'){
+                        $goal_up[$node] = 7;
+                        $goal_low[$node] = 3.9;
+                    }
+                    else if($node == 'breakfast_after' || $node == 'lunch_after' || $node == 'dinner_after'){
+                        $goal_up[$node] = 9;
+                        $goal_low[$node] = 5.6;
+                    }
+                    else{
+                        $goal_up[$node] = 8.3;
+                        $goal_low[$node] = 5.6;
                     }
                 }
 
@@ -433,7 +446,7 @@ use App\Feature;
                 $blood_stat[$key]["max"] = max($blood_array);
                 $blood_stat[$key]["min"] = min($blood_array);
 
-                $stat = $this -> count_w_condition($blood_array, $goal_up, $goal_low);
+                $stat = $this -> count_w_condition($blood_array, $goal_up[$key], $goal_low[$key]);
                 $blood_stat[$key]["above"] = $stat['above']." (".round($stat['above'] * 100 / $blood_stat[$key]["count"])."%)";
                 $blood_stat[$key]["normal"] = $stat['normal']." (".round($stat['normal'] * 100 / $blood_stat[$key]["count"])."%)";
                 $blood_stat[$key]["below"] = $stat['below']." (".round($stat['below'] * 100 / $blood_stat[$key]["count"])."%)";
