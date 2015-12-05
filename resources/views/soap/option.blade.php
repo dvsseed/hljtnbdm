@@ -2,6 +2,11 @@
 
 <table class="table borderless" id="main_class">
     <tr>
+        <td>
+            <a href="/soap/{{$uuid}}?new=true">新 增</a>
+        </td>
+    </tr>
+    <tr>
         @foreach($main_classes as $main_class)
             @if($main_class -> main_class_pk == 1)
                 <td><button class="form-control btn-primary" data="{{$main_class -> main_class_pk}}">{{$main_class -> class_name}}</button></td>
