@@ -7,7 +7,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="favicon.ico">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
     <title> @yield('title') </title>
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/css/bootstrap-datepicker3.min.css">
     <link rel="stylesheet" href="/css/completer.min.css">
     <link rel="stylesheet" href="/css/dm.css">
-    <style> @yield('css') </style>
+    @yield('css')
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -38,8 +38,8 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav">
-                <li class="@yield('pactive')"><a href="/patient">患者资料</a></li>
-                <li class="@yield('aactive')"><a href="/aboutpatient">关于</a></li>
+                <li class="@yield('pactive')">@yield('navstr')</li>
+                <li class="@yield('aactive')"><a href="@yield('navabout')">关于</a></li>
                 <!-- li><a href="{{ url('/logout') }}">退出</a></li -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -74,11 +74,12 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/bootstrap-datepicker.min.js"></script>
 <script src="/js/locales/bootstrap-datepicker.zh-TW.js" charset="UTF-8"></script>
+<script src="/js/validator.min.js"></script>
 <!-- script src="/js/angular.min.js"></script -->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <!-- <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script> -->
 <script src="/js/completer.min.js"></script>
 <script src="/js/dm.js"></script>
-<script> @yield('scripts') </script>
+@yield('scripts')
 </body>
 </html>

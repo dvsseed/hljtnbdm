@@ -22,44 +22,16 @@ class AdminController extends Controller
 
     public function index(Request $request)
     {
-        // Gets the query string from our form submission 
-        // $query = Input::get('adsearch', '');
-
-        $search = $request->search;
+        $search = urldecode($request->search);
         $category = $request->category;
-//        if (Session::has('adsearch')) {
-//             if($search == null)
-//                $search = Session::get('adsearch');
-//            else
-//                if($search != Session::get('adsearch')) Session::put('adsearch', $search);
-//        } else {
-//            // $search = $request->search;
-//            Session::put('adsearch', $search);
-//        }
-//        if (Session::has('adcategory')) {
-//            if($category == null)
-//                $category = Session::get('adcategory');
-//            else
-//                if($category != Session::get('adcategory')) Session::put('adcategory', $category);
-//        } else {
-//            // $category = $request->category;
-//            Session::put('adcategory', $category);
-//        }
 
-        // Returns an array of users that have the query string located somewhere within
-        // our users names. Paginates them so we can break up lots of search results.
         if ($search) {
-            switch ($category) {
-                case 1:
-                    $field = 'name';
-                    break;
-                case 2:
-                    $field = 'department';
-                    break;
-                case 3:
-                    $field = 'position';
-                    break;
-            }
+            $categoryList = [
+                1 => "name",
+                2 => "department",
+                3 => "position",
+            ];
+            $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
             $result = User::where('is_admin', 0)->where($field, 'like', '%' . $search . '%');
         } else {
             $result = User::where('is_admin', 0);
@@ -67,9 +39,9 @@ class AdminController extends Controller
         $countstr = '人';
         $count = $result->count();
         $users = $result->paginate(10)->appends(['search' => $search, 'category' => $category]);
-        // returns a view and passes the view the list of users and the original query.
         $categories = array('' => '请选择', '1' => '姓名', '2' => '部门', '3' => '职务');
-        return view('Admin.index', compact('users', 'countstr', 'count', 'categories', 'search', 'category'));
+        $positions = User::$_position;
+        return view('Admin.index', compact('users', 'countstr', 'count', 'categories', 'search', 'category', 'positions'));
     }
 
     public function create()
@@ -77,8 +49,9 @@ class AdminController extends Controller
         $result = User::where('is_admin', 0);
         $countstr = '人';
         $count = $result->count();
+        $positions = User::$_position;
         EventController::SaveEvent('users', 'create(创建)');
-        return view('Admin.create', compact('countstr', 'count'));
+        return view('Admin.create', compact('countstr', 'count', 'positions'));
     }
 
     public function store(Request $request)
@@ -88,8 +61,9 @@ class AdminController extends Controller
         ]);
         $user = new User;
         $user->account = $request->account;
-        $user->name = $request->name;
         $user->password = Hash::make($user->account);
+        $user->name = $request->name;
+        $user->position = $request->position;
         $user->save();
         session()->flash('message', $user->name . "人员添加成功");
         EventController::SaveEvent('users', 'store(保存)');

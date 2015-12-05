@@ -16,6 +16,7 @@ class Kernel extends HttpKernel {
 		'Illuminate\Session\Middleware\StartSession',
 		'Illuminate\View\Middleware\ShareErrorsFromSession',
 		'App\Http\Middleware\VerifyCsrfToken',
+		// 'Clockwork\Support\Laravel\ClockworkMiddleware',
 	];
 
 	/**
@@ -28,6 +29,7 @@ class Kernel extends HttpKernel {
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
 		'guest' => 'App\Http\Middleware\RedirectIfAuthenticated',
 		'admin' => 'App\Http\Middleware\isAdmin',
+                'patient' => 'App\Http\Middleware\isPatient',
 	];
 
 }

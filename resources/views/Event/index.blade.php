@@ -16,7 +16,7 @@
                         <th>#</th>
                         <th>数据表</th>
                         <th>行为</th>
-                        <th>人员编号</th>
+                        <th>人员帐号</th>
                         <th>姓名</th>
                         <th>异动时间</th>
                     </tr>
@@ -26,7 +26,7 @@
                                 <td>{{ $event->id }}</td>
                                 <td>{{ $event->tablename }}</td>
                                 <td>{{ $event->action }}</td>
-                                <td>{{ $event->user_id }}</td>
+                                <td>{{ $event->account }}</td>
                                 <td>{{ $event->name }}</td>
                                 <td>{{ $event->updated_at }}</td>
                                 <!-- td -->
@@ -38,9 +38,7 @@
                                     <!-- /form -->
                                 <!-- /td -->
                             </tr>
-
                             {{-- @include('event.upload_event') --}}
-
                         @endforeach
                     @else
                         <h1>没有纪录...</h1>

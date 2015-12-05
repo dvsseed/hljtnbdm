@@ -11,21 +11,10 @@
 #Route::post('/test', ['as' => 'test_upload', 'uses' => 'TestController@post']);
 #Route::get('/users/export', 'TestController@export');
 #Route::get('users', 'TestController@users');
-#redis
-Route::get('test', function(){
-    if (\Cache::has('test')) {
-        echo '存在chche,读取'.'<br />';
-        echo \Cache::get('test');
-    } else {
-        echo '不存在cache,现在创建'.'<br />';
-        $time = \Carbon\Carbon::now()->addMinutes(10);
-        $redis = \Cache::add('test', '这是缓存资源', $time);
-        echo \Cache::get('test');
-    }
-});
 
 #主页
 Route::get('/', 'WelcomeController@index');
+Route::get('logs', 'LogViewerController@index');
 
 #登录，登出, 自动跳转, 密码重置
 Route::get('login', ['middleware' => 'guest', 'as' => 'login', 'uses' => 'loginController@loginGet']);
@@ -33,21 +22,25 @@ Route::post('login', ['middleware' => 'guest', 'uses' => 'loginController@loginP
 Route::get('logout', ['middleware' => 'auth', 'as' => 'logout', 'uses' => 'loginController@logout']);
 Route::controller('password', 'PasswordController');
 #关于
-Route::get('/about', ['middleware' => 'admin', 'as' => 'about', 'uses' => 'Pages\PagesController@about']);
+Route::get('/about', ['middleware' => 'auth', 'as' => 'about', 'uses' => 'Pages\PagesController@about']);
 
 #人员的登录详情(包括资料修改，查询)
 Route::get('dm/home', ['as' => 'dm_home', 'uses' => 'DM\DiabetesController@home']);
+Route::get('dm/personal', ['as' => 'dm_personal', 'uses' => 'DM\DiabetesController@personal']);
 Route::get('dm/edit', ['as' => 'dm_edit', 'uses' => 'DM\DiabetesController@edit']);
+Route::get('dm/create', ['as' => 'dm_create', 'uses' => 'DM\DiabetesController@create']);
+Route::get('dm/eedit/{id}', ['as' => 'dm_eedit', 'uses' => 'DM\DiabetesController@eedit']);
+Route::delete('dm/destroy/{id}', ['as' => 'dm_destroy', 'uses' => 'DM\DiabetesController@destroy']);
 Route::post('dm/update', ['as' => 'dm_update', 'uses' => 'DM\DiabetesController@update']);
+Route::post('dm/uupdate', ['as' => 'dm_uupdate', 'uses' => 'DM\DiabetesController@uupdate']);
+Route::post('dm/store', ['as' => 'dm_store', 'uses' => 'DM\DiabetesController@store']);
+Route::get('dm/gobd/{pid}', ['as' => 'dm_gobd', 'uses' => 'DM\DiabetesController@gobd']);
 
 #管理员入口(增删改查，上传)
-#Route::get('admin/grade', ['as' => 'grade_list', 'uses' => 'Admin\GradeController@index']);
 #资源路由,人员的增删改查
 Route::resource('admin', 'Admin\AdminController');
 #更新信息
 Route::post('admin/upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminController@upload_user']);
-#清除搜寻字
-#Route::get('admin/forget/{key}', ['as' => 'admin.forget', 'uses' => 'Admin\AdminController@forget']);
 #下载人员名单
 Route::get('download/dmList', ['as' => 'download_dm_list_excel', 'uses' => 'Admin\ExcelController@dmList']);
 
@@ -63,13 +56,15 @@ Route::resource('event', 'Event\EventController');
 #一般人员入口
 #患者基本资料
 Route::resource("patient", "Patient\PatientprofileController");
-#清除搜寻字
-#Route::get('patient/forget/{key}', ['as' => 'patient.forget', 'uses' => 'Patient\PatientprofileController@forget']);
 #关于
 Route::get('/aboutpatient', ['as' => 'aboutpatient', 'uses' => 'Patient\PatientprofileController@about']);
+Route::get('patient/ccreate/{personid}', ['as' => 'patient_ccreate', 'uses' => 'Patient\PatientprofileController@ccreate']);
 
 #方案管理
-Route::resource("case", "Cases\CasesController");
+Route::resource("case", "Cases\CaseController");
+#关于
+Route::get('/aboutcase', ['as' => 'aboutcase', 'uses' => 'Cases\CaseController@about']);
+Route::get('case/create/{personid}', ['as' => 'case_create', 'uses' => 'Cases\CaseController@create']);
 
 #血糖
 Route::get('/bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');

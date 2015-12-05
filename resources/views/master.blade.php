@@ -8,11 +8,13 @@
 	<!-- Bootstrap Core CSS -->
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
 	<!-- Custom CSS -->
+        <link rel="stylesheet" href="/css/bootstrap-datepicker3.min.css">
         <link rel="stylesheet" href="/css/completer.min.css">
         <link rel="stylesheet" href="/css/main.css">
+        @yield('css')
 	<!-- Fonts -->
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800">
-	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic">
+	<!-- link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" -->
+	<!-- link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" -->
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -56,7 +58,8 @@
 							<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="{{ url('/logout') }}">退出</a></li>
-							</ul>
+                                                                <li><a href="{{ url('/dm/personal') }}">个人信息</a></li>
+ 							</ul>
 						</li>
 					@endif
 				</ul>
@@ -74,7 +77,10 @@
 <!-- script src="http://cdn.bootcss.com/bootstrap/3.3.4/js/bootstrap.min.js"></script -->
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/bootstrap-datepicker.min.js"></script>
+<script src="/js/locales/bootstrap-datepicker.zh-TW.js" charset="UTF-8"></script>
 <script src="/js/jquery.tablesorter.min.js"></script>
+<script src="/js/validator.min.js"></script>
 <script src="/js/completer.min.js"></script>
 <script src="/js/main.js"></script>
 <script> @yield('scripts') </script>

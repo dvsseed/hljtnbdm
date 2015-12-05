@@ -12,7 +12,7 @@ return [
 	| application. If disabled, a simple generic error page is shown.
 	|
 	*/
-
+	// env('APP_DEBUG', false),
 	'debug' => true,
 
 	/*
@@ -138,12 +138,14 @@ return [
 		'Illuminate\Html\HtmlServiceProvider',
 		'Maatwebsite\Excel\ExcelServiceProvider',
 		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-        'Barryvdh\Debugbar\ServiceProvider',
-		'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-        'Laralib\L5scaffold\GeneratorsServiceProvider',
-        'yajra\Oci8\Oci8ServiceProvider',
-        'Way\Generators\GeneratorsServiceProvider',
-        'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
+		'Laralib\L5scaffold\GeneratorsServiceProvider',
+		'yajra\Oci8\Oci8ServiceProvider',
+		'Way\Generators\GeneratorsServiceProvider',
+		'Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider',
+		'Barryvdh\Debugbar\ServiceProvider',
+		'Clockwork\Support\Laravel\ClockworkServiceProvider',
+		'Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider',
+		'Arcanedev\LogViewer\LogViewerServiceProvider',
 
 
 		/*
@@ -207,8 +209,9 @@ return [
 		'Html'      => 'Illuminate\Html\HtmlFacade',
 		'Form'      => 'Illuminate\Html\FormFacade',
 		'Excel'     => 'Maatwebsite\Excel\Facades\Excel',
-		'Debugbar'  => 'Barryvdh\Debugbar\Facade',
 		'Text'      => 'App\Helpers\Text',
+		'Debugbar'  => 'Barryvdh\Debugbar\Facade',
+		'Clockwork' => 'Clockwork\Support\Laravel\Facade',
 	],
 
 ];

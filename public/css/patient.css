@@ -1,0 +1,28 @@
+.form-horizontal .form-group {
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+input {
+    padding: 8px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+input:focus {
+    outline: none;
+}
+input:focus:invalid {
+    /* background: #fff url(/img/invalid.png) no-repeat 98% center; */
+    box-shadow: 0 0 5px #d45252;
+    border-color: #b03535;
+    border:1px solid red;
+}
+input:focus:valid {
+    /* background: #fff url(/img/valid.png) no-repeat 98% center; */
+    box-shadow: 0 0 5px #5cd053;
+    border-color: #28921f;
+    border:1px solid green;
+}
+input:focus:invalid {
+    background: #ffecec;
+}

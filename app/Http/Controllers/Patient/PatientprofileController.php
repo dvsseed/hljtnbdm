@@ -10,6 +10,7 @@ use DB;
 use Auth;
 use Hash;
 //use Session;
+//use Debugbar;
 use App\Patientprofile;
 use App\BSM;
 use App\CaseCare;
@@ -25,7 +26,8 @@ class PatientprofileController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        // \Debugbar::disable();
+//        $this->middleware('patient');
+	    // \Debugbar::enable();
     }
 
     /**
@@ -36,38 +38,15 @@ class PatientprofileController extends Controller
     public function index(Request $request)
     {
         // $user = Auth::user();
-        $search = $request->search;
+        $search = urldecode($request->search);
         $category = $request->category;
-//        if (Session::has('pasearch')) {
-//            if ($search == null)
-//                $search = Session::get('pasearch');
-//            else
-//                if ($search != Session::get('pasearch')) Session::put('pasearch', $search);
-//        } else {
-//            // $search = $request->search;
-//            Session::put('pasearch', $search);
-//        }
-//        if (Session::has('pacategory')) {
-//            if ($category == null)
-//                $category = Session::get('pacategory');
-//            else
-//                if ($category != Session::get('pacategory')) Session::put('pacategory', $category);
-//        } else {
-//            // $category = $request->category;
-//            Session::put('pacategory', $category);
-//        }
         if ($search) {
-            switch ($category) {
-                case 1:
-                    $field = 'pp_name';
-                    break;
-                case 2:
-                    $field = 'pp_patientid';
-                    break;
-                case 3:
-                    $field = 'pp_personid';
-                    break;
-            }
+            $categoryList = [
+                1 => "pp_name",
+                2 => "pp_patientid",
+                3 => "pp_personid",
+            ];
+            $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
             $result = Patientprofile::where($field, 'like', '%' . $search . '%')->orderBy('created_at', 'desc');
         } else {
             $result = Patientprofile::orderBy('created_at', 'desc');
@@ -75,8 +54,8 @@ class PatientprofileController extends Controller
 
         $count = $result->count();
         $patientprofiles = $result->paginate(10)->appends(['search' => $search, 'category' => $category]);
-        //$hiss = DB::connection('oracle')->select('select * from pub_class_office'); // from HIS's db
-
+        // $hiss = DB::connection('oracle')->select('select * from pub_class_office'); // from HIS's db
+        $hiss = null;
         $current_user_id = Auth::user() -> id;
         // return view('patient.index', compact('patientprofiles', 'count', 'hiss'));
         return view('patient.index', compact('patientprofiles', 'count', 'hiss', 'search', 'category', 'current_user_id'));
@@ -92,11 +71,40 @@ class PatientprofileController extends Controller
         $carbon = Carbon::today();
         // $format = $carbon->format('Y-m-d H:i:s');
         $year = $carbon->year;
-
         $bsms = BSM::orderBy('bm_order')->get();
+        $areas = Patientprofile::$_area;
+        $doctors = Patientprofile::$_doctor;
+        $sources = Patientprofile::$_source;
+        $occupations = Patientprofile::$_occupation;
+        $languages = Patientprofile::$_language;
+        $patientid = null;
+        $err_msg = null;
 
         EventController::SaveEvent('patientprofile', 'create(创建)');
-        return view('patient.create', compact('year', 'bsms'));
+        return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
+    }
+
+    public function ccreate($patientid)
+    {
+        $pps = Patientprofile::where('pp_patientid', '=', $patientid)->first();
+        if (!is_null($pps)) {
+            $err_msg = '患者资料已存在!!';
+            return view('patient.create', compact('err_msg'));
+        } else {
+            $carbon = Carbon::today();
+            // $format = $carbon->format('Y-m-d H:i:s');
+            $year = $carbon->year;
+            $bsms = BSM::orderBy('bm_order')->get();
+            $areas = Patientprofile::$_area;
+            $doctors = Patientprofile::$_doctor;
+            $sources = Patientprofile::$_source;
+            $occupations = Patientprofile::$_occupation;
+            $languages = Patientprofile::$_language;
+            $err_msg = null;
+
+            EventController::SaveEvent('patientprofile', 'create(创建)');
+            return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
+        }
     }
 
     /**
@@ -107,15 +115,15 @@ class PatientprofileController extends Controller
      */
     public function store(Request $request)
     {
-        DB::beginTransaction();
-        try {
-            // validate
-            $this->validate($request, [
-                'account' => 'required|alpha_num|unique:users,account',
-            ]);
-            $this->validate($request, Patientprofile::rules());
-            $this->validate($request, CaseCare::rules());
+        // validate
+        $this->validate($request, [
+            'account' => 'required|alpha_num|size:18|unique:users,account',
+        ]);
+        $this->validate($request, Patientprofile::rules());
+        $this->validate($request, CaseCare::rules());
 
+     	DB::beginTransaction();
+        try {
             // users
             $user = new User;
             $user->account = trim($request->account);
@@ -147,6 +155,7 @@ class PatientprofileController extends Controller
             $patientprofile->pp_occupation = $request->pp_occupation;
             $patientprofile->pp_address = $request->pp_address;
             $patientprofile->pp_email = $request->pp_email;
+            $patientprofile->educator = Auth::user()->name;
             $patientprofile->save();
 
             // casecare
@@ -160,16 +169,20 @@ class PatientprofileController extends Controller
             $casecare->cc_mdate = $request->cc_mdate;
             $casecare->cc_mdatem = $request->cc_mdatem;
             $casecare->cc_type = $request->cc_type;
+            $casecare->cc_type_other = $request->cc_type_other;
             $casecare->cc_ibw = $request->cc_ibw;
             $casecare->cc_bmi = $request->cc_bmi;
             $casecare->cc_waist = $request->cc_waist;
             $casecare->cc_butt = $request->cc_butt;
+
             if ($request->cc_status) {
                 $casecare->cc_status = ($request->cc_status_c1 ? "1" : "0") . ($request->cc_status_c2 ? "1" : "0") . ($request->cc_status_c3 ? "1" : "0") . ($request->cc_status_c4 ? "1" : "0") . ($request->cc_status_c5 ? "1" : "0");
+                $casecare->cc_status_other = $request->cc_status_other;
             } else {
                 $casecare->cc_status = "";
                 $casecare->cc_status_other = "";
             }
+
             $casecare->cc_drink = $request->cc_drink;
             $casecare->cc_wine = $request->cc_wine;
             $casecare->cc_wineq = $request->cc_wineq;
@@ -182,11 +195,25 @@ class PatientprofileController extends Controller
             $casecare->cc_activity = $request->cc_activity;
             $casecare->cc_medicaretype = $request->cc_medicaretype;
             $casecare->cc_jobtime = $request->cc_jobtime;
-            $casecare->cc_current_use = ($request->cc_current_use0 ? "1" : "0") . ($request->cc_current_use1 ? "1" : "0") . ($request->cc_current_use2 ? "1" : "0") . ($request->cc_current_use3 ? "1" : "0") . ($request->cc_current_use4 ? "1" : "0") . ($request->cc_current_use5 ? "1" : "0");
-            $casecare->cc_starty = $request->cc_starty;
-            $casecare->cc_startm = $request->cc_startm;
-            $casecare->cc_hinder = ($request->cc_hinder0 ? "1" : "0") . ($request->cc_hinder1 ? "1" : "0") . ($request->cc_hinder2 ? "1" : "0") . ($request->cc_hinder3 ? "1" : "0") . ($request->cc_hinder4 ? "1" : "0") . ($request->cc_hinder5 ? "1" : "0") . ($request->cc_hinder6 ? "1" : "0") . ($request->cc_hinder7 ? "1" : "0") . ($request->cc_hinder8 ? "1" : "0") . ($request->cc_hinder9 ? "1" : "0");
-            $casecare->cc_hinder_desc = $request->cc_hinder_desc;
+
+            if ($request->cc_current_use) {
+                $casecare->cc_current_use = ($request->cc_current_use1 ? "1" : "0") . ($request->cc_current_use2 ? "1" : "0") . ($request->cc_current_use3 ? "1" : "0") . ($request->cc_current_use4 ? "1" : "0") . ($request->cc_current_use5 ? "1" : "0");
+                $casecare->cc_starty = $request->cc_starty;
+                $casecare->cc_startm = $request->cc_startm;
+            } else {
+                $casecare->cc_current_use = "";
+                $casecare->cc_starty = -1;
+                $casecare->cc_startm = -1;
+            }
+
+            if ($request->cc_hinder) {
+                $casecare->cc_hinder = ($request->cc_hinder_1 ? "1" : "0") . ($request->cc_hinder_2 ? "1" : "0") . ($request->cc_hinder_3 ? "1" : "0") . ($request->cc_hinder_4 ? "1" : "0") . ($request->cc_hinder_5 ? "1" : "0") . ($request->cc_hinder_6 ? "1" : "0") . ($request->cc_hinder_7 ? "1" : "0") . ($request->cc_hinder_8 ? "1" : "0") . ($request->cc_hinder_9 ? "1" : "0");
+                $casecare->cc_hinder_desc = $request->cc_hinder_desc;
+            } else {
+                $casecare->cc_hinder = "";
+                $casecare->cc_hinder_desc = "";
+            }
+
             $casecare->cc_act_time = $request->cc_act_time;
             $casecare->cc_act_kind = $request->cc_act_kind;
             $casecare->cc_edu = $request->cc_edu;
@@ -274,9 +301,14 @@ class PatientprofileController extends Controller
         $year = $carbon->year;
         $bsms = BSM::orderBy('bm_order')->get();
         $account = User::findOrFail($patientprofile->user_id)->account;
+        $areas = Patientprofile::$_area;
+        $doctors = Patientprofile::$_doctor;
+        $sources = Patientprofile::$_source;
+        $occupations = Patientprofile::$_occupation;
+        $languages = Patientprofile::$_language;
 
         EventController::SaveEvent('patientprofile', 'show(显示)');
-        return view('patient.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account'));
+        return view('patient.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
     }
 
     /**
@@ -293,9 +325,14 @@ class PatientprofileController extends Controller
         $year = $carbon->year;
         $bsms = BSM::orderBy('bm_order')->get();
         $account = User::findOrFail($patientprofile->user_id)->account;
+        $areas = Patientprofile::$_area;
+        $doctors = Patientprofile::$_doctor;
+        $sources = Patientprofile::$_source;
+        $occupations = Patientprofile::$_occupation;
+        $languages = Patientprofile::$_language;
 
         EventController::SaveEvent('patientprofile', 'edit(编辑)');
-        return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account'));
+        return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
     }
 
     /**
@@ -307,11 +344,11 @@ class PatientprofileController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // validate
+        $this->validate($request, Patientprofile::updaterules());
+
         DB::beginTransaction();
         try {
-            // validate
-            $this->validate($request, Patientprofile::updaterules());
-
             // patientprofile1
             $patientprofile = Patientprofile::findOrFail($id);
             $patientprofile->pp_name = $request->pp_name;
@@ -331,6 +368,7 @@ class PatientprofileController extends Controller
             $patientprofile->pp_occupation = $request->pp_occupation;
             $patientprofile->pp_address = $request->pp_address;
             $patientprofile->pp_email = $request->pp_email;
+            $patientprofile->educator = Auth::user()->name;
             $patientprofile->save();
 
             // casecare
@@ -344,16 +382,20 @@ class PatientprofileController extends Controller
             $casecare->cc_mdate = $request->cc_mdate;
             $casecare->cc_mdatem = $request->cc_mdatem;
             $casecare->cc_type = $request->cc_type;
+            $casecare->cc_type_other = $request->cc_type_other;
             $casecare->cc_ibw = $request->cc_ibw;
             $casecare->cc_bmi = $request->cc_bmi;
             $casecare->cc_waist = $request->cc_waist;
             $casecare->cc_butt = $request->cc_butt;
+
             if ($request->cc_status) {
                 $casecare->cc_status = ($request->cc_status_c1 ? "1" : "0") . ($request->cc_status_c2 ? "1" : "0") . ($request->cc_status_c3 ? "1" : "0") . ($request->cc_status_c4 ? "1" : "0") . ($request->cc_status_c5 ? "1" : "0");
+                $casecare->cc_status_other = $request->cc_status_other;
             } else {
                 $casecare->cc_status = "";
                 $casecare->cc_status_other = "";
             }
+
             $casecare->cc_drink = $request->cc_drink;
             $casecare->cc_wine = $request->cc_wine;
             $casecare->cc_wineq = $request->cc_wineq;
@@ -366,11 +408,25 @@ class PatientprofileController extends Controller
             $casecare->cc_activity = $request->cc_activity;
             $casecare->cc_medicaretype = $request->cc_medicaretype;
             $casecare->cc_jobtime = $request->cc_jobtime;
-            $casecare->cc_current_use = ($request->cc_current_use0 ? "1" : "0") . ($request->cc_current_use1 ? "1" : "0") . ($request->cc_current_use2 ? "1" : "0") . ($request->cc_current_use3 ? "1" : "0") . ($request->cc_current_use4 ? "1" : "0") . ($request->cc_current_use5 ? "1" : "0");
-            $casecare->cc_starty = $request->cc_starty;
-            $casecare->cc_startm = $request->cc_startm;
-            $casecare->cc_hinder = ($request->cc_hinder0 ? "1" : "0") . ($request->cc_hinder1 ? "1" : "0") . ($request->cc_hinder2 ? "1" : "0") . ($request->cc_hinder3 ? "1" : "0") . ($request->cc_hinder4 ? "1" : "0") . ($request->cc_hinder5 ? "1" : "0") . ($request->cc_hinder6 ? "1" : "0") . ($request->cc_hinder7 ? "1" : "0") . ($request->cc_hinder8 ? "1" : "0") . ($request->cc_hinder9 ? "1" : "0");
-            $casecare->cc_hinder_desc = $request->cc_hinder_desc;
+
+            if ($request->cc_current_use) {
+                $casecare->cc_current_use = ($request->cc_current_use1 ? "1" : "0") . ($request->cc_current_use2 ? "1" : "0") . ($request->cc_current_use3 ? "1" : "0") . ($request->cc_current_use4 ? "1" : "0") . ($request->cc_current_use5 ? "1" : "0");
+                $casecare->cc_starty = $request->cc_starty;
+                $casecare->cc_startm = $request->cc_startm;
+            } else {
+                $casecare->cc_current_use = "";
+                $casecare->cc_starty = -1;
+                $casecare->cc_startm = -1;
+            }
+
+            if ($request->cc_hinder) {
+                $casecare->cc_hinder = ($request->cc_hinder_1 ? "1" : "0") . ($request->cc_hinder_2 ? "1" : "0") . ($request->cc_hinder_3 ? "1" : "0") . ($request->cc_hinder_4 ? "1" : "0") . ($request->cc_hinder_5 ? "1" : "0") . ($request->cc_hinder_6 ? "1" : "0") . ($request->cc_hinder_7 ? "1" : "0") . ($request->cc_hinder_8 ? "1" : "0") . ($request->cc_hinder_9 ? "1" : "0");
+                $casecare->cc_hinder_desc = $request->cc_hinder_desc;
+            } else {
+                $casecare->cc_hinder = "";
+                $casecare->cc_hinder_desc = "";
+            }
+
             $casecare->cc_act_time = $request->cc_act_time;
             $casecare->cc_act_kind = $request->cc_act_kind;
             $casecare->cc_edu = $request->cc_edu;
@@ -455,11 +511,10 @@ class PatientprofileController extends Controller
                     $msg = '患者资料删除失败。';
                 }
             } else {
-                $msg = '患者细项资料删除失败。';
+                $msg = '患者资料删除失败。';
             }
-
-            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
             DB::commit();
+            DB::statement('SET FOREIGN_KEY_CHECKS = 1');
             EventController::SaveEvent('patientprofile', 'destroy(删除)');
         } catch (\Exception $e) {
             $msg = '资料删除失败。';

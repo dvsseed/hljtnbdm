@@ -23,8 +23,8 @@ class CreatePatientprofilesTable extends Migration
             $table->dateTime('pp_birthday')->nullable();
             $table->integer('pp_age')->unsigned()->nullable();
             $table->char('pp_sex', 1)->nullable();
-            $table->float('pp_height')->nullable();
-            $table->float('pp_weight')->nullable();
+            $table->decimal('pp_height',4,1)->nullable();
+            $table->decimal('pp_weight',4,1)->nullable();
             $table->string('pp_tel1', 20)->default(' ');
             $table->string('pp_tel2', 20)->default(' ');
             $table->string('pp_mobile1', 20)->default(' ');

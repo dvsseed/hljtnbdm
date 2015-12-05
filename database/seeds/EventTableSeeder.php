@@ -18,19 +18,19 @@ class EventTableSeeder extends Seeder
         Event::create([
             'tablename' => 'users',
             'action' => 'create(创建)',
-            'user_id' => 3
+            'user_id' => 2
         ]);
 
         Event::create([
             'tablename' => 'users',
             'action' => 'store(保存)',
-            'user_id' => 3
+            'user_id' => 2
         ]);
 
         Event::create([
             'tablename' => 'users',
             'action' => 'destroy(删除)',
-            'user_id' => 3
+            'user_id' => 2
         ]);
 
     }

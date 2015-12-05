@@ -1,0 +1,24 @@
+<VirtualHost *:80>
+ServerName localhost
+addDefaultCharset UTF-8
+DocumentRoot /var/www/html/hljtnbdm/public
+<Directory /var/www/html/hljtnbdm/>
+#Options +FollowSymLinks
+#RewriteEngine on
+
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^ index.php [L]
+
+AllowOverride all
+Order allow,deny
+Allow from all
+</Directory>
+</VirtualHost>
+
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib64:/usr/lib/oracle/12.1/client64/lib
+export LD_LIBRARY_PATH
+
+NLS_LANG="TRADITIONAL CHINESE_TAIWAN.ZHS16GBK"
+export NLS_LANG
+

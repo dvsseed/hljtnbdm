@@ -16,19 +16,19 @@
                 <table class="table table-striped table-hover">
                     <tr style="background: silver;">
                         <th>#</th>
-                        <th>人员编号</th>
+                        <!-- th>人员#</th -->
                         <th>姓名</th>
-                        <th>功能编号</th>
+                        <!-- th>功能#</th -->
                         <th>描述</th>
-                        <th class="text-center">操作</th>
+                        <th>操作</th>
                     </tr>
                     @if (count($hasfeatures))
                         @foreach ($hasfeatures as $hasfeature)
                             <tr>
                                 <td>{{ $hasfeature->id }}</td>
-                                <td>{{ $hasfeature->user_id }}</td>
+                                <!-- td>{{-- $hasfeature->user_id --}}</td -->
                                 <td>{{ $hasfeature->name }}</td>
-                                <td>{{ $hasfeature->feature_id }}</td>
+                                <!-- td>{{ $hasfeature->feature_id --}}</td -->
                                 <td>{{ $hasfeature->innerhtml }}</td>
                                 <td>
                                     {{-- <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal{{$hasfeature->id}}">更新</button> --}}
@@ -39,9 +39,7 @@
                                     </form>
                                 </td>
                             </tr>
-
                             {{-- @include('Hasfeature.upload_hasfeature') --}}
-
                         @endforeach
                     @else
                         <h1>没有操作,请管理员添加</h1>

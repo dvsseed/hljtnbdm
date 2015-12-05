@@ -47,9 +47,7 @@
                                     </form>
                                 </td>
                             </tr>
-
                             @include('Admin.upload_user')
-
                         @endforeach
                     @else
                         <h1>没有人员名单,请管理员添加...</h1>
@@ -59,6 +57,5 @@
             </div>
             @include('Admin.right_bar')
         </div>
-
     </div>
 @stop

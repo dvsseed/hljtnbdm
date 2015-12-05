@@ -10,6 +10,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
 	use Authenticatable, CanResetPassword;
 
+	// 职务
+	public static $_position = array(
+		'院长' => '院长', '副院长' => '副院长', '病区主任' => '病区主任', '门诊医生' => '门诊医生', '住院医生' => '住院医生', '护理师' => '护理师', '营养师' => '营养师', '医助' => '医助', '' => '患者'
+	);
+
 	/**
 	 * The database table used by the model.
 	 *
@@ -48,7 +53,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected static function rules()
 	{
 		return [
-			'account' => 'required|alpha_num',  // |unique:users,account',
+			'account' => 'required|alpha_num',
 			'password' => 'required'
 		];
 	}
