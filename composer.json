@@ -29,8 +29,11 @@
 	},
     "repositories": [
       {
-        "type": "git",
-        "url": "https://github.com/jamisonvalenta/Laravel-4-Generators.git"
+          "packagist": false
+      },
+      {
+          "type": "composer",
+          "url": "http://packagist.cn"
       }
     ],
 	"autoload": {

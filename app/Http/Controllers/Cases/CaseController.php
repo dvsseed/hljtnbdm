@@ -242,6 +242,7 @@ class CaseController extends Controller {
 	public function update(Request $request, $id)
 	{
 		$caselist = Caselist::findOrFail($id);
+		$caselist->cl_case_date = $request->cl_case_date;
 		if($request->cl_case_type == 4) {
 			// 一般
 			$caselist->cl_base_sbp = $request->_cl_base_sbp;
