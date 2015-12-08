@@ -634,7 +634,7 @@ use App\Caselist;
                     $bsugar->dinner_after = null;
                     $bsugar->sleep_before = null;
                     $bsugar->note = null;
-                    $bsugar->hostaple_no_pk = 'test12345';
+                    $bsugar->hospital_no_uuid = '';
                     array_push($filled_date,$bsugar);
                 }
             }

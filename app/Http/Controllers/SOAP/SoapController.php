@@ -16,6 +16,7 @@ use App\Model\SOAP\MainClass;
 use App\Model\SOAP\UserCustomize;
 use App\Model\SOAP\UserSoap;
 use App\Model\SOAP\UserSoapHistory;
+use App\Model\Pdata\BloodSugar;
 use Auth;
 use DB;
 use Session;
@@ -57,17 +58,29 @@ class SoapController extends Controller
             return view('soap.soap', compact('err_msg'));
         }
 
-        $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid)->first();
+        $user_soap = null;//UserSoap::where('hospital_no_uuid', '=', $uuid)->first();
 
         $user_data = array();
         $history_pk = null;
 
-        if($user_soap != null && isset($request['history'])){
-            $history = $user_soap -> history() -> find($request['history']);
+        if(isset($request['history'])){
+            $history = UserSoapHistory::find($request['history']);
             if($history != null){
                 $user_soap = $history;
                 $history_pk = $history -> user_soap_history_pk;
             }
+        }
+
+        if(isset($request['calendar_date'])){
+            $blood_sugar = $hospital_no -> blood_sugar() -> where('calendar_date', '=', $request['calendar_date']) -> first();
+            if($blood_sugar != null){
+                $history = $blood_sugar -> history_soap;
+                if($history!= null){
+                    $user_soap = $history;
+                    $history_pk = $history -> user_soap_history_pk;
+                }
+            }
+            Session::put('calendar_date', $request['calendar_date']);
         }
 
         if($user_soap == null || (isset($request['new']) && $request['new'] == true)){
@@ -129,7 +142,9 @@ class SoapController extends Controller
             $histories = $user_soap -> history() -> where('is_visible', '=', '1') -> orderBy('updated_at', 'desc') -> get();
         }
         foreach($histories as $history){
-            $history -> user_id = User::find($history -> user_id) -> name;
+            $user = User::find($history -> user_id);
+            $history -> user_id = $user -> name;
+            $history -> position = $user -> position;
         }
         return view('soap.history', compact('histories', 'hospital_no_displayname', 'uuid'));
     }
@@ -200,14 +215,35 @@ class SoapController extends Controller
 
     public function post_user_soap(Request $request){
         $uuid = Session::get('uuid');
+        $calendar_date = Session::get('calendar_date');
         $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid) -> first();
-
+        $user_id = Auth::User() -> id;
         if($user_soap == null){
             $user_soap = new UserSoap();
         }
 
+        $bsugar = HospitalNo::find($uuid) -> blood_sugar() -> where('calendar_date', '=', $calendar_date) -> first();
+
         DB::beginTransaction();
         try{
+            if($bsugar == null){
+                $bsugar = new BloodSugar();
+                $bsugar->calendar_date = $calendar_date;
+                $bsugar->early_morning = null;
+                $bsugar->morning = null;
+                $bsugar->breakfast_before = null;
+                $bsugar->breakfast_after = null;
+                $bsugar->lunch_before = null;
+                $bsugar->lunch_after = null;
+                $bsugar->dinner_before = null;
+                $bsugar->dinner_after = null;
+                $bsugar->sleep_before = null;
+                $bsugar->note = null;
+                $bsugar->hospital_no_uuid = $uuid;
+                $bsugar->user_id = $user_id;
+            }
+            $bsugar -> save();
+
             $user_soap -> hospital_no_uuid = $uuid;
             $user_soap -> s_text = $request -> s_text;
             $user_soap -> o_text = $request -> o_text;
@@ -234,6 +270,7 @@ class SoapController extends Controller
             $user_soap_history -> user_soap_pk = $user_soap -> user_soap_pk;
             $user_soap_history -> user_id = Auth::user() -> id;
             $user_soap_history -> created_at = $user_soap -> created_at;
+            $user_soap_history -> blood_sugar_pk = $bsugar -> blood_sugar_pk;
 
             if(isset($request["history"])){
                 $history = $user_soap -> history() -> find($request["history"]);
@@ -252,7 +289,7 @@ class SoapController extends Controller
             return "success";
         }catch (\Exception $e){
             DB::rollback();
-	    return "fail";
+	        return "fail";
         }
     }
 

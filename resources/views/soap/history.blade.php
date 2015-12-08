@@ -20,6 +20,7 @@
                 <td style="min-width: 50px;">E</td>
                 <td style="min-width: 50px;">R</td>
                 <td style="width: 60px;min-width: 60px;">卫教师</td>
+                <td style="width: 60px;min-width: 60px;">职位</td>
                 <td>删除</td>
             </tr>
             @foreach($histories as $history)
@@ -33,6 +34,7 @@
                     <td style="text-align: left"><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{!! nl2br($history -> e_text)!!}</a></td>
                     <td style="text-align: left"><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{!! nl2br($history -> r_text)!!}</a></td>
                     <td><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{{$history -> user_id}}</a></td>
+                    <td style="text-align: left"><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{{$history -> position}}</a></td>
                     <td><button class="btn btn-default" onclick="delete_soap({{$history -> user_soap_history_pk}})">删除</button></td>
                 </tr>
             @endforeach

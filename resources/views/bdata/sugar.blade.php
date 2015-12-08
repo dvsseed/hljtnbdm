@@ -15,6 +15,7 @@
             <th colspan="2" style="text-align: center;">晚餐</th>
             <th rowspan="2" style="vertical-align: middle;text-align: center;">睡前</th>
             @if($soap_link != "")<th rowspan="2" style="vertical-align: middle;text-align: center;">备注</th>@endif
+            <th rowspan="2" style="vertical-align: middle;text-align: center;">soap</th>
         </tr>
         <tr>
             <td>饭前</td>
@@ -146,6 +147,18 @@
                             </div>
                         </div>
                         <input class="form-control batchInput" id="sugar_batch_empty" type="button" style="display: none" value="清空"/>
+                    </td>
+                @endif
+                @if($soap_link != "")
+                    <td>
+                        <div id="normal" style="max-width: 150px">
+                            @if ($day-> history_soap != null)
+                                <div class="hover"><a href="{{$soap_link}}?history={{$day -> history_soap -> user_soap_history_pk}}"  title="{{$day-> history_soap -> p_text}}">{!! nl2br($day-> history_soap -> p_text) !!}</a>
+                            @else
+                                <div class="hover"><a href="{{$soap_link}}?new=true&calendar_date={{$day -> calendar_date}}" class="change" ><img src="/css/images/note.gif"/></a>&nbsp;&nbsp;
+                            @endif
+                                </div>
+                        </div>
                     </td>
                 @endif
             </tr>

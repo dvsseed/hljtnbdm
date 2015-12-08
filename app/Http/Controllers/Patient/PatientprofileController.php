@@ -534,6 +534,10 @@ class PatientprofileController extends Controller
                 foreach( $details as $detail){
                     $detail -> delete();
                 }
+                $histories = $blood_sugar -> histories;
+                foreach( $histories as $history){
+                    $history -> delete();
+                }
                 $blood_sugar -> delete();
             }
 
