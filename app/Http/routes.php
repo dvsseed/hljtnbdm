@@ -34,7 +34,8 @@ Route::delete('dm/destroy/{id}', ['as' => 'dm_destroy', 'uses' => 'DM\DiabetesCo
 Route::post('dm/update', ['as' => 'dm_update', 'uses' => 'DM\DiabetesController@update']);
 Route::post('dm/uupdate', ['as' => 'dm_uupdate', 'uses' => 'DM\DiabetesController@uupdate']);
 Route::post('dm/store', ['as' => 'dm_store', 'uses' => 'DM\DiabetesController@store']);
-Route::get('dm/gobd/{pid}', ['as' => 'dm_gobd', 'uses' => 'DM\DiabetesController@gobd']);
+Route::get('dm/gobd/{pid}/{bid}', ['as' => 'dm_gobd', 'uses' => 'DM\DiabetesController@gobd']);
+Route::get('dm/gosoap/{pid}/{bid}', ['as' => 'dm_gosoap', 'uses' => 'DM\DiabetesController@gosoap']);
 
 #管理员入口(增删改查，上传)
 #资源路由,人员的增删改查
@@ -91,4 +92,4 @@ Route::get('/soap_history/{uuid}', 'SOAP\SoapController@get_history');
 Route::post('/soap/get_customize', 'SOAP\SoapController@post_customize');
 Route::post('/soap/post_soap', 'SOAP\SoapController@post_user_soap');
 Route::post('/soap/delete_history', 'SOAP\SoapController@delete_history');
-Route::get('/soap/{uuid}', 'SOAP\SoapController@page');
+Route::get('/soap/{uuid}',['as' => 'soap', 'uses' => 'SOAP\SoapController@page']);

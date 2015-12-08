@@ -49,9 +49,9 @@ class DiabetesController extends Controller
                     1 => "personid",
                     2 => "cardid",
                     3 => "doctor",
-                    4 => "duty",
-                    5 => "nurse",
-                    6 => "dietitian",
+                    4 => "duty_name",
+                    5 => "nurse_name",
+                    6 => "dietitian_name",
                 ];
                 $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
                 $results = Buildcase::where($field, 'like', '%' . $search . '%')->orderBy('build_at', 'desc');
@@ -65,7 +65,7 @@ class DiabetesController extends Controller
         }
     }
 
-    public function gobd($pid)
+    public function gobd($pid, $bid)
     {
         $pps = Patientprofile::where('pp_patientid', '=', $pid)->first();
         if(is_null($pps)) {
@@ -74,7 +74,28 @@ class DiabetesController extends Controller
             $ppid = $pps->id;
             $hns = HospitalNo::where('patient_profile_id', '=', $ppid)->first();
             $uuid = $hns->hospital_no_uuid;
+            $buildcase = Buildcase::where('id', '=', $bid)->first();
+            $buildcase->hospital_no_uuid = $uuid;
+            $buildcase->save();
+
             return Redirect::to("/bdata/$uuid");
+        }
+    }
+
+    public function gosoap($pid, $bid)
+    {
+        $pps = Patientprofile::where('pp_patientid', '=', $pid)->first();
+        if(is_null($pps)) {
+            return Redirect::route("soap");
+        } else {
+            $ppid = $pps->id;
+            $hns = HospitalNo::where('patient_profile_id', '=', $ppid)->first();
+            $uuid = $hns->hospital_no_uuid;
+            $buildcase = Buildcase::where('id', '=', $bid)->first();
+            $buildcase->hospital_no_uuid = $uuid;
+            $buildcase->save();
+
+            return Redirect::to("/soap/$uuid");
         }
     }
 
@@ -157,16 +178,19 @@ class DiabetesController extends Controller
         $buildcase->doctor = Auth::user()->id;
         if ($request->duty) {
             $buildcase->duty = $request->duty;
+            $buildcase->duty_name = User::where('id','=',$request->duty)->first()->name;
             $buildcase->duty_status = 0;
             $buildcase->duty_at = $today;
         }
         if ($request->nurse) {
             $buildcase->nurse = $request->nurse;
+            $buildcase->nurse_name = User::where('id','=',$request->nurse)->first()->name;
             $buildcase->nurse_status = 0;
             $buildcase->nurse_at = $today;
         }
         if ($request->dietitian) {
             $buildcase->dietitian = $request->dietitian;
+            $buildcase->dietitian_name = User::where('id','=',$request->dietitian)->first()->name;
             $buildcase->dietitian_status = 0;
             $buildcase->dietitian_at = $today;
         }
@@ -182,8 +206,8 @@ class DiabetesController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function show($id)
-    {
+//    public function show($id)
+//    {
 //        $patientprofile = Patientprofile::findOrFail($id);
 //        $casecare = CaseCare::where('patientprofile1_id', '=', $id)->firstOrFail();
 //        $carbon = Carbon::today();
@@ -198,7 +222,7 @@ class DiabetesController extends Controller
 //
 //        EventController::SaveEvent('buildcases', 'show(显示)');
 //        return view('dm.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
-    }
+//    }
 
     /**
      * Remove the specified resource from storage.
@@ -246,14 +270,17 @@ class DiabetesController extends Controller
         $today->toDateTimeString();
         if ($request->duty) {
             $buildcase->duty = $request->duty;
+            $buildcase->duty_name = User::where('id','=',$request->duty)->first()->name;
             $buildcase->duty_at = $today;
         }
         if ($request->nurse) {
             $buildcase->nurse = $request->nurse;
+            $buildcase->nurse_name = User::where('id','=',$request->nurse)->first()->name;
             $buildcase->nurse_at = $today;
         }
         if ($request->dietitian) {
             $buildcase->dietitian = $request->dietitian;
+            $buildcase->dietitian_name = User::where('id','=',$request->dietitian)->first()->name;
             $buildcase->dietitian_at = $today;
         }
         $buildcase->save();

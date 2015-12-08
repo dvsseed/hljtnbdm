@@ -106,51 +106,56 @@ return [
 			'required' => '邮箱不能为空',
 			'email' => '邮箱格式不正确'
 		],
-                'pp_email' => [
-                       	'required' => '邮箱不能为空',
-                       	'email' => '邮箱格式不正确'
-                ],
-                'href' => [
-                        'required' => '方法名必须填写',
-                ],
-                'btnclass' => [
-                        'required' => '按钮类必须填写',
-                ],
-                'innerhtml' => [
-                        'required' => '描述必须填写',
-                ],
-                'user_id' => [
-                        'unique' => '人员#不可重复',
-                ],
-                'feature_id' => [
-                       	'required' => '操作功能必须填写',
-                        'unique' => '功能#不可重复',
-                ],
-                'pp_patientid' => [
-                        'required' => '病历号码必须填写',
-                        'unique' => '病历号码不可重复',
+		'pp_email' => [
+			'required' => '邮箱不能为空',
+			'email' => '邮箱格式不正确'
+		],
+		'href' => [
+			'required' => '方法名必须填写',
+		],
+		'btnclass' => [
+			'required' => '按钮类必须填写',
+		],
+		'innerhtml' => [
+			'required' => '描述必须填写',
+		],
+			'user_id' => [
+			'unique' => '人员#不可重复',
+		],
+		'feature_id' => [
+			'required' => '操作功能必须填写',
+			'unique' => '功能#不可重复',
+		],
+		'pp_patientid' => [
+			'required' => '病历号码必须填写',
+			'unique' => '病历号码不可重复',
 			'digits'   => '病历号码必须是 18 位数字'
-                ],
-              	'pp_personid' => [
-                        'required' => '身份证号必须填写',
-                        'unique' => '身份证号不可重复',
+		],
+		'pp_personid' => [
+			'required' => '身份证号必须填写',
+			'unique' => '身份证号不可重复',
 			'digits'   => '身份证号必须是 18 位数字'
-                ],
-                'pp_name' => [
-                        'required' => '姓名必须填写',
-                ],
+        ],
+		'pp_name' => [
+			'required' => '姓名必须填写',
+		],
 		'pp_height' => [
 			'required' => '身高必须填写',
 			'numeric' => '身高必须是数字',
 			'min' => '身高不能小于 0',
 			'max' => '身高不能大于 200',
 		],
-                'pp_weight' => [
-                        'required' => '体重必须填写',
-                        'numeric' => '体重必须是数字',
-                        'min' => '体重不能小于 0',
-                        'max' => '体重不能大于 200',
-                ]
+		'pp_weight' => [
+			'required' => '体重必须填写',
+			'numeric' => '体重必须是数字',
+			'min' => '体重不能小于 0',
+			'max' => '体重不能大于 200',
+		],
+		'account' => [
+			'required' => '该身份证号已经存在',
+			'alpha_num' => '身份证号必须是英数字',
+			'unique' => '该身份证号已经存在',
+		]
 
 	],
 

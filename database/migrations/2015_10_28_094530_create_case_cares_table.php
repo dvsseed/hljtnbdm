@@ -49,7 +49,9 @@ class CreateCaseCaresTable extends Migration
             $table->char('cc_hinder', 10)->nullable();
             $table->string('cc_hinder_desc', 20)->nullable();
             $table->integer('cc_act_time')->nullable();
-            $table->char('cc_act_kind', 10)->nullable();
+            $table->integer('cc_act_times')->nullable();
+            $table->tinyInteger('cc_act_kind', 2)->nullable();
+            $table->string('cc_act_other', 20)->nullable();
             $table->integer('cc_edu')->unsigned()->nullable();
             $table->integer('cc_careself')->unsigned()->nullable();
             $table->string('cc_careself_name', 20)->nullable();

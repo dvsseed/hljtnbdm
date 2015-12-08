@@ -267,7 +267,7 @@
                 <div class="form-group">
                     <label for="cc_medicaretype" class="col-md-2 control-label">医保类型</label>
                     <div class="col-md-10 form-control-static">
-                        <?php $ccmedicaretype = [0 => '省医保', 1 => '市医保', 2 => '哈尔滨市城镇居民医保', 3 => '省农村合作医疗']; ?>
+                        <?php $ccmedicaretype = [0 => '省医保', 1 => '市医保', 2 => '哈尔滨市城镇居民医保', 3 => '省农村合作医疗', 4 => '省医保公务员', 5 => '市医保公务员', 6 => '自费']; ?>
                         @foreach($ccmedicaretype as $key => $value)
                              <label class="radio-inline {{Text::behidden($casecare->cc_medicaretype,$key)}}">
                                  <input type="radio" value="{{$key}}" name="cc_medicaretype" id="cc_medicaretype{{$key+1}}" {{Text::checked($casecare->cc_medicaretype,$key)}} disabled>{{$value}}
@@ -332,11 +332,17 @@
                                                            id="cc_act_time_sel1"
                                                            {{$casecare->cc_act_time ? "checked='checked'" : ""}} disabled>有</label>
                         <label class="radio-inline">{{ $casecare->cc_act_time }}次/周</label>
+                        <label class="radio-inline">运动时间：{{ $casecare->cc_act_times }}分钟/次</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="cc_act_kind">运动种类</label>
-                    <div class="col-md-10 form-control-static">{{ $casecare->cc_act_kind }}</div>
+                    <div class="col-md-10 form-control-static">
+                        @foreach($actkind as $key => $value)
+                            {{ "$key" == $casecare->cc_act_kind ? "$value" : "" }}
+                        @endforeach
+                        {{ $casecare->cc_act_other }}
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="cc_edu" class="col-md-2 control-label">教育程度</label>
@@ -423,7 +429,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="cc_smartphone">本人是否使用智慧型手机</label>
+                    <label class="col-md-2 control-label" for="cc_smartphone">本人是否使用智能型手机</label>
                     <div class="col-md-10 form-control-static">
                         <label class="radio-inline {{!$casecare->cc_smartphone ? '' : 'hidden'}}"><input type="radio" value="0" name="cc_smartphone"
                                                            id="cc_smartphone0"
@@ -434,7 +440,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="cc_wifi3g">智慧型手机上网功能</label>
+                    <label class="col-md-2 control-label" for="cc_wifi3g">智能型手机上网功能</label>
                     <div class="col-md-10 form-control-static">
                         <label class="radio-inline {{Text::behidden($casecare->cc_wifi3g,1)}}"><input type="radio" value="1" name="cc_wifi3g" id="cc_wifi3g1"
                                                            {{Text::checked($casecare->cc_wifi3g,1)}} disabled>Wi-Fi</label>
@@ -443,7 +449,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="cc_smartphone_family">家属是否使用智慧型手机</label>
+                    <label class="col-md-2 control-label" for="cc_smartphone_family">家属是否使用智能型手机</label>
                     <div class="col-md-10 form-control-static">
                         <label class="radio-inline {{!$casecare->cc_smartphone_family ? '' : 'hidden'}}"><input type="radio" value="0" name="cc_smartphone_family"
                                                            id="cc_smartphone_family0"

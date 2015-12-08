@@ -77,11 +77,12 @@ class PatientprofileController extends Controller
         $sources = Patientprofile::$_source;
         $occupations = Patientprofile::$_occupation;
         $languages = Patientprofile::$_language;
+        $actkind = Patientprofile::$_actkind;
         $patientid = null;
         $err_msg = null;
 
         EventController::SaveEvent('patientprofile', 'create(创建)');
-        return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
+        return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind', 'patientid'));
     }
 
     public function ccreate($patientid)
@@ -100,10 +101,11 @@ class PatientprofileController extends Controller
             $sources = Patientprofile::$_source;
             $occupations = Patientprofile::$_occupation;
             $languages = Patientprofile::$_language;
+            $actkind = Patientprofile::$_actkind;
             $err_msg = null;
 
             EventController::SaveEvent('patientprofile', 'create(创建)');
-            return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
+            return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind', 'patientid'));
         }
     }
 
@@ -215,7 +217,9 @@ class PatientprofileController extends Controller
             }
 
             $casecare->cc_act_time = $request->cc_act_time;
+            $casecare->cc_act_times = $request->cc_act_times;
             $casecare->cc_act_kind = $request->cc_act_kind;
+            $casecare->cc_act_other = $request->cc_act_other;
             $casecare->cc_edu = $request->cc_edu;
             $casecare->cc_careself = $request->cc_careself;
             $casecare->cc_careself_name = $request->cc_careself_name;
@@ -306,9 +310,10 @@ class PatientprofileController extends Controller
         $sources = Patientprofile::$_source;
         $occupations = Patientprofile::$_occupation;
         $languages = Patientprofile::$_language;
+        $actkind = Patientprofile::$_actkind;
 
         EventController::SaveEvent('patientprofile', 'show(显示)');
-        return view('patient.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
+        return view('patient.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind'));
     }
 
     /**
@@ -330,9 +335,10 @@ class PatientprofileController extends Controller
         $sources = Patientprofile::$_source;
         $occupations = Patientprofile::$_occupation;
         $languages = Patientprofile::$_language;
+        $actkind = Patientprofile::$_actkind;
 
         EventController::SaveEvent('patientprofile', 'edit(编辑)');
-        return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
+        return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind'));
     }
 
     /**
@@ -428,7 +434,9 @@ class PatientprofileController extends Controller
             }
 
             $casecare->cc_act_time = $request->cc_act_time;
+            $casecare->cc_act_times = $request->cc_act_times;
             $casecare->cc_act_kind = $request->cc_act_kind;
+            $casecare->cc_act_other = $request->cc_act_other;
             $casecare->cc_edu = $request->cc_edu;
             $casecare->cc_careself = $request->cc_careself;
             $casecare->cc_careself_name = $request->cc_careself_name;

@@ -376,6 +376,12 @@
                                                            id="cc_medicaretype2" {{$casecare->cc_medicaretype==2 ? "checked='checked'" : ""}}>哈尔滨市城镇居民医保</label>
                         <label class="radio-inline"><input type="radio" value="3" name="cc_medicaretype"
                                                            id="cc_medicaretype3" {{$casecare->cc_medicaretype==3 ? "checked='checked'" : ""}}>省农村合作医疗</label>
+                        <label class="radio-inline"><input type="radio" value="4" name="cc_medicaretype"
+                                                           id="cc_medicaretype4" {{$casecare->cc_medicaretype==3 ? "checked='checked'" : ""}}>省医保公务员</label>
+                        <label class="radio-inline"><input type="radio" value="5" name="cc_medicaretype"
+                                                           id="cc_medicaretype5" {{$casecare->cc_medicaretype==3 ? "checked='checked'" : ""}}>市医保公务员</label>
+                        <label class="radio-inline"><input type="radio" value="6" name="cc_medicaretype"
+                                                           id="cc_medicaretype6" {{$casecare->cc_medicaretype==3 ? "checked='checked'" : ""}}>自费</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -441,15 +447,21 @@
                                                            id="cc_act_time_sel0" {{!$casecare->cc_act_time ? "checked='checked'" : ""}}>无</label>
                         <label class="radio-inline"><input type="radio" value="1" name="cc_act_time_sel"
                                                            id="cc_act_time_sel1" {{$casecare->cc_act_time ? "checked='checked'" : ""}}>有</label>
-                        <label class="radio-inline"><input class="input-sm" type="text" name="cc_act_time"
-                                                           value="{{ $casecare->cc_act_time }}">次/周</label>
+                        <label class="radio-inline"><input class="input-sm" type="text" name="cc_act_time" value="{{ $casecare->cc_act_time }}">次/周</label>
+                        <label class="radio-inline">运动时间：<input class="input-sm" type="text" name="cc_act_times" value="{{ $casecare->cc_act_times }}">分钟/次</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="cc_act_kind">运动种类</label>
 
-                    <div class="col-md-10"><input class="form-control input-sm" type="text" name="cc_act_kind"
-                                                  value="{{ $casecare->cc_act_kind }}"></div>
+                    <div class="col-md-10">
+                        <select name="cc_act_kind" class="input-sm">
+                            @foreach($actkind as $key => $value)
+                                <option value="{{ $key }}" {{"$key"==$casecare->cc_act_kind ? "selected='selected'" : ""}}>{{ $value }}</option>
+                            @endforeach
+                        </select>
+                        <input type="text" name="cc_act_other" id="cc_act_other" class="input-sm" value="{{ $casecare->cc_act_other }}">
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="cc_edu" class="col-md-2 control-label">教育程度</label>
@@ -574,7 +586,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="cc_smartphone">本人是否使用智慧型手机</label>
+                    <label class="col-md-2 control-label" for="cc_smartphone">本人是否使用智能型手机</label>
 
                     <div class="col-md-10">
                         <label class="radio-inline"><input type="radio" value="0" name="cc_smartphone"
@@ -584,7 +596,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="cc_wifi3g">智慧型手机上网功能</label>
+                    <label class="col-md-2 control-label" for="cc_wifi3g">智能型手机上网功能</label>
 
                     <div class="col-md-10">
                         <label class="radio-inline"><input type="radio" value="1" name="cc_wifi3g"
@@ -594,7 +606,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="cc_smartphone_family">家属是否使用智慧型手机</label>
+                    <label class="col-md-2 control-label" for="cc_smartphone_family">家属是否使用智能型手机</label>
 
                     <div class="col-md-10">
                         <label class="radio-inline"><input type="radio" value="0" name="cc_smartphone_family"
@@ -650,7 +662,8 @@
                     </div>
                 </div>
 
-                <a class="btn btn-default" href="{{ route('patient.index') }}">返回</a>
+                <a class="btn btn-info" href="{{ route('patient.index') }}">历史纪录</a>
+                <!-- a class="btn btn-default" href="{{ route('patient.index') }}">返回</a -->
                 <button class="btn btn-primary" type="submit">保存</button>
             </form>
         </div>

@@ -8,6 +8,7 @@
 
 use App\Feature;
 use App\User;
+use App\Buildcase;
 use App\Http\Controllers\Controller;
 use App\Model\Pdata\HospitalNo;
 use App\Model\SOAP\SubClass;
@@ -53,14 +54,14 @@ class SoapController extends Controller
             }
         }
 
+        $history_pk = null;
         if($hospital_no == null){
-            return view('soap.soap', compact('err_msg'));
+            return view('soap.soap', compact('err_msg', 'history_pk'));
         }
 
         $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid)->first();
 
         $user_data = array();
-        $history_pk = null;
 
         if($user_soap != null && isset($request['history'])){
             $history = $user_soap -> history() -> find($request['history']);
@@ -200,6 +201,7 @@ class SoapController extends Controller
 
     public function post_user_soap(Request $request){
         $uuid = Session::get('uuid');
+        $uid = Auth::user()->id;
         $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid) -> first();
 
         if($user_soap == null){
@@ -216,8 +218,8 @@ class SoapController extends Controller
             $user_soap -> e_text = $request -> e_text;
             $user_soap -> r_text = $request -> r_text;
 
-            if(isset($request["confirm"]) && $request -> confirm == "true"){
-                $user_soap -> is_finished = true;
+            if(isset($request["confirm"]) && $request -> confirm == "true") {
+                $user_soap->is_finished = true;
             }
 
             $user_soap -> save();
@@ -245,6 +247,40 @@ class SoapController extends Controller
             }
 
             $user_soap_history -> save();
+
+            if($user_soap->is_finished == 1) { // 完成
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('duty','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->duty_status = 2;
+                    $buildcase->save();
+                }
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('nurse','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->nurse_status = 2;
+                    $buildcase->save();
+                }
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('dietitian','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->dietitian_status = 2;
+                    $buildcase->save();
+                }
+            } else { // 暫存
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('duty','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->duty_status = 1;
+                    $buildcase->save();
+                }
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('nurse','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->nurse_status = 1;
+                    $buildcase->save();
+                }
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('dietitian','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->dietitian_status = 1;
+                    $buildcase->save();
+                }
+            }
 
             DB::commit();
             return "success";

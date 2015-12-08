@@ -52,7 +52,8 @@
                                 <td>
 <a data-html="true" href="#" data-toggle="popover" title="新增资料选项" data-content=
 "&lt;a href='/patient/ccreate/{{ $buildcase->personid }}' class='btn btn-info' role='button'&gt;患者&lt;/a&gt;
-&lt;a href='/dm/gobd/{{ $buildcase->personid }}' class='btn btn-danger' role='button'&gt;血糖&lt;/a&gt;
+&lt;a href='/dm/gobd/{{ $buildcase->personid }}/{{ $buildcase->id }}' class='btn btn-danger' role='button'&gt;血糖&lt;/a&gt;
+&lt;a href='/dm/gosoap/{{ $buildcase->personid }}/{{ $buildcase->id }}' class='btn btn-success' role='button'&gt;SOAP&lt;/a&gt;
 &lt;a href='/case/create/{{ $buildcase->personid }}' class='btn btn-warning' role='button'&gt;方案&lt;/a&gt;">{{ $buildcase->personid }}</a>
                                 </td>
                             @else
@@ -62,11 +63,11 @@
                             <td>{{ $buildcase->build_at }}</td>
                             <td>{{ $buildcase->doctor ? \App\User::find($buildcase->doctor)->name : "" }}</td>
                             <td>{{ $buildcase->duty ? \App\User::find($buildcase->duty)->name : "" }}</td>
-                            <td>{{ $buildcase->duty_status == 0 ? '未处理' : '已完成' }}</td>
+                            <td>{{ $buildcase->duty_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') }}</td>
                             <td>{{ $buildcase->nurse ? \App\User::find($buildcase->nurse)->name : "" }}</td>
-                            <td>{{ $buildcase->nurse_status == 0 ? '未处理' : '已完成' }}</td>
+                            <td>{{ $buildcase->nurse_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') }}</td>
                             <td>{{ $buildcase->dietitian ? \App\User::find($buildcase->dietitian)->name : "" }}</td>
-                            <td>{{ $buildcase->dietitian_status == 0 ? '未处理' : '已完成' }}</td>
+                            <td>{{ $buildcase->dietitian_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') }}</td>
                             <td {!! $doctor ? '' : 'style="display:none"' !!}>
                                 <!-- a class="btn btn-primary" href="{{-- route('dm_show', $buildcase->id) --}}">查</a -->
                                 <a class="btn btn-warning" href="{{ route('dm_eedit', $buildcase->id) }}">改</a>
