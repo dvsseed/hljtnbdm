@@ -519,6 +519,7 @@ class PatientprofileController extends Controller
         } catch (\Exception $e) {
             $msg = '资料删除失败。';
             DB::rollback();
+            return $e;
         }
 
         return redirect()->back()->with('message', $msg);
@@ -552,11 +553,13 @@ class PatientprofileController extends Controller
             $hospital -> delete();
 
             $user_soap = $hospital -> user_soap;
-            $histories = $user_soap -> history;
-            foreach( $histories as $history){
-                $histories -> delete();
+            if($user_soap != null){
+                $histories = $user_soap -> history;
+                foreach( $histories as $history){
+                    $history -> delete();
+                }
+                $user_soap -> delete();
             }
-            $user_soap -> delete();
         }
     }
 
