@@ -218,6 +218,8 @@ class SoapController extends Controller
 
             if(isset($request["confirm"]) && $request -> confirm == "true"){
                 $user_soap -> is_finished = true;
+            }else{
+                $user_soap -> is_finished = false;
             }
 
             $user_soap -> save();
