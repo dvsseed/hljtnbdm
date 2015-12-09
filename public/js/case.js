@@ -346,6 +346,9 @@ $(function() {
             $("#_clsmoking input[type='text']").attr("disabled", false);
         }
     });
+    // 計算IBW
+    $("#cl_base_tall").blur();
+    $("#_cl_base_tall").blur();
 
 });
 

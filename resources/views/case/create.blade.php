@@ -19,7 +19,7 @@
             @if(is_null($err_msg))
             <form id="caseform" action="{{ route('case.store') }}" method="POST" role="form" data-toggle="validator">
                 <div id="printpage">
-                <input type="hidden" name="pp_id" value="{{ $patientprofiles->id }} ">
+                <input type="hidden" name="pp_id" value="{{ $patientprofiles->id }}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <label class="control-label" for="cl_patientname">患者名</label>
@@ -100,7 +100,7 @@
                         <th><span class="text-danger">*</span>身高</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_base_tall" name="cl_base_tall" size="5" onblur="calcIBW(this.value)" tabindex="3" title="50~200" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_base_tall') }}" required> cm
+                                <input type="text" id="cl_base_tall" name="cl_base_tall" size="5" onblur="calcIBW(this.value)" tabindex="3" title="50~200" min="50.0" max="200.0" step="any" pattern="^[0-9]{2,3}(\.[0-9]{0,1})?$" maxlength="5" data-minlength="2" data-minlength-error="输入数字长度不足" value="{{ $patientprofiles->pp_height }}" required> cm
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -120,7 +120,7 @@
                         <th><span class="text-danger">*</span>体重</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_base_weight" name="cl_base_weight" size="5" onblur="calcBMI(this.value)" tabindex="4" title="3~160" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_base_weight') }}" required> kg
+                                <input type="text" id="cl_base_weight" name="cl_base_weight" size="5" onblur="calcBMI(this.value)" tabindex="4" title="3~160" min="3.0" max="160.0" step="any" pattern="^[0-9]{1,3}(\.[0-9]{0,1})?$" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_base_weight') }}" required> kg
                                 <input type="checkbox" name="cl_noweight" id="cl_noweight" value="1" onclick="clkweight(this.id)">无法测量
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
@@ -607,7 +607,7 @@
                         <th><span class="text-danger">*</span>身高</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="_cl_base_tall" name="_cl_base_tall" size="5" onblur="_calcIBW(this.value)" tabindex="3" title="50~200" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('_cl_base_tall') }}" required> cm
+                                <input type="text" id="_cl_base_tall" name="_cl_base_tall" size="5" onblur="_calcIBW(this.value)" tabindex="3" title="50~200" min="50.0" max="200.0" step="any" pattern="^[0-9]{2,3}(\.[0-9]{0,1})?$" maxlength="5" data-minlength="2" data-minlength-error="输入数字长度不足" value="{{ $patientprofiles->pp_height }}" required> cm
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -617,7 +617,7 @@
                         <th><span class="text-danger">*</span>体重</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="_cl_base_weight" name="_cl_base_weight" size="5" onblur="_calcBMI(this.value)" tabindex="4" title="3~160" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('_cl_base_weight') }}" required> kg　
+                                <input type="text" id="_cl_base_weight" name="_cl_base_weight" size="5" onblur="_calcBMI(this.value)" tabindex="4" title="3~160" min="3.0" max="160.0" step="any" pattern="^[0-9]{1,3}(\.[0-9]{0,1})?$" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('_cl_base_weight') }}" required> kg　
                                 <input type="checkbox" name="_cl_noweight" id="_cl_noweight" value="1" onclick="_clkweight(this.id)">无法测量　　
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>

@@ -43,7 +43,7 @@ Route::resource('admin', 'Admin\AdminController');
 #更新信息
 Route::post('admin/upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminController@upload_user']);
 #下载人员名单
-Route::get('download/dmList', ['as' => 'download_dm_list_excel', 'uses' => 'Admin\ExcelController@dmList']);
+Route::get('download/xlsUsers', ['as' => 'download_users_list_excel', 'uses' => 'Admin\ExcelController@xlsUsers']);
 
 #功能管理
 Route::resource('feature', 'Feature\FeatureController');

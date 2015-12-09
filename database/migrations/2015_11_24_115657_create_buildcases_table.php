@@ -18,6 +18,7 @@ class CreateBuildcasesTable extends Migration
             $table->integer('cardid')->unsigned()->nullable();
             $table->timestamp('build_at')->nullable();
             $table->integer('doctor')->unsigned()->nullable();
+            $table->string('doctor_name', 20)->nullable();
             $table->integer('duty')->unsigned()->nullable();
             $table->string('duty_name', 20)->nullable();
             $table->char('duty_status', 1)->nullable();

@@ -83,6 +83,7 @@
                         @foreach($areas as $key => $value)
                             {{ "$key" == $patientprofile->pp_area ? "$value" : "" }}
                         @endforeach
+                        {{ $patientprofile->pp_area_other }}
                     </div>
                 </div>
                 <div class="form-group">
@@ -103,6 +104,7 @@
                         @foreach($sources as $key => $value)
                             {{ "$key" == $patientprofile->pp_source ? "$value" : "" }}
                         @endforeach
+                        {{ $patientprofile->pp_source_other }}
                     </div>
                 </div>
                 <div class="form-group">
@@ -111,6 +113,7 @@
                         @foreach($occupations as $key => $value)
                             {{ "$key" == $patientprofile->pp_occupation ? "$value" : "" }}
                         @endforeach
+                        {{ $patientprofile->pp_occupation_other }}
                     </div>
                 </div>
                 <div class="form-group">

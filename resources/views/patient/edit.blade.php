@@ -120,11 +120,12 @@
                     <label class="col-md-2 control-label" for="pp_area">地区</label>
 
                     <div class="col-md-10">
-                        <select name="pp_area" class="form-control input-sm">
+                        <select name="pp_area" class="input-sm">
                             @foreach($areas as $key => $value)
                                 <option value="{{ $key }}" {{ "$key" == $patientprofile->pp_area ? "selected='selected'" : ""}}>{{ $value }}</option>
                             @endforeach
                         </select>
+                        <input type="text" name="pp_area_other" class="input-sm" value="{{ $patientprofile->pp_area_other }}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -148,10 +149,11 @@
                     <label class="col-md-2 control-label" for="pp_source">患者来源</label>
 
                     <div class="col-md-10">
-                        <select name="pp_source" class="form-control input-sm">
+                        <select name="pp_source" class="input-sm">
                             @foreach($sources as $key => $value)
                                 <option value="{{ $key }}" {{ "$key" == $patientprofile->pp_source ? "selected='selected'" : ""}}>{{ $value }}</option>
                             @endforeach
+                            <input type="text" name="pp_source_other" class="input-sm" value="{{ $patientprofile->pp_source_other }}">
                         </select>
                     </div>
                 </div>
@@ -159,10 +161,11 @@
                     <label class="col-md-2 control-label" for="pp_occupation">职业</label>
 
                     <div class="col-md-10">
-                        <select name="pp_occupation" class="form-control input-sm">
+                        <select name="pp_occupation" class="input-sm">
                             @foreach($occupations as $key => $value)
                                 <option value="{{ $key }}" {{ "$key" == $patientprofile->pp_occupation ? "selected='selected'" : ""}}>{{ $value }}</option>
                             @endforeach
+                            <input type="text" name="pp_occupation_other" class="input-sm" value="{{ $patientprofile->pp_occupation_other }}">
                         </select>
                     </div>
                 </div>

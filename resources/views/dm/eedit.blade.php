@@ -22,9 +22,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            {!! Form::label('doctor', '建案人: ', ['class' => 'col-md-2 control-label']) !!}
+                            {!! Form::label('doctor_name', '建案人: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
-                                {!! Form::text('doctor', \App\User::find($buildcase->doctor)->name, ['class' => 'form-control', 'readonly']) !!}
+                                {!! Form::text('doctor_name', $buildcase->doctor_name, ['class' => 'form-control', 'readonly']) !!}
                             </div>
                         </div>
                         <div class="form-group has-feedback">

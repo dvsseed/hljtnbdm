@@ -176,6 +176,7 @@ class DiabetesController extends Controller
         $today->toDateTimeString();
         $buildcase->build_at = $today;
         $buildcase->doctor = Auth::user()->id;
+        $buildcase->doctor_name = $request->doctor_name;
         if ($request->duty) {
             $buildcase->duty = $request->duty;
             $buildcase->duty_name = User::where('id','=',$request->duty)->first()->name;

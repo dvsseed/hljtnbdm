@@ -134,11 +134,12 @@
                     <label class="col-md-2 control-label" for="pp_area">地区</label>
 
                     <div class="col-md-10">
-                        <select name="pp_area" class="form-control input-sm">
+                        <select name="pp_area" class="input-sm">
                             @foreach($areas as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>
                             @endforeach
                         </select>
+                        <input type="text" name="pp_area_other" class="input-sm" value="{{ old('pp_area_other') }}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -162,22 +163,24 @@
                     <label class="col-md-2 control-label" for="pp_source">患者来源</label>
 
                     <div class="col-md-10">
-                        <select name="pp_source" class="form-control input-sm">
+                        <select name="pp_source" class="input-sm">
                             @foreach($sources as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>
                             @endforeach
                         </select>
+                        <input type="text" name="pp_source_other" class="input-sm" value="{{ old('pp_source_other') }}">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="pp_occupation">职业</label>
 
                     <div class="col-md-10">
-                        <select name="pp_occupation" class="form-control input-sm">
+                        <select name="pp_occupation" class="input-sm">
                             @foreach($occupations as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>
                             @endforeach
                         </select>
+                        <input type="text" name="pp_occupation_other" class="input-sm" value="{{ old('pp_occupation_other') }}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -215,7 +218,7 @@
                     <div class="col-md-10">
                         <select name="cc_language" class="form-control input-sm">
                             @foreach($languages as $key => $value)
-                                <option value="{{ $key }}">{{ $value }}</option>
+                                <option value="{{ $key }}" {{ $key==0 ? 'selected="selected"' : '' }}>{{ $value }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -249,7 +252,7 @@
                         <label class="radio-inline"><input type="radio" value="2" name="cc_type"
                                                            id="cc_type2">GDM</label>
                         <label class="radio-inline"><input type="radio" value="3" name="cc_type"
-                                                           id="cc_type3">其它</label>
+                                                           id="cc_type3">其他</label>
                         <input type="text" name="cc_type_other" class="input-sm" value="{{ old('cc_type_other') }}">
                     </div>
                 </div>
