@@ -108,6 +108,11 @@ function save_soap(confirm){
     inputdata['e_text'] = $("#e_text").val();
     inputdata['r_text'] = $("#r_text").val();
     inputdata['_token'] = $('#customize > input[ name=_token]').val();
+    var soap_nurse_class_pks = [];
+    $("input:checkbox[name=nurse]:checked").each(function(){
+        soap_nurse_class_pks.push($(this).val());
+    });
+    inputdata['soa_nurse_class_pks'] = soap_nurse_class_pks.join();
 
     if(confirm){
         inputdata['confirm'] = true;
@@ -121,8 +126,13 @@ function save_soap(confirm){
         url: '/soap/post_soap',
         data: inputdata,
         success: function(result){
-            if(result == 'success'){
+            var words = result.split(" ");
+            if(words[0] == 'success'){
                 alert("储存成功");
+                var url = window.location.href;
+                if(url.indexOf("history=") != -1){
+                    window.location.href = words[1];
+                }
                 $("#soap_save_btn").blur();
                 $("#soap_confirm_btn").blur();
             }else{

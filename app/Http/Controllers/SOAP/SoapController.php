@@ -7,6 +7,7 @@
  */
 
 use App\Feature;
+use App\Model\SOAP\SoaNurseClass;
 use App\User;
 use App\Http\Controllers\Controller;
 use App\Model\Pdata\HospitalNo;
@@ -36,6 +37,8 @@ class SoapController extends Controller
         $main_classes = MainClass::all();
         $sub_classes = $this->get_sub_class($main_classes -> first() -> main_class_pk);
         $soa_classes = $this->get_soa_class($sub_classes -> first() -> sub_class_pk);
+        $soa_nurse_classes[0] = SoaNurseClass::where('type','=',1)->orderBy('soa_nurse_class_pk')->get();
+        $soa_nurse_classes[1] = SoaNurseClass::where('type','=',2)->orderBy('soa_nurse_class_pk')->get();
 
         $hospital_no = HospitalNo::find($uuid);
         $users = Auth::user();
@@ -81,6 +84,8 @@ class SoapController extends Controller
                 }
             }
             Session::put('calendar_date', $request['calendar_date']);
+        }else{
+            Session::forget('calendar_date');
         }
 
         if($user_soap == null || (isset($request['new']) && $request['new'] == true)){
@@ -90,6 +95,7 @@ class SoapController extends Controller
             $user_data['P'] = "";
             $user_data['E'] = "";
             $user_data['R'] = "";
+            $user_soa_nurse_pks = [];
         }else{
             $user_data['S'] = $user_soap -> s_text;
             $user_data['O'] = $user_soap -> o_text;
@@ -97,10 +103,16 @@ class SoapController extends Controller
             $user_data['P'] = $user_soap -> p_text;
             $user_data['E'] = $user_soap -> e_text;
             $user_data['R'] = $user_soap -> r_text;
+            $user_soa_nurse_pks = $user_soap -> soa_nurse_class_pks;
+            if($user_soa_nurse_pks != null){
+                $user_soa_nurse_pks = explode(",", $user_soa_nurse_pks);
+            }else{
+                $user_soa_nurse_pks = [];
+            }
         }
         Session::put('uuid', $uuid);
 
-        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid', 'history_pk'));
+        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid', 'history_pk', 'soa_nurse_classes', 'user_soa_nurse_pks'));
     }
 
     public function delete_history(Request $request){
@@ -218,15 +230,12 @@ class SoapController extends Controller
         $calendar_date = Session::get('calendar_date');
         $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid) -> first();
         $user_id = Auth::User() -> id;
-        if($user_soap == null){
-            $user_soap = new UserSoap();
-        }
 
         $bsugar = HospitalNo::find($uuid) -> blood_sugar() -> where('calendar_date', '=', $calendar_date) -> first();
 
         DB::beginTransaction();
         try{
-            if($bsugar == null){
+            if($bsugar == null && $calendar_date != null){
                 $bsugar = new BloodSugar();
                 $bsugar->calendar_date = $calendar_date;
                 $bsugar->early_morning = null;
@@ -241,24 +250,28 @@ class SoapController extends Controller
                 $bsugar->note = null;
                 $bsugar->hospital_no_uuid = $uuid;
                 $bsugar->user_id = $user_id;
+                $bsugar -> save();
             }
-            $bsugar -> save();
+            else{
+                if($user_soap == null){
+                    $user_soap = new UserSoap();
+                }
+                $user_soap -> hospital_no_uuid = $uuid;
+                $user_soap -> s_text = $request -> s_text;
+                $user_soap -> o_text = $request -> o_text;
+                $user_soap -> a_text = $request -> a_text;
+                $user_soap -> p_text = $request -> p_text;
+                $user_soap -> e_text = $request -> e_text;
+                $user_soap -> r_text = $request -> r_text;
+                $user_soap -> soa_nurse_class_pks = $request -> soa_nurse_class_pks;
 
-            $user_soap -> hospital_no_uuid = $uuid;
-            $user_soap -> s_text = $request -> s_text;
-            $user_soap -> o_text = $request -> o_text;
-            $user_soap -> a_text = $request -> a_text;
-            $user_soap -> p_text = $request -> p_text;
-            $user_soap -> e_text = $request -> e_text;
-            $user_soap -> r_text = $request -> r_text;
-
-            if(isset($request["confirm"]) && $request -> confirm == "true"){
-                $user_soap -> is_finished = true;
-            }else{
-                $user_soap -> is_finished = false;
+                if(isset($request["confirm"]) && $request -> confirm == "true"){
+                    $user_soap -> is_finished = true;
+                }else{
+                    $user_soap -> is_finished = false;
+                }
+                $user_soap -> save();
             }
-
-            $user_soap -> save();
 
             $user_soap_history = new UserSoapHistory();
             $user_soap_history -> s_text = $request -> s_text;
@@ -267,10 +280,21 @@ class SoapController extends Controller
             $user_soap_history -> p_text = $request -> p_text;
             $user_soap_history -> e_text = $request -> e_text;
             $user_soap_history -> r_text = $request -> r_text;
-            $user_soap_history -> user_soap_pk = $user_soap -> user_soap_pk;
             $user_soap_history -> user_id = Auth::user() -> id;
             $user_soap_history -> created_at = $user_soap -> created_at;
-            $user_soap_history -> blood_sugar_pk = $bsugar -> blood_sugar_pk;
+            $user_soap_history -> soa_nurse_class_pks = $request -> soa_nurse_class_pks;
+
+            if(isset($request["confirm"]) && $request -> confirm == "true"){
+                $user_soap_history -> is_finished = true;
+            }else{
+                $user_soap_history -> is_finished = false;
+            }
+            if($user_soap != null){
+                $user_soap_history -> user_soap_pk = $user_soap -> user_soap_pk;
+            }
+            if($bsugar != null){
+                $user_soap_history -> blood_sugar_pk = $bsugar -> blood_sugar_pk;
+            }
 
             if(isset($request["history"])){
                 $history = $user_soap -> history() -> find($request["history"]);
@@ -286,60 +310,10 @@ class SoapController extends Controller
             $user_soap_history -> save();
 
             DB::commit();
-            return "success";
+            return "success /soap/$uuid?history=".$user_soap_history->user_soap_history_pk;
         }catch (\Exception $e){
             DB::rollback();
-	        return "fail";
+	        return "$e";
         }
     }
-
-   /*public function convert(){
-
-        $mapping_str = "RP1	认识肾脏的基本结构及功能
-RP2	介绍肾脏疾病常见症状及检查值
-RP3	说明肾病日常生活保健及预防
-RP4	介绍肾病的危险因子
-RP5	介绍肾脏疾病分期及注意事项
-RP6	说明肾功能无法适当发挥作用时，身体会发生的状况,建议与肾脏科讨论病情
-RP7	教导高血压、高血脂、糖尿病与肾病的相关性
-RP8	教导定期追踪的重要性
-RP9	教导服用药物(包括中草药及健康食品)前，须先咨询医师意见
-";
-
-        $data = "糖尿病肾病变认知不足	RP1	RP2	RP3	RP4	RP5	RP6	RP7	RP8	RP9";
-
-        $lines = explode( "\n" , $data );
-
-        $mapping_lines = explode( "\n" , $mapping_str );
-        $mapping_data = array();
-
-        foreach($mapping_lines as $mapping_line){
-            $column = explode("\t", $mapping_line);
-            if(count($column) > 1){
-                $mapping_data[$column[0]] = $column[1];
-            }
-        }
-
-        foreach($lines as $line){
-            $column = explode("\t", $line);
-            if(count($column) > 1){
-                $lead = $column[0];
-                $soa_class = Soa_class::where('class_name','=', $lead) -> first() ;
-
-                if($soa_class != null){
-                    $soa_class_pk = $soa_class -> soa_class_pk;
-                    for($i = 1; $i < count($column); $i++){
-                        if($column[$i] != null){
-                            echo "INSERT INTO  soa_detail  (`detail_name`,`soa_class_pk`) VALUES ('".$mapping_data[trim($column[$i])]."',".$soa_class_pk.");";
-                            echo '<br/>';
-                        }
-                    }
-                }else{
-                    echo $lead.'<br/>';
-                }
-            }
-        }
-
-        return ;
-    }*/
 }
