@@ -24,6 +24,7 @@ use Cache;
 use Input;
 use DB;
 use App\Feature;
+use App\Caselist;
 
 
     class BDataController extends Controller{
@@ -229,12 +230,32 @@ use App\Feature;
             return $blood_records;
         }
 
+        public function get_hba1c(){
+            $uuid = Session::get('uuid');
+            $hospital_no = HospitalNo::find($uuid);
+            $avg = array();
+            $avg['name'] = User::find($hospital_no->patient_user_id) -> name;
+            if($hospital_no != null){
+                $ranges = [date('Y-m-d')];
+                $profile_id = $hospital_no -> patient_profile_id;
+                for($i = 1; $i <= 4; $i++){
+                    array_push($ranges,date('Y-m-d', strtotime("-3 month", strtotime($ranges[$i - 1]))));
+                    $avg[$ranges[$i]]["avg"] =  Caselist::where('pp_id', '=' ,$profile_id) -> where('created_at','<', $ranges[$i - 1]) -> where('created_at','>', $ranges[$i]) ->avg('cl_blood_hba1c');
+                    $avg[$ranges[$i]]["last_date"] =  Caselist::where('pp_id', '=' ,$profile_id) -> where('created_at','<', $ranges[$i - 1]) -> where('created_at','>', $ranges[$i]) -> max('created_at');
+                    $avg[$ranges[$i]]["first_date"] =  Caselist::where('pp_id', '=' ,$profile_id) -> where('created_at','<', $ranges[$i - 1]) -> where('created_at','>', $ranges[$i]) -> min('created_at');
+                    $avg[$ranges[$i]]["count"] =  Caselist::where('pp_id', '=' ,$profile_id) -> where('created_at','<', $ranges[$i - 1]) -> where('created_at','>', $ranges[$i]) -> count('cl_blood_hba1c');
+                }
+            }
+
+            return $avg;
+        }
+
         private function get_blood_stat($uuid){
             $calendar_date = date('Y-m-d');
             $start = date('Y-m-d', strtotime("-2 month", strtotime($calendar_date)));
 
-            $goal_up = 120;
-            $goal_low = 110;
+            $goal_up = array();
+            $goal_low = array();
 
             $types = ["breakfast", "lunch", "dinner"];
             $goals = ["above", "normal", "below", "all"];
@@ -272,6 +293,19 @@ use App\Feature;
                         }else{
                             $blood_tmp[$node] = [$record[$node]];
                         }
+                    }
+
+                    if($node == 'breakfast_before' || $node == 'lunch_before' || $node == 'dinner_before' || $node == 'early_morning' || $node == 'morning'){
+                        $goal_up[$node] = 7;
+                        $goal_low[$node] = 3.9;
+                    }
+                    else if($node == 'breakfast_after' || $node == 'lunch_after' || $node == 'dinner_after'){
+                        $goal_up[$node] = 9;
+                        $goal_low[$node] = 5.6;
+                    }
+                    else{
+                        $goal_up[$node] = 8.3;
+                        $goal_low[$node] = 5.6;
                     }
                 }
 
@@ -434,7 +468,7 @@ use App\Feature;
                 $blood_stat[$key]["max"] = max($blood_array);
                 $blood_stat[$key]["min"] = min($blood_array);
 
-                $stat = $this -> count_w_condition($blood_array, $goal_up, $goal_low);
+                $stat = $this -> count_w_condition($blood_array, $goal_up[$key], $goal_low[$key]);
                 $blood_stat[$key]["above"] = $stat['above']." (".round($stat['above'] * 100 / $blood_stat[$key]["count"])."%)";
                 $blood_stat[$key]["normal"] = $stat['normal']." (".round($stat['normal'] * 100 / $blood_stat[$key]["count"])."%)";
                 $blood_stat[$key]["below"] = $stat['below']." (".round($stat['below'] * 100 / $blood_stat[$key]["count"])."%)";
@@ -600,7 +634,7 @@ use App\Feature;
                     $bsugar->dinner_after = null;
                     $bsugar->sleep_before = null;
                     $bsugar->note = null;
-                    $bsugar->hostaple_no_pk = 'test12345';
+                    $bsugar->hospital_no_uuid = '';
                     array_push($filled_date,$bsugar);
                 }
             }

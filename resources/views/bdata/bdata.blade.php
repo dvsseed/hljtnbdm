@@ -7,7 +7,7 @@
 @section('content')
 
     <div class="container">
-        <h3 align="center">血糖资料</h3>
+        <h3 align="center" id="blood_title">血糖资料</h3>
         <br/>
         <div class="row">
             <div class="col-md-2"><h4>病历号码</h4></div>

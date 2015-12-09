@@ -8,6 +8,25 @@
  * https://github.com/nnnick/Chart.js/blob/master/LICENSE.md
  */
 
+function wrapText(context, text, x, y, maxWidth, lineHeight) {
+    var words = text.split(' ');
+    var line = '';
+
+    for(var n = 0; n < words.length; n++) {
+        var testLine = line + words[n] + ' ';
+        var metrics = context.measureText(testLine);
+        var testWidth = metrics.width;
+        if (testWidth > maxWidth && n > 0) {
+            context.fillText(line, x, y);
+            line = words[n] + ' ';
+            y += lineHeight;
+        }
+        else {
+            line = testLine;
+        }
+    }
+    context.fillText(line, x, y);
+}
 
 (function(){
 
@@ -1024,22 +1043,24 @@
 				} else {
 					each(ChartElements, function(Element) {
 						var tooltipPosition = Element.tooltipPosition();
-						new Chart.Tooltip({
-							x: Math.round(tooltipPosition.x),
-							y: Math.round(tooltipPosition.y),
-							xPadding: this.options.tooltipXPadding,
-							yPadding: this.options.tooltipYPadding,
-							fillColor: this.options.tooltipFillColor,
-							textColor: this.options.tooltipFontColor,
-							fontFamily: this.options.tooltipFontFamily,
-							fontStyle: this.options.tooltipFontStyle,
-							fontSize: this.options.tooltipFontSize,
-							caretHeight: this.options.tooltipCaretSize,
-							cornerRadius: this.options.tooltipCornerRadius,
-							text: template(this.options.tooltipTemplate, Element),
-							chart: this.chart,
-							custom: this.options.customTooltips
-						}).draw();
+                        if(Element.value != null){
+                            new Chart.Tooltip({
+                                x: Math.round(tooltipPosition.x),
+                                y: Math.round(tooltipPosition.y),
+                                xPadding: this.options.tooltipXPadding,
+                                yPadding: this.options.tooltipYPadding,
+                                fillColor: this.options.tooltipFillColor,
+                                textColor: this.options.tooltipFontColor,
+                                fontFamily: this.options.tooltipFontFamily,
+                                fontStyle: this.options.tooltipFontStyle,
+                                fontSize: this.options.tooltipFontSize,
+                                caretHeight: this.options.tooltipCaretSize,
+                                cornerRadius: this.options.tooltipCornerRadius,
+                                text: template(this.options.tooltipTemplate, Element),
+                                chart: this.chart,
+                                custom: this.options.customTooltips
+                            }).draw();
+                        }
 					}, this);
 				}
 			}
@@ -1297,7 +1318,7 @@
 			var caretPadding = this.caretPadding = 2;
 
 			var tooltipWidth = ctx.measureText(this.text).width + 2*this.xPadding,
-				tooltipRectHeight = this.fontSize + 2*this.yPadding,
+				tooltipRectHeight = this.fontSize + 2*this.yPadding + 10,
 				tooltipHeight = tooltipRectHeight + this.caretHeight + caretPadding;
 
 			if (this.x + tooltipWidth/2 >this.chart.width){
@@ -1361,7 +1382,7 @@
 				ctx.fillStyle = this.textColor;
 				ctx.textAlign = "center";
 				ctx.textBaseline = "middle";
-				ctx.fillText(this.text, tooltipX + tooltipWidth/2, tooltipY + tooltipRectHeight/2);
+                wrapText(ctx,this.text, tooltipX + tooltipWidth/2, tooltipY + (tooltipRectHeight-10)/2-2,10,this.fontSize);
 			}
 		}
 	});
@@ -1713,7 +1734,8 @@
 					ctx.font = this.font;
 					ctx.textAlign = (isRotated) ? "right" : "center";
 					ctx.textBaseline = (isRotated) ? "middle" : "top";
-					ctx.fillText(label, 0, 0);
+					//ctx.fillText(label, 0, 0);
+                    wrapText(ctx, label, 0, 0, 10, 15);
 					ctx.restore();
 				},this);
 
@@ -2709,7 +2731,7 @@
 				showVerticalLines : this.options.scaleShowVerticalLines,
 				gridLineWidth : (this.options.scaleShowGridLines) ? this.options.scaleGridLineWidth : 0,
 				gridLineColor : (this.options.scaleShowGridLines) ? this.options.scaleGridLineColor : "rgba(0,0,0,0)",
-				padding: (this.options.showScale) ? 0 : this.options.pointDotRadius + this.options.pointDotStrokeWidth,
+				padding: (this.options.showScale) ? 15 : this.options.pointDotRadius + this.options.pointDotStrokeWidth,
 				showLabels : this.options.scaleShowLabels,
 				display : this.options.showScale
 			};

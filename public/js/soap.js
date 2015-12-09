@@ -49,8 +49,13 @@ $( document ).ready(function() {
         appendText( $(this).find('option:selected').text(), $("#e_text"));
     });
 
+    $("#customize_class").change(function(){
+        setCustomize($("#customize_class").val(),$("#customize_type").val());
+        $("#customize_text").val("");
+    });
+
     $("#customize_type").change(function(){
-        setCustomize($("#customize_type").val());
+        setCustomize($("#customize_class").val(),$("#customize_type").val());
         $("#customize_text").val("");
     });
 
@@ -62,6 +67,7 @@ $( document ).ready(function() {
     $("#customize_btn").click(function(e){
         e.preventDefault();
         var inputdata = {};
+        inputdata['main_class'] = $("#customize_class").val();
         inputdata['types'] = $("#customize_type").val();
         inputdata['text'] = $("#customize_text").val();
         inputdata['_token'] = $('#customize > input[ name=_token]').val();
@@ -71,7 +77,7 @@ $( document ).ready(function() {
             data: inputdata,
             success: function(result){
                 if(result == 'success'){
-                    setCustomize($("#customize_type").val());
+                    setCustomize($("#customize_class").val(),$("#customize_type").val());
                     $("#customize_text").val("");
                     $("#customize_btn").blur();
                 }
@@ -81,36 +87,52 @@ $( document ).ready(function() {
 
     $("#soap_save_btn").click(function(e){
         e.preventDefault();
-        var inputdata = {};
-        inputdata['s_text'] = $("#s_text").val();
-        inputdata['o_text'] = $("#o_text").val();
-        inputdata['a_text'] = $("#a_text").val();
-        inputdata['p_text'] = $("#p_text").val();
-        inputdata['e_text'] = $("#e_text").val();
-        inputdata['r_text'] = $("#r_text").val();
-        inputdata['_token'] = $('#customize > input[ name=_token]').val();
-
-        if($("#history_pk").val() != ""){
-            inputdata['history'] = $("#history_pk").val();
-        }
-        $.ajax({
-            type: 'POST',
-            url: '/soap/post_soap',
-            data: inputdata,
-            success: function(result){
-                if(result == 'success'){
-                    alert("储存成功");
-                    $("#soap_save_btn").blur();
-                }else{
-                    alert("储存失败");
-                    $("#soap_save_btn").blur();
-                }
-            }
-        });
+        save_soap(false);
     });
 
-    setCustomize($("#customize_type").val());
+    $("#soap_confirm_btn").click(function(e){
+        e.preventDefault();
+        save_soap(true);
+    });
+
+    setCustomize($("#customize_class").val(), $("#customize_type").val());
 });
+
+function save_soap(confirm){
+
+    var inputdata = {};
+    inputdata['s_text'] = $("#s_text").val();
+    inputdata['o_text'] = $("#o_text").val();
+    inputdata['a_text'] = $("#a_text").val();
+    inputdata['p_text'] = $("#p_text").val();
+    inputdata['e_text'] = $("#e_text").val();
+    inputdata['r_text'] = $("#r_text").val();
+    inputdata['_token'] = $('#customize > input[ name=_token]').val();
+
+    if(confirm){
+        inputdata['confirm'] = true;
+    }
+
+    if($("#history_pk").val() != ""){
+        inputdata['history'] = $("#history_pk").val();
+    }
+    $.ajax({
+        type: 'POST',
+        url: '/soap/post_soap',
+        data: inputdata,
+        success: function(result){
+            if(result == 'success'){
+                alert("储存成功");
+                $("#soap_save_btn").blur();
+                $("#soap_confirm_btn").blur();
+            }else{
+                alert("储存失败");
+                $("#soap_save_btn").blur();
+                $("#soap_confirm_btn").blur();
+            }
+        }
+    });
+}
 
 function delete_soap(soap_history_pk){
 
@@ -169,10 +191,10 @@ function setSOADetail(soa_class_pk){
     });
 }
 
-function setCustomize( type){
+function setCustomize( main_class, type){
     $.ajax({
         type: 'GET',
-        url: '/soap/get_customize/' + type,
+        url: '/soap/get_customize/' + main_class + '/' + type,
         success: function(result){
             if(result){
                 var html = "";

@@ -21,4 +21,14 @@ class BloodSugar extends Model
     {
         return $this->hasMany('App\Model\Pdata\BloodSugarDetail','blood_sugar_pk');
     }
+
+    public function history_soap()
+    {
+        return $this->hasOne('App\Model\SOAP\UserSoapHistory','blood_sugar_pk')->where('is_visible', '=', '1')->where('user_id', '=', \Auth::user()->id);
+    }
+
+    public function histories()
+    {
+        return $this->hasMany('App\Model\SOAP\UserSoapHistory','blood_sugar_pk');
+    }
 }

@@ -61,6 +61,8 @@ $( document ).ready(function() {
             setUpMessage();
         }else if(link == "#statics"){
             getStaticsData();
+        }else if(link == "#hba1c"){
+            getHba1cData();
         }
     });
 
@@ -100,6 +102,50 @@ $( document ).ready(function() {
         $('[href =' + ' #data]').click();
     }
 
+    Chart.types.Line.extend({
+        name: "LineAlt",
+        initialize: function (data) {
+            Chart.types.Line.prototype.initialize.apply(this, arguments);
+
+            // keep a reference to the original clear
+            this.originalClear = this.clear;
+            this.clear = function () {
+                this.originalClear();
+
+                // 1 x scale unit
+                //var unitX = this.datasets[0].points[1].x - this.datasets[0].points[0].x;
+
+                var yTop = this.scale.startPoint;
+                var yHeight = this.scale.endPoint - this.scale.startPoint;
+
+                var minVal = this.options.scaleStartValue;
+                var maxVal = this.options.scaleSteps + minVal;
+                var red_precentage = (maxVal - 9) / this.options.scaleSteps;
+                var unit_precentage = 1 / this.options.scaleSteps;
+
+                console.log(this);
+
+                // change your color here
+                this.chart.ctx.fillStyle = 'rgba(250,26,26,1)';
+
+                // we shift it by half a x scale unit to the left because the space between gridline is actually a shared space
+                this.chart.ctx.fillRect(this.scale.xScalePaddingLeft, yTop, this.scale.width - (this.scale.xScalePaddingLeft+this.scale.xScalePaddingRight), red_precentage * yHeight);
+                this.chart.ctx.fillStyle = 'rgba(250,128,0,1)';
+                this.chart.ctx.fillRect(this.scale.xScalePaddingLeft, yTop + red_precentage * yHeight, this.scale.width - (this.scale.xScalePaddingLeft+this.scale.xScalePaddingRight), unit_precentage * yHeight);
+                this.chart.ctx.fillStyle =  'rgba(250,255,77,1)';
+                this.chart.ctx.fillRect(this.scale.xScalePaddingLeft, yTop + (red_precentage + unit_precentage) * yHeight, this.scale.width - (this.scale.xScalePaddingLeft+this.scale.xScalePaddingRight), unit_precentage * yHeight);
+                this.chart.ctx.fillStyle = 'rgba(133,224,26,133)';
+                this.chart.ctx.fillRect(this.scale.xScalePaddingLeft, yTop + (red_precentage + 2 * unit_precentage) * yHeight, this.scale.width - (this.scale.xScalePaddingLeft+this.scale.xScalePaddingRight), yHeight * (1-(red_precentage + 2 * unit_precentage)));
+                this.chart.ctx.fillStyle = 'rgba(0,0,0,1)';
+                this.chart.ctx.fillText("平均血糖", this.scale.xScalePaddingLeft + 4 * this.scale.fontSize - 15, yTop + yHeight + 30);
+
+                /*this.scale.steps = option.scaleEndValue - option.scaleStartValue;
+                this.scale.min = option.scaleStartValue;
+                this.scale.max = option.scaleEndValue;*/
+
+            }
+        }
+    });
 
 });
 
@@ -390,7 +436,8 @@ function getStaticsData(){
                                 ];
                                 flag = false;
                             }else{
-                                $("#bs_chart_"+ key).parent().prepend(mapping[key]+"(时间:" + mapping_range[key] + ")" + result[key]["count"] + "笔");                            data = [
+                                $("#bs_chart_"+ key).parent().prepend(mapping[key]+"(时间:" + mapping_range[key] + ")" + result[key]["count"] + "笔");
+                                data = [
                                     {
                                         value: result[key]["above"].split(" ")[0],
                                         color:"#F7464A",
@@ -428,6 +475,105 @@ function getStaticsData(){
             }
         }
     });
+}
+
+function hba1cToBS(hba1c){
+    return Math.round((28.7*hba1c-46.7)/18);
+}
+
+function getHba1cData(){
+    $("#hba1cChart").width($("#blood_title").width());
+    $.ajax({
+        type: 'GET',
+        url: '/bdata/hba1c',
+        success: function(result){
+            var data = {
+                labels: [],
+                datasets: [
+                    {
+                        label: "HBA1C",
+                        fillColor: "rgba(220,220,220,0.2)",
+                        strokeColor: "rgba(151,187,205,1)",
+                        pointColor: "rgba(151,187,205,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(151,187,205,1)",
+                        data: []
+                    }
+                ],
+                fillBackColor:'rgba(255,0,0,1)'
+            };
+            var max_avg = 10;
+            var min_avg = 5;
+
+            data.labels.push("");
+            data.datasets[0].data.push(null);
+            for(var key in result){
+                if(key == 'name'){
+                    continue;
+                }
+                if(result[key]["avg"] != null){
+                    data.labels.push(result[key]["last_date"].split(" ")[0]+" "+hba1cToBS(result[key]["avg"]) + "     " + result[key]["count"]);
+                    data.datasets[0].data.push(result[key]["avg"]);
+                    max_avg = Math.max(result[key]["avg"], 10);
+                    min_avg = Math.min(result[key]["avg"], 10);
+                }else{
+                    data.labels.push("");
+                    data.datasets[0].data.push(null);
+                }
+            }
+            data.labels.push("");
+            data.datasets[0].data.push(null);
+
+            var options = {
+                scaleSteps: Math.ceil(max_avg - min_avg) ,
+                scaleStartValue: Math.floor(min_avg),
+                scaleStepWidth: 1,
+                scaleOverride: true,
+                tooltipTemplate:  function (d) {
+                    console.log(d);
+                    var words = d.label.split(" ");
+                    return d.value + " " + words[words.length-1];
+                },
+                showTooltips: true,
+                onAnimationComplete: function()
+                {
+                    this.showTooltip(this.datasets[0].points, true);
+                },
+                tooltipEvents: [],
+                scaleBackdropPaddingX:10
+            };
+
+            var ctx = $("#hba1cChart").get(0).getContext("2d");
+            var myNewHba1cChart = new Chart(ctx).LineAlt(data,options);
+            $("#hba1c_loading").hide();
+            var html = "";
+            console.log(result);
+            for(var key in result){
+
+                if(result[key]["avg"] != null){
+                    html += '<tr><td>';
+                    html += '姓名:&nbsp;' + result['name'] + '&nbsp;&nbsp;最後日期:&nbsp;&nbsp;' + result[key]['last_date'] + '&nbsp; A1C: &nbsp;' + result[key]['avg'] + ' &nbsp;平均血糖值: &nbsp;' + hba1cToBS(result[key]['avg']) + '&nbsp;&nbsp;' + getControl(result[key]['avg']) + '<br/>';
+                    html += '總筆數:&nbsp;' + result[key]['count'] + '&nbsp; 資料範圍: &nbsp;' + result[key]['first_date'].split(' ')[0] + '&nbsp;至&nbsp;' + result[key]['last_date'].split(' ')[0];
+                    html += '</td></tr>';
+
+                }
+            }
+
+            $("#hba1c_table").html(html);
+        }
+    });
+}
+
+function getControl(num){
+    if(num >= 9)
+        return "控制不良";
+    else if( num >= 8)
+        return "極待加強";
+    else if( num >= 7)
+        return "待加強";
+    else
+        return "控制良好";
 }
 
 function getMessageData(){
