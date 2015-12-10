@@ -9,7 +9,6 @@ use App\User;
 use App\Http\Controllers\Event\EventController;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
