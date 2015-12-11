@@ -26,7 +26,7 @@
 <body>
 
 <nav class="navbar navbar-default" role="navigation">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-header">
             <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
@@ -57,11 +57,11 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container-fluid">
     @include('flash')
 </div>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-12"> @yield('content') </div>
     </div>

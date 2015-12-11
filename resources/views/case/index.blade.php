@@ -5,7 +5,7 @@
 @stop
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="page-header">
             <h3>方案资料表 <span class="badge">{{ $count }}</span></h3>
         </div>

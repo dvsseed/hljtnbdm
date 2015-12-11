@@ -25,7 +25,7 @@
 
 <body>
 	<nav class="navbar navbar-default" role="navigation">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="navbar-header">
 				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Toggle Navigation</span>
@@ -67,7 +67,7 @@
 		</div>
 	</nav>
 
-	<div class="container">
+	<div class="container-fluid">
 		@include('flash')
 	</div>
 

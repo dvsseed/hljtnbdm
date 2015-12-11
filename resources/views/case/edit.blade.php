@@ -9,7 +9,7 @@
 @stop
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="page-header hidden-print">
             <h3>方案资料 / 改</h3>
         </div>

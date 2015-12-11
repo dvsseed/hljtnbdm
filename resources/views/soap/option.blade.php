@@ -1,10 +1,6 @@
 {!! Html::style('css/bdata.css') !!}
 
 <table class="table borderless" id="other_class" style="text-align: center; background-color: lightpink">
-    <tr >
-        <td></td>
-        <td>个人化字串</td>
-    </tr>
     <tr>
         <td class="col-md-3">
             <select id="sub_class" class="form-control" >
@@ -14,6 +10,21 @@
             </select>
         </td>
         <td rowspan="11">
+            护理卫教项目
+            <table >
+                @foreach($soa_nurse_classes[0] as $soa_nurse_class)
+                    <tr><td style="text-align: left"><input type="checkbox" name="nurse" value="{{$soa_nurse_class -> soa_nurse_class_pk}}" @if(in_array($soa_nurse_class -> soa_nurse_class_pk,$user_soa_nurse_pks)) checked @endif/>{{$soa_nurse_class -> name}}</td></tr>
+                @endforeach
+            </table>
+            <br/>
+            营养卫教项目
+            <table style="text-align: left">
+                @foreach($soa_nurse_classes[1] as $soa_nurse_class)
+                    <tr><td style="text-align: left"><input type="checkbox" name="nurse" value="{{$soa_nurse_class -> soa_nurse_class_pk}}" @if(in_array($soa_nurse_class -> soa_nurse_class_pk,$user_soa_nurse_pks)) checked @endif/>{{$soa_nurse_class -> name}}</td></tr>
+                @endforeach
+            </table>
+            <br/>
+            个人化字串
             <select class="form-control" id="customize_class">
                 @foreach($main_classes as $main_class)
                     <option value="{{$main_class -> main_class_pk}}">{{$main_class -> class_name}}</option>

@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container-fluid">
         <h3 align="center" id="blood_title">血糖资料</h3>
         <br/>
         <div class="row">

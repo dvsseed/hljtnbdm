@@ -6,7 +6,7 @@
 
 @section('content')
     {!! Html::style('css/bdata.css') !!}
-    <div class="container">
+    <div class="container-fluid">
         <h3>病历号码: <a href="/soap/{{$uuid}}?new=true">{{$hospital_no_displayname}}</a></h3>
         <br/>
         <table class="table" id="history">

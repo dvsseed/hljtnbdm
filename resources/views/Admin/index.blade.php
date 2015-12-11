@@ -5,9 +5,9 @@
 @stop
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-sm-11">
                 @include('errors.list')
                 <h3 align="center">人员信息表</h3>
                 <a href="/admin/create"><button class="btn btn-primary">添加人员</button></a>

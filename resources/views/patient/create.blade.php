@@ -13,7 +13,7 @@
 @stop
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="page-header">
             <h3>患者基本资料 / 增</h3>
         </div>

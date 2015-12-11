@@ -1,4 +1,4 @@
-<div class="col-md-2">
+<div class="col-sm-1">
     <h3>总{{ $countstr }}数: <span class="badge">{{ $count }}</span></h3>
     <a href="/admin"><button class="btn btn-success btn-lg">人员列表</button></a>
     <br />
@@ -10,5 +10,5 @@
     <br />
     <a href="{{ URL::route('download_users_list_excel') }}"><button class="btn btn-warning btn-lg" onclick="return confirm('确定下载?')">下载名单</button></a>
     <br />
-    <a href="/admin/upload"><button class="btn btn-default btn-lg">文件上传</button></a>
+    <a href="/upload"><button class="btn btn-default btn-lg">文档上传</button></a>
 </div>

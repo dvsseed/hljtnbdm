@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container-fluid">
         {{$err_msg}}
     </div>
 
