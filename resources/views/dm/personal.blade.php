@@ -8,7 +8,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-11">
+        <div class="col-md-10">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <a href="/dm/personal"><button class="btn btn-info">个人信息</button></a>
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-        @include('dm.right_bar')
+        {{-- @include('dm.right_bar') --}}
     </div>
 </div>
 @stop

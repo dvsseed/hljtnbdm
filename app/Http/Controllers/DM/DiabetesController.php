@@ -40,7 +40,9 @@ class DiabetesController extends Controller
             ->get();
         $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
         if ($users->position == null) {
-            return view('dm.personal', compact('doctor', 'users', 'features')); //患者登入
+            // 患者登入
+//            return view('dm.personal', compact('doctor', 'users', 'features'));
+            return Redirect::route("bdata");
         } else {
             $search = urldecode($request->search);
             $category = $request->category;

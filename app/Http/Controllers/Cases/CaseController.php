@@ -151,10 +151,8 @@ class CaseController extends Controller {
 			$caselist->cl_eye_chk8_left_item = $request->cl_eye_chk8_left_item;
 			$caselist->cl_cataract = ($request->cl_cataract ? "1" : "0") . ($request->cl_cataract_right ? "1" : "0") . ($request->cl_cataract_left ? "1" : "0") . ($request->cl_cataract_no ? "1" : "0");
 			$caselist->cl_ecg = ($request->cl_ecg ? "1" : "0") . ($request->cl_ecg_no ? "1" : "0");
-			$caselist->cl_ecg_item = $request->cl_ecg_item;
 			$caselist->cl_ecg_other = $request->cl_ecg_other;
 			$caselist->cl_coronary_heart = $request->cl_coronary_heart;
-			$caselist->cl_coronary_heart_item = $request->cl_coronary_heart_item;
 			$caselist->cl_coronary_heart_other = $request->cl_coronary_heart_other;
 			$caselist->cl_chh_year = $request->cl_chh_year;
 			$caselist->cl_chh_month = $request->cl_chh_month;
@@ -188,6 +186,14 @@ class CaseController extends Controller {
 			$caselist->cl_quitsmoke = $request->cl_quitsmoke;
 			$caselist->cl_periodontal = $request->cl_periodontal;
 			$caselist->cl_masticatory = $request->cl_masticatory;
+			$caselist->cl_ultrasound = ($request->cl_ultrasound0 ? "1" : "0") . ($request->cl_ultrasound1 ? "1" : "0") . ($request->cl_ultrasound2 ? "1" : "0") . ($request->cl_ultrasound3 ? "1" : "0") . ($request->cl_ultrasound4 ? "1" : "0") . ($request->cl_ultrasound5 ? "1" : "0") . ($request->cl_ultrasound6 ? "1" : "0") . ($request->cl_ultrasound7 ? "1" : "0");
+			$caselist->cl_ultrasound01 = $request->cl_ultrasound01;
+			$caselist->cl_ultrasound02 = $request->cl_ultrasound02;
+			$caselist->cl_ultrasound03 = $request->cl_ultrasound03;
+			$caselist->cl_ultrasound04 = $request->cl_ultrasound04;
+			$caselist->cl_ultrasound05 = $request->cl_ultrasound05;
+			$caselist->cl_ultrasound06 = $request->cl_ultrasound06;
+			$caselist->cl_ultrasound07 = $request->cl_ultrasound07;
 		}
 		$caselist->save();
 
@@ -305,10 +311,8 @@ class CaseController extends Controller {
 			$caselist->cl_eye_chk8_left_item = $request->cl_eye_chk8_left_item;
 			$caselist->cl_cataract = ($request->cl_cataract ? "1" : "0") . ($request->cl_cataract_right ? "1" : "0") . ($request->cl_cataract_left ? "1" : "0") . ($request->cl_cataract_no ? "1" : "0");
 			$caselist->cl_ecg = ($request->cl_ecg ? "1" : "0") . ($request->cl_ecg_no ? "1" : "0");
-			$caselist->cl_ecg_item = $request->cl_ecg_item;
 			$caselist->cl_ecg_other = $request->cl_ecg_other;
 			$caselist->cl_coronary_heart = $request->cl_coronary_heart;
-			$caselist->cl_coronary_heart_item = $request->cl_coronary_heart_item;
 			$caselist->cl_coronary_heart_other = $request->cl_coronary_heart_other;
 			$caselist->cl_chh_year = $request->cl_chh_year;
 			$caselist->cl_chh_month = $request->cl_chh_month;
@@ -342,6 +346,14 @@ class CaseController extends Controller {
 			$caselist->cl_quitsmoke = $request->cl_quitsmoke;
 			$caselist->cl_periodontal = $request->cl_periodontal;
 			$caselist->cl_masticatory = $request->cl_masticatory;
+			$caselist->cl_ultrasound = ($request->cl_ultrasound0 ? "1" : "0") . ($request->cl_ultrasound1 ? "1" : "0") . ($request->cl_ultrasound2 ? "1" : "0") . ($request->cl_ultrasound3 ? "1" : "0") . ($request->cl_ultrasound4 ? "1" : "0") . ($request->cl_ultrasound5 ? "1" : "0") . ($request->cl_ultrasound6 ? "1" : "0") . ($request->cl_ultrasound7 ? "1" : "0");
+			$caselist->cl_ultrasound01 = $request->cl_ultrasound01;
+			$caselist->cl_ultrasound02 = $request->cl_ultrasound02;
+			$caselist->cl_ultrasound03 = $request->cl_ultrasound03;
+			$caselist->cl_ultrasound04 = $request->cl_ultrasound04;
+			$caselist->cl_ultrasound05 = $request->cl_ultrasound05;
+			$caselist->cl_ultrasound06 = $request->cl_ultrasound06;
+			$caselist->cl_ultrasound07 = $request->cl_ultrasound07;
 		}
 		$caselist->save();
 

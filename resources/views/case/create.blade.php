@@ -39,7 +39,7 @@
                 </div>
                 <hr>
 
-                <table class="table table-bordered bg-warning" id="caseis1409" style="display: none">
+                <table class="table table-bordered" id="caseis1409" style="display: none">
                     <thead>
                     <tr>
                         <th class="text-center" width="10%">评估项目</th>
@@ -137,7 +137,7 @@
                                 <input type="radio" name="cl_complications_stage" id="cl_complications_stage6" value="6" tabindex="11">5<br>
                         　　　　<input type="checkbox" name="cl_complications1" id="cl_complications1" value="1" tabindex="11">神经病变
                                 <input type="checkbox" name="cl_complications2" id="cl_complications2" value="1" tabindex="11">周边血管病变
-                                其他<input type="text" id="cl_complications_other" name="cl_complications_other" size=10 tabindex="11" value="{{ old('cl_complications_other') }}">
+                                其他<input type="text" id="cl_complications_other" name="cl_complications_other" size="10" tabindex="11" value="{{ old('cl_complications_other') }}">
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -251,7 +251,7 @@
                         <th>TC</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_tc" name="cl_tc" size="5" tabindex="38" title="50~300" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_tc') }}"> mg/dL
+                                <input type="text" id="cl_tc" name="cl_tc" size="5" tabindex="38" title="0~6.19" min="0.0" max="6.19" step="any" pattern="^[0-9]{0,1}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_tc') }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -272,7 +272,7 @@
                         <th>TG</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_tg" name="cl_tg" size="5" tabindex="39" title="20~3000" pattern="^[0-9]{1,}$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_tg') }}"> mg/dL
+                                <input type="text" id="cl_tg" name="cl_tg" size="5" tabindex="39" title="0.4~1.86" min="0.4" max="1.86" step="any" pattern="^[0-9]{0,1}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_tg') }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -281,14 +281,7 @@
                         <td>
                             <div class="form-group has-feedback" id="clecg">
                                 <input type="checkbox" name="cl_ecg" id="cl_ecg" value="1" tabindex="17">正常　异常
-                                <select name="cl_ecg_item" id="cl_ecg_item" type="option" tabindex="17">
-                                    <option value="">请选择</option>
-                                    <option value="1">PVC</option>
-                                    <option value="2">Af</option>
-                                    <option value="3">NS-ST change</option>
-                                    <option value="4">其他</option>
-                                </select>
-                                <input type="text" id="cl_ecg_other" name="cl_ecg_other" size=10 tabindex="17" value="{{ old('cl_ecg_other') }}">
+                                <input type="text" id="cl_ecg_other" name="cl_ecg_other" size="10" tabindex="17" value="{{ old('cl_ecg_other') }}">
                                 <input type="checkbox" name="cl_ecg_no" id="cl_ecg_no" value="1" tabindex="17">未检查
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
@@ -299,7 +292,7 @@
                         <th>LDL</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_ldl" name="cl_ldl" size="5" tabindex="40" title="50~300" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_ldl') }}"> mg/dL
+                                <input type="text" id="cl_ldl" name="cl_ldl" size="5" tabindex="40" title="2.07~3.10" min="2.07" max="3.10" step="any" pattern="^[0-9]{0,1}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_ldl') }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -308,14 +301,7 @@
                         <td>
                             <div class="form-group has-feedback" id="clcoronaryheart">
                                 <input type="checkbox" name="cl_coronary_heart" id="cl_coronary_heart" value="1" tabindex="18">无　　异常
-                                <select name="cl_coronary_heart_item" id="cl_coronary_heart_item" type="option" tabindex="18">
-                                    <option value="">请选择</option>
-                                    <option value="1">冠状动脉绕道术</option>
-                                    <option value="2">支架</option>
-                                    <option value="3">气球扩张术</option>
-                                    <option value="4">其他</option>
-                                </select>
-                                <input type="text" id="cl_coronary_heart_other" name="cl_coronary_heart_other" size="10" tabindex="18" value="{{ old('cl_coronary_heart_other') }}">
+                                <input type="text" id="cl_coronary_heart_other" name="cl_coronary_heart_other" size="20" tabindex="18" value="{{ old('cl_coronary_heart_other') }}">
                                 <select class="input-sm" name="cl_chh_year">
                                     <option value="-1">不详</option>
                                     @for ($i = $year; $i > 1910; $i--)
@@ -337,7 +323,7 @@
                         <th>HDL</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_hdl" name="cl_hdl" size="5" tabindex="41" title="10~200" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_hdl') }}"> mg/dL
+                                <input type="text" id="cl_hdl" name="cl_hdl" size="5" tabindex="41" title="1.2~1.68" min="1.2" max="1.68" step="any" pattern="^[0-9]{0,1}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_hdl') }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -352,7 +338,7 @@
                                     <option value="2">出血性</option>
                                     <option value="3">其他</option>
                                 </select>
-                                <input type="text" id="cl_stroke_other" name="cl_stroke_other" size=10 tabindex="19" value="{{ old('cl_stroke_other') }}">
+                                <input type="text" id="cl_stroke_other" name="cl_stroke_other" size="10" tabindex="19" value="{{ old('cl_stroke_other') }}">
                                 <select class="input-sm" name="cl_sh_year">
                                     <option value="-1">不详</option>
                                     @for ($i = $year; $i > 1910; $i--)
@@ -374,7 +360,7 @@
                         <th>ALT</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_alt" name="cl_alt" size="5" tabindex="42" title="5~2000" pattern="^[0-9]{1,}$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_alt') }}"> U/L
+                                <input type="text" id="cl_alt" name="cl_alt" size="5" tabindex="42" title="0~40" min="0" max="40" step="any" pattern="^[0-9]{1,2}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_alt') }}"> U/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -416,7 +402,7 @@
                         <th>GGT</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_ggt" name="cl_ggt" size="5" tabindex="43" title="0.1~20" min="0.1" max="20" step="any" pattern="^[0-9]{1,}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_ggt') }}"> mg/dL
+                                <input type="text" id="cl_ggt" name="cl_ggt" size="5" tabindex="43" title="11~61" min="11" max="61" step="any" pattern="^[0-9]{1,2}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_ggt') }}"> U/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -451,7 +437,7 @@
                         <th>肌酐</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_uricacid" name="cl_uricacid" size="5" tabindex="44" title="4~25" min="4" max="25" step="any" pattern="^[0-9]{1,}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_uricacid') }}"> mg/dL
+                                <input type="text" id="cl_uricacid" name="cl_uricacid" size="5" tabindex="44" title="40~97" min="40" max="97" step="any" pattern="^[0-9]{1,2}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_uricacid') }}"> μmol/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -472,7 +458,7 @@
                                     <option value="1">糖尿病</option>
                                     <option value="2">非糖尿病</option>
                                 </select>
-                                <input type="text" id="cl_amputation_other" name="cl_amputation_other" size=10 tabindex="22" value="{{ old('cl_amputation_other') }}">
+                                <input type="text" id="cl_amputation_other" name="cl_amputation_other" size="10" tabindex="22" value="{{ old('cl_amputation_other') }}">
                                 <select class="input-sm" name="cl_ah_year">
                                     <option value="-1">不详</option>
                                     @for ($i = $year; $i > 1910; $i--)
@@ -494,7 +480,7 @@
                         <th>UA</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_ua" name="cl_ua" size="5" tabindex="45" title="4~25" pattern="^[0-9]{1,}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_ua') }}"> mg/dL
+                                <input type="text" id="cl_ua" name="cl_ua" size="5" tabindex="45" title="155~428" min="155" max="428" step="any" pattern="^[0-9]{1,3}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_ua') }}"> μmol/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -503,7 +489,7 @@
                         <td>
                             <div class="form-group has-feedback" id="clmedicaltreatment">
                                 <input type="checkbox" name="cl_medical_treatment" id="cl_medical_treatment" value="1" tabindex="23">无
-                                有：<input type="text" id="cl_medical_treatment_other" name="cl_medical_treatment_other" size=10 tabindex="23" value="{{ old('cl_medical_treatment_other') }}"> 次/月
+                                有：<input type="text" id="cl_medical_treatment_other" name="cl_medical_treatment_other" size="10" tabindex="23" value="{{ old('cl_medical_treatment_other') }}"> 次/月
                                 <input type="radio" name="cl_medical_treatment_emergency" id="cl_medical_treatment_emergency" value="1" tabindex="23">急诊
                                 <input type="radio" name="cl_medical_treatment_emergency" id="cl_medical_treatment_emergency" value="2" tabindex="23">住院
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
@@ -515,7 +501,7 @@
                         <th>尿微</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_urine_micro" name="cl_urine_micro" size="5" tabindex="46" title="0.1~2500" min="0.1" max="2500.00" step="any" pattern="^[0-9]{1,4}(\.[0-9]{0,2})?$" maxlength="7" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_urine_micro') }}"> mg/g
+                                <input type="text" id="cl_urine_micro" name="cl_urine_micro" size="5" tabindex="46" title="0~30" min="0" max="30" step="any" pattern="^[0-9]{1,2}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ old('cl_urine_micro') }}"> mg/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -524,7 +510,7 @@
                         <td>
                             <div class="form-group has-feedback" id="cldrinking">
                                 <input type="checkbox" name="cl_drinking" id="cl_drinking" value="1" tabindex="24">无
-                                有：<input type="text" id="cl_drinking_other" name="cl_drinking_other" size=10 tabindex="24" value="{{ old('cl_drinking_other') }}"> c.c/周
+                                有：<input type="text" id="cl_drinking_other" name="cl_drinking_other" size="10" tabindex="24" value="{{ old('cl_drinking_other') }}"> c.c/周
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -587,15 +573,27 @@
                         <td>&nbsp;</td>
                         <th>彩超</th>
                         <td>
-                            <input type="radio" name="cl_ultrasound" id="cl_ultrasound" value="0" tabindex="28">无
-                            <input type="radio" name="cl_ultrasound" id="cl_ultrasound" value="1" tabindex="28">有
-                            <input type="radio" name="cl_ultrasound" id="cl_ultrasound" value="2" tabindex="28">不详
+                            <input type="checkbox" name="cl_ultrasound0" id="cl_ultrasound0" value="1" tabindex="28">无<br>有，如下：<br>
+                            <input type="checkbox" name="cl_ultrasound1" id="cl_ultrasound1" value="1" tabindex="28">双下肢
+                            <input type="text" id="cl_ultrasound01" name="cl_ultrasound01" size="20" tabindex="28" value="{{ old('cl_ultrasound01') }}"><br>
+                            <input type="checkbox" name="cl_ultrasound2" id="cl_ultrasound2" value="1" tabindex="28">心脏
+                            <input type="text" id="cl_ultrasound02" name="cl_ultrasound02" size="20" tabindex="28" value="{{ old('cl_ultrasound02') }}"><br>
+                            <input type="checkbox" name="cl_ultrasound3" id="cl_ultrasound3" value="1" tabindex="28">颈部
+                            <input type="text" id="cl_ultrasound03" name="cl_ultrasound03" size="20" tabindex="28" value="{{ old('cl_ultrasound03') }}"><br>
+                            <input type="checkbox" name="cl_ultrasound4" id="cl_ultrasound4" value="1" tabindex="28">消化
+                            <input type="text" id="cl_ultrasound04" name="cl_ultrasound04" size="20" tabindex="28" value="{{ old('cl_ultrasound04') }}"><br>
+                            <input type="checkbox" name="cl_ultrasound5" id="cl_ultrasound5" value="1" tabindex="28">泌尿
+                            <input type="text" id="cl_ultrasound05" name="cl_ultrasound05" size="20" tabindex="28" value="{{ old('cl_ultrasound05') }}"><br>
+                            <input type="checkbox" name="cl_ultrasound6" id="cl_ultrasound6" value="1" tabindex="28">甲状腺
+                            <input type="text" id="cl_ultrasound06" name="cl_ultrasound06" size="20" tabindex="28" value="{{ old('cl_ultrasound06') }}"><br>
+                            <input type="checkbox" name="cl_ultrasound7" id="cl_ultrasound7" value="1" tabindex="28">妇科
+                            <input type="text" id="cl_ultrasound07" name="cl_ultrasound07" size="20" tabindex="28" value="{{ old('cl_ultrasound07') }}">
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
-                <table class="table table-bordered bg-success" id="casegeneral1408" style="display: none">
+                <table class="table table-bordered" id="casegeneral1408" style="display: none">
                     <thead>
                     <tr>
                         <th class="text-center" width="15%">评估项目</th>
@@ -673,7 +671,7 @@
                                 <input type="radio" name="_cl_smoking" id="_cl_smoking" value="1" tabindex="6">有
                                 <input type="text" name="_cl_havesmoke" id="_cl_havesmoke" size=3 tabindex="6" value="{{ old('_cl_havesmoke') }}">支
                                 <input type="radio" name="_cl_smoking" id="_cl_smoking" value="2" tabindex="6">已戒
-                                <input type="text" name="_cl_quitsmoke" id="_cl_quitsmoke" size=10 tabindex="6" value="{{ old('_cl_quitsmoke') }}">
+                                <input type="text" name="_cl_quitsmoke" id="_cl_quitsmoke" size="10" tabindex="6" value="{{ old('_cl_quitsmoke') }}">
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>

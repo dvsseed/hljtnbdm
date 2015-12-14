@@ -8,7 +8,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-11">
+        <div class="col-md-12">
             @include('errors.list')
             <h3 align="center">{{ $doctor ? "建案" : "工作" }}清单 <span class="badge">{{ $count }}</span></h3>
             <a class="btn btn-success" href="{{ route('dm_create') }}" {!! $doctor ? '' : 'style="display:none"' !!}>增</a>
@@ -104,7 +104,7 @@
             </table>
             <?php echo $buildcases->render(); ?>
         </div>
-        @include('dm.right_bar')
+        {{-- @include('dm.right_bar') --}}
     </div>
 </div>
 

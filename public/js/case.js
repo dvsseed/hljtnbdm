@@ -36,11 +36,11 @@ $(function() {
                     msg += "白內障" + m2;
                     bool = false;
                 }
-                if (!$("#clecg input[type='checkbox']").is(":checked") && !$("#cl_ecg_item option:selected")) {
+                if (!$("#clecg input[type='checkbox']").is(":checked") && $('#cl_ecg_other').val() == '') {
                     msg += "心电图" + m2;
                     bool = false;
                 }
-                if (!$("#clcoronaryheart input[type='checkbox']").is(":checked") && !$("#cl_coronary_heart_item option:selected")) {
+                if (!$("#clcoronaryheart input[type='checkbox']").is(":checked") && $('#cl_coronary_heart_other').val() == '') {
                     msg += "冠心病" + m2;
                     bool = false;
                 }
@@ -201,15 +201,12 @@ $(function() {
         if($(this).is(":checked")) {
             $("#clecg input[type='checkbox']").attr("disabled", true);
             $("#clecg input[type='checkbox']").attr("checked", false);
-            $("select[name='cl_ecg_item']").prop("disabled", true);
-            $("select[name='cl_ecg_item']").val('');
             $("#clecg input[type='text']").attr("disabled", true);
             $("#clecg input[type='text']").val("");
             $(this).prop("disabled", false);
             $(this).prop("checked", true);
         } else {
             $("#clecg input[type='checkbox']").attr("disabled", false);
-            $("select[name='cl_ecg_item']").prop("disabled", false);
             $("#clecg input[type='text']").attr("disabled", false);
         }
     });
@@ -217,15 +214,12 @@ $(function() {
         if($(this).is(":checked")) {
             $("#clcoronaryheart input[type='checkbox']").attr("disabled", true);
             $("#clcoronaryheart input[type='checkbox']").attr("checked", false);
-            $("select[name='cl_coronary_heart_item']").prop("disabled", true);
-            $("select[name='cl_coronary_heart_item']").val('');
             $("#clcoronaryheart input[type='text']").attr("disabled", true);
             $("#clcoronaryheart input[type='text']").val("");
             $(this).prop("disabled", false);
             $(this).prop("checked", true);
         } else {
             $("#clcoronaryheart input[type='checkbox']").attr("disabled", false);
-            $("select[name='cl_coronary_heart_item']").prop("disabled", false);
             $("#clcoronaryheart input[type='text']").attr("disabled", false);
         }
     });
@@ -346,6 +340,20 @@ $(function() {
             $("#_clsmoking input[type='text']").attr("disabled", false);
         }
     });
+    $("#cl_ultrasound0").click(function() {
+        if($(this).is(":checked")) {
+            $("#clultrasound input[type='checkbox']").attr("disabled", true);
+            $("#clultrasound input[type='checkbox']").attr("checked", false);
+            $("#clultrasound input[type='text']").attr("disabled", true);
+            $("#clultrasound input[type='text']").val("");
+            $(this).prop("disabled", false);
+            $(this).prop("checked", true);
+        } else {
+            $("#clultrasound input[type='checkbox']").attr("disabled", false);
+            $("#clultrasound input[type='text']").attr("disabled", false);
+        }
+    });
+
     // 計算IBW
     $("#cl_base_tall").blur();
     $("#_cl_base_tall").blur();
@@ -360,9 +368,16 @@ function updateTxtContent(val){
         if (val == 4) {
             $("#caseis1409").hide();
             $("#casegeneral1408").show();
+            $('#casegeneral1408').addClass('bg-success');
         } else {
             $("#caseis1409").show();
             $("#casegeneral1408").hide();
+            $('#caseis1409').removeClass('bg-warning');
+            $('#caseis1409').removeClass('bg-info');
+            $('#caseis1409').removeClass('bg-danger');
+            if (val == 1) $('#caseis1409').addClass('bg-warning');
+            if (val == 2) $('#caseis1409').addClass('bg-info');
+            if (val == 3) $('#caseis1409').addClass('bg-danger');
         }
     }
 }
