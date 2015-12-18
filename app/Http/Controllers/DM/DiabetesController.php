@@ -4,11 +4,13 @@ use DB;
 use Auth;
 use Redirect;
 use Hash;
+use Input;
 use Carbon\Carbon;
 use App\User;
 use App\Buildcase;
 use App\Patientprofile;
 use App\Model\Pdata\HospitalNo;
+use App\Model\SOAP\SoaNurseClass;
 use App\Http\Requests\DiabetesMesRequest;
 use App\Http\Controllers\Event\EventController;
 use App\Http\Controllers\Controller;
@@ -56,14 +58,15 @@ class DiabetesController extends Controller
                     6 => "dietitian_name",
                 ];
                 $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
-                $results = Buildcase::where($field, 'like', '%' . $search . '%')->orderBy('build_at', 'desc');
+                $results = Buildcase::where($field, 'like', '%' . $search . '%')->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
             } else {
-                $results = Buildcase::orderBy('build_at', 'desc');
+                $results = Buildcase::where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
             }
             $count = $results->count();
             $buildcases = $results->paginate(10)->appends(['search' => $search, 'category' => $category]);
+            $soa_nurse_classes = SoaNurseClass::orderBy('soa_nurse_class_pk')->get();
 
-            return view('dm.home', compact('doctor', 'users', 'count', 'buildcases', 'features', 'search', 'category'));
+            return view('dm.home', compact('doctor', 'users', 'count', 'buildcases', 'features', 'search', 'category', 'soa_nurse_classes'));
         }
     }
 
@@ -159,11 +162,12 @@ class DiabetesController extends Controller
         $dutys = array('' => '请选择') + $dutys;
         $nurses = User::where('position', '=', '护理师')->orderBy('name', 'ASC')->lists('name', 'id');
         $nurses = array('' => '请选择') + $nurses;
+        $soa_nurse_classes[0] = SoaNurseClass::where('type','=',1)->orderBy('soa_nurse_class_pk')->get();
         $dietitians = User::where('position', '=', '营养师')->orderBy('name', 'ASC')->lists('name', 'id');
         $dietitians = array('' => '请选择') + $dietitians;
-
+        $soa_nurse_classes[1] = SoaNurseClass::where('type','=',2)->orderBy('soa_nurse_class_pk')->get();
         EventController::SaveEvent('buildcases', 'create(创建)');
-        return view('dm.create', compact('dutys', 'nurses', 'dietitians'));
+        return view('dm.create', compact('dutys', 'nurses', 'dietitians', 'soa_nurse_classes'));
     }
 
     public function store(Request $request)
@@ -188,12 +192,22 @@ class DiabetesController extends Controller
         if ($request->nurse) {
             $buildcase->nurse = $request->nurse;
             $buildcase->nurse_name = User::where('id','=',$request->nurse)->first()->name;
+            $soa_nurse_class_pks0 = Input::get('soa_nurse_class_pks0', true);
+            if (is_array($soa_nurse_class_pks0)) {
+                $pks0 = implode(",", $soa_nurse_class_pks0);
+            }
+            $buildcase->soa_nurse_class_pks0 = $pks0;
             $buildcase->nurse_status = 0;
             $buildcase->nurse_at = $today;
         }
         if ($request->dietitian) {
             $buildcase->dietitian = $request->dietitian;
             $buildcase->dietitian_name = User::where('id','=',$request->dietitian)->first()->name;
+            $soa_nurse_class_pks1 = Input::get('soa_nurse_class_pks1', true);
+            if (is_array($soa_nurse_class_pks1)) {
+                $pks1 = implode(",", $soa_nurse_class_pks1);
+            }
+            $buildcase->soa_nurse_class_pks1 = $pks1;
             $buildcase->dietitian_status = 0;
             $buildcase->dietitian_at = $today;
         }
@@ -254,11 +268,12 @@ class DiabetesController extends Controller
         $dutys = array('' => '请选择') + $dutys;
         $nurses = User::where('position', '=', '护理师')->orderBy('name', 'ASC')->lists('name', 'id');
         $nurses = array('' => '请选择') + $nurses;
+        $soa_nurse_classes[0] = SoaNurseClass::where('type','=',1)->orderBy('soa_nurse_class_pk')->get();
         $dietitians = User::where('position', '=', '营养师')->orderBy('name', 'ASC')->lists('name', 'id');
         $dietitians = array('' => '请选择') + $dietitians;
-
+        $soa_nurse_classes[1] = SoaNurseClass::where('type','=',2)->orderBy('soa_nurse_class_pk')->get();
         EventController::SaveEvent('buildcases', 'edit(编辑)');
-        return view('dm.eedit', compact('buildcase', 'dutys', 'nurses', 'dietitians'));
+        return view('dm.eedit', compact('buildcase', 'dutys', 'nurses', 'dietitians', 'soa_nurse_classes'));
     }
 
     public function uupdate(Request $request)
@@ -279,11 +294,21 @@ class DiabetesController extends Controller
         if ($request->nurse) {
             $buildcase->nurse = $request->nurse;
             $buildcase->nurse_name = User::where('id','=',$request->nurse)->first()->name;
+            $soa_nurse_class_pks0 = Input::get('soa_nurse_class_pks0', true);
+            if (is_array($soa_nurse_class_pks0)) {
+                $pks0 = implode(",", $soa_nurse_class_pks0);
+            }
+            $buildcase->soa_nurse_class_pks0 = $pks0;
             $buildcase->nurse_at = $today;
         }
         if ($request->dietitian) {
             $buildcase->dietitian = $request->dietitian;
             $buildcase->dietitian_name = User::where('id','=',$request->dietitian)->first()->name;
+            $soa_nurse_class_pks1 = Input::get('soa_nurse_class_pks1', true);
+            if (is_array($soa_nurse_class_pks1)) {
+                $pks1 = implode(",", $soa_nurse_class_pks1);
+            }
+            $buildcase->soa_nurse_class_pks1 = $pks1;
             $buildcase->dietitian_at = $today;
         }
         $buildcase->save();

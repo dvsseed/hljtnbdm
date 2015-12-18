@@ -45,7 +45,7 @@ class SoapController extends Controller
         $users = Auth::user();
 
         if( $hospital_no == null){
-            $err_msg = "无效的病历";
+            $err_msg = "没有SOAP资料!";
         }else{
             if($hospital_no -> patient_user_id == $users -> id ){
                 return Redirect::route('bdata');
@@ -112,8 +112,11 @@ class SoapController extends Controller
             }
         }
         Session::put('uuid', $uuid);
+        $pks01 = Buildcase::where('hospital_no_uuid', '=', $uuid)->first();
+        $pks0 = explode(",", $pks01->soa_nurse_class_pks0);
+        $pks1 = explode(",", $pks01->soa_nurse_class_pks1);
 
-        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid', 'history_pk', 'soa_nurse_classes', 'user_soa_nurse_pks'));
+        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid', 'history_pk', 'soa_nurse_classes', 'user_soa_nurse_pks', 'pks0', 'pks1'));
     }
 
     public function delete_history(Request $request){
@@ -310,7 +313,7 @@ class SoapController extends Controller
 
             $user_soap_history -> save();
 
-            if($user_soap->is_finished == 1) { // 完成
+            if($user_soap->is_finished == true) { // 完成
                 $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('duty','=',$uid)->first();
                 if($buildcase) {
                     $buildcase->duty_status = 2;

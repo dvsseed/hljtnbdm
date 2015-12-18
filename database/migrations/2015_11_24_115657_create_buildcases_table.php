@@ -24,10 +24,12 @@ class CreateBuildcasesTable extends Migration
             $table->char('duty_status', 1)->nullable();
             $table->timestamp('duty_at')->nullable();
             $table->integer('nurse')->unsigned()->nullable();
+            $table->string('soa_nurse_class_pks0', 100)->nullable();
             $table->string('nurse_name', 20)->nullable();
             $table->char('nurse_status', 1)->nullable();
             $table->timestamp('nurse_at')->nullable();
             $table->integer('dietitian')->unsigned()->nullable();
+            $table->string('soa_nurse_class_pks1', 100)->nullable();
             $table->string('dietitian_name', 20)->nullable();
             $table->char('dietitian_status', 1)->nullable();
             $table->timestamp('dietitian_at')->nullable();

@@ -39,14 +39,14 @@
 
     <div class="row">
         <div class="col-md-12">
-            <table class="table table-hover table-condensed table-striped">
+            <table class="table table-hover table-condensed table-striped" id="sortppTable">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>病历号码</th>
+                    <th>#<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                    <th>病历号码<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                     <!-- th class="col-md-3">身份证号</th -->
                     <!-- th>帐号</th -->
-                    <th>姓名</th>
+                    <th>姓名<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                     <th>生日</th>
                     <th>性别</th>
                     <th>身高</th>
@@ -105,3 +105,11 @@
     </div>
 
 @endsection
+
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+            $("#sortppTable").tablesorter();
+        });
+    </script>
+@stop

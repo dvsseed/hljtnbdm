@@ -548,6 +548,7 @@
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                     <strong>[注意]</strong><br>{{ $err_msg }}
                 </div>
+                <a class="btn btn-info" href="{{ route('patient.index') }}">历史纪录</a>
             @endif
         </div>
     </div>

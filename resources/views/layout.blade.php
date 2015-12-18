@@ -74,6 +74,7 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/bootstrap-datepicker.min.js"></script>
 <script src="/js/locales/bootstrap-datepicker.zh-TW.js" charset="UTF-8"></script>
+<script src="/js/jquery.tablesorter.min.js"></script>
 <script src="/js/validator.min.js"></script>
 <!-- script src="/js/angular.min.js"></script -->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->

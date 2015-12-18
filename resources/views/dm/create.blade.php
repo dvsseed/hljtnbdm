@@ -60,9 +60,29 @@
                             </div>
                         </div>
                         <div class="form-group has-feedback">
+                            {!! Form::label('soa_nurse_classes0', '护理卫教项目: ', ['class' => 'col-md-2 control-label']) !!}
+                            <div class="col-md-6">
+                                @foreach($soa_nurse_classes[0] as $soa_nurse_class)
+                                    {!! Form::checkbox('soa_nurse_class_pks0[]', $soa_nurse_class->soa_nurse_class_pk, old('soa_nurse_class_pks0'), ['class' => 'field']) !!}{{$soa_nurse_class->name}}<br>
+                                @endforeach
+                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                <span class="help-block with-errors"></span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
                             {!! Form::label('dietitian', '营养卫教: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
                                 {!! Form::select('dietitian', $dietitians, old('dietitian'), ['class' => 'form-control']) !!}
+                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                <span class="help-block with-errors"></span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            {!! Form::label('soa_nurse_classes1', '营养卫教项目: ', ['class' => 'col-md-2 control-label']) !!}
+                            <div class="col-md-6">
+                                @foreach($soa_nurse_classes[1] as $soa_nurse_class)
+                                    {!! Form::checkbox('soa_nurse_class_pks1[]', $soa_nurse_class->soa_nurse_class_pk, old('soa_nurse_class_pks1'), ['class' => 'field']) !!}{{$soa_nurse_class->name}}<br>
+                                @endforeach
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <span class="help-block with-errors"></span>
                             </div>

@@ -50,7 +50,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <th><span class="text-danger">*</span>血压</th>
+                        <th>血压</th>
                         <td>
                             <div class="form-group has-feedback">
                                 <input type="text" name="cl_base_sbp" id="cl_base_sbp" size="5" tabindex="1" title="30~300" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_base_sbp }}" required> /
@@ -59,7 +59,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>足部检查 (右)</th>
+                        <th>足部检查 (右)</th>
                         <td>
                             <div class="form-group has-feedback" id="clfootchkright">
                                 <input type="checkbox" name="cl_foot_chk_right0" id="cl_foot_chk_right0" value="1" tabindex="8" {{substr($caselist->cl_foot_chk_right.'000000',0,1)=='1' ? "checked='checked'" : ""}}>正常
@@ -74,7 +74,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th><span class="text-danger">*</span>脉搏</th>
+                        <th>脉搏</th>
                         <td>
                             <div class="form-group has-feedback">
                                 <input type="text" id="cl_pulse" name="cl_pulse" size="5" tabindex="2" title="30~150" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_pulse }}" required> 次/分
@@ -82,7 +82,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>足部检查 (左)</th>
+                        <th>足部检查 (左)</th>
                         <td>
                             <div class="form-group has-feedback" id="clfootchkleft">
                                 <input type="checkbox" name="cl_foot_chk_left0" id="cl_foot_chk_left0" value="1" tabindex="9" {{substr($caselist->cl_foot_chk_left.'000000',0,1)=='1' ? "checked='checked'" : ""}}>正常
@@ -97,7 +97,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th><span class="text-danger">*</span>身高</th>
+                        <th>身高</th>
                         <td>
                             <div class="form-group has-feedback">
                                 <input type="text" id="cl_base_tall" name="cl_base_tall" size="5" onblur="calcIBW(this.value)" tabindex="3" title="50~200" min="50.0" max="200.0" step="any" value="{{ $caselist->cl_base_tall }}" required> cm
@@ -105,7 +105,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>溃疡 / 坏疽</th>
+                        <th>溃疡 / 坏疽</th>
                         <td>
                             <div class="form-group has-feedback" id="clulcers">
                                 <input type="checkbox" name="cl_ulcers" id="cl_ulcers" value="1" tabindex="10" {{substr($caselist->cl_ulcers.'00000',0,1)=='1' ? "checked='checked'" : ""}}>无&nbsp;
@@ -116,7 +116,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <th><span class="text-danger">*</span>体重</th>
+                        <th>体重</th>
                         <td>
                             <div class="form-group has-feedback">
                                 <input type="text" id="cl_base_weight" name="cl_base_weight" size="5" onblur="calcBMI(this.value)" tabindex="4" title="3~160" min="3.0" max="160.0" step="any" value="{{ $caselist->cl_base_weight }}" required> kg
@@ -125,7 +125,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th rowspan="2"><span class="text-danger">*</span>并发症</th>
+                        <th rowspan="2">并发症</th>
                         <td rowspan="2">
                             <div class="form-group has-feedback" id="clcomplications">
                                 <input type="checkbox" name="cl_complications0" id="cl_complications0" value="1" tabindex="11" {{substr($caselist->cl_complications.'000',0,1)=='1' ? "checked='checked'" : ""}}>无　　肾病变: stage
@@ -160,7 +160,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>下肢间歇痛</th>
+                        <th>下肢间歇痛</th>
                         <td>
                             <div class="form-group has-feedback" id="clintermittentpain">
                                 <input type="checkbox" name="cl_intermittentpain" id="cl_intermittentpain" value="1" tabindex="12" {{substr($caselist->cl_intermittentpain.'0000',0,1)=='1' ? "checked='checked'" : ""}}>无　　有
@@ -173,12 +173,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <th rowspan="2"><span class="text-danger">*</span>血糖</th>
+                        <th rowspan="2">血糖</th>
                         <td rowspan="2">
                             <div class="form-group has-feedback">
                                 <input type="radio" name="cl_blood_mne" id="cl_blood_mne" value="0" tabindex="6" {{$caselist->cl_blood_mne==0 ? "checked='checked'" : ""}}>早<input type="radio" name="cl_blood_mne" id="cl_blood_mne" value="1" tabindex="6" {{$caselist->cl_blood_mne==1 ? "checked='checked'" : ""}}>中<input type="radio" name="cl_blood_mne" id="cl_blood_mne" value="2" tabindex="6" {{$caselist->cl_blood_mne==2 ? "checked='checked'" : ""}}>晚&nbsp;
                                 <input type="radio" name="cl_blood_ap" id="cl_blood_ap" value="0" tabindex="6" {{$caselist->cl_blood_ap==0 ? "checked='checked'" : ""}}>前<input type="radio" name="cl_blood_ap" id="cl_blood_ap" value="1" tabindex="6" {{$caselist->cl_blood_ap==1 ? "checked='checked'" : ""}}>后<br>
-                                <input type="text" id="cl_blood_acpc" name="cl_blood_acpc" size="5" tabindex="6" title="10~999" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_blood_acpc }}" required> mg/dL
+                                <input type="text" id="cl_blood_acpc" name="cl_blood_acpc" size="5" tabindex="6" title="10~999" min="10.0" max="999.0" step="any" pattern="^[0-9]{1,3}(\.[0-9]{0,1})?$" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_blood_acpc }}" required> mmol/l
                                 <input type="text" id="cl_blood_mins" name="cl_blood_mins" size="5" tabindex="6" value="{{ $caselist->cl_blood_mins }}" {{ $caselist->cl_blood_mins ? '' : 'disabled' }}> 分
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
@@ -209,15 +209,15 @@
                         </td>
                     </tr>
                     <tr>
-                        <th><span class="text-danger">*</span>A1C</th>
+                        <th>A1C</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_blood_hba1c" name="cl_blood_hba1c" size="5" tabindex="7" title="3~25"  min="3.0" max="25.0" step="any" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_blood_hba1c }}" required> %
+                                <input type="text" id="cl_blood_hba1c" name="cl_blood_hba1c" size="5" tabindex="7" title="3~25" min="3.0" max="25.0" step="any"  pattern="^[0-9]{0,2}(\.[0-9]{0,1})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_blood_hba1c }}" required> %
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>视网膜检查</th>
+                        <th>视网膜检查</th>
                         <td>
                             <div class="form-group has-feedback" id="cleyechk8">
                                 <input type="checkbox" name="cl_eye_chk8" id="cl_eye_chk8" value="1" tabindex="15" {{substr($caselist->cl_eye_chk8.'0000',0,1)=='1' ? "checked='checked'" : ""}}>正常　异常
@@ -251,12 +251,12 @@
                         <th>TC</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_tc" name="cl_tc" size="5" tabindex="38" title="0~6.19" min="0.0" max="6.19" step="any" pattern="^[0-9]{0,1}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_tc }}"> mmol/l
+                                <input type="text" id="cl_tc" name="cl_tc" size="5" tabindex="38" title="0~6.19" min="0.00" max="6.19" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_tc }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>白內障</th>
+                        <th>白內障</th>
                         <td>
                             <div class="form-group has-feedback" id="clcataract">
                                 <input type="checkbox" name="cl_cataract" id="cl_cataract" value="1" tabindex="16" {{substr($caselist->cl_cataract.'0000',0,1)=='1' ? "checked='checked'" : ""}}>无　　有
@@ -272,12 +272,12 @@
                         <th>TG</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_tg" name="cl_tg" size="5" tabindex="39" title="0.4~1.86" min="0.4" max="1.86" step="any" pattern="^[0-9]{0,1}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_tg }}"> mmol/l
+                                <input type="text" id="cl_tg" name="cl_tg" size="5" tabindex="39" title="0.4~1.86" min="0.40" max="1.86" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_tg }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>心电图</th>
+                        <th>心电图</th>
                         <td>
                             <div class="form-group has-feedback" id="clecg">
                                 <input type="checkbox" name="cl_ecg" id="cl_ecg" value="1" tabindex="17" {{substr($caselist->cl_ecg.'00',0,1)=='1' ? "checked='checked'" : ""}}>正常　异常
@@ -292,12 +292,12 @@
                         <th>LDL</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_ldl" name="cl_ldl" size="5" tabindex="40" title="2.07~3.10" min="2.07" max="3.10" step="any" pattern="^[0-9]{0,1}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ldl }}"> mmol/l
+                                <input type="text" id="cl_ldl" name="cl_ldl" size="5" tabindex="40" title="2.07~3.10" min="2.07" max="3.10" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ldl }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>冠心病</th>
+                        <th>冠心病</th>
                         <td>
                             <div class="form-group has-feedback" id="clcoronaryheart">
                                 <input type="checkbox" name="cl_coronary_heart" id="cl_coronary_heart" value="1" tabindex="18" {{substr($caselist->cl_coronary_heart.'0',0,1)=='1' ? "checked='checked'" : ""}}>无　　异常
@@ -323,12 +323,12 @@
                         <th>HDL</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_hdl" name="cl_hdl" size="5" tabindex="41" title="1.2~1.68" min="1.2" max="1.68" step="any" pattern="^[0-9]{0,1}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_hdl }}"> mmol/l
+                                <input type="text" id="cl_hdl" name="cl_hdl" size="5" tabindex="41" title="1.2~1.68" min="1.20" max="1.68" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_hdl }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>脑中风</th>
+                        <th>脑中风</th>
                         <td>
                             <div class="form-group has-feedback" id="clstroke">
                                 <input type="checkbox" name="cl_stroke" id="cl_stroke" value="1" tabindex="19" {{substr($caselist->cl_stroke.'0',0,1)=='1' ? "checked='checked'" : ""}}>无　　异常
@@ -365,7 +365,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>失明</th>
+                        <th>失明</th>
                         <td>
                             <div class="form-group has-feedback" id="clblindness">
                                 <input type="checkbox" name="cl_blindness" id="cl_blindness" value="1" tabindex="20" {{substr($caselist->cl_blindness.'000',0,1)=='1' ? "checked='checked'" : ""}}>无
@@ -407,7 +407,7 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>透析</th>
+                        <th>透析</th>
                         <td>
                             <div class="form-group has-feedback" id="cldialysis">
                                 <input type="checkbox" name="cl_dialysis" id="cl_dialysis" value="1" tabindex="21" {{substr($caselist->cl_dialysis.'0',0,1)=='1' ? "checked='checked'" : ""}}>无
@@ -437,12 +437,12 @@
                         <th>肌酐</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_uricacid" name="cl_uricacid" size="5" tabindex="44" title="40~97" min="40" max="97" step="any" pattern="^[0-9]{1,2}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_uricacid }}"> μmol/L
+                                <input type="text" id="cl_uricacid" name="cl_uricacid" size="5" tabindex="44" title="40~97" min="40.0" max="97.0" step="any" pattern="^[0-9]{1,2}(\.[0-9]{0,1})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_uricacid }}" onblur="calceGFR(this.value, {{ $sex }}, {{ $caselist->cl_patientid }})"> μmol/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>下肢截肢</th>
+                        <th>下肢截肢</th>
                         <td>
                             <div class="form-group has-feedback" id="clamputation">
                                 <input type="checkbox" name="cl_amputation" id="cl_amputation" value="1" tabindex="22" {{substr($caselist->cl_amputation.'000',0,1)=='1' ? "checked='checked'" : ""}}>无
@@ -480,12 +480,12 @@
                         <th>UA</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_ua" name="cl_ua" size="5" tabindex="45" title="155~428" min="155" max="428" step="any" pattern="^[0-9]{1,3}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ua }}"> μmol/L
+                                <input type="text" id="cl_ua" name="cl_ua" size="5" tabindex="45" title="155~428" min="155.0" max="428.0" step="any" pattern="^[0-9]{1,3}(\.[0-9]{0,1})?$" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ua }}"> μmol/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>高低血糖就医</th>
+                        <th>高低血糖就医</th>
                         <td>
                             <div class="form-group has-feedback" id="clmedicaltreatment">
                                 <input type="checkbox" name="cl_medical_treatment" id="cl_medical_treatment" value="1" tabindex="23" {{substr($caselist->cl_medical_treatment.'0',0,1)=='1' ? "checked='checked'" : ""}}>无
@@ -501,12 +501,12 @@
                         <th>尿微</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_urine_micro" name="cl_urine_micro" size="5" tabindex="46" title="0~30" min="0" max="30" step="any" pattern="^[0-9]{1,2}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_urine_micro }}"> mg/L
+                                <input type="text" id="cl_urine_micro" name="cl_urine_micro" size="5" tabindex="46" title="0~30" min="0.0" max="30.0" step="any" pattern="^[0-9]{1,2}(\.[0-9]{0,1})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_urine_micro }}"> mg/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
-                        <th><span class="text-danger">*</span>饮酒</th>
+                        <th>饮酒</th>
                         <td>
                             <div class="form-group has-feedback" id="cldrinking">
                                 <input type="checkbox" name="cl_drinking" id="cl_drinking" value="1" tabindex="24" {{substr($caselist->cl_drinking.'0',0,1)=='1' ? "checked='checked'" : ""}}>无
@@ -528,7 +528,7 @@
                                 <option value="5" {!! "5" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>++++</option>
                             </select>
                         </td>
-                        <th><span class="text-danger">*</span>抽烟</th>
+                        <th>抽烟</th>
                         <td>
                             <div class="form-group has-feedback" id="clsmoking">
                                 <input type="radio" name="cl_smoking" id="cl_smoking" value="0" tabindex="25" {{$caselist->cl_smoking==0 ? "checked='checked'" : ""}}>无
@@ -544,10 +544,8 @@
                     <tr>
                         <th>eGFR</th>
                         <td>
-                            <div class="form-group has-feedback">
-                                <input type="text" id="cl_egfr" name="cl_egfr" size="5" tabindex="48" title="1~500" pattern="^[0-9]{1,3}(\.[0-9]{0,1})?$" min="1.0" max="500.0" step="any" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_egfr }}"> ml/min/1.73m<sup>2</sup>
-                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                                <div class="help-block with-errors"></div>
+                            <div class="form-group">
+                                <input type="text" id="cl_egfr" name="cl_egfr" style="background-color:#CCCCCC" size="5" tabindex="48" title="1~500" pattern="^[0-9]{1,3}(\.[0-9]{0,2})?$" min="1.00" max="500.00" step="any" maxlength="6" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_egfr }}" readonly> ml/min/1.73m<sup>2</sup>
                             </div>
                         </td>
                         <th>牙周病变</th>
@@ -604,41 +602,41 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <th><span class="text-danger">*</span>血压</th>
+                        <th>血压</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="_cl_base_sbp" name="_cl_base_sbp" size="5" tabindex="1" title="30~300" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_base_sbp }}" required> /&nbsp;
-                                <input type="text" id="_cl_base_ebp" name="_cl_base_ebp" size="5" tabindex="1" title="20~130" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_base_ebp }}" required> mmHg
+                                <input type="text" id="_cl_base_sbp" name="_cl_base_sbp" size="5" tabindex="1" title="30~300" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_base_sbp }}"> /&nbsp;
+                                <input type="text" id="_cl_base_ebp" name="_cl_base_ebp" size="5" tabindex="1" title="20~130" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_base_ebp }}"> mmHg
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <th><span class="text-danger">*</span>脉搏</th>
+                        <th>脉搏</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="_cl_pulse" name="_cl_pulse" size="5" tabindex="2" title="30~150" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_pulse }}" required> 次/分
+                                <input type="text" id="_cl_pulse" name="_cl_pulse" size="5" tabindex="2" title="30~150" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_pulse }}"> 次/分
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <th><span class="text-danger">*</span>身高</th>
+                        <th>身高</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="_cl_base_tall" name="_cl_base_tall" size="5" onblur="_calcIBW(this.value)" tabindex="3" title="50~200" min="50.0" max="200.0" step="any" value="{{ $caselist->cl_base_tall }}" required> cm
+                                <input type="text" id="_cl_base_tall" name="_cl_base_tall" size="5" onblur="_calcIBW(this.value)" tabindex="3" title="50~200" min="50.0" max="200.0" step="any" value="{{ $caselist->cl_base_tall }}"> cm
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <th><span class="text-danger">*</span>体重</th>
+                        <th>体重</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="_cl_base_weight" name="_cl_base_weight" size="5" onblur="_calcBMI(this.value)" tabindex="4" title="3~160" min="3.0" max="160.0" step="any" value="{{ $caselist->cl_base_weight }}" required> kg　
+                                <input type="text" id="_cl_base_weight" name="_cl_base_weight" size="5" onblur="_calcBMI(this.value)" tabindex="4" title="3~160" min="3.0" max="160.0" step="any" value="{{ $caselist->cl_base_weight }}"> kg　
                                 <input type="checkbox" name="_cl_noweight" id="_cl_noweight" value="1" onclick="_clkweight(this.id)" {{substr($caselist->cl_noweight.'0',0,1)=='1' ? "checked='checked'" : ""}}>无法测量　　
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
@@ -653,12 +651,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <th><span class="text-danger">*</span>血糖</th>
+                        <th>血糖</th>
                         <td>
                             <div class="form-group has-feedback">
                                 <input type="radio" name="_cl_blood_mne" id="_cl_blood_mne" value="0" tabindex="5" {{$caselist->cl_blood_mne==0 ? "checked='checked'" : ""}}>早<input type="radio" name="_cl_blood_mne" id="_cl_blood_mne" value="1" tabindex="5" {{$caselist->cl_blood_mne==1 ? "checked='checked'" : ""}}>中<input type="radio" name="_cl_blood_mne" id="_cl_blood_mne" value="2" tabindex="5" {{$caselist->cl_blood_mne==2 ? "checked='checked'" : ""}}>晚&nbsp;
                                 <input type="radio" name="_cl_blood_ap" id="_cl_blood_ap" value="0" tabindex="5" {{$caselist->cl_blood_ap==0 ? "checked='checked'" : ""}}>前<input type="radio" name="_cl_blood_ap" id="_cl_blood_ap" value="1" tabindex="5" {{$caselist->cl_blood_ap==1 ? "checked='checked'" : ""}}>后
-                                <input type="text" id="_cl_blood_acpc" name="_cl_blood_acpc" size="5" tabindex="5" title="10~999" pattern="^[0-9]{1,}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_blood_acpc }}" required> mg/dL
+                                <input type="text" id="_cl_blood_acpc" name="_cl_blood_acpc" size="5" tabindex="5" title="10~999" min="10.0" max="999.0" step="any" pattern="^[0-9]{1,3}(\.[0-9]{0,1})?$" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_blood_acpc }}"> mmol/l
                                 <input type="text" id="_cl_blood_mins" name="_cl_blood_mins" size="5" tabindex="5" value="{{ $caselist->cl_blood_mins }}" {{ $caselist->cl_blood_mins ? '' : 'disabled' }}> 分
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>

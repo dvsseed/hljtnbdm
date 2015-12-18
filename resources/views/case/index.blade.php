@@ -24,14 +24,14 @@
 
         <div class="row">
             <div class="col-md-12">
-                <table class="table table-hover table-condensed table-striped">
+                <table class="table table-hover table-condensed table-striped" id="sortcaTable">
                     <thead>
                     <tr>
-                        <th>#</th>
-                        <th>病患ID</th>
-                        <th>病患姓名</th>
+                        <th>#<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                        <th>病患ID<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                        <th>病患姓名<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                         <th>诊疗阶段</th>
-                        <th>收案日期</th>
+                        <th>收案日期<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                         <th>卫教师</th>
                         <th class="text-center">功能</th>
                     </tr>
@@ -70,4 +70,9 @@
 
 @section('loadScripts')
     {!! Html::script('js/all.js') !!}
+    <script>
+        $(document).ready(function(){
+            $("#sortcaTable").tablesorter();
+        });
+    </script>
 @stop

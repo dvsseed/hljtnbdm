@@ -54,6 +54,7 @@ class CaseController extends Controller {
 			$err_msg = "患者资料不存在!!<br>請先建立患者资料後才能新增方案資料...";
 			return view('case.create', compact('err_msg'));
 		} else {
+			$sex = $pps->pp_sex;
 			$today = Carbon::today()->toDateString();
 			// $format = $carbon->format('Y-m-d H:i:s');
 			$year = Carbon::today()->year;
@@ -70,7 +71,7 @@ class CaseController extends Controller {
 
 			EventController::SaveEvent('caselist', 'create(创建)');
 //		return view('case.create', compact('year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
-			return view('case.create', compact('err_msg', 'year', 'today', 'casetypes', 'patientprofiles'));
+			return view('case.create', compact('err_msg', 'year', 'today', 'casetypes', 'patientprofiles', 'sex'));
 		}
 	}
 
@@ -222,20 +223,13 @@ class CaseController extends Controller {
 	public function edit($id)
 	{
 		$caselist = Caselist::findOrFail($id);
-//		$casecare = CaseCare::where('patientprofile1_id', '=', $id)->firstOrFail();
-//		$bsms = BSM::orderBy('bm_order')->get();
-//		$account = User::findOrFail($caselist->user_id)->account;
-//		$areas = Caselist::$_area;
-//		$doctors = Caselist::$_doctor;
-//		$sources = Caselist::$_source;
-//		$occupations = Caselist::$_occupation;
-//		$languages = Caselist::$_language;
+		$sex = Patientprofile::where('pp_patientid', '=', $caselist->cl_patientid)->first()->pp_sex;
 		$today = Carbon::today()->toDateString();
 		$year = Carbon::today()->year;
 		$casetypes = array('' => '请选择', '1' => '初诊', '2' => '复诊', '3' => '年度检查', '4' => '一般');
 
 		EventController::SaveEvent('caselist', 'edit(编辑)');
-		return view('case.edit', compact('caselist', 'year', 'today', 'casetypes'));
+		return view('case.edit', compact('caselist', 'year', 'today', 'casetypes', 'sex'));
 	}
 
 	/**
