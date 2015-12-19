@@ -83,6 +83,8 @@ Route::get('/bdata/filter', 'BData\BDataController@get_filter');
 Route::get('/bdata/hba1c', 'BData\BDataController@get_hba1c');
 Route::post('/bdata/upsert_note', 'BData\BDataController@upsert_note');
 Route::post('/bdata/post_message', 'BData\BDataController@post_message');
+Route::post('/bdata/post_contact', 'BData\BDataController@post_contact');
+Route::post('/bdata/post_contact_trace', 'BData\BDataController@post_contact_trace');
 Route::post('/bdata/batch_update', 'BData\BDataController@batch_update');
 Route::post('/bdata/upsert', 'BData\BDataController@upsert');
 Route::post('/bdata/upsertfood', 'BData\BDataController@upsertfood');

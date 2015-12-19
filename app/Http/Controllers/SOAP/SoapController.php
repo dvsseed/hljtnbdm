@@ -104,13 +104,6 @@ class SoapController extends Controller
             $user_data['P'] = $user_soap -> p_text;
             $user_data['E'] = $user_soap -> e_text;
             $user_data['R'] = $user_soap -> r_text;
-            $user_data['start_date'] = $user_soap -> start_date;
-            $user_data['med_date'] = $user_soap -> med_date;
-            $user_data['trace_method'] = $user_soap -> trace_method;
-            $user_data['contact_name'] = $user_soap -> contact_name;
-            $user_data['contact_description'] = $user_soap -> contact_description;
-            $user_data['medicine'] = $user_soap -> medicine;
-            $user_data['contact_time'] = $user_soap -> contact_time;
             $user_soa_nurse_pks = $user_soap -> soa_nurse_class_pks;
             if($user_soa_nurse_pks != null){
                 $user_soa_nurse_pks = explode(",", $user_soa_nurse_pks);
@@ -238,9 +231,6 @@ class SoapController extends Controller
 
     public function post_user_soap(Request $request){
 
-        $this->validate($request, UserSoap::rules());
-        $this->validate($request, UserSoapHistory::rules());
-
         $uuid = Session::get('uuid');
         $uid = Auth::user()->id;
         $calendar_date = Session::get('calendar_date');
@@ -277,13 +267,6 @@ class SoapController extends Controller
                 $user_soap -> p_text = $request -> p_text;
                 $user_soap -> e_text = $request -> e_text;
                 $user_soap -> r_text = $request -> r_text;
-                $user_soap -> start_date = $request -> start_date;
-                $user_soap -> med_date = $request -> med_date;
-                $user_soap -> trace_method = $request -> trace_method;
-                $user_soap -> contact_name = $request -> contact_name;
-                $user_soap -> contact_description = $request -> contact_description;
-                $user_soap -> medicine = $request -> medicine;
-                $user_soap -> contact_time = $request -> contact_time;
                 $user_soap -> soa_nurse_class_pks = $request -> soa_nurse_class_pks;
 
                 if(isset($request["confirm"]) && $request -> confirm == "true"){
@@ -301,13 +284,6 @@ class SoapController extends Controller
             $user_soap_history -> p_text = $request -> p_text;
             $user_soap_history -> e_text = $request -> e_text;
             $user_soap_history -> r_text = $request -> r_text;
-            $user_soap_history -> start_date = $request -> start_date;
-            $user_soap_history -> med_date = $request -> med_date;
-            $user_soap_history -> trace_method = $request -> trace_method;
-            $user_soap_history -> contact_name = $request -> contact_name;
-            $user_soap_history -> contact_description = $request -> contact_description;
-            $user_soap_history -> medicine = $request -> medicine;
-            $user_soap_history -> contact_time = $request -> contact_time;
             $user_soap_history -> user_id = Auth::user() -> id;
             $user_soap_history -> created_at = $user_soap -> created_at;
             $user_soap_history -> soa_nurse_class_pks = $request -> soa_nurse_class_pks;

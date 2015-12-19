@@ -579,9 +579,14 @@ class PatientprofileController extends Controller
             $user_soap = $hospital -> user_soap;
             $histories = $user_soap -> history;
             foreach( $histories as $history){
-                $histories -> delete();
+                $history -> delete();
             }
             $user_soap -> delete();
+
+            $contact_info = $hospital -> contact_info;
+            $contact_info -> delete();
+
+            $hospital -> delete();
         }
     }
 

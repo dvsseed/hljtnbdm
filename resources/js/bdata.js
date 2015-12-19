@@ -102,6 +102,8 @@ $( document ).ready(function() {
         $('[href =' + ' #data]').click();
     }
 
+    setContactEditSave();
+
     Chart.types.Line.extend({
         name: "LineAlt",
         initialize: function (data) {
@@ -475,6 +477,96 @@ function getStaticsData(){
             }
         }
     });
+}
+
+function setContactEditSave(){
+    $("#contact_data_save_btn").click(function () {
+        inputdata = {};
+
+        inputdata['_token'] = $('#contact_data_save > input[ name=_token]').val();
+        inputdata['start_date'] = $("#start_date").val();
+        inputdata['med_date'] = $("#med_date").val();
+        inputdata['trace_method'] = $("#trace_method").val();
+        inputdata['contact_name'] = $("#contact_name").val();
+        inputdata['contact_description'] = $("#contact_description").val();
+        inputdata['medicine'] = $("#medicine").val();
+        inputdata['contact_time'] = $("#contact_time").val();
+        $.ajax({
+            type: 'POST',
+            url: '/bdata/post_contact',
+            data: inputdata,
+            success: function(result){
+                if(result == 'success') {
+                    alert("储存成功");
+                    $("#contact_data_save_btn").blur();
+                }
+                else{
+                    alert("储存失败");
+                    $("#contact_data_save_btn").blur();
+                }
+            }
+        });
+    });
+
+    $("#med_date_after").change(setMedDate);
+    $("#start_date").change(setMedDate);
+
+    $("#trace_day").change(function(){
+        var days = $("#trace_day").val();
+        if(!isNaN(days) && days !=""){
+            var today = new Date();
+            var today_str =today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
+            var added_day = addDays(today_str, parseInt(days));
+            $("#trace_time").val(formatNumberLength(added_day.getFullYear(),4)+"-"+formatNumberLength(added_day.getMonth()+1,2)+"-"+formatNumberLength(added_day.getDate(),2));
+        }
+    });
+    $("#trace_modify").click(function(){
+        inputdata = {}
+        inputdata['_token'] = $('#contact_data_save > input[ name=_token]').val();
+        inputdata['trace_time'] = $("#trace_time").val();
+        $.ajax({
+            type: 'POST',
+            url: '/bdata/post_contact_trace',
+            data: inputdata,
+            success: function(result){
+                if(result == 'success') {
+                    alert("储存成功");
+                    $("#trace_modify").blur();
+                }
+                else{
+                    alert("储存失败");
+                    $("#trace_modify").blur();
+                }
+            }
+        });
+    });
+    $("#trace_recover").click(function(){
+        $("#trace_time").val($("#trace_time").attr("data"));
+    });
+}
+
+function setMedDate(){
+    var days = $("#med_date_after").val();
+
+    var timestamp=Date.parse($("#start_date").val());
+    if (!isNaN(timestamp) && !isNaN(days) && days !=""){
+        var added_day = addDays($("#start_date").val(), parseInt(days));
+        $("#med_date").val(formatNumberLength(added_day.getFullYear(),4)+"-"+formatNumberLength(added_day.getMonth()+1,2)+"-"+formatNumberLength(added_day.getDate(),2));
+    }
+}
+
+function formatNumberLength(num, length) {
+    var r = "" + num;
+    while (r.length < length) {
+        r = "0" + r;
+    }
+    return r;
+}
+
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
 }
 
 function hba1cToBS(hba1c){

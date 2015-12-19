@@ -33,4 +33,9 @@ class HospitalNo extends Model
         return $this->hasOne('App\Model\SOAP\UserSoap', 'hospital_no_uuid');
     }
 
+    public function contact_info()
+    {
+        return $this->hasOne('App\Model\Pdata\ContactInfo', 'hospital_no_uuid');
+    }
+
 }

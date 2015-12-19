@@ -20,11 +20,4 @@ class UserSoap extends Model
         return $this->hasMany('App\Model\SOAP\UserSoapHistory','user_soap_pk');
     }
 
-    protected static function rules()
-    {
-        return [
-            'trace_method' => 'numeric|min:0|max:7',
-            'contact_time' => 'numeric|min:0|max:5'
-        ];
-    }
 }

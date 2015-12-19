@@ -8,6 +8,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Model\Pdata\ContactInfo;
 use App\Model\Pdata\FoodCategory;
 use App\Model\Pdata\Food;
 use App\Model\Pdata\Message;
@@ -126,9 +127,18 @@ use App\Caselist;
                 $soap_link = '/soap/'.$uuid ;
             }
 
+            $contact_data = $hospital_no -> contact_info;
+            if($contact_data != null){
+                $contact_data["nurse_name"] = User::find($hospital_no->nurse_user_id)->name;
+                $contact_data["trace_method"] = $this->convert_trace_method($contact_data["trace_method"]);
+                $contact_data["contact_time"] = $this->convert_contact_time($contact_data["contact_time"]);
+                $contact_data["phone"] = User::find($hospital_no->patient_user_id)->phone;
+                $contact_data["email"] = User::find($hospital_no->patient_user_id)->email;
+            }
+
             Session::put('uuid', $uuid);
 
-            return view('bdata.bdata', compact('blood_records', 'data', 'food_categories', 'stat', 'food_records', 'soap_link', 'notes'));
+            return view('bdata.bdata', compact('blood_records', 'data', 'food_categories', 'stat', 'food_records', 'soap_link', 'notes', 'contact_data'));
         }
 
         private function get_has_food($uuid){
@@ -146,6 +156,56 @@ use App\Caselist;
             }
 
             return $food_all_calendar;
+        }
+
+        private function convert_trace_method($trace_method){
+            $result = "";
+            switch($trace_method){
+                case 1:
+                    $result = "电话";
+                    break;
+                case 2:
+                    $result = "传真";
+                    break;
+                case 3:
+                    $result = "e-mail";
+                    break;
+                case 4:
+                    $result = "回诊讨论";
+                    break;
+                case 5:
+                    $result = "网路平台";
+                    break;
+                case 6:
+                    $result = "传输线";
+                    break;
+                case 7:
+                    $result = "其他";
+                    break;
+            }
+            return $result;
+        }
+
+        private function convert_contact_time($contact_time){
+            $result = "";
+            switch($contact_time){
+                case 1:
+                    $result = "早上";
+                    break;
+                case 2:
+                    $result = "下午";
+                    break;
+                case 3:
+                    $result = "晚上";
+                    break;
+                case 4:
+                    $result = "全天";
+                    break;
+                case 5:
+                    $result = "其他";
+                    break;
+            }
+            return $result;
         }
 
         private function get_notes($blood_sugars){
@@ -642,6 +702,63 @@ use App\Caselist;
                 }
             }
             return $filled_date;
+        }
+
+        public function post_contact_trace(Request $request){
+            $uuid = Session::get('uuid');
+            $hospital_no = HospitalNo::find($uuid);
+            $contact_info = $hospital_no -> contact_info;
+            if($hospital_no == null){
+                return "fail";
+            }
+            if(isset($request['trace_time'])){
+                DB::beginTransaction();
+                try {
+                    $contact_info -> trace_time = $request -> trace_time;
+                    $contact_info -> save();
+                    DB::commit();
+                    return "success";
+                }catch (\Exception $e){
+                    DB::rollback();
+                    return $e;
+                }
+            }
+
+        }
+
+        public function post_contact(Request $request){
+            $this->validate($request, ContactInfo::rules());
+            $uuid = Session::get('uuid');
+            $hospital_no = HospitalNo::find($uuid);
+
+            if($hospital_no == null){
+                return "fail";
+            }
+
+            $contact_info = $hospital_no -> contact_info;
+
+            if($contact_info == null){
+                $contact_info = new ContactInfo();
+            }
+
+            DB::beginTransaction();
+            try {
+                $contact_info->start_date = $request->start_date;
+                $contact_info->med_date = $request->med_date;
+                $contact_info->trace_method = $request->trace_method;
+                $contact_info->contact_name = $request->contact_name;
+                $contact_info->contact_description = $request->contact_description;
+                $contact_info->medicine = $request->medicine;
+                $contact_info->contact_time = $request->contact_time;
+                $contact_info->hospital_no_uuid = $uuid;
+
+                $contact_info->save();
+                DB::commit();
+                return "success";
+            }catch (\Exception $e){
+                DB::rollback();
+                return $e;
+            }
         }
 
         public function upsert(Request $request){
