@@ -9,7 +9,7 @@
         @if(isset($err_msg))
             @include('soap.error')
         @else
-            <table>
+            <table class="table">
                 <tr>
                     <td colspan="2">
                         <table class="table borderless" id="main_class">
@@ -31,7 +31,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>@include('soap.edit')</td>
+                    <td style="min-width: 600px">@include('soap.edit')</td>
                     <td style="vertical-align: top;">@include('soap.option')</td>
                 </tr>
             </table>

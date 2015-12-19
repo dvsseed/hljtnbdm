@@ -238,13 +238,16 @@ use App\Caselist;
             if($hospital_no != null){
                 $ranges = [date('Y-m-d')];
                 $profile_id = $hospital_no -> patient_profile_id;
-                for($i = 1; $i <= 4; $i++){
+                $tmp_data = Caselist::where('pp_id', '=' ,$profile_id) -> whereNotNull('cl_blood_hba1c')->orderBy('created_at', 'desc')->take(4)->get();
+                $avg['data'] = $tmp_data;
+                //temp work around for last data
+                /*for($i = 1; $i <= 4; $i++){
                     array_push($ranges,date('Y-m-d', strtotime("-3 month", strtotime($ranges[$i - 1]))));
                     $avg[$ranges[$i]]["avg"] =  Caselist::where('pp_id', '=' ,$profile_id) -> where('created_at','<', $ranges[$i - 1]) -> where('created_at','>', $ranges[$i]) ->avg('cl_blood_hba1c');
                     $avg[$ranges[$i]]["last_date"] =  Caselist::where('pp_id', '=' ,$profile_id) -> where('created_at','<', $ranges[$i - 1]) -> where('created_at','>', $ranges[$i]) -> max('created_at');
                     $avg[$ranges[$i]]["first_date"] =  Caselist::where('pp_id', '=' ,$profile_id) -> where('created_at','<', $ranges[$i - 1]) -> where('created_at','>', $ranges[$i]) -> min('created_at');
                     $avg[$ranges[$i]]["count"] =  Caselist::where('pp_id', '=' ,$profile_id) -> where('created_at','<', $ranges[$i - 1]) -> where('created_at','>', $ranges[$i]) -> count('cl_blood_hba1c');
-                }
+                }*/
             }
 
             return $avg;
@@ -642,6 +645,7 @@ use App\Caselist;
         }
 
         public function upsert(Request $request){
+            $this->validate($request, BloodSugarDetail::rules());
             if(!isset($request->blood_sugar) && $request->blood_sugar == null){
                 return "fail";
             }
@@ -656,7 +660,6 @@ use App\Caselist;
                 $blood_sugar -> user_id = $hospital_no-> patient_user_id;
                 $blood_sugar -> save();
 
-                $this->validate($request, BloodSugarDetail::rules());
                 $blood_sugar_detail = $blood_sugar -> blood_sugar_detail() -> where('measure_type', '=', $request -> measure_type) -> first();
                 if($blood_sugar_detail == null){
                     $blood_sugar_detail = new BloodSugarDetail();

@@ -113,6 +113,13 @@ function save_soap(confirm){
         soap_nurse_class_pks.push($(this).val());
     });
     inputdata['soa_nurse_class_pks'] = soap_nurse_class_pks.join();
+    inputdata['start_date'] = $("#start_date").val();
+    inputdata['med_date'] = $("#med_date").val();
+    inputdata['trace_method'] = $("#trace_method").val();
+    inputdata['contact_name'] = $("#contact_name").val();
+    inputdata['contact_description'] = $("#contact_description").val();
+    inputdata['medicine'] = $("#medicine").val();
+    inputdata['contact_time'] = $("#contact_time").val();
 
     if(confirm){
         inputdata['confirm'] = true;
@@ -121,6 +128,7 @@ function save_soap(confirm){
     if($("#history_pk").val() != ""){
         inputdata['history'] = $("#history_pk").val();
     }
+
     $.ajax({
         type: 'POST',
         url: '/soap/post_soap',
