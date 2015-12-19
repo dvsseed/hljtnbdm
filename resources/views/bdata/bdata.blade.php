@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container-fluid">
         <h3 align="center" id="blood_title">血糖资料</h3>
         <br/>
         <div class="row">
@@ -28,6 +28,7 @@
             <li role="presentation"><a class="menuLink" href="#hba1c">HbA1C</a></li>
             <li role="presentation"><a class="menuLink" href="#message">留言</a></li>
             <li role="presentation"><a class="menuLink real" href="/case/create/{{$data['patient_id']}}">方案</a></li>
+            <li role="presentation"><a class="menuLink real" href="/patient/ccreate/{{$data['patient_id']}}">患者资料</a></li>
             <li role="presentation"><a class="no-hover" href="#" onclick="print_page(this)">列印本页</a></li>
         </ul>
         <br/>

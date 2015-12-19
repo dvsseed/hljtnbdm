@@ -6,9 +6,9 @@
 
 @section('content')
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-11">
+        <div class="col-md-12">
             @include('errors.list')
             <h3 align="center">{{ $doctor ? "建案" : "工作" }}清单 <span class="badge">{{ $count }}</span></h3>
             <a class="btn btn-success" href="{{ route('dm_create') }}" {!! $doctor ? '' : 'style="display:none"' !!}>增</a>
@@ -25,16 +25,16 @@
                 <input class="form-control" placeholder="按栏位搜索..." name="search" type="text" value="{{ $search }}" required>
                 <input class="btn btn-default" type="submit" value="搜寻">
             </form>
-            <table class="table table-hover table-condensed table-striped">
+            <table class="table table-hover table-condensed table-striped" id="sortdmTable">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>身份证</th>
-                    <th>卡号</th>
-                    <th>建案日</th>
+                    <th>#<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                    <th>身份证<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                    <th>卡号<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                    <th>建案日<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                     <th>建案人</th>
                     <th>责任卫教</th>
-                    <th>进度</th>
+                    <!-- th>进度</th -->
                     <th>护理卫教</th>
                     <th>进度</th>
                     <th>营养卫教</th>
@@ -52,7 +52,8 @@
                                 <td>
 <a data-html="true" href="#" data-toggle="popover" title="新增资料选项" data-content=
 "&lt;a href='/patient/ccreate/{{ $buildcase->personid }}' class='btn btn-info' role='button'&gt;患者&lt;/a&gt;
-&lt;a href='/dm/gobd/{{ $buildcase->personid }}' class='btn btn-danger' role='button'&gt;血糖&lt;/a&gt;
+&lt;a href='/dm/gobd/{{ $buildcase->personid }}/{{ $buildcase->id }}' class='btn btn-danger' role='button'&gt;血糖&lt;/a&gt;
+&lt;a href='/dm/gosoap/{{ $buildcase->personid }}/{{ $buildcase->id }}' class='btn btn-success' role='button'&gt;SOAP&lt;/a&gt;
 &lt;a href='/case/create/{{ $buildcase->personid }}' class='btn btn-warning' role='button'&gt;方案&lt;/a&gt;">{{ $buildcase->personid }}</a>
                                 </td>
                             @else
@@ -60,13 +61,56 @@
                             @endif
                             <td>{{ $buildcase->cardid }}</td>
                             <td>{{ $buildcase->build_at }}</td>
-                            <td>{{ $buildcase->doctor ? \App\User::find($buildcase->doctor)->name : "" }}</td>
+                            <td>{{ $buildcase->doctor_name ? $buildcase->doctor_name : "" }}</td>
                             <td>{{ $buildcase->duty ? \App\User::find($buildcase->duty)->name : "" }}</td>
-                            <td>{{ $buildcase->duty_status == 0 ? '未处理' : '已完成' }}</td>
+                            <!-- td -->
+{{--
+                                @if($buildcase->duty)
+                                    {{ $buildcase->duty_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') }}
+                                @else
+                                    &nbsp;
+                                @endif
+--}}
+                            <!-- /td -->
                             <td>{{ $buildcase->nurse ? \App\User::find($buildcase->nurse)->name : "" }}</td>
-                            <td>{{ $buildcase->nurse_status == 0 ? '未处理' : '已完成' }}</td>
+                            <td>
+                                @if($buildcase->nurse)
+                                    <?php $pks0 = explode(",", $buildcase->soa_nurse_class_pks0); ?>
+                                    {{-- 未处理: bg-danger, 处理中: bg-warning, 已完成: bg-success  --}}
+                                    <p class="{{ $buildcase->nurse_status == 0 ? 'bg-danger' : ($buildcase->nurse_status == 1 ? 'bg-warning' : 'bg-success') }}">
+                                        @foreach($soa_nurse_classes as $key=>$nurses)
+                                            @if(in_array($nurses->soa_nurse_class_pk, $pks0))
+                                                {{ $nurses->name }}.
+                                                @if($key % 3 == 0)
+                                                    <br>
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                    </p>
+                                    {{-- $buildcase->nurse_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') --}}
+                                @else
+                                    &nbsp;
+                                @endif
+                            </td>
                             <td>{{ $buildcase->dietitian ? \App\User::find($buildcase->dietitian)->name : "" }}</td>
-                            <td>{{ $buildcase->dietitian_status == 0 ? '未处理' : '已完成' }}</td>
+                            <td>
+                                @if($buildcase->dietitian)
+                                    <?php $pks1 = explode(",", $buildcase->soa_nurse_class_pks1); ?>
+                                    <p class="{{ $buildcase->dietitian_status == 0 ? 'bg-danger' : ($buildcase->dietitian_status == 1 ? 'bg-warning' : 'bg-success') }}">
+                                        @foreach($soa_nurse_classes as $key=>$nurses)
+                                            @if(in_array($nurses->soa_nurse_class_pk, $pks1))
+                                                {{ $nurses->name }}.
+                                                @if($key % 3 == 0)
+                                                    <br>
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                    </p>
+                                    {{-- $buildcase->dietitian_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') --}}
+                                @else
+                                    &nbsp;
+                                @endif
+                            </td>
                             <td {!! $doctor ? '' : 'style="display:none"' !!}>
                                 <!-- a class="btn btn-primary" href="{{-- route('dm_show', $buildcase->id) --}}">查</a -->
                                 <a class="btn btn-warning" href="{{ route('dm_eedit', $buildcase->id) }}">改</a>
@@ -85,7 +129,7 @@
             </table>
             <?php echo $buildcases->render(); ?>
         </div>
-        @include('dm.right_bar')
+        {{-- @include('dm.right_bar') --}}
     </div>
 </div>
 
@@ -97,6 +141,7 @@ $(document).ready(function(){
     $('[data-toggle="popover"]').popover({
         html: true,
     });
+    $("#sortdmTable").tablesorter();
 });
 </script>
 @stop

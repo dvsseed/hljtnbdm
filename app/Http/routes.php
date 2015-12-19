@@ -34,15 +34,21 @@ Route::delete('dm/destroy/{id}', ['as' => 'dm_destroy', 'uses' => 'DM\DiabetesCo
 Route::post('dm/update', ['as' => 'dm_update', 'uses' => 'DM\DiabetesController@update']);
 Route::post('dm/uupdate', ['as' => 'dm_uupdate', 'uses' => 'DM\DiabetesController@uupdate']);
 Route::post('dm/store', ['as' => 'dm_store', 'uses' => 'DM\DiabetesController@store']);
-Route::get('dm/gobd/{pid}', ['as' => 'dm_gobd', 'uses' => 'DM\DiabetesController@gobd']);
+Route::get('dm/gobd/{pid}/{bid}', ['as' => 'dm_gobd', 'uses' => 'DM\DiabetesController@gobd']);
+Route::get('dm/gosoap/{pid}/{bid}', ['as' => 'dm_gosoap', 'uses' => 'DM\DiabetesController@gosoap']);
 
 #管理员入口(增删改查，上传)
 #资源路由,人员的增删改查
 Route::resource('admin', 'Admin\AdminController');
-#更新信息
-Route::post('admin/upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminController@upload_user']);
+#文件上传
+Route::post('upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminController@upload_user']);
+Route::get('upload', 'Admin\UploadController@index');
+Route::post('upload/file', 'Admin\UploadController@uploadFile');
+Route::delete('upload/file', 'Admin\UploadController@deleteFile');
+Route::post('upload/folder', 'Admin\UploadController@createFolder');
+Route::delete('upload/folder', 'Admin\UploadController@deleteFolder');
 #下载人员名单
-Route::get('download/dmList', ['as' => 'download_dm_list_excel', 'uses' => 'Admin\ExcelController@dmList']);
+Route::get('download/xlsUsers', ['as' => 'download_users_list_excel', 'uses' => 'Admin\ExcelController@xlsUsers']);
 
 #功能管理
 Route::resource('feature', 'Feature\FeatureController');
@@ -92,4 +98,4 @@ Route::get('/soap_history/{uuid}', 'SOAP\SoapController@get_history');
 Route::post('/soap/get_customize', 'SOAP\SoapController@post_customize');
 Route::post('/soap/post_soap', 'SOAP\SoapController@post_user_soap');
 Route::post('/soap/delete_history', 'SOAP\SoapController@delete_history');
-Route::get('/soap/{uuid}', 'SOAP\SoapController@page');
+Route::get('/soap/{uuid}',['as' => 'soap', 'uses' => 'SOAP\SoapController@page']);

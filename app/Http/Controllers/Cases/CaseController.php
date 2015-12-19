@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Event\EventController;
-
 use Illuminate\Http\Request;
 
 class CaseController extends Controller {
@@ -55,6 +54,7 @@ class CaseController extends Controller {
 			$err_msg = "患者资料不存在!!<br>請先建立患者资料後才能新增方案資料...";
 			return view('case.create', compact('err_msg'));
 		} else {
+			$sex = $pps->pp_sex;
 			$today = Carbon::today()->toDateString();
 			// $format = $carbon->format('Y-m-d H:i:s');
 			$year = Carbon::today()->year;
@@ -71,7 +71,7 @@ class CaseController extends Controller {
 
 			EventController::SaveEvent('caselist', 'create(创建)');
 //		return view('case.create', compact('year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
-			return view('case.create', compact('err_msg', 'year', 'today', 'casetypes', 'patientprofiles'));
+			return view('case.create', compact('err_msg', 'year', 'today', 'casetypes', 'patientprofiles', 'sex'));
 		}
 	}
 
@@ -84,11 +84,11 @@ class CaseController extends Controller {
 	{
 		$caselist = new Caselist();
 		$caselist->pp_id = $request->pp_id;
+		$caselist->cl_patientname = $request->cl_patientname;
+		$caselist->cl_patientid = $request->cl_patientid;
 		$caselist->cl_case_date = $request->cl_case_date;
 		$caselist->cl_case_educator = $request->cl_case_educator;
 		$caselist->cl_case_type = $request->cl_case_type;
-		$caselist->cl_patientname = $request->cl_patientname;
-		$caselist->cl_patientid = $request->cl_patientid;
 		if($request->cl_case_type == 4) {
 			// 一般
 			$caselist->cl_base_sbp = $request->_cl_base_sbp;
@@ -122,19 +122,20 @@ class CaseController extends Controller {
 			$caselist->cl_blood_acpc = $request->cl_blood_acpc;
 			$caselist->cl_blood_mins = $request->cl_blood_mins;
 			$caselist->cl_blood_hba1c = $request->cl_blood_hba1c;
-			$caselist->cl_cholesterol = $request->cl_cholesterol;
-			$caselist->cl_blood_ldl = $request->cl_blood_ldl;
+			$caselist->cl_tc = $request->cl_tc;
+			$caselist->cl_tg = $request->cl_tg;
+			$caselist->cl_ldl = $request->cl_ldl;
 			$caselist->cl_hdl = $request->cl_hdl;
-			$caselist->cl_gpt = $request->cl_gpt;
-			$caselist->cl_blood_creat = $request->cl_blood_creat;
+			$caselist->cl_alt = $request->cl_alt;
+			$caselist->cl_ggt = $request->cl_ggt;
 			$caselist->cl_uricacid = $request->cl_uricacid;
+			$caselist->cl_ua = $request->cl_ua;
 			$caselist->cl_urine_micro = $request->cl_urine_micro;
-			$caselist->cl_upcr = $request->cl_upcr;
 			$caselist->cl_urine_routine = $request->cl_urine_routine;
 			$caselist->cl_egfr = $request->cl_egfr;
 			$caselist->cl_foot_chk_right = ($request->cl_foot_chk_right0 ? "1" : "0") . ($request->cl_foot_chk_right1 ? "1" : "0") . ($request->cl_foot_chk_right2 ? "1" : "0") . ($request->cl_foot_chk_right3 ? "1" : "0") . ($request->cl_foot_chk_right4 ? "1" : "0") . ($request->cl_foot_chk_right5 ? "1" : "0");
 			$caselist->cl_foot_chk_left = ($request->cl_foot_chk_left0 ? "1" : "0") . ($request->cl_foot_chk_left1 ? "1" : "0") . ($request->cl_foot_chk_left2 ? "1" : "0") . ($request->cl_foot_chk_left3 ? "1" : "0") . ($request->cl_foot_chk_left4 ? "1" : "0") . ($request->cl_foot_chk_left5 ? "1" : "0");
-			$caselist->cl_ulcers = ($request->cl_ulcers ? "1" : "0") . ($request->cl_ulcers_urgent_right ? "1" : "0") . ($request->cl_ulcers_urgent_left ? "1" : "0") . ($request->cl_ulcers_slow_right ? "1" : "0") . ($request->cl_ulcers_slow_left ? "1" : "0");
+			$caselist->cl_ulcers = ($request->cl_ulcers ? "1" : "0") . ($request->cl_ulcers_right ? "1" : "0") . ($request->cl_ulcers_left ? "1" : "0");
 			$caselist->cl_complications = ($request->cl_complications0 ? "1" : "0") . ($request->cl_complications1 ? "1" : "0") . ($request->cl_complications2 ? "1" : "0");
 			$caselist->cl_complications_stage = $request->cl_complications_stage;
 			$caselist->cl_complications_other = $request->cl_complications_other;
@@ -150,12 +151,9 @@ class CaseController extends Controller {
 			$caselist->cl_eye_chk8_right_item = $request->cl_eye_chk8_right_item;
 			$caselist->cl_eye_chk8_left_item = $request->cl_eye_chk8_left_item;
 			$caselist->cl_cataract = ($request->cl_cataract ? "1" : "0") . ($request->cl_cataract_right ? "1" : "0") . ($request->cl_cataract_left ? "1" : "0") . ($request->cl_cataract_no ? "1" : "0");
-			$caselist->cl_triglyceride = $request->cl_triglyceride;
 			$caselist->cl_ecg = ($request->cl_ecg ? "1" : "0") . ($request->cl_ecg_no ? "1" : "0");
-			$caselist->cl_ecg_item = $request->cl_ecg_item;
 			$caselist->cl_ecg_other = $request->cl_ecg_other;
 			$caselist->cl_coronary_heart = $request->cl_coronary_heart;
-			$caselist->cl_coronary_heart_item = $request->cl_coronary_heart_item;
 			$caselist->cl_coronary_heart_other = $request->cl_coronary_heart_other;
 			$caselist->cl_chh_year = $request->cl_chh_year;
 			$caselist->cl_chh_month = $request->cl_chh_month;
@@ -184,11 +182,19 @@ class CaseController extends Controller {
 			$caselist->cl_medical_treatment_emergency = $request->cl_medical_treatment_emergency;
 			$caselist->cl_drinking = $request->cl_drinking;
 			$caselist->cl_drinking_other = $request->cl_drinking_other;
-			$caselist->cl_periodontal = $request->cl_periodontal;
-			$caselist->cl_masticatory = $request->cl_masticatory;
 			$caselist->cl_smoking = $request->cl_smoking;
 			$caselist->cl_havesmoke = $request->cl_havesmoke;
 			$caselist->cl_quitsmoke = $request->cl_quitsmoke;
+			$caselist->cl_periodontal = $request->cl_periodontal;
+			$caselist->cl_masticatory = $request->cl_masticatory;
+			$caselist->cl_ultrasound = ($request->cl_ultrasound0 ? "1" : "0") . ($request->cl_ultrasound1 ? "1" : "0") . ($request->cl_ultrasound2 ? "1" : "0") . ($request->cl_ultrasound3 ? "1" : "0") . ($request->cl_ultrasound4 ? "1" : "0") . ($request->cl_ultrasound5 ? "1" : "0") . ($request->cl_ultrasound6 ? "1" : "0") . ($request->cl_ultrasound7 ? "1" : "0");
+			$caselist->cl_ultrasound01 = $request->cl_ultrasound01;
+			$caselist->cl_ultrasound02 = $request->cl_ultrasound02;
+			$caselist->cl_ultrasound03 = $request->cl_ultrasound03;
+			$caselist->cl_ultrasound04 = $request->cl_ultrasound04;
+			$caselist->cl_ultrasound05 = $request->cl_ultrasound05;
+			$caselist->cl_ultrasound06 = $request->cl_ultrasound06;
+			$caselist->cl_ultrasound07 = $request->cl_ultrasound07;
 		}
 		$caselist->save();
 
@@ -217,20 +223,13 @@ class CaseController extends Controller {
 	public function edit($id)
 	{
 		$caselist = Caselist::findOrFail($id);
-//		$casecare = CaseCare::where('patientprofile1_id', '=', $id)->firstOrFail();
-//		$bsms = BSM::orderBy('bm_order')->get();
-//		$account = User::findOrFail($caselist->user_id)->account;
-//		$areas = Caselist::$_area;
-//		$doctors = Caselist::$_doctor;
-//		$sources = Caselist::$_source;
-//		$occupations = Caselist::$_occupation;
-//		$languages = Caselist::$_language;
+		$sex = Patientprofile::where('pp_patientid', '=', $caselist->cl_patientid)->first()->pp_sex;
 		$today = Carbon::today()->toDateString();
 		$year = Carbon::today()->year;
 		$casetypes = array('' => '请选择', '1' => '初诊', '2' => '复诊', '3' => '年度检查', '4' => '一般');
 
 		EventController::SaveEvent('caselist', 'edit(编辑)');
-		return view('case.edit', compact('caselist', 'year', 'today', 'casetypes'));
+		return view('case.edit', compact('caselist', 'year', 'today', 'casetypes', 'sex'));
 	}
 
 	/**
@@ -242,6 +241,7 @@ class CaseController extends Controller {
 	public function update(Request $request, $id)
 	{
 		$caselist = Caselist::findOrFail($id);
+		$caselist->cl_case_date = $request->cl_case_date;
 		if($request->cl_case_type == 4) {
 			// 一般
 			$caselist->cl_base_sbp = $request->_cl_base_sbp;
@@ -275,19 +275,20 @@ class CaseController extends Controller {
 			$caselist->cl_blood_acpc = $request->cl_blood_acpc;
 			$caselist->cl_blood_mins = $request->cl_blood_mins;
 			$caselist->cl_blood_hba1c = $request->cl_blood_hba1c;
-			$caselist->cl_cholesterol = $request->cl_cholesterol;
-			$caselist->cl_blood_ldl = $request->cl_blood_ldl;
+			$caselist->cl_tc = $request->cl_tc;
+			$caselist->cl_tg = $request->cl_tg;
+			$caselist->cl_ldl = $request->cl_ldl;
 			$caselist->cl_hdl = $request->cl_hdl;
-			$caselist->cl_gpt = $request->cl_gpt;
-			$caselist->cl_blood_creat = $request->cl_blood_creat;
+			$caselist->cl_alt = $request->cl_alt;
+			$caselist->cl_ggt = $request->cl_ggt;
 			$caselist->cl_uricacid = $request->cl_uricacid;
+			$caselist->cl_ua = $request->cl_ua;
 			$caselist->cl_urine_micro = $request->cl_urine_micro;
-			$caselist->cl_upcr = $request->cl_upcr;
 			$caselist->cl_urine_routine = $request->cl_urine_routine;
 			$caselist->cl_egfr = $request->cl_egfr;
 			$caselist->cl_foot_chk_right = ($request->cl_foot_chk_right0 ? "1" : "0") . ($request->cl_foot_chk_right1 ? "1" : "0") . ($request->cl_foot_chk_right2 ? "1" : "0") . ($request->cl_foot_chk_right3 ? "1" : "0") . ($request->cl_foot_chk_right4 ? "1" : "0") . ($request->cl_foot_chk_right5 ? "1" : "0");
 			$caselist->cl_foot_chk_left = ($request->cl_foot_chk_left0 ? "1" : "0") . ($request->cl_foot_chk_left1 ? "1" : "0") . ($request->cl_foot_chk_left2 ? "1" : "0") . ($request->cl_foot_chk_left3 ? "1" : "0") . ($request->cl_foot_chk_left4 ? "1" : "0") . ($request->cl_foot_chk_left5 ? "1" : "0");
-			$caselist->cl_ulcers = ($request->cl_ulcers ? "1" : "0") . ($request->cl_ulcers_urgent_right ? "1" : "0") . ($request->cl_ulcers_urgent_left ? "1" : "0") . ($request->cl_ulcers_slow_right ? "1" : "0") . ($request->cl_ulcers_slow_left ? "1" : "0");
+			$caselist->cl_ulcers = ($request->cl_ulcers ? "1" : "0") . ($request->cl_ulcers_right ? "1" : "0") . ($request->cl_ulcers_left ? "1" : "0");
 			$caselist->cl_complications = ($request->cl_complications0 ? "1" : "0") . ($request->cl_complications1 ? "1" : "0") . ($request->cl_complications2 ? "1" : "0");
 			$caselist->cl_complications_stage = $request->cl_complications_stage;
 			$caselist->cl_complications_other = $request->cl_complications_other;
@@ -303,12 +304,9 @@ class CaseController extends Controller {
 			$caselist->cl_eye_chk8_right_item = $request->cl_eye_chk8_right_item;
 			$caselist->cl_eye_chk8_left_item = $request->cl_eye_chk8_left_item;
 			$caselist->cl_cataract = ($request->cl_cataract ? "1" : "0") . ($request->cl_cataract_right ? "1" : "0") . ($request->cl_cataract_left ? "1" : "0") . ($request->cl_cataract_no ? "1" : "0");
-			$caselist->cl_triglyceride = $request->cl_triglyceride;
 			$caselist->cl_ecg = ($request->cl_ecg ? "1" : "0") . ($request->cl_ecg_no ? "1" : "0");
-			$caselist->cl_ecg_item = $request->cl_ecg_item;
 			$caselist->cl_ecg_other = $request->cl_ecg_other;
 			$caselist->cl_coronary_heart = $request->cl_coronary_heart;
-			$caselist->cl_coronary_heart_item = $request->cl_coronary_heart_item;
 			$caselist->cl_coronary_heart_other = $request->cl_coronary_heart_other;
 			$caselist->cl_chh_year = $request->cl_chh_year;
 			$caselist->cl_chh_month = $request->cl_chh_month;
@@ -337,11 +335,19 @@ class CaseController extends Controller {
 			$caselist->cl_medical_treatment_emergency = $request->cl_medical_treatment_emergency;
 			$caselist->cl_drinking = $request->cl_drinking;
 			$caselist->cl_drinking_other = $request->cl_drinking_other;
-			$caselist->cl_periodontal = $request->cl_periodontal;
-			$caselist->cl_masticatory = $request->cl_masticatory;
 			$caselist->cl_smoking = $request->cl_smoking;
 			$caselist->cl_havesmoke = $request->cl_havesmoke;
 			$caselist->cl_quitsmoke = $request->cl_quitsmoke;
+			$caselist->cl_periodontal = $request->cl_periodontal;
+			$caselist->cl_masticatory = $request->cl_masticatory;
+			$caselist->cl_ultrasound = ($request->cl_ultrasound0 ? "1" : "0") . ($request->cl_ultrasound1 ? "1" : "0") . ($request->cl_ultrasound2 ? "1" : "0") . ($request->cl_ultrasound3 ? "1" : "0") . ($request->cl_ultrasound4 ? "1" : "0") . ($request->cl_ultrasound5 ? "1" : "0") . ($request->cl_ultrasound6 ? "1" : "0") . ($request->cl_ultrasound7 ? "1" : "0");
+			$caselist->cl_ultrasound01 = $request->cl_ultrasound01;
+			$caselist->cl_ultrasound02 = $request->cl_ultrasound02;
+			$caselist->cl_ultrasound03 = $request->cl_ultrasound03;
+			$caselist->cl_ultrasound04 = $request->cl_ultrasound04;
+			$caselist->cl_ultrasound05 = $request->cl_ultrasound05;
+			$caselist->cl_ultrasound06 = $request->cl_ultrasound06;
+			$caselist->cl_ultrasound07 = $request->cl_ultrasound07;
 		}
 		$caselist->save();
 

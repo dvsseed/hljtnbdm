@@ -10,7 +10,7 @@
 
 @section('content')
     <section id="about">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12 text-center">
                     <h2 class="section-heading">关于</h2>

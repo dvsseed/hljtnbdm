@@ -38,7 +38,7 @@
                     <div class="col-md-10" form-control-static>{{ $account }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="pp_name" class="col-md-2 control-label">姓名</label>
+                    <label for="pp_name" class="col-md-2 control-label"><span class="text-danger">*</span>姓名</label>
                     <div class="col-md-10 form-control-static">{{ $patientprofile->pp_name }}</div>
                 </div>
                 <div class="form-group">
@@ -50,15 +50,15 @@
                     <div class="col-md-10 form-control-static">{{ $patientprofile->pp_age }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="pp_sex" class="col-md-2 control-label">性别</label>
+                    <label for="pp_sex" class="col-md-2 control-label"><span class="text-danger">*</span>性别</label>
                     <div class="col-md-10 form-control-static">{{ $patientprofile->pp_sex ? "男" : "女" }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="pp_height" class="col-md-2 control-label">身高(cm)</label>
+                    <label for="pp_height" class="col-md-2 control-label"><span class="text-danger">*</span>身高(cm)</label>
                     <div class="col-md-10 form-control-static">{{ $patientprofile->pp_height }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="pp_weight" class="col-md-2 control-label">体重(kg)</label>
+                    <label for="pp_weight" class="col-md-2 control-label"><span class="text-danger">*</span>体重(kg)</label>
                     <div class="col-md-10 form-control-static">{{ $patientprofile->pp_weight }}</div>
                 </div>
                 <div class="form-group">
@@ -70,7 +70,7 @@
                     <div class="col-md-10 form-control-static">{{ $patientprofile->pp_tel2 }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="pp_mobile1" class="col-md-2 control-label">行动电话1</label>
+                    <label for="pp_mobile1" class="col-md-2 control-label"><span class="text-danger">*</span>行动电话1</label>
                     <div class="col-md-10 form-control-static">{{ $patientprofile->pp_mobile1 }}</div>
                 </div>
                 <div class="form-group">
@@ -83,6 +83,7 @@
                         @foreach($areas as $key => $value)
                             {{ "$key" == $patientprofile->pp_area ? "$value" : "" }}
                         @endforeach
+                        {{ $patientprofile->pp_area_other }}
                     </div>
                 </div>
                 <div class="form-group">
@@ -103,6 +104,7 @@
                         @foreach($sources as $key => $value)
                             {{ "$key" == $patientprofile->pp_source ? "$value" : "" }}
                         @endforeach
+                        {{ $patientprofile->pp_source_other }}
                     </div>
                 </div>
                 <div class="form-group">
@@ -111,6 +113,7 @@
                         @foreach($occupations as $key => $value)
                             {{ "$key" == $patientprofile->pp_occupation ? "$value" : "" }}
                         @endforeach
+                        {{ $patientprofile->pp_occupation_other }}
                     </div>
                 </div>
                 <div class="form-group">
@@ -153,7 +156,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="cc_type" class="col-md-2 control-label">症状型态</label>
+                    <label for="cc_type" class="col-md-2 control-label"><span class="text-danger">*</span>症状型态</label>
                     <div class="col-md-10 form-control-static">
                         <?php $cctypes = [0 => 'Type1', 1 => 'Type2', 2 => 'GDM', 3 => '其它']; ?>
                         @foreach($cctypes as $key => $value)
@@ -173,7 +176,7 @@
                     <div class="col-md-10 form-control-static">{{ $casecare->cc_bmi }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="cc_waist" class="col-md-2 control-label">腰围</label>
+                    <label for="cc_waist" class="col-md-2 control-label"><span class="text-danger">*</span>腰围</label>
                     <div class="col-md-10 form-control-static">{{ $casecare->cc_waist }}公分</div>
                 </div>
                 <div class="form-group">
@@ -265,9 +268,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="cc_medicaretype" class="col-md-2 control-label">医保类型</label>
+                    <label for="cc_medicaretype" class="col-md-2 control-label"><span class="text-danger">*</span>医保类型</label>
                     <div class="col-md-10 form-control-static">
-                        <?php $ccmedicaretype = [0 => '省医保', 1 => '市医保', 2 => '哈尔滨市城镇居民医保', 3 => '省农村合作医疗']; ?>
+                        <?php $ccmedicaretype = [0 => '省医保', 1 => '市医保', 2 => '哈尔滨市城镇居民医保', 3 => '省农村合作医疗', 4 => '省医保公务员', 5 => '市医保公务员', 6 => '自费']; ?>
                         @foreach($ccmedicaretype as $key => $value)
                              <label class="radio-inline {{Text::behidden($casecare->cc_medicaretype,$key)}}">
                                  <input type="radio" value="{{$key}}" name="cc_medicaretype" id="cc_medicaretype{{$key+1}}" {{Text::checked($casecare->cc_medicaretype,$key)}} disabled>{{$value}}
@@ -285,7 +288,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label for="cc_current_use" class="col-md-2 control-label">目前治疗方式</label>
+                    <label for="cc_current_use" class="col-md-2 control-label"><span class="text-danger">*</span>目前治疗方式</label>
                     <div class="col-md-10 form-control-static">
                         <label class="radio-inline {{empty($casecare->cc_current_use) ? '' : 'hidden'}}"><input type="radio" value="0" name="cc_current" id="cc_current0" {{empty($casecare->cc_current_use) ? "checked='checked'" : ""}} disabled>无</label>
                         <label class="radio-inline {{$casecare->cc_current_use ? '' : 'hidden'}}"><input type="radio" value="1" name="cc_current" id="cc_current1" {{$casecare->cc_current_use ? "checked='checked'" : ""}} disabled>有：</label>
@@ -332,14 +335,20 @@
                                                            id="cc_act_time_sel1"
                                                            {{$casecare->cc_act_time ? "checked='checked'" : ""}} disabled>有</label>
                         <label class="radio-inline">{{ $casecare->cc_act_time }}次/周</label>
+                        <label class="radio-inline">运动时间：{{ $casecare->cc_act_times }}分钟/次</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="cc_act_kind">运动种类</label>
-                    <div class="col-md-10 form-control-static">{{ $casecare->cc_act_kind }}</div>
+                    <div class="col-md-10 form-control-static">
+                        @foreach($actkind as $key => $value)
+                            {{ "$key" == $casecare->cc_act_kind ? "$value" : "" }}
+                        @endforeach
+                        {{ $casecare->cc_act_other }}
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="cc_edu" class="col-md-2 control-label">教育程度</label>
+                    <label for="cc_edu" class="col-md-2 control-label"><span class="text-danger">*</span>教育程度</label>
                     <div class="col-md-10 form-control-static">
                         <?php $ccedu = [0 => '不识字', 1 => '识数字', 2 => '识字', 3 => '日本教育', 4 => '国小', 5 => '国中', 6 => '高中', 7 => '大专', 8 => '大学', 9 => '硕士', 10 => '博士']; ?>
                         @foreach($ccedu as $key => $value)
@@ -370,7 +379,7 @@
                     <div class="col-md-10 form-control-static">{{ $casecare->cc_careman_tel }}</div>
                 </div>
                 <div class="row">
-                    <label class="col-md-2 control-label" for="cc_usebsm">使用血糖仪</label>
+                    <label class="col-md-2 control-label" for="cc_usebsm"><span class="text-danger">*</span>使用血糖仪</label>
                     <div class="col-md-10 form-control-static">
                         <label class="radio-inline {{!$casecare->cc_usebsm ? '' : 'hidden'}}"><input type="radio" value="0" name="cc_usebsm" id="cc_usebsm0"
                                                            {{!$casecare->cc_usebsm ? "checked='checked'" : ""}} disabled>无</label>
@@ -384,16 +393,10 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="cc_usebsm_frq">测试频率</label>
+                    <label class="col-md-2 control-label" for="cc_usebsm_frq"><span class="text-danger">*</span>测试频率</label>
                     <div class="col-md-10 form-control-static">
-                        <label class="radio-inline {{$casecare->cc_usebsm_frq ? '' : 'hidden'}}"><input type="radio" value="0" name="cc_usebsm_frq"
-                                                           id="cc_usebsm_frq0"
-                                                           {{!$casecare->cc_usebsm_frq ? "checked='checked'" : ""}} disabled>{{ $casecare->cc_usebsm_unit }}
-                            次/周</label>
-                        <label class="radio-inline {{$casecare->cc_usebsm_frq ? '' : 'hidden'}}"><input type="radio" value="1" name="cc_usebsm_frq"
-                                                           id="cc_usebsm_frq1"
-                                                           {{$casecare->cc_usebsm_frq ? "checked='checked'" : ""}} disabled>{{ $casecare->cc_usebsm_unit }}
-                            次/月</label>
+                        <label class="radio-inline {{$casecare->cc_usebsm_frq==0 ? '' : 'hidden'}}"><input type="radio" value="0" name="cc_usebsm_frq" id="cc_usebsm_frq0" {{$casecare->cc_usebsm_frq==0 ? "checked='checked'" : ""}} disabled>{{ $casecare->cc_usebsm_unit }}次/周</label>
+                        <label class="radio-inline {{$casecare->cc_usebsm_frq==1 ? '' : 'hidden'}}"><input type="radio" value="1" name="cc_usebsm_frq" id="cc_usebsm_frq1" {{$casecare->cc_usebsm_frq==1 ? "checked='checked'" : ""}} disabled>{{ $casecare->cc_usebsm_unit }}次/月</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -423,7 +426,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="cc_smartphone">本人是否使用智慧型手机</label>
+                    <label class="col-md-2 control-label" for="cc_smartphone">本人是否使用智能型手机</label>
                     <div class="col-md-10 form-control-static">
                         <label class="radio-inline {{!$casecare->cc_smartphone ? '' : 'hidden'}}"><input type="radio" value="0" name="cc_smartphone"
                                                            id="cc_smartphone0"
@@ -434,7 +437,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="cc_wifi3g">智慧型手机上网功能</label>
+                    <label class="col-md-2 control-label" for="cc_wifi3g">智能型手机上网功能</label>
                     <div class="col-md-10 form-control-static">
                         <label class="radio-inline {{Text::behidden($casecare->cc_wifi3g,1)}}"><input type="radio" value="1" name="cc_wifi3g" id="cc_wifi3g1"
                                                            {{Text::checked($casecare->cc_wifi3g,1)}} disabled>Wi-Fi</label>
@@ -443,7 +446,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="cc_smartphone_family">家属是否使用智慧型手机</label>
+                    <label class="col-md-2 control-label" for="cc_smartphone_family">家属是否使用智能型手机</label>
                     <div class="col-md-10 form-control-static">
                         <label class="radio-inline {{!$casecare->cc_smartphone_family ? '' : 'hidden'}}"><input type="radio" value="0" name="cc_smartphone_family"
                                                            id="cc_smartphone_family0"

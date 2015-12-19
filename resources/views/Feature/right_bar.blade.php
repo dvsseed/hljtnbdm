@@ -1,5 +1,4 @@
-<div class="col-md-2">
-    <h3>总功能数: {{ $count }}</h3>
+<div class="col-md-1">
     <a href="/admin"><button class="btn btn-success btn-lg">人员列表</button></a>
     <br />
     <a href="/feature"><button class="btn btn-primary btn-lg">功能管理</button></a>

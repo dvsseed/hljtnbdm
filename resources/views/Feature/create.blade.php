@@ -5,9 +5,9 @@
 @stop
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-11">
                 <h2>添加功能</h2>
                 <hr>
                 @include('errors.list')

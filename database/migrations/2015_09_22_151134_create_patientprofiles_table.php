@@ -30,10 +30,13 @@ class CreatePatientprofilesTable extends Migration
             $table->string('pp_mobile1', 20)->default(' ');
             $table->string('pp_mobile2', 20)->default(' ');
             $table->char('pp_area', 2)->nullable();
+            $table->string('pp_area_other', 20)->nullable();
             $table->char('pp_doctor', 2)->nullable();
             $table->string('pp_remark', 100)->nullable();
             $table->char('pp_source', 2)->nullable();
+            $table->string('pp_source_other', 20)->nullable();
             $table->char('pp_occupation', 2)->nullable();
+            $table->string('pp_occupation_other', 20)->nullable();
             $table->string('pp_address', 100)->nullable();
             $table->string('pp_email', 100)->nullable();
             $table->timestamps();

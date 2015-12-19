@@ -5,13 +5,13 @@
 @stop
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-11">
 
                 @include('errors.list')
 
-                <h3 align="center">操作信息表</h3>
+                <h3 align="center">操作信息表<span class="badge">{{ $count }}</span></h3>
                 <a href="/hasfeature/create"><button class="btn btn-primary">添加操作</button></a>
                 <table class="table table-striped table-hover">
                     <tr style="background: silver;">

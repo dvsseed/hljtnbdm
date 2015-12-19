@@ -2,6 +2,7 @@
 
 use App\Feature;
 use App\Hasfeature;
+use App\Buildcase;
 use Carbon\Carbon;
 //use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -73,15 +74,19 @@ class PatientprofileController extends Controller
         $year = $carbon->year;
         $bsms = BSM::orderBy('bm_order')->get();
         $areas = Patientprofile::$_area;
-        $doctors = Patientprofile::$_doctor;
+//        $doctors = Patientprofile::$_doctor;
+        $doctors = User::where('position','=','门诊医生')->orWhere('position', '=', '住院医生')->orderBy('name', 'ASC')->lists('name', 'id');
+        $doctors = array('' => '不详') + $doctors;
+        $doctor = null;
         $sources = Patientprofile::$_source;
         $occupations = Patientprofile::$_occupation;
         $languages = Patientprofile::$_language;
+        $actkind = Patientprofile::$_actkind;
         $patientid = null;
         $err_msg = null;
 
         EventController::SaveEvent('patientprofile', 'create(创建)');
-        return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
+        return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'doctor', 'sources', 'occupations', 'languages', 'actkind', 'patientid'));
     }
 
     public function ccreate($patientid)
@@ -96,14 +101,18 @@ class PatientprofileController extends Controller
             $year = $carbon->year;
             $bsms = BSM::orderBy('bm_order')->get();
             $areas = Patientprofile::$_area;
-            $doctors = Patientprofile::$_doctor;
+//            $doctors = Patientprofile::$_doctor;
+            $doctors = User::where('position','=','门诊医生')->orWhere('position', '=', '住院医生')->orderBy('name', 'ASC')->lists('name', 'id');
+            $doctors = array('' => '不详') + $doctors;
+            $doctor = Buildcase::where('personid', '=', $patientid)->first()->doctor; // 建案医生
             $sources = Patientprofile::$_source;
             $occupations = Patientprofile::$_occupation;
             $languages = Patientprofile::$_language;
+            $actkind = Patientprofile::$_actkind;
             $err_msg = null;
 
             EventController::SaveEvent('patientprofile', 'create(创建)');
-            return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
+            return view('patient.create', compact('err_msg', 'year', 'bsms', 'areas', 'doctors', 'doctor', 'sources', 'occupations', 'languages', 'actkind', 'patientid'));
         }
     }
 
@@ -149,10 +158,13 @@ class PatientprofileController extends Controller
             $patientprofile->pp_mobile1 = $request->pp_mobile1;
             $patientprofile->pp_mobile2 = $request->pp_mobile2;
             $patientprofile->pp_area = $request->pp_area;
+            $patientprofile->pp_area_other = $request->pp_area_other;
             $patientprofile->pp_doctor = $request->pp_doctor;
             $patientprofile->pp_remark = $request->pp_remark;
             $patientprofile->pp_source = $request->pp_source;
+            $patientprofile->pp_source_other = $request->pp_source_other;
             $patientprofile->pp_occupation = $request->pp_occupation;
+            $patientprofile->pp_occupation_other = $request->pp_occupation_other;
             $patientprofile->pp_address = $request->pp_address;
             $patientprofile->pp_email = $request->pp_email;
             $patientprofile->educator = Auth::user()->name;
@@ -215,7 +227,9 @@ class PatientprofileController extends Controller
             }
 
             $casecare->cc_act_time = $request->cc_act_time;
+            $casecare->cc_act_times = $request->cc_act_times;
             $casecare->cc_act_kind = $request->cc_act_kind;
+            $casecare->cc_act_other = $request->cc_act_other;
             $casecare->cc_edu = $request->cc_edu;
             $casecare->cc_careself = $request->cc_careself;
             $casecare->cc_careself_name = $request->cc_careself_name;
@@ -302,13 +316,16 @@ class PatientprofileController extends Controller
         $bsms = BSM::orderBy('bm_order')->get();
         $account = User::findOrFail($patientprofile->user_id)->account;
         $areas = Patientprofile::$_area;
-        $doctors = Patientprofile::$_doctor;
+//        $doctors = Patientprofile::$_doctor;
+        $doctors = User::where('position','=','门诊医生')->orWhere('position', '=', '住院医生')->orderBy('name', 'ASC')->lists('name', 'id');
+        $doctors = array('' => '不详') + $doctors;
         $sources = Patientprofile::$_source;
         $occupations = Patientprofile::$_occupation;
         $languages = Patientprofile::$_language;
+        $actkind = Patientprofile::$_actkind;
 
         EventController::SaveEvent('patientprofile', 'show(显示)');
-        return view('patient.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
+        return view('patient.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind'));
     }
 
     /**
@@ -326,13 +343,16 @@ class PatientprofileController extends Controller
         $bsms = BSM::orderBy('bm_order')->get();
         $account = User::findOrFail($patientprofile->user_id)->account;
         $areas = Patientprofile::$_area;
-        $doctors = Patientprofile::$_doctor;
+//        $doctors = Patientprofile::$_doctor;
+        $doctors = User::where('position','=','门诊医生')->orWhere('position', '=', '住院医生')->orderBy('name', 'ASC')->lists('name', 'id');
+        $doctors = array('' => '不详') + $doctors;
         $sources = Patientprofile::$_source;
         $occupations = Patientprofile::$_occupation;
         $languages = Patientprofile::$_language;
+        $actkind = Patientprofile::$_actkind;
 
         EventController::SaveEvent('patientprofile', 'edit(编辑)');
-        return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
+        return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind'));
     }
 
     /**
@@ -362,10 +382,13 @@ class PatientprofileController extends Controller
             $patientprofile->pp_mobile1 = $request->pp_mobile1;
             $patientprofile->pp_mobile2 = $request->pp_mobile2;
             $patientprofile->pp_area = $request->pp_area;
+            $patientprofile->pp_area_other = $request->pp_area_other;
             $patientprofile->pp_doctor = $request->pp_doctor;
             $patientprofile->pp_remark = $request->pp_remark;
             $patientprofile->pp_source = $request->pp_source;
+            $patientprofile->pp_source_other = $request->pp_source_other;
             $patientprofile->pp_occupation = $request->pp_occupation;
+            $patientprofile->pp_occupation_other = $request->pp_occupation_other;
             $patientprofile->pp_address = $request->pp_address;
             $patientprofile->pp_email = $request->pp_email;
             $patientprofile->educator = Auth::user()->name;
@@ -428,7 +451,9 @@ class PatientprofileController extends Controller
             }
 
             $casecare->cc_act_time = $request->cc_act_time;
+            $casecare->cc_act_times = $request->cc_act_times;
             $casecare->cc_act_kind = $request->cc_act_kind;
+            $casecare->cc_act_other = $request->cc_act_other;
             $casecare->cc_edu = $request->cc_edu;
             $casecare->cc_careself = $request->cc_careself;
             $casecare->cc_careself_name = $request->cc_careself_name;
@@ -519,7 +544,6 @@ class PatientprofileController extends Controller
         } catch (\Exception $e) {
             $msg = '资料删除失败。';
             DB::rollback();
-            return $e;
         }
 
         return redirect()->back()->with('message', $msg);
@@ -533,10 +557,6 @@ class PatientprofileController extends Controller
                 $details = $blood_sugar -> blood_sugar_detail;
                 foreach( $details as $detail){
                     $detail -> delete();
-                }
-                $histories = $blood_sugar -> histories;
-                foreach( $histories as $history){
-                    $history -> delete();
                 }
                 $blood_sugar -> delete();
             }
@@ -557,13 +577,11 @@ class PatientprofileController extends Controller
             $hospital -> delete();
 
             $user_soap = $hospital -> user_soap;
-            if($user_soap != null){
-                $histories = $user_soap -> history;
-                foreach( $histories as $history){
-                    $history -> delete();
-                }
-                $user_soap -> delete();
+            $histories = $user_soap -> history;
+            foreach( $histories as $history){
+                $histories -> delete();
             }
+            $user_soap -> delete();
         }
     }
 

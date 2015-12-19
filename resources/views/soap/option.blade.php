@@ -13,14 +13,14 @@
             护理卫教项目
             <table >
                 @foreach($soa_nurse_classes[0] as $soa_nurse_class)
-                    <tr><td style="text-align: left"><input type="checkbox" name="nurse" value="{{$soa_nurse_class -> soa_nurse_class_pk}}" @if(in_array($soa_nurse_class -> soa_nurse_class_pk,$user_soa_nurse_pks)) checked @endif/>{{$soa_nurse_class -> name}}</td></tr>
+                    <tr><td style="text-align: left"><input type="checkbox" name="nurse" value="{{$soa_nurse_class -> soa_nurse_class_pk}}" @if(in_array($soa_nurse_class -> soa_nurse_class_pk,$user_soa_nurse_pks) || in_array($soa_nurse_class->soa_nurse_class_pk,$pks0)) checked @endif/>{{$soa_nurse_class -> name}}</td></tr>
                 @endforeach
             </table>
             <br/>
             营养卫教项目
             <table style="text-align: left">
                 @foreach($soa_nurse_classes[1] as $soa_nurse_class)
-                    <tr><td style="text-align: left"><input type="checkbox" name="nurse" value="{{$soa_nurse_class -> soa_nurse_class_pk}}" @if(in_array($soa_nurse_class -> soa_nurse_class_pk,$user_soa_nurse_pks)) checked @endif/>{{$soa_nurse_class -> name}}</td></tr>
+                    <tr><td style="text-align: left"><input type="checkbox" name="nurse" value="{{$soa_nurse_class -> soa_nurse_class_pk}}" @if(in_array($soa_nurse_class -> soa_nurse_class_pk,$user_soa_nurse_pks) || in_array($soa_nurse_class->soa_nurse_class_pk,$pks1)) checked @endif/>{{$soa_nurse_class -> name}}</td></tr>
                 @endforeach
             </table>
             <br/>

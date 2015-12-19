@@ -5,11 +5,11 @@
 @stop
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-sm-11">
                 @include('errors.list')
-                <h3 align="center">人员信息表</h3>
+                <h3 align="center">人员信息表<span class="badge">{{ $count }}</span></h3>
                 <a href="/admin/create"><button class="btn btn-primary">添加人员</button></a>
                 {!! Form::open(array('route'=>'admin.index', 'method'=>'get', 'class'=>'form navbar-form navbar-right searchform')) !!}
                     {!! Form::select('category', $categories, $category, ['required', 'class' => 'form-control']) !!}
@@ -17,17 +17,20 @@
                     {!! Form::submit('搜寻', array('class'=>'btn btn-default')) !!}
                     <!-- a class="btn btn-info" href="{{-- route('admin.forget', 1) --}}">清除</a -->
                 {!! Form::close() !!}
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover" id="sortadTable">
+                    <thead>
                     <tr style="background: silver;">
-                        <th>#</th>
-                        <th>帐号</th>
-                        <th>姓名</th>
+                        <th>#<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                        <th>帐号<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                        <th>姓名<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                         <th>医院</th>
-                        <th>部门</th>
-                        <th>手机</th>
-                        <th>邮箱</th>
+                        <th>部门<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                        <th>手机<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                        <th>邮箱<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                         <th class="text-center">操作</th>
                     </tr>
+                    </thead>
+                    <tbody>
                     @if (count($users))
                         @foreach ($users as $user)
                             <tr>
@@ -42,7 +45,7 @@
                                     <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal{{$user->id}}">更新</button>
                                     <form action="{{ url('admin/'.$user->id) }}" style='display: inline' method="post">
                                         <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <button class="btn btn-sm btn-danger" onclick="return confirm('确定删除?')">删除</button>
                                     </form>
                                 </td>
@@ -52,10 +55,19 @@
                     @else
                         <h1>没有人员名单,请管理员添加...</h1>
                     @endif
+                    </tbody>
                 </table>
                 <?php echo $users->render(); ?>
             </div>
             @include('Admin.right_bar')
         </div>
     </div>
+@stop
+
+@section('loadScripts')
+    <script>
+        $(document).ready(function(){
+            $("#sortadTable").tablesorter();
+        });
+    </script>
 @stop

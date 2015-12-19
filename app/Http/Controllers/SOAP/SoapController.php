@@ -9,6 +9,7 @@
 use App\Feature;
 use App\Model\SOAP\SoaNurseClass;
 use App\User;
+use App\Buildcase;
 use App\Http\Controllers\Controller;
 use App\Model\Pdata\HospitalNo;
 use App\Model\SOAP\SubClass;
@@ -44,7 +45,7 @@ class SoapController extends Controller
         $users = Auth::user();
 
         if( $hospital_no == null){
-            $err_msg = "无效的病历";
+            $err_msg = "没有SOAP资料!";
         }else{
             if($hospital_no -> patient_user_id == $users -> id ){
                 return Redirect::route('bdata');
@@ -57,14 +58,14 @@ class SoapController extends Controller
             }
         }
 
+        $history_pk = null;
         if($hospital_no == null){
-            return view('soap.soap', compact('err_msg'));
+            return view('soap.soap', compact('err_msg', 'history_pk'));
         }
 
         $user_soap = null;//UserSoap::where('hospital_no_uuid', '=', $uuid)->first();
 
         $user_data = array();
-        $history_pk = null;
 
         if(isset($request['history'])){
             $history = UserSoapHistory::find($request['history']);
@@ -111,8 +112,11 @@ class SoapController extends Controller
             }
         }
         Session::put('uuid', $uuid);
+        $pks01 = Buildcase::where('hospital_no_uuid', '=', $uuid)->first();
+        $pks0 = explode(",", $pks01->soa_nurse_class_pks0);
+        $pks1 = explode(",", $pks01->soa_nurse_class_pks1);
 
-        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid', 'history_pk', 'soa_nurse_classes', 'user_soa_nurse_pks'));
+        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid', 'history_pk', 'soa_nurse_classes', 'user_soa_nurse_pks', 'pks0', 'pks1'));
     }
 
     public function delete_history(Request $request){
@@ -227,6 +231,7 @@ class SoapController extends Controller
 
     public function post_user_soap(Request $request){
         $uuid = Session::get('uuid');
+        $uid = Auth::user()->id;
         $calendar_date = Session::get('calendar_date');
         $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid) -> first();
         $user_id = Auth::User() -> id;
@@ -251,8 +256,7 @@ class SoapController extends Controller
                 $bsugar->hospital_no_uuid = $uuid;
                 $bsugar->user_id = $user_id;
                 $bsugar -> save();
-            }
-            else{
+            }else{
                 if($user_soap == null){
                     $user_soap = new UserSoap();
                 }
@@ -308,6 +312,40 @@ class SoapController extends Controller
             }
 
             $user_soap_history -> save();
+
+            if($user_soap->is_finished == true) { // 完成
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('duty','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->duty_status = 2;
+                    $buildcase->save();
+                }
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('nurse','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->nurse_status = 2;
+                    $buildcase->save();
+                }
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('dietitian','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->dietitian_status = 2;
+                    $buildcase->save();
+                }
+            } else { // 暫存
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('duty','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->duty_status = 1;
+                    $buildcase->save();
+                }
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('nurse','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->nurse_status = 1;
+                    $buildcase->save();
+                }
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('dietitian','=',$uid)->first();
+                if($buildcase) {
+                    $buildcase->dietitian_status = 1;
+                    $buildcase->save();
+                }
+            }
 
             DB::commit();
             return "success /soap/$uuid?history=".$user_soap_history->user_soap_history_pk;

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
@@ -26,7 +26,7 @@
 <body>
 
 <nav class="navbar navbar-default" role="navigation">
-    <div class="container">
+    <div class="container-fluid">
         <div class="navbar-header">
             <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
@@ -57,11 +57,11 @@
     </div>
 </nav>
 
-<div class="container">
+<div class="container-fluid">
     @include('flash')
 </div>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col-md-12"> @yield('content') </div>
     </div>
@@ -74,6 +74,7 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/bootstrap-datepicker.min.js"></script>
 <script src="/js/locales/bootstrap-datepicker.zh-TW.js" charset="UTF-8"></script>
+<script src="/js/jquery.tablesorter.min.js"></script>
 <script src="/js/validator.min.js"></script>
 <!-- script src="/js/angular.min.js"></script -->
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
