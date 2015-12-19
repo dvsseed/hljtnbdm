@@ -52,52 +52,52 @@
             <br/>
             <table style="width: 100%">
                 <tr>
-                    <td>就診日期</td>
+                    <td>就诊日期</td>
                 </tr>
                 <tr>
                     <td><input type="date" class="form-control" id="start_date" @if(isset($user_data['start_date']) && $user_data['start_date'] != null) value="{{$user_data['start_date']}}" @endif/></td>
                 </tr>
                 <tr>
-                    <td>開藥日期</td>
+                    <td>开药日期</td>
                 </tr>
                 <tr>
                     <td><input type="date" class="form-control" id="med_date" @if(isset($user_data['med_date']) && $user_data['med_date'] != null) value="{{$user_data['med_date']}}" @endif/></td>
                 </tr>
                 <tr>
-                    <td>追蹤方式</td>
+                    <td>追踪方式</td>
                 </tr>
                 <tr>
                     <td><select class="form-control" id="trace_method" >
-                            <option  value="0" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 0) selected @endif>請選擇</option>
-                            <option  value="1" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 1) selected @endif>電話</option>
-                            <option  value="2" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 2) selected @endif>傳真</option>
+                            <option  value="0" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 0) selected @endif>请选择</option>
+                            <option  value="1" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 1) selected @endif>电话</option>
+                            <option  value="2" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 2) selected @endif>传真</option>
                             <option  value="3" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 3) selected @endif>e-mail</option>
-                            <option  value="4" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 4) selected @endif>回診討論</option>
-                            <option  value="5" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 5) selected @endif>網路平台</option>
-                            <option  value="6" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 6) selected @endif>傳輸線</option>
+                            <option  value="4" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 4) selected @endif>回诊讨论</option>
+                            <option  value="5" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 5) selected @endif>网路平台</option>
+                            <option  value="6" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 6) selected @endif>传输线</option>
                             <option  value="7" @if(isset($user_data['trace_method']) && $user_data['trace_method'] != null && $user_data['trace_method'] == 7) selected @endif>其他</option>
-                    </select></td>
+                        </select></td>
                 </tr>
                 <tr>
-                    <td>連絡人姓名</td>
+                    <td>连络人姓名</td>
                 </tr>
                 <tr>
                     <td><input type="text" class="form-control" id="contact_name" @if(isset($user_data['contact_name']) && $user_data['contact_name'] != null) value="{{$user_data['contact_name']}}" @endif/></td>
                 </tr>
                 <tr>
-                    <td>連絡說明</td>
+                    <td>连络说明</td>
                 </tr>
                 <tr>
                     <td><textarea class="form-control" id="contact_description" >@if(isset($user_data['contact_description']) && $user_data['contact_description'] != null){{$user_data['contact_description']}}@endif</textarea></td>
                 </tr>
                 <tr>
-                    <td>用藥</td>
+                    <td>用药</td>
                 </tr>
                 <tr>
                     <td><textarea class="form-control" id="medicine">@if(isset($user_data['medicine']) && $user_data['medicine'] != null){{$user_data['medicine']}}@endif</textarea></td>
                 </tr>
                 <tr>
-                    <td>連絡時段</td>
+                    <td>连络时段</td>
                 </tr>
                 <tr>
                     <td><select class="form-control" id="contact_time">
