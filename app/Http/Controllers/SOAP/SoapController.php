@@ -113,8 +113,12 @@ class SoapController extends Controller
         }
         Session::put('uuid', $uuid);
         $pks01 = Buildcase::where('hospital_no_uuid', '=', $uuid)->first();
-        $pks0 = explode(",", $pks01->soa_nurse_class_pks0);
-        $pks1 = explode(",", $pks01->soa_nurse_class_pks1);
+        $pks0 = [];
+        $pks1 = [];
+        if($pks01) {
+            $pks0 = explode(",", $pks01->soa_nurse_class_pks0);
+            $pks1 = explode(",", $pks01->soa_nurse_class_pks1);
+        }
 
         return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid', 'history_pk', 'soa_nurse_classes', 'user_soa_nurse_pks', 'pks0', 'pks1'));
     }

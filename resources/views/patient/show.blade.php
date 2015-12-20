@@ -4,7 +4,7 @@
     患者资料-查
 @stop
 
-@section('pactive')
+@section('activep')
     active
 @stop
 

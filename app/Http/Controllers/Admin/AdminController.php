@@ -4,7 +4,6 @@ use Redirect;
 use Input;
 use Hash;
 use Auth;
-//use Session;
 use App\User;
 use App\Http\Controllers\Event\EventController;
 use App\Http\Requests;

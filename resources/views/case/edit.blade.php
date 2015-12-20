@@ -4,6 +4,12 @@
     方案资料-改
 @stop
 
+@section('activec')
+    <li class=""><a href="/patient">患者资料</a></li>
+    <li class=""><a href="/bdata/">血糖</a></li>
+    <li class="active"><a href="/case">方案</a></li>
+@stop
+
 @section('css')
     {!! Html::style('css/case.css') !!}
 @stop

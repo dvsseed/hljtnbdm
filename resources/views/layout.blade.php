@@ -38,7 +38,9 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav">
-                <li class="@yield('pactive')">@yield('navstr')</li>
+                <li class="@yield('activep')"><a href="/patient">患者资料</a></li>
+                <li class="@yield('activeb')"><a href="/bdata/">血糖</a></li>
+                <li class="@yield('activec')"><a href="/case">方案</a></li>
                 <li class="@yield('aactive')"><a href="@yield('navabout')">关于</a></li>
                 <!-- li><a href="{{ url('/logout') }}">退出</a></li -->
             </ul>

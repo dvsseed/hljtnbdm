@@ -41,7 +41,8 @@ Route::get('dm/gosoap/{pid}/{bid}', ['as' => 'dm_gosoap', 'uses' => 'DM\Diabetes
 #资源路由,人员的增删改查
 Route::resource('admin', 'Admin\AdminController');
 #文件上传
-Route::post('upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminController@upload_user']);
+#Route::post('admin/upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminController@upload_user']);
+Route::post('admin/upload_user', 'Admin\AdminController@upload_user');
 Route::get('upload', 'Admin\UploadController@index');
 Route::post('upload/file', 'Admin\UploadController@uploadFile');
 Route::delete('upload/file', 'Admin\UploadController@deleteFile');

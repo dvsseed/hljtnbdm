@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9f27298d783c5b79953dee1c2db21063",
-    "content-hash": "2b89f0054fc74051cbe088b3a31bf821",
+    "hash": "ed216c891c97d2ab4be2cdad38c2da88",
+    "content-hash": "88d721ce832c4b5bc54a3bcfaabe4a7b",
     "packages": [
         {
             "name": "arcanedev/log-viewer",
@@ -3095,7 +3095,7 @@
                     "Doctrine\\Common\\": "lib/"
                 }
             },
-            "notification-url": "http://packagist.cn/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3862,7 +3862,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "http://packagist.cn/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -4033,7 +4033,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "http://packagist.cn/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],
@@ -4252,7 +4252,7 @@
                     "src/"
                 ]
             },
-            "notification-url": "http://packagist.cn/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD-3-Clause"
             ],

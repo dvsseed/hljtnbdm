@@ -11,9 +11,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	use Authenticatable, CanResetPassword;
 
 	// 职务
-	public static $_position = array(
-		'院长' => '院长', '副院长' => '副院长', '病区主任' => '病区主任', '门诊医生' => '门诊医生', '住院医生' => '住院医生', '护理师' => '护理师', '营养师' => '营养师', '医助' => '医助', '' => '患者'
-	);
+	public static $_position = array('院长' => '院长', '副院长' => '副院长', '病区主任' => '病区主任', '门诊医生' => '门诊医生', '住院医生' => '住院医生', '护理师' => '护理师', '营养师' => '营养师', '医助' => '医助', '' => '患者');
 
 	/**
 	 * The database table used by the model.
@@ -40,12 +38,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * grades表中的每行数据都有对应的一个用户
 	 * @return [type] [description]
 	 */
-/*
-	public function grade()
-	{
-		return $this->hasOne('App\Grade');
-	}
-*/
+//	public function grade()
+//	{
+//		return $this->hasOne('App\Grade');
+//	}
+
 	/**
 	 * 登录验证规则
 	 * @return [type] [description]

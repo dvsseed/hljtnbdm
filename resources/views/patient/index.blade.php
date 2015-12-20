@@ -4,12 +4,8 @@
     患者资料
 @stop
 
-@section('pactive')
+@section('activep')
     active
-@stop
-
-@section('navstr')
-    <a href="/patient">患者资料</a>
 @stop
 
 @section('navabout')

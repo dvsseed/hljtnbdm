@@ -14,7 +14,7 @@
 		"maximebf/debugbar": "1.*",
 		"fzaninotto/faker": "^1.5",
 		"yajra/laravel-oci8": "~2.0",
-		"predis/predis": "*",
+		"predis/predis": "~1.0",
 		"itsgoingd/clockwork": "~1.9",
 		"rap2hpoutre/laravel-log-viewer": "^0.4.3",
 		"arcanedev/log-viewer": "~3.0",
@@ -30,12 +30,9 @@
 	},
     "repositories": [
       {
-          "packagist": false
-      },
-      {
-          "type": "composer",
-          "url": "http://packagist.cn"
-      }
+       	  "type": "git",
+          "url": "https://github.com/jamisonvalenta/Laravel-4-Generators.git"
+       }
     ],
 	"autoload": {
 		"classmap": [
