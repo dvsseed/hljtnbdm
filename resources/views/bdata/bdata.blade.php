@@ -104,4 +104,5 @@
     {!! Html::script('js/chart.js') !!}
     {!! Html::script('js/timepicker.js') !!}
     {!! Html::script('js/bdata.js') !!}
+    {!! Html::script('js/modernizr.min.js') !!}
 @stop

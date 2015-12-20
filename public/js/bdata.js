@@ -89,6 +89,12 @@ $( document ).ready(function() {
         autoOpen: false
     });
 
+    if (!Modernizr.inputtypes['date']) {
+        $('input[type=date]').datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+    }
+
     var mode = getUrlParameter("mode");
     if(mode){
         if($("[href =" +  "#" + mode +"]").length > 0){
@@ -292,7 +298,7 @@ function checkContent(){
                         batch_data.push(single_record);
                     }
                 }
-                console.log(batch_data);
+
                 event.preventDefault();
                 $(this).blur();
                 var inputdata = {};
@@ -605,7 +611,7 @@ function getHba1cData(){
             if(record_data != null && record_data != undefined){
                 for(var i = 0; i < 4; i++){
                     if(i < record_data.length){
-                        data.labels.push(record_data[i]["created_at"].split(" ")[0]+" "+hba1cToBS(record_data[i]["cl_blood_hba1c"]) );
+                        data.labels.push(record_data[i]["cl_case_date"]+" "+hba1cToBS(record_data[i]["cl_blood_hba1c"]) );
                         data.datasets[0].data.push(record_data[i]["cl_blood_hba1c"]);
                         max_avg = Math.max(record_data[i]["cl_blood_hba1c"], max_avg);
                         min_avg = Math.min(record_data[i]["cl_blood_hba1c"], min_avg);
@@ -659,7 +665,7 @@ function getHba1cData(){
             var record_data = result["data"];
             for( var i = 0; i < record_data.length; i++){
                 html += '<tr><td>';
-                html += '姓名:&nbsp;' + result['name'] + '&nbsp;&nbsp;日期:&nbsp;&nbsp;' + record_data[i]['created_at'].split(" ")[0] + '&nbsp; A1C: &nbsp;' + record_data[i]['cl_blood_hba1c'] + ' &nbsp;平均血糖值: &nbsp;' + hba1cToBS(record_data[i]['cl_blood_hba1c']) + '&nbsp;&nbsp;' + getControl(record_data[i]['cl_blood_hba1c']) + '<br/>';
+                html += '姓名:&nbsp;' + result['name'] + '&nbsp;&nbsp;日期:&nbsp;&nbsp;' + record_data[i]['cl_case_date'] + '&nbsp; A1C: &nbsp;' + record_data[i]['cl_blood_hba1c'] + ' &nbsp;平均血糖值: &nbsp;' + hba1cToBS(record_data[i]['cl_blood_hba1c']) + '&nbsp;&nbsp;' + getControl(record_data[i]['cl_blood_hba1c']) + '<br/>';
                 //html += '總筆數:&nbsp;' + result[key]['count'] + '&nbsp; 資料範圍: &nbsp;' + result[key]['first_date'].split(' ')[0] + '&nbsp;至&nbsp;' + result[key]['last_date'].split(' ')[0];
                 html += '</td></tr>';
             }

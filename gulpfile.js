@@ -32,7 +32,8 @@ elixir(function(mix) {
     ], 'public/js/timepicker.js').scripts([
         "soap.js"
     ], 'public/js/soap.js').scripts([
-        "Chart.js"], 'public/js/chart.js');
+        "Chart.js"], 'public/js/chart.js').scripts([
+        "modernizr.min.js"], 'public/js/modernizr.min.js');
 });
 
 
