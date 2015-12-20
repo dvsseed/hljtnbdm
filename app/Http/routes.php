@@ -40,9 +40,9 @@ Route::get('dm/gosoap/{pid}/{bid}', ['as' => 'dm_gosoap', 'uses' => 'DM\Diabetes
 #管理员入口(增删改查，上传)
 #资源路由,人员的增删改查
 Route::resource('admin', 'Admin\AdminController');
-#文件上传
 #Route::post('admin/upload_user', ['as' => 'upload_user', 'uses' => 'Admin\AdminController@upload_user']);
 Route::post('admin/upload_user', 'Admin\AdminController@upload_user');
+#文件上传
 Route::get('upload', 'Admin\UploadController@index');
 Route::post('upload/file', 'Admin\UploadController@uploadFile');
 Route::delete('upload/file', 'Admin\UploadController@deleteFile');
@@ -84,6 +84,8 @@ Route::get('/bdata/filter', 'BData\BDataController@get_filter');
 Route::get('/bdata/hba1c', 'BData\BDataController@get_hba1c');
 Route::post('/bdata/upsert_note', 'BData\BDataController@upsert_note');
 Route::post('/bdata/post_message', 'BData\BDataController@post_message');
+Route::post('/bdata/post_contact', 'BData\BDataController@post_contact');
+Route::post('/bdata/post_contact_trace', 'BData\BDataController@post_contact_trace');
 Route::post('/bdata/batch_update', 'BData\BDataController@batch_update');
 Route::post('/bdata/upsert', 'BData\BDataController@upsert');
 Route::post('/bdata/upsertfood', 'BData\BDataController@upsertfood');

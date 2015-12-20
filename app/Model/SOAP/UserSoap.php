@@ -19,4 +19,5 @@ class UserSoap extends Model
     {
         return $this->hasMany('App\Model\SOAP\UserSoapHistory','user_soap_pk');
     }
+
 }

@@ -49,6 +49,7 @@
             {!! Form::open(array('url'=>'/soap/','method'=>'POST', 'id'=>'customize')) !!}
             {!! Form::button('提 交', array('class'=>'btn btn-default', 'id'=>'customize_btn')) !!}
             {!! Form::close() !!}
+            <br/>
         </td>
     </tr>
     <tr>

@@ -102,6 +102,8 @@ $( document ).ready(function() {
         $('[href =' + ' #data]').click();
     }
 
+    setContactEditSave();
+
     Chart.types.Line.extend({
         name: "LineAlt",
         initialize: function (data) {
@@ -123,7 +125,7 @@ $( document ).ready(function() {
                 var red_precentage = (maxVal - 9) / this.options.scaleSteps;
                 var unit_precentage = 1 / this.options.scaleSteps;
 
-                console.log(this);
+                //console.log(this);
 
                 // change your color here
                 this.chart.ctx.fillStyle = 'rgba(250,26,26,1)';
@@ -477,12 +479,103 @@ function getStaticsData(){
     });
 }
 
+function setContactEditSave(){
+    $("#contact_data_save_btn").click(function () {
+        inputdata = {};
+
+        inputdata['_token'] = $('#contact_data_save > input[ name=_token]').val();
+        inputdata['start_date'] = $("#start_date").val();
+        inputdata['med_date'] = $("#med_date").val();
+        inputdata['trace_method'] = $("#trace_method").val();
+        inputdata['contact_name'] = $("#contact_name").val();
+        inputdata['contact_description'] = $("#contact_description").val();
+        inputdata['medicine'] = $("#medicine").val();
+        inputdata['contact_time'] = $("#contact_time").val();
+        $.ajax({
+            type: 'POST',
+            url: '/bdata/post_contact',
+            data: inputdata,
+            success: function(result){
+                if(result == 'success') {
+                    alert("储存成功");
+                    $("#contact_data_save_btn").blur();
+                }
+                else{
+                    alert("储存失败");
+                    $("#contact_data_save_btn").blur();
+                }
+            }
+        });
+    });
+
+    $("#med_date_after").change(setMedDate);
+    $("#start_date").change(setMedDate);
+
+    $("#trace_day").change(function(){
+        var days = $("#trace_day").val();
+        if(!isNaN(days) && days !=""){
+            var today = new Date();
+            var today_str =today.getFullYear()+"-"+(today.getMonth()+1)+"-"+today.getDate();
+            var added_day = addDays(today_str, parseInt(days));
+            $("#trace_time").val(formatNumberLength(added_day.getFullYear(),4)+"-"+formatNumberLength(added_day.getMonth()+1,2)+"-"+formatNumberLength(added_day.getDate(),2));
+        }
+    });
+    $("#trace_modify").click(function(){
+        inputdata = {}
+        inputdata['_token'] = $('#contact_data_save > input[ name=_token]').val();
+        inputdata['trace_time'] = $("#trace_time").val();
+        $.ajax({
+            type: 'POST',
+            url: '/bdata/post_contact_trace',
+            data: inputdata,
+            success: function(result){
+                if(result == 'success') {
+                    alert("储存成功");
+                    $("#trace_modify").blur();
+                }
+                else{
+                    alert("储存失败");
+                    $("#trace_modify").blur();
+                }
+            }
+        });
+    });
+    $("#trace_recover").click(function(){
+        $("#trace_time").val($("#trace_time").attr("data"));
+    });
+}
+
+function setMedDate(){
+    var days = $("#med_date_after").val();
+
+    var timestamp=Date.parse($("#start_date").val());
+    if (!isNaN(timestamp) && !isNaN(days) && days !=""){
+        var added_day = addDays($("#start_date").val(), parseInt(days));
+        $("#med_date").val(formatNumberLength(added_day.getFullYear(),4)+"-"+formatNumberLength(added_day.getMonth()+1,2)+"-"+formatNumberLength(added_day.getDate(),2));
+    }
+}
+
+function formatNumberLength(num, length) {
+    var r = "" + num;
+    while (r.length < length) {
+        r = "0" + r;
+    }
+    return r;
+}
+
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
 function hba1cToBS(hba1c){
     return Math.round((28.7*hba1c-46.7)/18);
 }
 
 function getHba1cData(){
-    $("#hba1cChart").width($("#blood_title").width());
+    $("#hba1cChart").width($("#blood_title").width()*0.8);
+    $("#hba1cChart").css('margin-left',$("#blood_title").width()*0.1);
     $.ajax({
         type: 'GET',
         url: '/bdata/hba1c',
@@ -508,7 +601,21 @@ function getHba1cData(){
 
             data.labels.push("");
             data.datasets[0].data.push(null);
-            for(var key in result){
+            var record_data = result["data"];
+            if(record_data != null && record_data != undefined){
+                for(var i = 0; i < 4; i++){
+                    if(i < record_data.length){
+                        data.labels.push(record_data[i]["created_at"].split(" ")[0]+" "+hba1cToBS(record_data[i]["cl_blood_hba1c"]) );
+                        data.datasets[0].data.push(record_data[i]["cl_blood_hba1c"]);
+                        max_avg = Math.max(record_data[i]["cl_blood_hba1c"], max_avg);
+                        min_avg = Math.min(record_data[i]["cl_blood_hba1c"], min_avg);
+                    }else{
+                        data.labels.push("");
+                        data.datasets[0].data.push(null);
+                    }
+                }
+            }
+            /*for(var key in result){
                 if(key == 'name'){
                     continue;
                 }
@@ -516,12 +623,12 @@ function getHba1cData(){
                     data.labels.push(result[key]["last_date"].split(" ")[0]+" "+hba1cToBS(result[key]["avg"]) + "     " + result[key]["count"]);
                     data.datasets[0].data.push(result[key]["avg"]);
                     max_avg = Math.max(result[key]["avg"], 10);
-                    min_avg = Math.min(result[key]["avg"], 10);
+                    min_avg = Math.min(result[key]["avg"], 5);
                 }else{
                     data.labels.push("");
                     data.datasets[0].data.push(null);
                 }
-            }
+            }*/
             data.labels.push("");
             data.datasets[0].data.push(null);
 
@@ -533,7 +640,7 @@ function getHba1cData(){
                 tooltipTemplate:  function (d) {
                     console.log(d);
                     var words = d.label.split(" ");
-                    return d.value + " " + words[words.length-1];
+                    return d.value;// + " " + words[words.length-1];
                 },
                 showTooltips: true,
                 onAnimationComplete: function()
@@ -548,8 +655,15 @@ function getHba1cData(){
             var myNewHba1cChart = new Chart(ctx).LineAlt(data,options);
             $("#hba1c_loading").hide();
             var html = "";
-            console.log(result);
-            for(var key in result){
+
+            var record_data = result["data"];
+            for( var i = 0; i < record_data.length; i++){
+                html += '<tr><td>';
+                html += '姓名:&nbsp;' + result['name'] + '&nbsp;&nbsp;日期:&nbsp;&nbsp;' + record_data[i]['created_at'].split(" ")[0] + '&nbsp; A1C: &nbsp;' + record_data[i]['cl_blood_hba1c'] + ' &nbsp;平均血糖值: &nbsp;' + hba1cToBS(record_data[i]['cl_blood_hba1c']) + '&nbsp;&nbsp;' + getControl(record_data[i]['cl_blood_hba1c']) + '<br/>';
+                //html += '總筆數:&nbsp;' + result[key]['count'] + '&nbsp; 資料範圍: &nbsp;' + result[key]['first_date'].split(' ')[0] + '&nbsp;至&nbsp;' + result[key]['last_date'].split(' ')[0];
+                html += '</td></tr>';
+            }
+            /*for(var key in result){
 
                 if(result[key]["avg"] != null){
                     html += '<tr><td>';
@@ -558,7 +672,7 @@ function getHba1cData(){
                     html += '</td></tr>';
 
                 }
-            }
+            }*/
 
             $("#hba1c_table").html(html);
         }

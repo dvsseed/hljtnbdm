@@ -234,6 +234,7 @@ class SoapController extends Controller
     }
 
     public function post_user_soap(Request $request){
+
         $uuid = Session::get('uuid');
         $uid = Auth::user()->id;
         $calendar_date = Session::get('calendar_date');
@@ -241,7 +242,6 @@ class SoapController extends Controller
         $user_id = Auth::User() -> id;
 
         $bsugar = HospitalNo::find($uuid) -> blood_sugar() -> where('calendar_date', '=', $calendar_date) -> first();
-
         DB::beginTransaction();
         try{
             if($bsugar == null && $calendar_date != null){

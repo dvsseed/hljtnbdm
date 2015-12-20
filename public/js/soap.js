@@ -121,6 +121,7 @@ function save_soap(confirm){
     if($("#history_pk").val() != ""){
         inputdata['history'] = $("#history_pk").val();
     }
+
     $.ajax({
         type: 'POST',
         url: '/soap/post_soap',
