@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\User;
+use Illuminate\Database\Seeder;
 
 class UserTableSeeder extends Seeder
 {
@@ -22,15 +22,15 @@ class UserTableSeeder extends Seeder
             'name' => '管理员',
             'password' => Hash::make('root'),
             'position' => '管理员',
-            'is_admin' => 1
+            'is_admin' => 1,
         ]);
 
-        User::create([
-            'account' => '0000',
-            'name' => '测试员',
-            'position' => '卫教师',
-            'password' => Hash::make('0000')
-        ]);
+        // User::create([
+        //     'account' => '0000',
+        //     'name' => '测试员',
+        //     'position' => '卫教师',
+        //     'password' => Hash::make('0000')
+        // ]);
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1'); // enable foreign key constraints
     }

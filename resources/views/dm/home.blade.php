@@ -50,7 +50,7 @@
                             <td>{{ $buildcase->id }}</td>
                             @if($buildcase->doctor == $users->id || $buildcase->duty == $users->id || $buildcase->nurse == $users->id || $buildcase->dietitian == $users->id)
                                 <td>
-<a data-html="true" href="#" data-toggle="popover" title="新增资料选项" data-content=
+<a data-html="true" href="javascript:void(0)" data-toggle="popover" title="新增资料选项" data-content=
 "&lt;a href='/patient/ccreate/{{ $buildcase->personid }}' class='btn btn-info' role='button'&gt;患者&lt;/a&gt;
 &lt;a href='/dm/gobd/{{ $buildcase->personid }}/{{ $buildcase->id }}' class='btn btn-danger' role='button'&gt;血糖&lt;/a&gt;
 &lt;a href='/dm/gosoap/{{ $buildcase->personid }}/{{ $buildcase->id }}' class='btn btn-success' role='button'&gt;SOAP&lt;/a&gt;
@@ -75,7 +75,7 @@
                             <td>{{ $buildcase->nurse ? \App\User::find($buildcase->nurse)->name : "" }}</td>
                             <td>
                                 @if($buildcase->nurse)
-                                    <?php $pks0 = explode(",", $buildcase->soa_nurse_class_pks0); ?>
+                                    <?php $pks0 = explode(",", $buildcase->soa_nurse_class_pks0);?>
                                     {{-- 未处理: bg-danger, 处理中: bg-warning, 已完成: bg-success  --}}
                                     <p class="{{ $buildcase->nurse_status == 0 ? 'bg-danger' : ($buildcase->nurse_status == 1 ? 'bg-warning' : 'bg-success') }}">
                                         @foreach($soa_nurse_classes as $key=>$nurses)
@@ -95,7 +95,7 @@
                             <td>{{ $buildcase->dietitian ? \App\User::find($buildcase->dietitian)->name : "" }}</td>
                             <td>
                                 @if($buildcase->dietitian)
-                                    <?php $pks1 = explode(",", $buildcase->soa_nurse_class_pks1); ?>
+                                    <?php $pks1 = explode(",", $buildcase->soa_nurse_class_pks1);?>
                                     <p class="{{ $buildcase->dietitian_status == 0 ? 'bg-danger' : ($buildcase->dietitian_status == 1 ? 'bg-warning' : 'bg-success') }}">
                                         @foreach($soa_nurse_classes as $key=>$nurses)
                                             @if(in_array($nurses->soa_nurse_class_pk, $pks1))
