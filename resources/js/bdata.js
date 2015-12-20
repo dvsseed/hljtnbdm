@@ -505,6 +505,7 @@ function setContactEditSave(){
                 if(result == 'success') {
                     alert("储存成功");
                     $("#contact_data_save_btn").blur();
+                    location.reload();
                 }
                 else{
                     alert("储存失败");
