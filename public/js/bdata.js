@@ -497,6 +497,8 @@ function setContactEditSave(){
         inputdata['contact_description'] = $("#contact_description").val();
         inputdata['medicine'] = $("#medicine").val();
         inputdata['contact_time'] = $("#contact_time").val();
+        inputdata['contact_phone'] = $("#contact_phone").val();
+        inputdata['contact_email'] = $("#contact_email").val();
         $.ajax({
             type: 'POST',
             url: '/bdata/post_contact',
@@ -509,6 +511,22 @@ function setContactEditSave(){
                 }
                 else{
                     alert("储存失败");
+                    $("#contact_data_save_btn").blur();
+                }
+            },
+            statusCode: {
+                422: function(result) {
+
+                    var text = JSON.parse(result.responseText);
+                    var html = "";
+                    console.log(text);
+                    for(var key in text){
+                        var node = text[key];
+                        for(var i = 0;i < node.length; i++){
+                            html += (node[i]+'\n');
+                        }
+                    }
+                    alert(html);
                     $("#contact_data_save_btn").blur();
                 }
             }
