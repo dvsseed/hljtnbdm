@@ -749,6 +749,8 @@ use App\Caselist;
                 $contact_info->contact_name = $request->contact_name;
                 $contact_info->contact_description = $request->contact_description;
                 $contact_info->medicine = $request->medicine;
+                $contact_info->contact_phone = $request->contact_phone;
+                $contact_info->contact_email = $request->contact_email;
                 $contact_info->contact_time = $request->contact_time;
                 $contact_info->hospital_no_uuid = $uuid;
 

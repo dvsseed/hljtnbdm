@@ -26,6 +26,14 @@
             <td><input type="text" class="form-control" id="contact_name" @if(isset($contact_data['contact_name']) && $contact_data['contact_name'] != null) value="{{$contact_data['contact_name']}}" @endif/></td>
         </tr>
         <tr>
+            <td>连络人电话</td>
+            <td><input type="tel" class="form-control" id="contact_phone" @if(isset($contact_data['contact_phone']) && $contact_data['contact_phone'] != null) value="{{$contact_data['contact_phone']}}" @endif/></td>
+        </tr>
+        <tr>
+            <td>连络人电子邮件</td>
+            <td><input type="email" class="form-control" id="contact_email" @if(isset($contact_data['contact_email']) && $contact_data['contact_email'] != null) value="{{$contact_data['contact_email']}}" @endif/></td>
+        </tr>
+        <tr>
             <td>连络说明</td>
             <td><textarea class="form-control" id="contact_description" >@if(isset($contact_data['contact_description']) && $contact_data['contact_description'] != null){{$contact_data['contact_description']}}@endif</textarea></td>
         </tr>

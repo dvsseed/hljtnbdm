@@ -36,8 +36,8 @@
                 <td>{{$contact_data["nurse_name"]}}</td>
                 <td>{{$contact_data["trace_method"]}}</td>
                 <td>{{$contact_data["contact_time"]}}</td>
-                <td>{{$contact_data["phone"]}}</td>
-                <td>{{$contact_data["email"]}}</td>
+                <td>{{$contact_data["contact_phone"]}}</td>
+                <td>{{$contact_data["contact_email"]}}</td>
                 <td>{{$contact_data["contact_name"]}}</td>
                 <td>{!! nl2br($contact_data["contact_description"]) !!}</td>
                 <td>{{$contact_data["start_date"]}}</td>
