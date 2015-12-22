@@ -48,7 +48,11 @@ class PatientprofileController extends Controller
                 3 => "pp_personid",
             ];
             $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
-            $result = Patientprofile::where($field, 'like', '%' . $search . '%')->orderBy('created_at', 'desc');
+            if($field!="other") {
+                $result = Patientprofile::where($field, 'like', '%' . $search . '%')->orderBy('created_at', 'desc');
+            } else {
+                $result = Patientprofile::orderBy('created_at', 'desc');
+            }
         } else {
             $result = Patientprofile::orderBy('created_at', 'desc');
         }

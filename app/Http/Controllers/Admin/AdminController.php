@@ -30,7 +30,11 @@ class AdminController extends Controller
                 3 => "position",
             ];
             $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
-            $result = User::where('is_admin', 0)->where($field, 'like', '%' . $search . '%');
+            if($field!="other") {
+                $result = User::where('is_admin', 0)->where($field, 'like', '%' . $search . '%');
+            } else {
+                $result = User::where('is_admin', 0);
+            }
         } else {
             $result = User::where('is_admin', 0);
         }

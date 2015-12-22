@@ -31,7 +31,11 @@ class CaseController extends Controller {
 				3 => "cl_case_date",
 			];
 			$field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
-			$result = Caselist::where($field, 'like', '%' . $search . '%')->orderBy('created_at', 'desc');
+			if($field!="other") {
+				$result = Caselist::where($field, 'like', '%' . $search . '%')->orderBy('created_at', 'desc');
+			} else {
+				$result = Caselist::orderBy('created_at', 'desc');
+			}
 		} else {
 			$result = Caselist::orderBy('created_at', 'desc');
 		}

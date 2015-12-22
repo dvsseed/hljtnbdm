@@ -58,7 +58,14 @@ class DiabetesController extends Controller
                     6 => "dietitian_name",
                 ];
                 $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
-                $results = Buildcase::where($field, 'like', '%' . $search . '%')->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
+                if($field!="other") {
+                    $results = Buildcase::where($field, 'like', '%' . $search . '%')->where(function($query){
+                        $users = Auth::user();
+                        $query->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id);
+                    })->orderBy('build_at', 'desc');
+                } else {
+                    $results = Buildcase::where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
+                }
             } else {
                 $results = Buildcase::where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
             }
