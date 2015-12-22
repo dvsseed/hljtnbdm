@@ -52,7 +52,7 @@ class DiabetesController extends Controller
                 $categoryList = [
                     1 => "personid",
                     2 => "cardid",
-                    3 => "doctor",
+                    3 => "doctor_name",
                     4 => "duty_name",
                     5 => "nurse_name",
                     6 => "dietitian_name",
