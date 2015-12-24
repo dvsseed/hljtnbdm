@@ -15,11 +15,10 @@ class CreateCaselistTable extends Migration
         Schema::create('caselist', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('pp_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->char('cl_case_date', 10)->nullable();
-            $table->string('cl_case_educator', 5)->nullable();
+            $table->integer('cl_case_educator')->unsigned();
             $table->string('cl_case_type', 12)->nullable();
-            $table->string('cl_patientname', 5)->nullable();
-            $table->char('cl_patientid', 18)->nullable();
             $table->decimal('cl_base_sbp',3,0)->unsigned()->nullable();
             $table->decimal('cl_base_ebp',3,0)->unsigned()->nullable();
             $table->decimal('cl_pulse',3,0)->unsigned()->nullable();

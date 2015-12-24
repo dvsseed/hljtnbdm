@@ -17,10 +17,6 @@
                     <option value="" {{ Text::selected($category, '') }}>请选择</option>
                     <option value="1" {{ Text::selected($category, 1) }}>身份证</option>
                     <option value="2" {{ Text::selected($category, 2) }}>卡号</option>
-                    <option value="3" {{ Text::selected($category, 3) }}>建案人</option>
-                    <option value="4" {{ Text::selected($category, 4) }}>责任卫教</option>
-                    <option value="5" {{ Text::selected($category, 5) }}>护理卫教</option>
-                    <option value="6" {{ Text::selected($category, 6) }}>营养卫教</option>
                 </select>
                 <input class="form-control" placeholder="按栏位搜索..." name="search" type="text" value="{{ $search }}" required>
                 <input class="btn btn-default" type="submit" value="搜寻">
@@ -34,7 +30,6 @@
                     <th>建案日<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                     <th>建案人</th>
                     <th>责任卫教</th>
-                    <!-- th>进度</th -->
                     <th>护理卫教</th>
                     <th>进度</th>
                     <th>营养卫教</th>
@@ -61,7 +56,7 @@
                             @endif
                             <td>{{ $buildcase->cardid }}</td>
                             <td>{{ $buildcase->build_at }}</td>
-                            <td>{{ $buildcase->doctor_name ? $buildcase->doctor_name : "" }}</td>
+                            <td>{{ $buildcase->doctor ? \App\User::find($buildcase->doctor)->name : "" }}</td>
                             <td>{{ $buildcase->duty ? \App\User::find($buildcase->duty)->name : "" }}</td>
                             <!-- td -->
 {{--

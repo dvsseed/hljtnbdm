@@ -52,10 +52,6 @@ class DiabetesController extends Controller
                 $categoryList = [
                     1 => "personid",
                     2 => "cardid",
-                    3 => "doctor_name",
-                    4 => "duty_name",
-                    5 => "nurse_name",
-                    6 => "dietitian_name",
                 ];
                 $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
                 if($field!="other") {
@@ -189,16 +185,13 @@ class DiabetesController extends Controller
         $today->toDateTimeString();
         $buildcase->build_at = $today;
         $buildcase->doctor = Auth::user()->id;
-        $buildcase->doctor_name = $request->doctor_name;
         if ($request->duty) {
             $buildcase->duty = $request->duty;
-            $buildcase->duty_name = User::where('id','=',$request->duty)->first()->name;
             $buildcase->duty_status = 0;
             $buildcase->duty_at = $today;
         }
         if ($request->nurse) {
             $buildcase->nurse = $request->nurse;
-            $buildcase->nurse_name = User::where('id','=',$request->nurse)->first()->name;
             $soa_nurse_class_pks0 = Input::get('soa_nurse_class_pks0', true);
             if (is_array($soa_nurse_class_pks0)) {
                 $pks0 = implode(",", $soa_nurse_class_pks0);
@@ -209,7 +202,6 @@ class DiabetesController extends Controller
         }
         if ($request->dietitian) {
             $buildcase->dietitian = $request->dietitian;
-            $buildcase->dietitian_name = User::where('id','=',$request->dietitian)->first()->name;
             $soa_nurse_class_pks1 = Input::get('soa_nurse_class_pks1', true);
             if (is_array($soa_nurse_class_pks1)) {
                 $pks1 = implode(",", $soa_nurse_class_pks1);
@@ -295,12 +287,10 @@ class DiabetesController extends Controller
         $today->toDateTimeString();
         if ($request->duty) {
             $buildcase->duty = $request->duty;
-            $buildcase->duty_name = User::where('id','=',$request->duty)->first()->name;
             $buildcase->duty_at = $today;
         }
         if ($request->nurse) {
             $buildcase->nurse = $request->nurse;
-            $buildcase->nurse_name = User::where('id','=',$request->nurse)->first()->name;
             $soa_nurse_class_pks0 = Input::get('soa_nurse_class_pks0', true);
             if (is_array($soa_nurse_class_pks0)) {
                 $pks0 = implode(",", $soa_nurse_class_pks0);
@@ -310,7 +300,6 @@ class DiabetesController extends Controller
         }
         if ($request->dietitian) {
             $buildcase->dietitian = $request->dietitian;
-            $buildcase->dietitian_name = User::where('id','=',$request->dietitian)->first()->name;
             $soa_nurse_class_pks1 = Input::get('soa_nurse_class_pks1', true);
             if (is_array($soa_nurse_class_pks1)) {
                 $pks1 = implode(",", $soa_nurse_class_pks1);

@@ -25,7 +25,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['account', 'name', 'password', 'departmentno', 'department', 'positionno', 'position', 'phone', 'email'];
+	protected $fillable = ['account', 'name', 'password', 'pid', 'departmentno', 'department', 'positionno', 'position', 'phone', 'email'];
 
 	/**
 	 * The attributes excluded from the model's JSON form.
@@ -48,6 +48,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 * @return [type] [description]
 	 */
 	protected static function rules()
+	{
+		return [
+			'account' => 'required|alpha_num',
+			'pid' => 'required|alpha_num',
+			'password' => 'required'
+		];
+	}
+	protected static function loginrules()
 	{
 		return [
 			'account' => 'required|alpha_num',

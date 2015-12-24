@@ -16,7 +16,7 @@ class CreateCaseCaresTable extends Migration
         Schema::create('casecare', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('patientprofile1_id')->unsigned();
-            $table->string('cc_patientid');
+            $table->string('cc_patientid', 50);
             $table->string('cc_educator', 20)->nullable();
             $table->string('cc_contactor', 50)->nullable();
             $table->string('cc_contactor_tel', 20)->nullable();

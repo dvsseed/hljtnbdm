@@ -17,9 +17,8 @@ class CreatePatientprofilesTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('pp_groupid', 5)->default('C0001');
-            $table->string('pp_patientid')->unique();
-            $table->string('pp_personid');
-            $table->string('pp_name')->nullable();
+            $table->string('pp_patientid', 50)->unique();
+            $table->string('pp_name', 50)->nullable();
             $table->dateTime('pp_birthday')->nullable();
             $table->integer('pp_age')->unsigned()->nullable();
             $table->char('pp_sex', 1)->nullable();
@@ -40,6 +39,7 @@ class CreatePatientprofilesTable extends Migration
             $table->string('pp_address', 100)->nullable();
             $table->string('pp_email', 100)->nullable();
             $table->timestamps();
+            $table->string('educator', 50)->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('pp_patientid')->references('account')->on('users');
         });

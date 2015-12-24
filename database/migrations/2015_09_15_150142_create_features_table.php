@@ -15,9 +15,9 @@ class CreateFeaturesTable extends Migration
     {
         Schema::create('features', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('href');
-            $table->string('btnclass');
-            $table->string('innerhtml');
+            $table->string('href', 50);
+            $table->string('btnclass', 50);
+            $table->string('innerhtml', 50);
             $table->timestamps();
         });
     }

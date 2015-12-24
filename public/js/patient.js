@@ -12,8 +12,10 @@ $(function() {
 
     $("#pp_patientid").blur(function() {
         var pid = $("#pp_patientid").val();
-        $("#pp_personid").val(pid);
         $("#account").val(pid);
+        var sex = 1;
+        if(pid.substr(-2,1) % 2 == 0) sex = 0;
+        $("#pp_sex").val(sex);
         $("#pp_birthday").val(pid.substr(6, 4) + '-' + pid.substr(10, 2) + '-' + pid.substr(12, 2));
         var thisyear = (new Date).getFullYear();
         $("#pp_age").val(thisyear - pid.substr(6, 4));

@@ -60,10 +60,12 @@ class AdminController extends Controller
     {
         $this->validate($request, [
             'account' => 'required|alpha_num|unique:users,account',
+            'pid' => 'required|alpha_num|unique:users,pid',
         ]);
         $user = new User;
         $user->account = $request->account;
         $user->password = Hash::make($user->account);
+        $user->pid = $request->pid;
         $user->name = $request->name;
         $user->position = $request->position;
         $user->save();
@@ -88,6 +90,7 @@ class AdminController extends Controller
         $user->account = $request->account;
         $user->name = $request->name;
         $user->password = Hash::make($request->password);
+        $user->pid = $request->pid;
         $user->departmentno = $request->departmentno;
         $user->department = $request->department;
         $user->positionno = $request->positionno;

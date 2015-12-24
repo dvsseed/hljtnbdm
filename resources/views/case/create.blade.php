@@ -26,12 +26,14 @@
             <form id="caseform" action="{{ route('case.store') }}" method="POST" role="form" data-toggle="validator">
                 <div id="printpage">
                 <input type="hidden" name="pp_id" value="{{ $patientprofiles->id }}">
+                <input type="hidden" name="user_id" value="{{ $uid }}">
+                <input type="hidden" name="educator_id" value="{{ Auth::user()->id }}">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <label class="control-label" for="cl_patientname">患者名</label>
-                    <input type="text" name="cl_patientname" id="cl_patientname" class="input-sm" size="5" value="{{ $patientprofiles->pp_name }}" readonly>
+                    <input type="text" name="cl_patientname" id="cl_patientname" class="input-sm" size="5" value="{{ $ppname }}" readonly>
                     <label class="control-label" for="cl_patientid">患者ID</label>
-                    <input type="text" name="cl_patientid" id="cl_patientid" class="input-sm" value="{{ $patientprofiles->pp_patientid }}" readonly>
+                    <input type="text" name="cl_patientid" id="cl_patientid" class="input-sm" value="{{ $patientid }}" readonly>
                     <label class="control-label" for="cl_case_date">收案日</label>
                     <input type="text" name="cl_case_date" id="cl_case_date" class="input-sm datepicker" size="8" data-date-format="yyyy-mm-dd" data-date-autoclose="true" data-date-clear-btn="true" data-date-today-highlight="true" data-date-today-btn="linked" data-date-language="zh-TW" value="{{ $today }}">
                     <label class="control-label" for="cl_case_educator">卫教师</label>

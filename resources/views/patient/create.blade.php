@@ -27,19 +27,13 @@
                 <div class="form-group has-feedback">
                     <label for="pp_patientid" class="col-md-2 control-label">病历号码</label>
                     <div class="col-md-10">
-                        <input type="text" name="pp_patientid" id="pp_patientid" class="form-control input-sm"
+                        <input type="text" name="pp_patientid" id="pp_patientid" class="input-sm"
                                pattern="^[_A-z0-9]{1,}$" maxlength="18" data-minlength="18"
                                data-minlength-error="输入文字长度不足"
-                               value="{{ $patientid ? $patientid : old('pp_patientid') }}" placeholder="请输入身份证号" required>
+                               value="{{ $patientid ? $patientid : old('pp_patientid') }}" placeholder="请输入身份证号" required> 请先点击此[病历号码], 以下部分数据系统将自动为您代入...
                         <span class="glyphicon glyphicon-user form-control-feedback" aria-hidden="true"></span>
                         <span class="help-block with-errors"></span>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="pp_personid" class="col-md-2 control-label">身份证号</label>
-                    <div class="col-md-10"><input type="text" name="pp_personid" id="pp_personid"
-                                                  class="form-control input-sm" value="{{ old('pp_personid') }}"
-                                                  placeholder="输入病历号码后会带入此处" readonly></div>
                 </div>
                 <div class="form-group">
                     <label for="account" class="col-md-2 control-label">登入帐号</label>
@@ -72,7 +66,7 @@
                 <div class="form-group">
                     <label for="pp_sex" class="col-md-2 control-label"><span class="text-danger">*</span>性别</label>
                     <div class="col-md-10">
-                        <select name="pp_sex" class="form-control input-sm" required>
+                        <select name="pp_sex" id="pp_sex" class="form-control input-sm" required>
                             <option value="0">女</option>
                             <option value="1">男</option>
                         </select>
@@ -103,12 +97,8 @@
                     <div class="col-md-10"><input type="text" name="pp_tel2" class="form-control input-sm" value="{{ old('pp_tel2') }}"></div>
                 </div>
                 <div class="form-group">
-                    <label for="pp_mobile1" class="col-md-2 control-label"><span class="text-danger">*</span>行动电话1</label>
-                    <div class="col-md-10">
-                        <input type="text" name="pp_mobile1" class="form-control input-sm" value="{{ old('pp_mobile1') }}" required>
-                        <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                        <span class="help-block with-errors"></span>
-                    </div>
+                    <label for="pp_mobile1" class="col-md-2 control-label">行动电话1</label>
+                    <div class="col-md-10"><input type="text" name="pp_mobile1" class="form-control input-sm" value="{{ old('pp_mobile1') }}"></div>
                 </div>
                 <div class="form-group">
                     <label for="pp_mobile2" class="col-md-2 control-label">行动电话2</label>
@@ -400,16 +390,12 @@
                     <label for="cc_edu" class="col-md-2 control-label"><span class="text-danger">*</span>教育程度</label>
                     <div class="col-md-10">
                         <label class="radio-inline"><input type="radio" value="0" name="cc_edu" id="cc_edu0" required>不识字</label>
-                        <label class="radio-inline"><input type="radio" value="1" name="cc_edu" id="cc_edu1">识数字</label>
-                        <label class="radio-inline"><input type="radio" value="2" name="cc_edu" id="cc_edu2">识字</label>
-                        <label class="radio-inline"><input type="radio" value="3" name="cc_edu" id="cc_edu3">日本教育</label>
-                        <label class="radio-inline"><input type="radio" value="4" name="cc_edu" id="cc_edu4">国小</label>
-                        <label class="radio-inline"><input type="radio" value="5" name="cc_edu" id="cc_edu5">国中</label>
-                        <label class="radio-inline"><input type="radio" value="6" name="cc_edu" id="cc_edu6" checked>高中</label>
-                        <label class="radio-inline"><input type="radio" value="7" name="cc_edu" id="cc_edu7">大专</label>
-                        <label class="radio-inline"><input type="radio" value="8" name="cc_edu" id="cc_edu8">大学</label>
-                        <label class="radio-inline"><input type="radio" value="9" name="cc_edu" id="cc_edu9">硕士</label>
-                        <label class="radio-inline"><input type="radio" value="10" name="cc_edu" id="cc_edu10">博士</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_edu" id="cc_edu1">识字</label>
+                        <label class="radio-inline"><input type="radio" value="2" name="cc_edu" id="cc_edu2">小学</label>
+                        <label class="radio-inline"><input type="radio" value="3" name="cc_edu" id="cc_edu3">初中</label>
+                        <label class="radio-inline"><input type="radio" value="4" name="cc_edu" id="cc_edu4" checked>高中</label>
+                        <label class="radio-inline"><input type="radio" value="5" name="cc_edu" id="cc_edu5">大专</label>
+                        <label class="radio-inline"><input type="radio" value="6" name="cc_edu" id="cc_edu6">大学或以上</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -419,7 +405,7 @@
                         <label class="radio-inline"><input type="radio" value="1" name="cc_careself" id="cc_careself1" checked>完全独立</label>
                         <label class="radio-inline"><input type="radio" value="2" name="cc_careself" id="cc_careself2">需旁人照顾</label>
                         <label class="radio-inline"><input type="radio" value="3" name="cc_careself" id="cc_careself3">完全由旁人照顾</label>
-                        <label class="radio-inline"><input type="radio" value="4" name="cc_careself" id="cc_careself4">安养中心
+                        <label class="radio-inline"><input type="radio" value="4" name="cc_careself" id="cc_careself4">养老中心
                             <input class="input-sm" type="text" name="cc_careself_name" value="{{ old('cc_careself_name') }}"></label>
                     </div>
                 </div>

@@ -23,9 +23,7 @@
     <form method="GET" action="/patient" accept-charset="UTF-8" class="form navbar-form navbar-right searchform">
         <select class="form-control" name="category" required>
             <option value="" {{Text::selected($category, '')}}>请选择</option>
-            <option value="1" {{Text::selected($category, 1)}}>姓名</option>
-            <option value="2" {{Text::selected($category, 2)}}>病历号码</option>
-            <option value="3" {{Text::selected($category, 3)}}>身份证号</option>
+            <option value="1" {{Text::selected($category, 1)}}>病历号码</option>
         </select>
         <input class="form-control" placeholder="按栏位搜索..." name="search" type="text"
                value="{{ $search }}" required>
@@ -68,7 +66,7 @@
                                 <td>{{ $patientprofile->pp_patientid}}</td>
                             @endif
                             <!-- td>{{-- $patientprofile->account --}}</td   -->
-                            <td>{{ $patientprofile->pp_name }}</td>
+                            <td>{{ \App\User::find($patientprofile->user_id)->name }}</td>
                             <td>{{ $patientprofile->pp_birthday }}</td>
                             <td>{{ $patientprofile->pp_sex ? '男' : '女' }}</td>
                             <td>{{ $patientprofile->pp_height }}</td>

@@ -27,13 +27,13 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <label class="control-label" for="cl_patientname">患者名</label>
-                    <input type="text" name="cl_patientname" id="cl_patientname" class="input-sm" size="5" value="{{ $caselist->cl_patientname }}" readonly>
+                    <input type="text" name="cl_patientname" id="cl_patientname" class="input-sm" size="5" value="{{ $ppname }}" readonly>
                     <label class="control-label" for="cl_patientid">患者ID</label>
-                    <input type="text" name="cl_patientid" id="cl_patientid" class="input-sm" value="{{ $caselist->cl_patientid }}" readonly>
+                    <input type="text" name="cl_patientid" id="cl_patientid" class="input-sm" value="{{ $patientid }}" readonly>
                     <label class="control-label" for="cl_case_date">收案日</label>
                     <input type="text" name="cl_case_date" id="cl_case_date" class="input-sm datepicker" size="7" data-date-format="yyyy-mm-dd" data-date-autoclose="true" data-date-clear-btn="true" data-date-today-highlight="true" data-date-today-btn="linked" data-date-language="zh-TW" value="{{ $caselist->cl_case_date }}">
                     <label class="control-label" for="cl_case_educator">卫教师</label>
-                    <input type="text" name="cl_case_educator" id="cl_case_educator" class="input-sm" size="5" value="{{ $caselist->cl_case_educator }}" readonly>
+                    <input type="text" name="cl_case_educator" id="cl_case_educator" class="input-sm" size="5" value="{{ \App\User::find($caselist->cl_case_educator)->name }}" readonly>
                     <label class="control-label" for="cl_case_type">方案种类</label>
                     <select name="cl_case_type" id="cl_case_type" class="input-sm">
                         @foreach($casetypes as $key => $value)

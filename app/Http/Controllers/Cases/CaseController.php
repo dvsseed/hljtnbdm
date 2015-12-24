@@ -2,6 +2,7 @@
 
 use App\Patientprofile;
 use App\Caselist;
+use App\User;
 use Carbon\Carbon;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -26,9 +27,7 @@ class CaseController extends Controller {
 		$category = $request->category;
 		if ($search) {
 			$categoryList = [
-				1 => "cl_patientid",
-				2 => "cl_patientname",
-				3 => "cl_case_date",
+				1 => "cl_case_date",
 			];
 			$field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
 			if($field!="other") {
@@ -59,6 +58,8 @@ class CaseController extends Controller {
 			return view('case.create', compact('err_msg'));
 		} else {
 			$sex = $pps->pp_sex;
+			$uid = $pps->user_id;
+			$ppname = User::find($pps->user_id)->name;
 			$today = Carbon::today()->toDateString();
 			// $format = $carbon->format('Y-m-d H:i:s');
 			$year = Carbon::today()->year;
@@ -75,7 +76,7 @@ class CaseController extends Controller {
 
 			EventController::SaveEvent('caselist', 'create(创建)');
 //		return view('case.create', compact('year', 'bsms', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'patientid'));
-			return view('case.create', compact('err_msg', 'year', 'today', 'casetypes', 'patientprofiles', 'sex'));
+			return view('case.create', compact('err_msg', 'year', 'today', 'casetypes', 'patientprofiles', 'sex', 'uid', 'ppname', 'patientid'));
 		}
 	}
 
@@ -88,10 +89,9 @@ class CaseController extends Controller {
 	{
 		$caselist = new Caselist();
 		$caselist->pp_id = $request->pp_id;
-		$caselist->cl_patientname = $request->cl_patientname;
-		$caselist->cl_patientid = $request->cl_patientid;
+		$caselist->user_id = $request->user_id;
 		$caselist->cl_case_date = $request->cl_case_date;
-		$caselist->cl_case_educator = $request->cl_case_educator;
+		$caselist->cl_case_educator = $request->educator_id;
 		$caselist->cl_case_type = $request->cl_case_type;
 		if($request->cl_case_type == 4) {
 			// 一般
@@ -227,13 +227,16 @@ class CaseController extends Controller {
 	public function edit($id)
 	{
 		$caselist = Caselist::findOrFail($id);
-		$sex = Patientprofile::where('pp_patientid', '=', $caselist->cl_patientid)->first()->pp_sex;
+		$sex = Patientprofile::where('id', '=', $caselist->pp_id)->first()->pp_sex;
+		$uid = $caselist->user_id;
+		$ppname = User::find($caselist->user_id)->name;
+		$patientid = User::find($caselist->user_id)->pid;
 		$today = Carbon::today()->toDateString();
 		$year = Carbon::today()->year;
 		$casetypes = array('' => '请选择', '1' => '初诊', '2' => '复诊', '3' => '年度检查', '4' => '一般');
 
 		EventController::SaveEvent('caselist', 'edit(编辑)');
-		return view('case.edit', compact('caselist', 'year', 'today', 'casetypes', 'sex'));
+		return view('case.edit', compact('caselist', 'year', 'today', 'casetypes', 'sex', 'ppname', 'patientid'));
 	}
 
 	/**

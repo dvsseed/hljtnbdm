@@ -4,14 +4,10 @@ use App\Feature;
 use App\Hasfeature;
 use App\Buildcase;
 use Carbon\Carbon;
-//use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use DB;
 use Auth;
 use Hash;
-//use Session;
-//use Debugbar;
 use App\Patientprofile;
 use App\BSM;
 use App\CaseCare;
@@ -43,9 +39,7 @@ class PatientprofileController extends Controller
         $category = $request->category;
         if ($search) {
             $categoryList = [
-                1 => "pp_name",
-                2 => "pp_patientid",
-                3 => "pp_personid",
+                1 => "pp_patientid",
             ];
             $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
             if($field!="other") {
@@ -61,7 +55,7 @@ class PatientprofileController extends Controller
         $patientprofiles = $result->paginate(10)->appends(['search' => $search, 'category' => $category]);
         // $hiss = DB::connection('oracle')->select('select * from pub_class_office'); // from HIS's db
         $hiss = null;
-        $current_user_id = Auth::user() -> id;
+        $current_user_id = Auth::user()->id;
         // return view('patient.index', compact('patientprofiles', 'count', 'hiss'));
         return view('patient.index', compact('patientprofiles', 'count', 'hiss', 'search', 'category', 'current_user_id'));
     }
@@ -142,6 +136,7 @@ class PatientprofileController extends Controller
             $user->account = trim($request->account);
             $user->name = $request->pp_name;
             $user->password = Hash::make($user->account);
+            $user->pid = $request->pp_patientid;
             $user->phone = $request->pp_mobile1;
             $user->email = $request->pp_email;
             $user->save();
@@ -150,8 +145,6 @@ class PatientprofileController extends Controller
             $patientprofile = new Patientprofile();
             $patientprofile->user_id = $user->id;
             $patientprofile->pp_patientid = trim($request->pp_patientid);
-            $patientprofile->pp_personid = trim($request->pp_personid);
-            $patientprofile->pp_name = $request->pp_name;
             $patientprofile->pp_birthday = $request->pp_birthday;
             $patientprofile->pp_age = $request->pp_age;
             $patientprofile->pp_sex = $request->pp_sex;
@@ -171,7 +164,7 @@ class PatientprofileController extends Controller
             $patientprofile->pp_occupation_other = $request->pp_occupation_other;
             $patientprofile->pp_address = $request->pp_address;
             $patientprofile->pp_email = $request->pp_email;
-            $patientprofile->educator = Auth::user()->name;
+            $patientprofile->educator = Auth::user()->id;
             $patientprofile->save();
 
             // casecare
@@ -319,6 +312,7 @@ class PatientprofileController extends Controller
         $year = $carbon->year;
         $bsms = BSM::orderBy('bm_order')->get();
         $account = User::findOrFail($patientprofile->user_id)->account;
+        $ppname = User::findOrFail($patientprofile->user_id)->name;
         $areas = Patientprofile::$_area;
 //        $doctors = Patientprofile::$_doctor;
         $doctors = User::where('position','=','门诊医生')->orWhere('position', '=', '住院医生')->orderBy('name', 'ASC')->lists('name', 'id');
@@ -329,7 +323,7 @@ class PatientprofileController extends Controller
         $actkind = Patientprofile::$_actkind;
 
         EventController::SaveEvent('patientprofile', 'show(显示)');
-        return view('patient.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind'));
+        return view('patient.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'ppname', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind'));
     }
 
     /**
@@ -346,6 +340,7 @@ class PatientprofileController extends Controller
         $year = $carbon->year;
         $bsms = BSM::orderBy('bm_order')->get();
         $account = User::findOrFail($patientprofile->user_id)->account;
+        $ppname = User::findOrFail($patientprofile->user_id)->name;
         $areas = Patientprofile::$_area;
 //        $doctors = Patientprofile::$_doctor;
         $doctors = User::where('position','=','门诊医生')->orWhere('position', '=', '住院医生')->orderBy('name', 'ASC')->lists('name', 'id');
@@ -356,7 +351,7 @@ class PatientprofileController extends Controller
         $actkind = Patientprofile::$_actkind;
 
         EventController::SaveEvent('patientprofile', 'edit(编辑)');
-        return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind'));
+        return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'ppname', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind'));
     }
 
     /**
@@ -375,7 +370,6 @@ class PatientprofileController extends Controller
         try {
             // patientprofile1
             $patientprofile = Patientprofile::findOrFail($id);
-            $patientprofile->pp_name = $request->pp_name;
             $patientprofile->pp_birthday = $request->pp_birthday;
             $patientprofile->pp_age = $request->pp_age;
             $patientprofile->pp_sex = $request->pp_sex;
@@ -395,8 +389,14 @@ class PatientprofileController extends Controller
             $patientprofile->pp_occupation_other = $request->pp_occupation_other;
             $patientprofile->pp_address = $request->pp_address;
             $patientprofile->pp_email = $request->pp_email;
-            $patientprofile->educator = Auth::user()->name;
+            $patientprofile->educator = Auth::user()->id;
             $patientprofile->save();
+
+            $user = User::find($patientprofile->user_id);
+            if($user) {
+                $user->name = $request->pp_name;
+                $user->save();
+            }
 
             // casecare
             $casecare = CaseCare::where('patientprofile1_id', '=', $id)->firstOrFail();

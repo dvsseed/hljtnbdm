@@ -38,11 +38,6 @@
                     <div class="col-md-10" form-control-static>{{ $patientprofile->pp_patientid }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="pp_personid" class="col-md-2 control-label">身份证号</label>
-
-                    <div class="col-md-10" form-control-static>{{ $patientprofile->pp_personid }}</div>
-                </div>
-                <div class="form-group">
                     <label for="account" class="col-md-2 control-label">登入帐号</label>
 
                     <div class="col-md-10" form-control-static>{{ $account }}</div>
@@ -50,7 +45,7 @@
                 <div class="form-group">
                     <label for="pp_name" class="col-md-2 control-label"><span class="text-danger">*</span>姓名</label>
 
-                    <div class="col-md-10"><input type="text" name="pp_name" class="form-control input-sm" value="{{ $patientprofile->pp_name }}" required></div>
+                    <div class="col-md-10"><input type="text" name="pp_name" class="form-control input-sm" value="{{ $ppname }}" required></div>
                 </div>
                 <div class="form-group">
                     <label for="pp_birthday" class="col-md-2 control-label">生日</label>
@@ -101,15 +96,14 @@
                                                   value="{{ $patientprofile->pp_tel2 }}"/></div>
                 </div>
                 <div class="form-group">
-                    <label for="pp_mobile1" class="col-md-2 control-label"><span class="text-danger">*</span>行动电话1</label>
+                    <label for="pp_mobile1" class="col-md-2 control-label">行动电话1</label>
 
-                    <div class="col-md-10"><input type="text" name="pp_mobile1" class="form-control input-sm" value="{{ $patientprofile->pp_mobile1 }}" required></div>
+                    <div class="col-md-10"><input type="text" name="pp_mobile1" class="form-control input-sm" value="{{ $patientprofile->pp_mobile1 }}"></div>
                 </div>
                 <div class="form-group">
                     <label for="pp_mobile2" class="col-md-2 control-label">行动电话2</label>
 
-                    <div class="col-md-10"><input type="text" name="pp_mobile2" class="form-control input-sm"
-                                                  value="{{ $patientprofile->pp_mobile2 }}"/></div>
+                    <div class="col-md-10"><input type="text" name="pp_mobile2" class="form-control input-sm" value="{{ $patientprofile->pp_mobile2 }}"/></div>
                 </div>
                 <div class="form-group">
                     <label class="col-md-2 control-label" for="pp_area">地区</label>
@@ -464,28 +458,13 @@
                     <label for="cc_edu" class="col-md-2 control-label"><span class="text-danger">*</span>教育程度</label>
 
                     <div class="col-md-10">
-                        <label class="radio-inline"><input type="radio" value="0" name="cc_edu"
-                                                           id="cc_edu0" {{!$casecare->cc_edu ? "checked='checked'" : ""}} required>不识字</label>
-                        <label class="radio-inline"><input type="radio" value="1" name="cc_edu"
-                                                           id="cc_edu1" {{$casecare->cc_edu==1 ? "checked='checked'" : ""}}>识数字</label>
-                        <label class="radio-inline"><input type="radio" value="2" name="cc_edu"
-                                                           id="cc_edu2" {{$casecare->cc_edu==2 ? "checked='checked'" : ""}}>识字</label>
-                        <label class="radio-inline"><input type="radio" value="3" name="cc_edu"
-                                                           id="cc_edu3" {{$casecare->cc_edu==3 ? "checked='checked'" : ""}}>日本教育</label>
-                        <label class="radio-inline"><input type="radio" value="4" name="cc_edu"
-                                                           id="cc_edu4" {{$casecare->cc_edu==4 ? "checked='checked'" : ""}}>国小</label>
-                        <label class="radio-inline"><input type="radio" value="5" name="cc_edu"
-                                                           id="cc_edu5" {{$casecare->cc_edu==5 ? "checked='checked'" : ""}}>国中</label>
-                        <label class="radio-inline"><input type="radio" value="6" name="cc_edu"
-                                                           id="cc_edu6" {{$casecare->cc_edu==6 ? "checked='checked'" : ""}}>高中</label>
-                        <label class="radio-inline"><input type="radio" value="7" name="cc_edu"
-                                                           id="cc_edu7" {{$casecare->cc_edu==7 ? "checked='checked'" : ""}}>大专</label>
-                        <label class="radio-inline"><input type="radio" value="8" name="cc_edu"
-                                                           id="cc_edu8" {{$casecare->cc_edu==8 ? "checked='checked'" : ""}}>大学</label>
-                        <label class="radio-inline"><input type="radio" value="9" name="cc_edu"
-                                                           id="cc_edu9" {{$casecare->cc_edu==9 ? "checked='checked'" : ""}}>硕士</label>
-                        <label class="radio-inline"><input type="radio" value="10" name="cc_edu"
-                                                           id="cc_edu10" {{$casecare->cc_edu==10 ? "checked='checked'" : ""}}>博士</label>
+                        <label class="radio-inline"><input type="radio" value="0" name="cc_edu" id="cc_edu0" {{!$casecare->cc_edu ? "checked='checked'" : ""}} required>不识字</label>
+                        <label class="radio-inline"><input type="radio" value="1" name="cc_edu" id="cc_edu1" {{$casecare->cc_edu==1 ? "checked='checked'" : ""}}>识字</label>
+                        <label class="radio-inline"><input type="radio" value="2" name="cc_edu" id="cc_edu2" {{$casecare->cc_edu==2 ? "checked='checked'" : ""}}>小学</label>
+                        <label class="radio-inline"><input type="radio" value="3" name="cc_edu" id="cc_edu3" {{$casecare->cc_edu==3 ? "checked='checked'" : ""}}>初中</label>
+                        <label class="radio-inline"><input type="radio" value="4" name="cc_edu" id="cc_edu4" {{$casecare->cc_edu==4 ? "checked='checked'" : ""}}>高中</label>
+                        <label class="radio-inline"><input type="radio" value="5" name="cc_edu" id="cc_edu5" {{$casecare->cc_edu==5 ? "checked='checked'" : ""}}>大专</label>
+                        <label class="radio-inline"><input type="radio" value="6" name="cc_edu" id="cc_edu6" {{$casecare->cc_edu==6 ? "checked='checked'" : ""}}>大学或以上</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -501,7 +480,7 @@
                         <label class="radio-inline"><input type="radio" value="3" name="cc_careself"
                                                            id="cc_careself3" {{$casecare->cc_careself==3 ? "checked='checked'" : ""}}>完全由旁人照顾</label>
                         <label class="radio-inline"><input type="radio" value="4" name="cc_careself"
-                                                           id="cc_careself4" {{$casecare->cc_careself==4 ? "checked='checked'" : ""}}>安养中心<input
+                                                           id="cc_careself4" {{$casecare->cc_careself==4 ? "checked='checked'" : ""}}>养老中心<input
                                     class="input-sm" type="text" name="cc_careself_name"
                                     value="{{ $casecare->cc_careself_name }}"></label>
                     </div>

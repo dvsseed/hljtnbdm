@@ -30,16 +30,12 @@
                     <div class="col-md-10 form-control-static">{{ $patientprofile->pp_patientid }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="pp_personid" class="col-md-2 control-label">身份证号</label>
-                    <div class="col-md-10 form-control-static">{{ $patientprofile->pp_personid }}</div>
-                </div>
-                <div class="form-group">
                     <label for="account" class="col-md-2 control-label">登入帐号</label>
                     <div class="col-md-10" form-control-static>{{ $account }}</div>
                 </div>
                 <div class="form-group">
                     <label for="pp_name" class="col-md-2 control-label"><span class="text-danger">*</span>姓名</label>
-                    <div class="col-md-10 form-control-static">{{ $patientprofile->pp_name }}</div>
+                    <div class="col-md-10 form-control-static">{{ $ppname }}</div>
                 </div>
                 <div class="form-group">
                     <label for="pp_birthday" class="col-md-2 control-label">生日</label>
@@ -70,7 +66,7 @@
                     <div class="col-md-10 form-control-static">{{ $patientprofile->pp_tel2 }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="pp_mobile1" class="col-md-2 control-label"><span class="text-danger">*</span>行动电话1</label>
+                    <label for="pp_mobile1" class="col-md-2 control-label">行动电话1</label>
                     <div class="col-md-10 form-control-static">{{ $patientprofile->pp_mobile1 }}</div>
                 </div>
                 <div class="form-group">
@@ -350,7 +346,7 @@
                 <div class="form-group">
                     <label for="cc_edu" class="col-md-2 control-label"><span class="text-danger">*</span>教育程度</label>
                     <div class="col-md-10 form-control-static">
-                        <?php $ccedu = [0 => '不识字', 1 => '识数字', 2 => '识字', 3 => '日本教育', 4 => '国小', 5 => '国中', 6 => '高中', 7 => '大专', 8 => '大学', 9 => '硕士', 10 => '博士']; ?>
+                        <?php $ccedu = [0 => '不识字', 1 => '识字', 2 => '小学', 3 => '初中', 4 => '高中', 5 => '大专', 6 => '大学或以上']; ?>
                         @foreach($ccedu as $key => $value)
                             <label class="radio-inline {{Text::behidden($casecare->cc_edu,$key)}}">
                                 <input type="radio" value="{{$key}}" name="cc_edu" id="cc_edu{{$key}}" {{Text::checked($casecare->cc_edu,$key)}} disabled>{{$value}}
@@ -361,7 +357,7 @@
                 <div class="form-group">
                     <label for="cc_careself" class="col-md-2 control-label">自我照顾</label>
                     <div class="col-md-10 form-control-static">
-                        <?php $cccareself = [0 => '独居', 1 => '完全独立', 2 => '需旁人照顾', 3 => '完全由旁人照顾', 4 => '安养中心']; ?>
+                        <?php $cccareself = [0 => '独居', 1 => '完全独立', 2 => '需旁人照顾', 3 => '完全由旁人照顾', 4 => '养老中心']; ?>
                         @foreach($cccareself as $key => $value)
                             <label class="radio-inline {{Text::behidden($casecare->cc_careself,$key)}}">
                                 <input type="radio" value="$key" name="cc_careself" id="cc_careself{{$key}}" {{Text::checked($casecare->cc_careself,$key)}} disabled>{{$value}}

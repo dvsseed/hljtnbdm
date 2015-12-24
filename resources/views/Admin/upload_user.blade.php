@@ -16,6 +16,8 @@
                   {!! Form::text('account', null, ['class' => 'form-control', 'readonly']) !!}
                   {!! Form::label('password', '密码: ', ['class' => 'control-label']) !!}
                   {!! Form::text('password', '', ['class' => 'form-control', 'required', 'placeholder' => '请输入密码']) !!}
+                  {!! Form::label('pid', '身份证号: ', ['class' => 'control-label']) !!}
+                  {!! Form::text('pid', null, ['class' => 'form-control', 'readonly']) !!}
                   {!! Form::label('name', '姓名: ', ['class' => 'control-label']) !!}
                   {!! Form::text('name', null, ['class' => 'form-control', 'required']) !!}
                   {!! Form::label('department', '部门名称: ', ['class' => 'control-label']) !!}

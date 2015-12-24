@@ -7,7 +7,7 @@
 @section('content')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-11">
                 <h2>添加人员</h2>
                 <hr>
                 @include('errors.list')
@@ -32,6 +32,14 @@
                         {!! Form::label('pwd', '密码: ', ['class' => 'control-label col-md-1']) !!}
                         <div class="col-md-4">
                             {!! Form::text('pwd', null, ['class' => 'form-control', 'readonly', 'placeholder' => '默认为帐号']) !!}
+                        </div>
+                    </div>
+                    <div class="form-group has-feedback">
+                        {!! Form::label('pid', '身份证号: ', ['class' => 'control-label col-md-1']) !!}
+                        <div class="col-md-4">
+                            {!! Form::text('pid', old('pid'), ['class' => 'form-control', 'pattern' =>'^[_A-z0-9]{1,}$', 'required']) !!}
+                            <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                            <span class="help-block with-errors"></span>
                         </div>
                     </div>
                     <div class="form-group has-feedback">

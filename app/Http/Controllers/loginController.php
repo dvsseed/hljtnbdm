@@ -22,7 +22,7 @@ class loginController extends Controller {
      */
     public function loginPost(Request $request)
     {
-        $this->validate($request, User::rules());
+        $this->validate($request, User::loginrules());
         $account = $request->get('account');
         $password = $request->get('password');
         if (Auth::attempt(['account' => $account, 'password' => $password], $request->get('remember'))) {
