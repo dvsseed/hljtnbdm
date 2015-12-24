@@ -151,9 +151,9 @@
                 @endif
                 @if($soap_link != "")
                     <td>
-                        <div id="normal" style="max-width: 150px">
+                        <div id="normal" style="max-width: 150px; text-align: left">
                             @if ($day-> history_soap != null)
-                                <div class="hover"><a href="{{$soap_link}}?history={{$day -> history_soap -> user_soap_history_pk}}"  title="{{$day-> history_soap -> p_text}}">{!! nl2br($day-> history_soap -> p_text) !!}</a>
+                                <div class="hover"><a href="{{$soap_link}}?history={{$day -> history_soap -> user_soap_history_pk}}"  title="{{$day-> history_soap -> p_text}}">@if($day-> history_soap -> p_text != ''){!! nl2br($day-> history_soap -> p_text) !!}@else{{ "soap" }}@endif</a>
                             @else
                                 <div class="hover"><a href="{{$soap_link}}?new=true&calendar_date={{$day -> calendar_date}}" class="change" ><img src="/css/images/note.gif"/></a>&nbsp;&nbsp;
                             @endif
@@ -177,6 +177,7 @@
             <td>{{ $stat['avg']['dinner_after'] }}</td>
             <td>{{ $stat['avg']['sleep_before'] }}</td>
             <td></td>
+            <td></td>
         </tr>
 
         <tr class="statics_data">
@@ -190,6 +191,7 @@
             <td>{{ $stat['deviation']['dinner_before'] }}</td>
             <td>{{ $stat['deviation']['dinner_after'] }}</td>
             <td>{{ $stat['deviation']['sleep_before'] }}</td>
+            <td></td>
             <td></td>
         </tr>
 

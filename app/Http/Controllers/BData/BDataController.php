@@ -6,6 +6,7 @@
  * Time: �U�� 09:36
  */
 
+use App\Buildcase;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Model\Pdata\ContactInfo;
@@ -129,7 +130,13 @@ use App\Caselist;
 
             $contact_data = $hospital_no -> contact_info;
             if($contact_data != null){
-                $contact_data["nurse_name"] = User::find($hospital_no->nurse_user_id)->name;
+                $duty = Buildcase::where('hospital_no_uuid', '=', $uuid)->orderBy('duty_at','desc')->first();
+                if($duty == null){
+                    $duty = $hospital_no->nurse_user_id;
+                }else{
+                    $duty = $duty->duty;
+                }
+                $contact_data["nurse_name"] = User::find($duty)->name;
                 $contact_data["trace_method"] = $this->convert_trace_method($contact_data["trace_method"]);
                 $contact_data["contact_time"] = $this->convert_contact_time($contact_data["contact_time"]);
                 $contact_data["phone"] = User::find($hospital_no->patient_user_id)->phone;
