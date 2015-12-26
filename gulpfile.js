@@ -33,7 +33,8 @@ elixir(function(mix) {
         "soap.js"
     ], 'public/js/soap.js').scripts([
         "Chart.js"], 'public/js/chart.js').scripts([
-        "modernizr.min.js"], 'public/js/modernizr.min.js');
+        "modernizr.min.js"], 'public/js/modernizr.min.js').scripts([
+        "jquery.stickytableheaders.min.js"], 'public/js/jquery.stickytableheaders.min.js');
 });
 
 

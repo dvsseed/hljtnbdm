@@ -153,7 +153,7 @@ function delete_soap(soap_history_pk){
         inputdata['history'] = soap_history_pk;
         $.ajax({
             type: 'POST',
-            url: '/soap/delete_history/',
+            url: '/soap/delete_history',
             data: inputdata,
             success: function(result){
                 if(result == "success"){

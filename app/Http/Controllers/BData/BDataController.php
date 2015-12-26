@@ -107,7 +107,7 @@ use App\Caselist;
 
             $data['displayname'] = $hospital_no->hospital_no_displayname;
 
-            $data['patient_displayname'] = $patient -> pp_name;
+            $data['patient_displayname'] = User::find($hospital_no->patient_user_id)->name;
             $data['patient_bday'] =  $patient -> pp_birthday;
             $data['patient_age'] =  $patient -> pp_age;
             $data['patient_id'] =  $patient -> pp_patientid;
@@ -909,7 +909,7 @@ use App\Caselist;
 
             $user = array();
             $patient = $hospital_no -> patient;
-            $user[$patient -> user_id] = $patient -> pp_name;
+            $user[$patient -> user_id] = User::find($hospital_no -> patient_user_id) -> name;
             $user[$hospital_no-> nurse_user_id] =  User::find($hospital_no-> nurse_user_id) -> name ;
 
             $start = Input::get('start');
