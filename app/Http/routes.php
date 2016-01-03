@@ -102,3 +102,7 @@ Route::post('/soap/get_customize', 'SOAP\SoapController@post_customize');
 Route::post('/soap/post_soap', 'SOAP\SoapController@post_user_soap');
 Route::post('/soap/delete_history', 'SOAP\SoapController@delete_history');
 Route::get('/soap/{uuid}',['as' => 'soap', 'uses' => 'SOAP\SoapController@page']);
+
+#出院指导
+Route::resource("discharge", "Discharges\DischargeController");
+Route::get('discharge/create/{personid}', ['as' => 'discharge_create', 'uses' => 'Discharges\DischargeController@create']);

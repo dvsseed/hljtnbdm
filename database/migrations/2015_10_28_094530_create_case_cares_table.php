@@ -17,7 +17,6 @@ class CreateCaseCaresTable extends Migration
             $table->increments('id');
             $table->integer('patientprofile1_id')->unsigned();
             $table->string('cc_patientid', 50);
-            $table->string('cc_educator', 20)->nullable();
             $table->string('cc_contactor', 50)->nullable();
             $table->string('cc_contactor_tel', 20)->nullable();
             $table->char('cc_language', 2)->nullable();

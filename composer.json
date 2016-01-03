@@ -18,7 +18,8 @@
 		"itsgoingd/clockwork": "~1.9",
 		"rap2hpoutre/laravel-log-viewer": "^0.4.3",
 		"arcanedev/log-viewer": "~3.0",
-		"dflydev/apache-mime-types": "^1.0"
+		"dflydev/apache-mime-types": "^1.0",
+		"stevenyangecho/laravel-u-editor": "~1.2"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
@@ -26,7 +27,7 @@
 		"laralib/l5scaffold": "^1.0",
 		"laracasts/generators": "^1.1",
 		"xethron/migrations-generator": "dev-l5",
-		"way/generators": "dev-feature/laravel-five-stable"
+		"way/generators": "~2.0"
 	},
 	"repositories": [
 		{
