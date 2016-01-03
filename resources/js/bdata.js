@@ -38,6 +38,8 @@ var mapping_range = {
 var patt = /\d{4}-\d{2}-\d{2}/;
 $( document ).ready(function() {
 
+    $('#sugartable').stickyTableHeaders();
+
     $(".menuLink").on('click', function (e) {
         $(this).parent().parent().find('.active').removeClass('active');
         $('.nav').find('.active').removeClass('active');
@@ -236,7 +238,7 @@ function checkContent(){
         var active = $("#top").find('.active').children('a').attr('href');
 
         var trs = $("#sugartable > tbody").children("tr");
-        for(var i = 2; i < trs.length; i++){
+        for(var i = 0; i < trs.length; i++){
             var tr = $(trs[i]);
             tr.children('td').each (function() {
                 if(active == '#data'){
@@ -274,7 +276,7 @@ function checkContent(){
                 var flag = true;
                 var batch_data = [];
                 var trs = $("#sugartable > tbody").children("tr");
-                for(var i = 2; i < trs.length; i++){
+                for(var i = 0; i < trs.length; i++){
                     var single_record = {};
                     var tr = $(trs[i]);
                     tr.children('td').each (function() {
@@ -333,35 +335,6 @@ function checkContent(){
                 $("#after_two_week").attr('href', href);
         }
     }
-}
-
-function setUpBatch(){
-    $("#batch").click(function(event){
-        event.preventDefault();
-        $(this).parent().parent().find('.active').removeClass('active');
-        $('.nav').find('.active').removeClass('active');
-        $(this).parent().addClass('active');
-        $('#data').show();
-
-        var trs = $("#sugartable > tbody").children("tr");
-        for(var i = 2; i < trs.length; i++){
-            var tr = $(trs[i]);
-            tr.children('td').each (function() {
-                $(this).children('#normal').hide();
-                $(this).children('#sugar_batch').show();
-            });
-            tr.find('#sugar_batch_empty').show();
-            tr.find('#sugar_batch_empty').click(function(){
-                var tr = $(this).parents('tr');
-                tr.children('td').each (function() {
-                    $(this).children('#sugar_batch').val("");
-                });
-            });
-        }
-
-        $('.statics_data').hide();
-        $('.batch_save_tr').show();
-    });
 }
 
 function setUpMessage(){

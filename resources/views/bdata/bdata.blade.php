@@ -105,4 +105,5 @@
     {!! Html::script('js/timepicker.js') !!}
     {!! Html::script('js/bdata.js') !!}
     {!! Html::script('js/modernizr.min.js') !!}
+    {!! Html::script('js/jquery.stickytableheaders.min.js') !!}
 @stop

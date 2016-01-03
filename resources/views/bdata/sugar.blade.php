@@ -5,26 +5,28 @@
     <div style="text-align: center"><a href="{{$data['previous']}}" style="float: left; margin-bottom: 10px" class="btn btn-default" id="before_two_week">一个月前</a>@if($data['next'] != null)<a href="{{$data['next'] }}" class="btn btn-default" style="float: right; margin-bottom: 10px" id="after_two_week">一个月后</a>@endif
         总次数:{{$stat['total']}} | 次/週:{{$stat['total']/2}}  | 次/日:{{round($stat['total']/14,2)}}
     </div>
-    <table class="table table-hover statics" id="sugartable">
-        <tr >
-            <th rowspan="2" style="vertical-align: middle; text-align: center;">检验日期</th>
-            <th rowspan="2" style="vertical-align: middle; text-align: center;">凌晨</th>
-            <th rowspan="2" style="vertical-align: middle; text-align: center;">晨起</th>
-            <th colspan="2" style="text-align: center;">早餐</th>
-            <th colspan="2" style="text-align: center;">中餐</th>
-            <th colspan="2" style="text-align: center;">晚餐</th>
-            <th rowspan="2" style="vertical-align: middle;text-align: center;">睡前</th>
-            @if($soap_link != "")<th rowspan="2" style="vertical-align: middle;text-align: center;">备注</th>@endif
-            <th rowspan="2" style="vertical-align: middle;text-align: center;">soap</th>
-        </tr>
-        <tr>
-            <td>饭前</td>
-            <td>饭后</td>
-            <td>饭前</td>
-            <td>饭后</td>
-            <td>饭前</td>
-            <td>饭后</td>
-        </tr>
+    <table class="table table-bordered table-hover statics" id="sugartable">
+        <thead>
+            <tr style="background-color: white;">
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">检验日期</th>
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">凌晨</th>
+                <th rowspan="2" style="vertical-align: middle; text-align: center;">晨起</th>
+                <th colspan="2" style="text-align: center;">早餐</th>
+                <th colspan="2" style="text-align: center;">中餐</th>
+                <th colspan="2" style="text-align: center;">晚餐</th>
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">睡前</th>
+                @if($soap_link != "")<th rowspan="2" style="vertical-align: middle;text-align: center;">备注</th>@endif
+                <th rowspan="2" style="vertical-align: middle;text-align: center;">soap</th>
+            </tr>
+            <tr style="background-color: white;">
+                <td>饭前</td>
+                <td>饭后</td>
+                <td>饭前</td>
+                <td>饭后</td>
+                <td>饭前</td>
+                <td>饭后</td>
+            </tr>
+        </thead>
         @foreach ($blood_records as $day)
             <tr>
                 <td>{{ $day->calendar_date }}</td>
