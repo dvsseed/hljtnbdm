@@ -27,12 +27,12 @@
 		"laralib/l5scaffold": "^1.0",
 		"laracasts/generators": "^1.1",
 		"xethron/migrations-generator": "dev-l5",
-		"way/generators": "~2.0"
+		"way/generators": "dev-feature/laravel-five-stable"
 	},
 	"repositories": [
 		{
 	       	  "type": "git",
-	          "url": "https://github.com/jamisonvalenta/Laravel-4-Generators.git"
+	          "url": "git@github.com:jamisonvalenta/Laravel-4-Generators.git"
 		}
 	],
 	"autoload": {
