@@ -145,6 +145,7 @@ return [
 		'Clockwork\Support\Laravel\ClockworkServiceProvider',
 		'Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider',
 		'Arcanedev\LogViewer\LogViewerServiceProvider',
+		'Stevenyangecho\UEditor\UEditorServiceProvider',
 
 
 		/*

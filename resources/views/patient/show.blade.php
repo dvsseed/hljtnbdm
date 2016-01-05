@@ -8,6 +8,10 @@
     active
 @stop
 
+@section('navabout')
+    /aboutpatient
+@stop
+
 @section('css')
     {!! Html::style('css/patient.css') !!}
 @stop

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "aa225b886e9c68f21b81ae1f80032c20",
-    "content-hash": "88d721ce832c4b5bc54a3bcfaabe4a7b",
+    "hash": "ddade707880558f6f175703fc2f0e089",
+    "content-hash": "db0cf583461c02f59fd76512dabb4286",
     "packages": [
         {
             "name": "arcanedev/log-viewer",
@@ -650,16 +650,16 @@
         },
         {
             "name": "itsgoingd/clockwork",
-            "version": "v1.9",
+            "version": "v1.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itsgoingd/clockwork.git",
-                "reference": "2e3b13d49942d3338d69e77f7d214ee49e0c8e9e"
+                "reference": "b3f0cd7f314d55ede9c70dda48425b7fb03d7ed6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/2e3b13d49942d3338d69e77f7d214ee49e0c8e9e",
-                "reference": "2e3b13d49942d3338d69e77f7d214ee49e0c8e9e",
+                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/b3f0cd7f314d55ede9c70dda48425b7fb03d7ed6",
+                "reference": "b3f0cd7f314d55ede9c70dda48425b7fb03d7ed6",
                 "shasum": ""
             },
             "require": {
@@ -691,7 +691,7 @@
                 "logging",
                 "profiling"
             ],
-            "time": "2015-09-01 00:55:38"
+            "time": "2015-12-23 12:31:51"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -1655,6 +1655,57 @@
             "time": "2015-03-26 18:43:54"
         },
         {
+            "name": "qiniu/php-sdk",
+            "version": "v7.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/qiniu/php-sdk.git",
+                "reference": "798ae5501ef1148d09720ca7a28b2044c2f16a53"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/798ae5501ef1148d09720ca7a28b2044c2f16a53",
+                "reference": "798ae5501ef1148d09720ca7a28b2044c2f16a53",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Qiniu\\": "src/Qiniu"
+                },
+                "files": [
+                    "src/Qiniu/functions.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Qiniu",
+                    "email": "sdk@qiniu.com",
+                    "homepage": "http://www.qiniu.com"
+                }
+            ],
+            "description": "Qiniu Resource (Cloud) Storage SDK for PHP",
+            "homepage": "http://developer.qiniu.com/",
+            "keywords": [
+                "cloud",
+                "qiniu",
+                "sdk",
+                "storage"
+            ],
+            "time": "2015-12-05 14:34:30"
+        },
+        {
             "name": "rap2hpoutre/laravel-log-viewer",
             "version": "v0.4.3",
             "source": {
@@ -1699,6 +1750,52 @@
                 "logging"
             ],
             "time": "2015-10-13 08:18:50"
+        },
+        {
+            "name": "stevenyangecho/laravel-u-editor",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stevenyangecho/laravel-u-editor.git",
+                "reference": "15abe56d11efa527a8c0a5cf1648a086a41cc214"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stevenyangecho/laravel-u-editor/zipball/15abe56d11efa527a8c0a5cf1648a086a41cc214",
+                "reference": "15abe56d11efa527a8c0a5cf1648a086a41cc214",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "5.0.*|5.1.x",
+                "php": ">=5.4.0",
+                "qiniu/php-sdk": "7.0.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Stevenyangecho\\UEditor\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Steven Yang",
+                    "email": "yqmking@163.com"
+                }
+            ],
+            "description": "UEditor for laravel5. Support i18n. UEditor is a Rich Text Web Editor From Baidu.",
+            "keywords": [
+                "laravel",
+                "laravel-u-editor",
+                "laravel5 web text editor",
+                "steven yang",
+                "stevenyangecho",
+                "ueditor"
+            ],
+            "time": "2015-10-14 05:02:36"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -1755,16 +1852,16 @@
         },
         {
             "name": "symfony/class-loader",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/class-loader.git",
-                "reference": "51f83451bf0ddfc696e47e4642d6cd10fcfce160"
+                "reference": "ec74b0a279cf3a9bd36172b3e3061591d380ce6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/class-loader/zipball/51f83451bf0ddfc696e47e4642d6cd10fcfce160",
-                "reference": "51f83451bf0ddfc696e47e4642d6cd10fcfce160",
+                "url": "https://api.github.com/repos/symfony/class-loader/zipball/ec74b0a279cf3a9bd36172b3e3061591d380ce6c",
+                "reference": "ec74b0a279cf3a9bd36172b3e3061591d380ce6c",
                 "shasum": ""
             },
             "require": {
@@ -1803,7 +1900,7 @@
             ],
             "description": "Symfony ClassLoader Component",
             "homepage": "https://symfony.com",
-            "time": "2015-11-26 07:00:59"
+            "time": "2015-12-05 17:37:59"
         },
         {
             "name": "symfony/console",
@@ -1865,16 +1962,16 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/css-selector.git",
-                "reference": "b600fec37c0efca08046d481d79e7eabc07108ff"
+                "reference": "eaa3320e32f09a01dc432c6efbe8051aee59cfef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/css-selector/zipball/b600fec37c0efca08046d481d79e7eabc07108ff",
-                "reference": "b600fec37c0efca08046d481d79e7eabc07108ff",
+                "url": "https://api.github.com/repos/symfony/css-selector/zipball/eaa3320e32f09a01dc432c6efbe8051aee59cfef",
+                "reference": "eaa3320e32f09a01dc432c6efbe8051aee59cfef",
                 "shasum": ""
             },
             "require": {
@@ -1914,7 +2011,7 @@
             ],
             "description": "Symfony CssSelector Component",
             "homepage": "https://symfony.com",
-            "time": "2015-10-30 20:15:42"
+            "time": "2015-12-05 17:37:59"
         },
         {
             "name": "symfony/debug",
@@ -1979,7 +2076,7 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/event-dispatcher.git",
@@ -2039,16 +2136,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "3e661a0d521ac67496515fa6e6704bd61bcfff60"
+                "reference": "a7ad724530a764d70c168d321ac226ba3d2f10fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/3e661a0d521ac67496515fa6e6704bd61bcfff60",
-                "reference": "3e661a0d521ac67496515fa6e6704bd61bcfff60",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/a7ad724530a764d70c168d321ac226ba3d2f10fc",
+                "reference": "a7ad724530a764d70c168d321ac226ba3d2f10fc",
                 "shasum": ""
             },
             "require": {
@@ -2084,7 +2181,7 @@
             ],
             "description": "Symfony Filesystem Component",
             "homepage": "https://symfony.com",
-            "time": "2015-11-23 10:19:46"
+            "time": "2015-12-22 10:25:57"
         },
         {
             "name": "symfony/finder",
@@ -2270,16 +2367,16 @@
         },
         {
             "name": "symfony/polyfill-php56",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php56.git",
-                "reference": "a6bd4770a6967517e6610529e14afaa3111094a3"
+                "reference": "e2e77609a9e2328eb370fbb0e0d8b2000ebb488f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/a6bd4770a6967517e6610529e14afaa3111094a3",
-                "reference": "a6bd4770a6967517e6610529e14afaa3111094a3",
+                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/e2e77609a9e2328eb370fbb0e0d8b2000ebb488f",
+                "reference": "e2e77609a9e2328eb370fbb0e0d8b2000ebb488f",
                 "shasum": ""
             },
             "require": {
@@ -2300,7 +2397,7 @@
                     "bootstrap.php"
                 ]
             },
-            "notification-url": "http://packagist.cn/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2322,11 +2419,11 @@
                 "portable",
                 "shim"
             ],
-            "time": "2015-11-04 20:28:58"
+            "time": "2015-12-18 15:10:25"
         },
         {
             "name": "symfony/polyfill-util",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-util.git",
@@ -2352,7 +2449,7 @@
                     "Symfony\\Polyfill\\Util\\": ""
                 }
             },
-            "notification-url": "http://packagist.cn/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -3066,16 +3163,16 @@
         },
         {
             "name": "doctrine/common",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/common.git",
-                "reference": "311001fd9865a4d0d59efff4eac6d7dcb3f5270c"
+                "reference": "10f1f19651343f87573129ca970aef1a47a6f29e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/common/zipball/311001fd9865a4d0d59efff4eac6d7dcb3f5270c",
-                "reference": "311001fd9865a4d0d59efff4eac6d7dcb3f5270c",
+                "url": "https://api.github.com/repos/doctrine/common/zipball/10f1f19651343f87573129ca970aef1a47a6f29e",
+                "reference": "10f1f19651343f87573129ca970aef1a47a6f29e",
                 "shasum": ""
             },
             "require": {
@@ -3135,24 +3232,24 @@
                 "persistence",
                 "spl"
             ],
-            "time": "2015-12-04 12:49:42"
+            "time": "2015-12-25 13:10:16"
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "01dbcbc5cd0a913d751418e635434a18a2f2a75c"
+                "reference": "2fbcea96eae34a53183377cdbb0b9bec33974648"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/01dbcbc5cd0a913d751418e635434a18a2f2a75c",
-                "reference": "01dbcbc5cd0a913d751418e635434a18a2f2a75c",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/2fbcea96eae34a53183377cdbb0b9bec33974648",
+                "reference": "2fbcea96eae34a53183377cdbb0b9bec33974648",
                 "shasum": ""
             },
             "require": {
-                "doctrine/common": ">=2.4,<2.6-dev",
+                "doctrine/common": ">=2.4,<2.7-dev",
                 "php": ">=5.3.2"
             },
             "require-dev": {
@@ -3206,7 +3303,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2015-09-16 16:29:33"
+            "time": "2015-12-25 16:28:24"
         },
         {
             "name": "doctrine/instantiator",
@@ -3318,16 +3415,16 @@
         },
         {
             "name": "laracasts/generators",
-            "version": "1.1.2",
+            "version": "1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laracasts/Laravel-5-Generators-Extended.git",
-                "reference": "eb58b86f49d69eff4db4cc6f2ec94480a57c4358"
+                "reference": "d6afcc60dff846980393d59f6df2074b8a297b08"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laracasts/Laravel-5-Generators-Extended/zipball/eb58b86f49d69eff4db4cc6f2ec94480a57c4358",
-                "reference": "eb58b86f49d69eff4db4cc6f2ec94480a57c4358",
+                "url": "https://api.github.com/repos/laracasts/Laravel-5-Generators-Extended/zipball/d6afcc60dff846980393d59f6df2074b8a297b08",
+                "reference": "d6afcc60dff846980393d59f6df2074b8a297b08",
                 "shasum": ""
             },
             "require": {
@@ -3358,7 +3455,7 @@
                 "generators",
                 "laravel"
             ],
-            "time": "2015-08-19 14:29:06"
+            "time": "2015-12-31 18:44:32"
         },
         {
             "name": "laralib/l5scaffold",
@@ -3439,16 +3536,16 @@
         },
         {
             "name": "phpspec/phpspec",
-            "version": "2.4.0",
+            "version": "2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/phpspec.git",
-                "reference": "1d3938e6d9ffb1bd4805ea8ddac62ea48767f358"
+                "reference": "5528ce1e93a1efa090c9404aba3395c329b4e6ed"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/1d3938e6d9ffb1bd4805ea8ddac62ea48767f358",
-                "reference": "1d3938e6d9ffb1bd4805ea8ddac62ea48767f358",
+                "url": "https://api.github.com/repos/phpspec/phpspec/zipball/5528ce1e93a1efa090c9404aba3395c329b4e6ed",
+                "reference": "5528ce1e93a1efa090c9404aba3395c329b4e6ed",
                 "shasum": ""
             },
             "require": {
@@ -3513,7 +3610,7 @@
                 "testing",
                 "tests"
             ],
-            "time": "2015-11-29 02:03:49"
+            "time": "2016-01-01 10:17:54"
         },
         {
             "name": "phpspec/prophecy",
@@ -4316,16 +4413,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "f79824187de95064a2f5038904c4d7f0227fedb5"
+                "reference": "ac84cbb98b68a6abbc9f5149eb96ccc7b07b8966"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/f79824187de95064a2f5038904c4d7f0227fedb5",
-                "reference": "f79824187de95064a2f5038904c4d7f0227fedb5",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/ac84cbb98b68a6abbc9f5149eb96ccc7b07b8966",
+                "reference": "ac84cbb98b68a6abbc9f5149eb96ccc7b07b8966",
                 "shasum": ""
             },
             "require": {
@@ -4361,14 +4458,14 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2015-11-30 12:35:10"
+            "time": "2015-12-26 13:37:56"
         },
         {
             "name": "way/generators",
             "version": "dev-feature/laravel-five-stable",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jamisonvalenta/Laravel-4-Generators.git",
+                "url": "git@github.com:jamisonvalenta/Laravel-4-Generators.git",
                 "reference": "a358bb44f517e2b3c1fd4f848f2646857c75b3a4"
             },
             "require": {
