@@ -31,6 +31,7 @@
                 <td>起始日期</td>
                 <td>结束日期</td>
                 <td>用药</td>
+                <td>病人注记</td>
             </tr>
             <tr>
                 <td>{{$contact_data["nurse_name"]}}</td>
@@ -43,6 +44,7 @@
                 <td>{{$contact_data["start_date"]}}</td>
                 <td>{{$contact_data["med_date"]}}</td>
                 <td>{!! nl2br($contact_data["medicine"]) !!}</td>
+                <td>{{$contact_data["patient_note"]}}</td>
             </tr>
             <tr>
                 <td>预定追踪日期</td>
@@ -67,6 +69,7 @@
             @endif
             <li role="presentation"><a class="menuLink" href="#hba1c">HbA1C</a></li>
             <li role="presentation"><a class="menuLink" href="#message">留言</a></li>
+            <li role="presentation"><a class="menuLink" href="#goal">血糖目标</a></li>
             <li role="presentation"><a class="menuLink real" href="/case/create/{{$data['patient_id']}}">方案</a></li>
             <li role="presentation"><a class="menuLink real" href="/patient/ccreate/{{$data['patient_id']}}">患者资料</a></li>
             <li role="presentation"><a class="menuLink" href="#contactedit">联络资料</a></li>
@@ -81,6 +84,8 @@
         @include('bdata.hba1c')
 
         @include('bdata.message')
+
+        @include('bdata.goal')
 
         @include('bdata.contactedit')
         <div id="hba1c" class="content" style="display: none">

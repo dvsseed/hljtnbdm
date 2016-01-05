@@ -1,6 +1,7 @@
 <?php namespace  App\Model\Pdata;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Model\Pdata\Hba1cGoal;
 
 class HospitalNo extends Model
 {
@@ -36,6 +37,11 @@ class HospitalNo extends Model
     public function contact_info()
     {
         return $this->hasOne('App\Model\Pdata\ContactInfo', 'hospital_no_uuid');
+    }
+
+    public function hba1c_goal_matrix()
+    {
+        return Hba1cGoal::find($this->hba1c_goal);
     }
 
 }

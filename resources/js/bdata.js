@@ -111,6 +111,7 @@ $( document ).ready(function() {
     }
 
     setContactEditSave();
+    setHba1cSave();
 
     Chart.types.Line.extend({
         name: "LineAlt",
@@ -313,6 +314,9 @@ function checkContent(){
                     success: function(result){
                         if(result == 'success'){
                             location.reload();
+                            alert('储存成功');
+                        }else{
+                            alert('储存失败');
                         }
                     }
                 });
@@ -458,6 +462,32 @@ function getStaticsData(){
     });
 }
 
+function setHba1cSave(){
+    $("#hba1c_goal_save").click(function () {
+        inputdata = {};
+
+        inputdata['_token'] = $('#hba1c_goal_form > input[ name=_token]').val();
+        inputdata['hba1c_goal'] = $("#hba1c_goal").val();
+
+        $.ajax({
+            type: 'POST',
+            url: '/bdata/post_hba1c_goal',
+            data: inputdata,
+            success: function(result){
+                if(result == 'success') {
+                    alert("储存成功");
+                    //location.reload();
+                    $("#hba1c_goal_save").blur();
+                }
+                else{
+                    alert("储存失败");
+                    $("#hba1c_goal_save").blur();
+                }
+            }
+        });
+    });
+}
+
 function setContactEditSave(){
     $("#contact_data_save_btn").click(function () {
         inputdata = {};
@@ -472,6 +502,11 @@ function setContactEditSave(){
         inputdata['contact_time'] = $("#contact_time").val();
         inputdata['contact_phone'] = $("#contact_phone").val();
         inputdata['contact_email'] = $("#contact_email").val();
+        inputdata['patient_note'] = $('input[name=patient_note]:checked').val();
+        if(inputdata['patient_note'] == '其他'){
+            inputdata['patient_note'] = $("#patient_input").val();
+        }
+
         $.ajax({
             type: 'POST',
             url: '/bdata/post_contact',

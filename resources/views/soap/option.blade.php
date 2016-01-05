@@ -3,24 +3,28 @@
 <table class="table borderless" id="other_class" style="text-align: center; background-color: lightpink">
     <tr>
         <td class="col-md-3">
-            <select id="sub_class" class="form-control" >
-                @foreach($sub_classes as $sub_class)
-                    <option value="{{$sub_class -> sub_class_pk}}">{{$sub_class -> class_name}}</option>
-                @endforeach
-            </select>
+            <table class="table" id="sub_class_table" >
+                @for($i = 0; $i < count($sub_classes); $i += 4)
+                    <tr class="form-inline">
+                    @for($j = 0; $j < 4 && $i + $j < count($sub_classes); $j++)
+                        <td class="form-inline" style="text-align: center"><input type="radio" @if($i == 0 && $j == 0) checked @endif name="sub_class"  value="{{$sub_classes[$i + $j] -> sub_class_pk}}"/>&nbsp;&nbsp;{{$sub_classes[$i + $j] -> class_name}}</td>
+                    @endfor
+                    </tr>
+                @endfor
+            </table>
         </td>
         <td rowspan="11">
             护理卫教项目
             <table >
                 @foreach($soa_nurse_classes[0] as $soa_nurse_class)
-                    <tr><td style="text-align: left"><input type="checkbox" name="nurse" value="{{$soa_nurse_class -> soa_nurse_class_pk}}" @if(in_array($soa_nurse_class -> soa_nurse_class_pk,$user_soa_nurse_pks) || in_array($soa_nurse_class->soa_nurse_class_pk,$pks0)) checked @endif/>{{$soa_nurse_class -> name}}</td></tr>
+                    <tr><td style="text-align: left"><input type="checkbox" name="nurse" value="{{$soa_nurse_class -> soa_nurse_class_pk}}" @if(in_array($soa_nurse_class -> soa_nurse_class_pk,$user_soa_nurse_pks)) checked @endif/>{{$soa_nurse_class -> name}}</td></tr>
                 @endforeach
             </table>
             <br/>
             营养卫教项目
             <table style="text-align: left">
                 @foreach($soa_nurse_classes[1] as $soa_nurse_class)
-                    <tr><td style="text-align: left"><input type="checkbox" name="nurse" value="{{$soa_nurse_class -> soa_nurse_class_pk}}" @if(in_array($soa_nurse_class -> soa_nurse_class_pk,$user_soa_nurse_pks) || in_array($soa_nurse_class->soa_nurse_class_pk,$pks1)) checked @endif/>{{$soa_nurse_class -> name}}</td></tr>
+                    <tr><td style="text-align: left"><input type="checkbox" name="nurse" value="{{$soa_nurse_class -> soa_nurse_class_pk}}" @if(in_array($soa_nurse_class -> soa_nurse_class_pk,$user_soa_nurse_pks)) checked @endif/>{{$soa_nurse_class -> name}}</td></tr>
                 @endforeach
             </table>
             <br/>

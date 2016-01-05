@@ -63,10 +63,14 @@ class SoapController extends Controller
             return view('soap.soap', compact('err_msg', 'history_pk'));
         }
 
-        $user_soap = null;//UserSoap::where('hospital_no_uuid', '=', $uuid)->first();
+        $user_soa_nurse_pks = [];
+        $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid)->first();
+        if($user_soap != null){
+            $user_soa_nurse_pks = $this->get_user_soa_array($user_soap -> soa_nurse_class_pks, $user_soap -> is_finished);
+            $user_soap = null;
+        }
 
         $user_data = array();
-
         if(isset($request['history'])){
             $history = UserSoapHistory::find($request['history']);
             if($history != null){
@@ -96,7 +100,6 @@ class SoapController extends Controller
             $user_data['P'] = "";
             $user_data['E'] = "";
             $user_data['R'] = "";
-            $user_soa_nurse_pks = [];
         }else{
             $user_data['S'] = $user_soap -> s_text;
             $user_data['O'] = $user_soap -> o_text;
@@ -104,23 +107,20 @@ class SoapController extends Controller
             $user_data['P'] = $user_soap -> p_text;
             $user_data['E'] = $user_soap -> e_text;
             $user_data['R'] = $user_soap -> r_text;
-            $user_soa_nurse_pks = $user_soap -> soa_nurse_class_pks;
-            if($user_soa_nurse_pks != null){
-                $user_soa_nurse_pks = explode(",", $user_soa_nurse_pks);
-            }else{
-                $user_soa_nurse_pks = [];
-            }
-        }
-        Session::put('uuid', $uuid);
-        $pks01 = Buildcase::where('hospital_no_uuid', '=', $uuid)->first();
-        $pks0 = [];
-        $pks1 = [];
-        if($pks01) {
-            $pks0 = explode(",", $pks01->soa_nurse_class_pks0);
-            $pks1 = explode(",", $pks01->soa_nurse_class_pks1);
+            $user_soa_nurse_pks = $this->get_user_soa_array($user_soap -> soa_nurse_class_pks, $user_soap -> is_finished);
         }
 
+        Session::put('uuid', $uuid);
+
         return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid', 'history_pk', 'soa_nurse_classes', 'user_soa_nurse_pks', 'pks0', 'pks1'));
+    }
+
+    private function get_user_soa_array($user_soa_nurse_pks, $finished){
+        $user_soa_nurse_pks = [];
+        if($user_soa_nurse_pks != null && $finished != 1){
+            $user_soa_nurse_pks = explode(",", $user_soa_nurse_pks);
+        }
+        return $user_soa_nurse_pks;
     }
 
     public function delete_history(Request $request){
