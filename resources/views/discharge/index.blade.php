@@ -22,6 +22,7 @@
             <select class="form-control" name="category" required>
                 <option value="" {{Text::selected($category, '')}}>请选择</option>
                 <option value="1" {{Text::selected($category, 1)}}>出院日期</option>
+                <option value="2" {{Text::selected($category, 2)}}>住院医生</option>
             </select>
             <input class="form-control" placeholder="按栏位搜索..." name="search" type="text" value="{{ $search }}" required>
             <input class="btn btn-default" type="submit" value="搜寻">
@@ -36,6 +37,7 @@
                         <th>病患ID<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                         <th>病患姓名<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                         <th>医生<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                        <th>住院医生<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                         <th>出院日期<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                         <th class="text-center">功能</th>
                     </tr>
@@ -49,6 +51,7 @@
                                 <td>{{ \App\User::find($discharge->user_id)->pid }}</td>
                                 <td>{{ \App\User::find($discharge->user_id)->name }}</td>
                                 <td>{{ \App\User::find($discharge->doctor)->name }}</td>
+                                <td>{{ $discharge->name }}</td>
                                 <td>{{ $discharge->discharge_at }}</td>
                                 <td>
                                     <a class="btn btn-warning" href="{{ route('discharge.edit', $discharge->id) }}">改</a>

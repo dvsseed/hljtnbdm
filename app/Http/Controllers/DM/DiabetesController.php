@@ -16,6 +16,7 @@ use App\Http\Controllers\Event\EventController;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class DiabetesController extends Controller
 {
@@ -50,20 +51,26 @@ class DiabetesController extends Controller
             $category = $request->category;
             if ($search) {
                 $categoryList = [
-                    1 => "personid",
-                    2 => "cardid",
+                    1 => "buildcases.personid",
+                    2 => "buildcases.cardid",
                 ];
                 $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
                 if($field!="other") {
-                    $results = Buildcase::where($field, 'like', '%' . $search . '%')->where(function($query){
+                    $results = DB::table('buildcases')
+                        ->leftjoin('users', 'users.pid', '=', 'buildcases.personid')
+                        ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')->where($field, 'like', '%' . $search . '%')->where(function($query){
                         $users = Auth::user();
                         $query->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id);
                     })->orderBy('build_at', 'desc');
                 } else {
-                    $results = Buildcase::where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
+                    $results = DB::table('buildcases')
+                        ->leftjoin('users', 'users.pid', '=', 'buildcases.personid')
+                        ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
                 }
             } else {
-                $results = Buildcase::where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
+                $results = DB::table('buildcases')
+                    ->leftjoin('users', 'users.pid', '=', 'buildcases.personid')
+                    ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
             }
             $count = $results->count();
             $buildcases = $results->paginate(10)->appends(['search' => $search, 'category' => $category]);
@@ -185,6 +192,7 @@ class DiabetesController extends Controller
         $today->toDateTimeString();
         $buildcase->build_at = $today;
         $buildcase->doctor = Auth::user()->id;
+        $buildcase->memo = $request->memo;
         if ($request->duty) {
             $buildcase->duty = $request->duty;
             $buildcase->duty_status = 0;
@@ -285,6 +293,7 @@ class DiabetesController extends Controller
         $buildcase->cardid = $request->cardid;
         $today = Carbon::now();
         $today->toDateTimeString();
+        $buildcase->memo = $request->memo;
         if ($request->duty) {
             $buildcase->duty = $request->duty;
             $buildcase->duty_at = $today;
@@ -313,4 +322,57 @@ class DiabetesController extends Controller
         return Redirect::route('dm_home');
     }
 
+    public function ajaxget(Request $request)
+    {
+        $cases = DB::select('SELECT DISTINCT u.name AS teacher, count(*) AS number FROM buildcases AS b LEFT JOIN users AS u ON b.duty = u.id WHERE build_at >= ADDDATE(NOW(), -14) AND build_at < NOW() GROUP BY duty ORDER BY duty, personid');
+        $tbody = "<table><thead>";
+        $tbody .= "<tr><th>&nbsp;卫教师&nbsp;</th><th>&nbsp;案数&nbsp;</th></tr></thead>";
+        $tbody .= "<tbody>";
+        foreach ($cases as $case) {
+            $tbody .= "<tr>";
+            $tbody .= "<td>&nbsp;" . $case->teacher . "&nbsp;</td>";
+            $tbody .= "<td align='right'>&nbsp;" . $case->number . "&nbsp;</td>";
+            $tbody .= "</tr>";
+        }
+        $tbody .= "</tbody></table>";
+        $msg = $tbody;
+        $data = array(
+            'status' => 'success',
+            'msg' => $msg,
+        );
+        return response()->json($data);
+    }
+
+    public function ajaxpost(Request $request)
+    {
+//      $pid = Request::input('personid');
+        $pid = Input::get('personid');
+        if(empty($pid)) {
+            $msg = "请输入: 患者[身份证]...";
+        } else {
+            $user = Buildcase::where('personid', '=', $pid)->orderBy('personid', 'ASC')->orderBy('build_at', 'DESC')->first();
+            if($user) {
+                $duty = $user->duty;
+                $dutyname = '';
+                $nursename = '';
+                $dietitianname = '';
+                if ($duty) $dutyname = '前次[责任卫教]: ' . User::findOrFail($user->duty)->name;
+                $nurse = $user->nurse;
+                if ($nurse) $nursename = ', [护理卫教]: ' . User::findOrFail($user->nurse)->name;
+                $dietitian = $user->dietitian;
+                if($dietitian) $dietitianname = ', [营养卫教]: '.User::findOrFail($user->dietitian)->name;
+            }
+            if(empty($duty) && empty($nurse) && empty($dietitian)){
+                $msg = "该患者无建案纪录...";
+            } else {
+                $msg = $dutyname . $nursename . $dietitianname;
+            }
+        }
+
+        $data = array(
+            'status' => 'success',
+            'msg' => $msg,
+        );
+        return response()->json($data);
+    }
 }

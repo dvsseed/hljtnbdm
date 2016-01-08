@@ -1,39 +1,18 @@
-<?php
-header("Content-Type:text/html; charset=utf-8");
-include_once("php/dbconfig.php");
-include_once("php/functions.php");
-function getCalendarByRange($id){
-  try{
-    $db = new DBConnection();
-    $db->getConnection();
-    $sql = "select * from `jqcalendar` where `id` = " . $id;
-    $handle = mysql_query($sql);
-    //echo $sql;
-    $row = mysql_fetch_object($handle);
-	}catch(Exception $e){
-  }
-  return $row;
-}
-if($_GET["id"]){
-  $event = getCalendarByRange($_GET["id"]);
-}
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
+﻿<!DOCTYPE html>
+<html>
   <head>    
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="UTF-8">
-    <title>Calendar Details</title>
-    <link href="css/main.css" rel="stylesheet" type="text/css" />       
-    <link href="css/dp.css" rel="stylesheet" />    
-    <link href="css/dropdown.css" rel="stylesheet" />    
-    <link href="css/colorselect.css" rel="stylesheet" />   
-     
-    <script src="src/jquery.min.js" type="text/javascript"></script>    
+    <title> 行事历细节 </title>
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+    <link href="css/dp.css" rel="stylesheet">
+    <link href="css/dropdown.css" rel="stylesheet">
+    <link href="css/colorselect.css" rel="stylesheet">
+
+    <script src="src/jquery.js" type="text/javascript"></script>
     <script src="src/Plugins/Common.js" type="text/javascript"></script>        
     <script src="src/Plugins/jquery.form.js" type="text/javascript"></script>     
     <script src="src/Plugins/jquery.validate.js" type="text/javascript"></script>     
-    <script src="src/Plugins/datepicker_lang_HK.js" charset="UTF-8" type="text/javascript"></script>        
+    <script src="src/Plugins/datepicker_lang_HK.js" charset="UTF-8" type="text/javascript"></script>
     <script src="src/Plugins/jquery.datepicker.js" type="text/javascript"></script>     
     <script src="src/Plugins/jquery.dropdown.js" type="text/javascript"></script>     
     <script src="src/Plugins/jquery.colorselect.js" type="text/javascript"></script>    
@@ -181,7 +160,7 @@ if($_GET["id"]){
         });
     </script>      
     <style type="text/css">     
-    .calpick     {        
+    .calpick {
         width:16px;   
         height:16px;     
         border:none;        
@@ -191,7 +170,26 @@ if($_GET["id"]){
     }      
     </style>
   </head>
-  <body>    
+  <?php
+  include_once("php/dbconfig.php");
+  include_once("php/functions.php");
+  function getCalendarByRange($id){
+      try{
+          $db = new DBConnection();
+          $db->getConnection();
+          $sql = "select * from `jqcalendar` where `id` = " . $id;
+          $handle = mysql_query($sql);
+          //echo $sql;
+          $row = mysql_fetch_object($handle);
+      }catch(Exception $e){
+      }
+      return $row;
+  }
+  if($_GET["id"]){
+      $event = getCalendarByRange($_GET["id"]);
+  }
+  ?>
+  <body>
     <div>      
       <div class="toolBotton">           
         <a id="Savebtn" class="imgbtn" href="javascript:void(0);">                
@@ -218,8 +216,8 @@ if($_GET["id"]){
             </span>                    
             <div id="calendarcolor">
             </div>
-            <input MaxLength="200" class="required safe" id="Subject" name="Subject" style="width:85%;" type="text" value="<?php echo isset($event)?$event->Subject:"" ?>" />                     
-            <input id="colorvalue" name="colorvalue" type="hidden" value="<?php echo isset($event)?$event->Color:"" ?>" />                
+            <input MaxLength="200" class="required safe" id="Subject" name="Subject" style="width:85%;" type="text" value="<?php echo isset($event)?$event->Subject:"" ?>">
+            <input id="colorvalue" name="colorvalue" type="hidden" value="<?php echo isset($event)?$event->Color:"" ?>">
           </label>                 
           <label>                    
             <span>*时间:
@@ -229,10 +227,10 @@ if($_GET["id"]){
                   $sarr = explode(" ", php2JsTime(mySql2PhpTime($event->StartTime)));
                   $earr = explode(" ", php2JsTime(mySql2PhpTime($event->EndTime)));
               }?>                    
-              <input MaxLength="10" class="required date" id="stpartdate" name="stpartdate" style="padding-left:2px;width:90px;" type="text" value="<?php echo isset($event)?$sarr[0]:""; ?>" />                       
-              <input MaxLength="5" class="required time" id="stparttime" name="stparttime" style="width:40px;" type="text" value="<?php echo isset($event)?$sarr[1]:""; ?>" />至                       
-              <input MaxLength="10" class="required date" id="etpartdate" name="etpartdate" style="padding-left:2px;width:90px;" type="text" value="<?php echo isset($event)?$earr[0]:""; ?>" />                       
-              <input MaxLength="50" class="required time" id="etparttime" name="etparttime" style="width:40px;" type="text" value="<?php echo isset($event)?$earr[1]:""; ?>" />                                            
+              <input MaxLength="10" class="required date" id="stpartdate" name="stpartdate" style="padding-left:2px;width:90px;" type="text" value="<?php echo isset($event)?$sarr[0]:""; ?>">
+              <input MaxLength="5" class="required time" id="stparttime" name="stparttime" style="width:40px;" type="text" value="<?php echo isset($event)?$sarr[1]:""; ?>">至
+              <input MaxLength="10" class="required date" id="etpartdate" name="etpartdate" style="padding-left:2px;width:90px;" type="text" value="<?php echo isset($event)?$earr[0]:""; ?>">
+              <input MaxLength="50" class="required time" id="etparttime" name="etparttime" style="width:40px;" type="text" value="<?php echo isset($event)?$earr[1]:""; ?>">
               <label class="checkp"> 
                 <input id="IsAllDayEvent" name="IsAllDayEvent" type="checkbox" value="1" <?php if(isset($event)&&$event->IsAllDayEvent!=0) {echo "checked";} ?>/>          全天的活动                      
               </label>                    
@@ -241,7 +239,7 @@ if($_GET["id"]){
           <label>                    
             <span>                        地点:
             </span>                    
-            <input MaxLength="200" id="Location" name="Location" style="width:95%;" type="text" value="<?php echo isset($event)?$event->Location:""; ?>" />                 
+            <input MaxLength="200" id="Location" name="Location" style="width:95%;" type="text" value="<?php echo isset($event)?$event->Location:""; ?>">
           </label>                 
           <label>                    
             <span>                        备注:
@@ -250,7 +248,7 @@ if($_GET["id"]){
 <?php echo isset($event)?$event->Description:""; ?>
 </textarea>                
           </label>                
-          <input id="timezone" name="timezone" type="hidden" value="" />           
+          <input id="timezone" name="timezone" type="hidden" value="">
         </form>         
       </div>         
     </div>

@@ -1,23 +1,21 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html>
+<html>
 <head id="Head1">
-    <title>	行事历 </title>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link href="css/dailog.css" rel="stylesheet" type="text/css" />
-    <link href="css/calendar.css" rel="stylesheet" type="text/css" /> 
-    <link href="css/dp.css" rel="stylesheet" type="text/css" />   
-    <link href="css/alert.css" rel="stylesheet" type="text/css" /> 
-    <link href="css/main.css" rel="stylesheet" type="text/css" /> 
+    <title> 行事历 </title>
+    <link href="css/dailog.css" rel="stylesheet" type="text/css">
+    <link href="css/calendar.css" rel="stylesheet" type="text/css">
+    <link href="css/dp.css" rel="stylesheet" type="text/css">
+    <link href="css/alert.css" rel="stylesheet" type="text/css">
+    <link href="css/main.css" rel="stylesheet" type="text/css">
 
-    <script src="src/jquery.min.js" type="text/javascript"></script>
+    <script src="src/jquery.js" type="text/javascript"></script>
     <script src="src/Plugins/Common.js" type="text/javascript"></script>
-    <script src="src/Plugins/datepicker_lang_HK.js" charset="UTF-8" type="text/javascript"></script>     
+    <script src="src/Plugins/datepicker_lang_HK.js" charset="UTF-8" type="text/javascript"></script>
     <script src="src/Plugins/jquery.datepicker.js" type="text/javascript"></script>
     <script src="src/Plugins/jquery.alert.js" type="text/javascript"></script>
     <script src="src/Plugins/jquery.ifrmdailog.js" defer="defer" type="text/javascript"></script>
-    <script src="src/Plugins/wdCalendar_lang_HK.js" charset="UTF-8" type="text/javascript"></script>    
+    <script src="src/Plugins/wdCalendar_lang_HK.js" charset="UTF-8" type="text/javascript"></script>
     <script src="src/Plugins/jquery.calendar.js" type="text/javascript"></script>   
     
     <script type="text/javascript">
@@ -46,7 +44,7 @@
             var _MH = document.documentElement.clientHeight;
             var dvH = $dv.height() + 2;
             op.height = _MH - dvH;
-            op.eventItems =[];
+            op.eventItems = [];
 
             var p = $("#gridcontainer").bcalendar(op).BcalGetOp();
             if (p && p.datestrshow) {
@@ -203,36 +201,37 @@
         });
     </script>    
 </head>
+
 <body>
     <div>
-
-      <div id="calhead" style="padding-left:1px;padding-right:1px;">          
-            <div class="cHead"><div class="ftitle"> 行事历&nbsp;&nbsp;<a class="ftitle" href="/dm/home"> 回共同照护 </a></div>
-            <div id="loadingpannel" class="ptogtitle loadicon" style="display: none;">加载数据...</div>
+      <div id="calhead" style="padding-left:1px;padding-right:1px;">
+         <div class="cHead">
+             <div class="ftitle"> 行事历&nbsp;&nbsp;<a class="ftitle" href="/dm/home"> 回共同照护 </a></div>
+             <div id="loadingpannel" class="ptogtitle loadicon" style="display: none;">加载数据...</div>
              <div id="errorpannel" class="ptogtitle loaderror" style="display: none;">很抱歉，无法加载数据，请稍后再试</div>
-            </div>          
+         </div>
             
-            <div id="caltoolbar" class="ctoolbar">
-              <div id="faddbtn" class="fbutton">
+         <div id="caltoolbar" class="ctoolbar">
+            <div id="faddbtn" class="fbutton">
                 <div><span title='点击创建新事件' class="addcal">新事件</span></div>
             </div>
             <div class="btnseparator"></div>
-             <div id="showtodaybtn" class="fbutton">
+            <div id="showtodaybtn" class="fbutton">
                 <div><span title='点击返回到今天 ' class="showtoday">今天</span></div>
             </div>
-              <div class="btnseparator"></div>
+            <div class="btnseparator"></div>
 
             <div id="showdaybtn" class="fbutton">
                 <div><span title='一日' class="showdayview">日</span></div>
             </div>
-              <div id="showweekbtn" class="fbutton fcurrent">
+            <div id="showweekbtn" class="fbutton fcurrent">
                 <div><span title='一周' class="showweekview">周</span></div>
             </div>
-              <div id="showmonthbtn" class="fbutton">
+            <div id="showmonthbtn" class="fbutton">
                 <div><span title='一个月' class="showmonthview">月</span></div>
             </div>
             <div class="btnseparator"></div>
-              <div id="showreflashbtn" class="fbutton">
+             <div id="showreflashbtn" class="fbutton">
                 <div><span title='刷新视图' class="showdayflash">刷新</span></div>
                 </div>
              <div class="btnseparator"></div>
@@ -244,32 +243,25 @@
             </div>
             <div class="fshowdatep fbutton">
                     <div>
-                        <input type="hidden" name="txtshow" id="hdtxtshow" />
+                        <input type="hidden" name="txtshow" id="hdtxtshow">
                         <span id="txtdatetimeshow">载入中</span>
                     </div>
             </div>
             
             <div class="clear"></div>
-            </div>
+         </div>
       </div>
       <div style="padding:1px;">
-
-        <div class="t1 chromeColor">
-            &nbsp;</div>
-        <div class="t2 chromeColor">
-            &nbsp;</div>
+        <div class="t1 chromeColor"> &nbsp;</div>
+        <div class="t2 chromeColor"> &nbsp;</div>
         <div id="dvCalMain" class="calmain printborder">
             <div id="gridcontainer" style="overflow-y: visible;">
             </div>
         </div>
-        <div class="t2 chromeColor">
-            &nbsp;</div>
-        <div class="t1 chromeColor">
-            &nbsp;
-        </div>   
-        </div>
-     
-  </div>
-    
+        <div class="t2 chromeColor"> &nbsp;</div>
+        <div class="t1 chromeColor"> &nbsp;</div>
+      </div>
+    </div>
 </body>
+
 </html>

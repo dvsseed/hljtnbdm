@@ -31,7 +31,7 @@ class CreateCaselistTable extends Migration
             $table->decimal('cl_hips', 5, 1)->unsigned()->nullable();
             $table->char('cl_blood_mne', 2)->nullable();
             $table->char('cl_blood_ap', 1)->nullable();
-            $table->decimal('cl_blood_acpc', 5, 1)->unsigned()->nullable();
+            $table->decimal('cl_blood_acpc', 3, 0)->unsigned()->nullable();
             $table->decimal('cl_blood_mins', 3, 0)->unsigned()->nullable();
             $table->decimal('cl_blood_hba1c', 4, 1)->unsigned()->nullable();
             $table->decimal('cl_tc', 4, 2)->unsigned()->nullable();
@@ -39,12 +39,15 @@ class CreateCaselistTable extends Migration
             $table->decimal('cl_ldl', 4, 2)->unsigned()->nullable();
             $table->decimal('cl_hdl', 4, 2)->unsigned()->nullable();
             $table->decimal('cl_alt', 2, 0)->unsigned()->nullable();
+            $table->decimal('cl_ast', 2, 0)->unsigned()->nullable();
+            $table->decimal('cl_alp', 3, 0)->unsigned()->nullable();
             $table->decimal('cl_ggt', 2, 0)->unsigned()->nullable();
-            $table->decimal('cl_uricacid', 4, 1)->unsigned()->nullable();
-            $table->decimal('cl_ua', 5, 1)->unsigned()->nullable();
-            $table->decimal('cl_urine_micro', 4, 1)->unsigned()->nullable();
+            $table->decimal('cl_uricacid', 2, 0)->unsigned()->nullable();
+            $table->decimal('cl_ua', 3, 0)->unsigned()->nullable();
+            $table->decimal('cl_urine_micro', 2, 0)->unsigned()->nullable();
             $table->char('cl_urine_routine', 2)->nullable();
-            $table->decimal('cl_egfr', 6, 2)->unsigned()->nullable();
+            $table->decimal('cl_ket', 3, 1)->unsigned()->nullable();
+            $table->decimal('cl_egfr', 5, 1)->unsigned()->nullable();
             $table->char('cl_foot_chk_right', 6)->nullable();
             $table->char('cl_foot_chk_left', 6)->nullable();
             $table->char('cl_ulcers', 3)->nullable();

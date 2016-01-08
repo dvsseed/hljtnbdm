@@ -11,7 +11,5 @@ class Discharge extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id', 'pp_id', 'user_id', 'doctor', 'instruction', 'discharge_at'];
-
-
+    protected $fillable = ['id', 'pp_id', 'user_id', 'doctor', 'residencies', 'instruction', 'discharge_at'];
 }

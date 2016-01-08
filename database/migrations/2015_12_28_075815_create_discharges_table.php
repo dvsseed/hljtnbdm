@@ -17,6 +17,7 @@ class CreateDischargesTable extends Migration
             $table->integer('pp_id')->unsigned();
             $table->integer('user_id')->unsigned();
             $table->integer('doctor')->unsigned()->nullable();
+            $table->integer('residencies')->unsigned()->nullable();
             $table->string('instruction', 2000)->nullable();
             $table->char('discharge_at', 10)->nullable();
         });

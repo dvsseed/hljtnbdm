@@ -36,6 +36,8 @@ Route::post('dm/uupdate', ['as' => 'dm_uupdate', 'uses' => 'DM\DiabetesControlle
 Route::post('dm/store', ['as' => 'dm_store', 'uses' => 'DM\DiabetesController@store']);
 Route::get('dm/gobd/{pid}/{bid}', ['as' => 'dm_gobd', 'uses' => 'DM\DiabetesController@gobd']);
 Route::get('dm/gosoap/{pid}/{bid}', ['as' => 'dm_gosoap', 'uses' => 'DM\DiabetesController@gosoap']);
+Route::get('dm/ajaxget', ['as' => 'dm_ajaxget', 'uses' => 'DM\DiabetesController@ajaxget']);
+Route::post('dm/ajaxpost', ['as' => 'dm_ajaxpost', 'uses' => 'DM\DiabetesController@ajaxpost']);
 
 #管理员入口(增删改查，上传)
 #资源路由,人员的增删改查
@@ -106,3 +108,4 @@ Route::get('/soap/{uuid}',['as' => 'soap', 'uses' => 'SOAP\SoapController@page']
 #出院指导
 Route::resource("discharge", "Discharges\DischargeController");
 Route::get('discharge/create/{personid}', ['as' => 'discharge_create', 'uses' => 'Discharges\DischargeController@create']);
+Route::get('discharge/history/{personid}', ['as' => 'discharge_history', 'uses' => 'Discharges\DischargeController@history']);

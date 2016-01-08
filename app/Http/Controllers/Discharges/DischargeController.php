@@ -3,6 +3,7 @@
 use App\Patientprofile;
 use App\User;
 use App\Discharge;
+use DB;
 use Auth;
 use Carbon\Carbon;
 use App\Http\Requests;
@@ -28,16 +29,23 @@ class DischargeController extends Controller {
 		$category = $request->category;
 		if ($search) {
 			$categoryList = [
-				1 => "discharge_at",
+				1 => "discharges.discharge_at",
+				2 => "users.name",
 			];
 			$field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
 			if($field!="other") {
-				$result = Discharge::where($field, 'like', '%' . $search . '%')->orderBy('discharge_at', 'desc');
+				$result = DB::table('discharges')
+					->leftjoin('users', 'users.id', '=', 'discharges.residencies')
+					->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')->where($field, 'like', '%' . $search . '%')->orderBy('discharge_at', 'desc');
 			} else {
-				$result = Discharge::orderBy('discharge_at', 'desc');
+				$result = DB::table('discharges')
+					->leftjoin('users', 'users.id', '=', 'discharges.residencies')
+					->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')->orderBy('discharge_at', 'desc');
 			}
 		} else {
-			$result = Discharge::orderBy('discharge_at', 'desc');
+			$result = DB::table('discharges')
+				->leftjoin('users', 'users.id', '=', 'discharges.residencies')
+				->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')->orderBy('discharge_at', 'desc');
 		}
 
 		$count = $result->count();
@@ -63,10 +71,12 @@ class DischargeController extends Controller {
 			$today = Carbon::today()->toDateString();
 			$year = Carbon::today()->year;
 			$patientprofiles = Patientprofile::where('pp_patientid', '=', $patientid)->first();
+			$residencies = User::where('position', '=', '住院医生')->orderBy('name', 'ASC')->lists('name', 'id');
+			$residencies = array('' => '请选择') + $residencies;
 			$err_msg = null;
 
 			EventController::SaveEvent('discharge', 'create(创建)');
-			return view('discharge.create', compact('err_msg', 'year', 'today', 'patientprofiles', 'sex', 'uid', 'ppname', 'patientid'));
+			return view('discharge.create', compact('err_msg', 'year', 'today', 'patientprofiles', 'sex', 'uid', 'ppname', 'patientid', 'residencies'));
 		}
 	}
 
@@ -81,6 +91,7 @@ class DischargeController extends Controller {
 		$discharge->pp_id = $request->pp_id;
 		$discharge->user_id = $request->user_id;
 		$discharge->doctor = Auth::user()->id;
+		$discharge->residencies = $request->residencies;
 		$discharge->instruction = $request->instruction;
 		$discharge->discharge_at = $request->discharge_at;
 		$discharge->save();
@@ -114,9 +125,11 @@ class DischargeController extends Controller {
 		$patientid = User::find($discharge->user_id)->pid;
 		$today = Carbon::today()->toDateString();
 		$year = Carbon::today()->year;
+		$residencies = User::where('position', '=', '住院医生')->orderBy('name', 'ASC')->lists('name', 'id');
+		$residencies = array('' => '请选择') + $residencies;
 
 		EventController::SaveEvent('discharge', 'edit(编辑)');
-		return view('discharge.edit', compact('discharge', 'year', 'today', 'ppname', 'patientid'));
+		return view('discharge.edit', compact('discharge', 'year', 'today', 'ppname', 'patientid', 'residencies'));
 	}
 
 	/**
@@ -128,6 +141,7 @@ class DischargeController extends Controller {
 	public function update(Request $request, $id)
 	{
 		$discharge = Discharge::findOrFail($id);
+		$discharge->residencies = $request->residencies;
 		$discharge->instruction = $request->instruction;
 		$discharge->discharge_at = $request->discharge_at;
 		$discharge->save();
@@ -160,4 +174,34 @@ class DischargeController extends Controller {
 		return view('discharge.about');
 	}
 
+	public function history(Request $request, $patientid)
+	{
+		$userid = User::where('pid', '=', $patientid)->firstOrFail()->id;
+		$search = urldecode($request->search);
+		$category = $request->category;
+		if ($search) {
+			$categoryList = [
+				1 => "discharges.discharge_at",
+				2 => "users.name",
+			];
+			$field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
+			if($field!="other") {
+				$result = DB::table('discharges')
+					->leftjoin('users', 'users.id', '=', 'discharges.residencies')
+					->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')->where('discharges.user_id', '=', $userid)->where($field, 'like', '%' . $search . '%')->orderBy('discharge_at', 'desc');
+			} else {
+				$result = DB::table('discharges')
+					->leftjoin('users', 'users.id', '=', 'discharges.residencies')
+					->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')->where('discharges.user_id', '=', $userid)->orderBy('discharge_at', 'desc');
+			}
+		} else {
+			$result = DB::table('discharges')
+				->leftjoin('users', 'users.id', '=', 'discharges.residencies')
+				->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')->where('discharges.user_id', '=', $userid)->orderBy('discharge_at', 'desc');
+		}
+
+		$count = $result->count();
+		$discharges = $result->paginate(10)->appends(['search' => $search, 'category' => $category]);
+		return view('discharge.index', compact('discharges', 'count', 'search', 'category'));
+	}
 }

@@ -405,10 +405,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>GGT</th>
+                        <th>AST</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_ggt" name="cl_ggt" size="5" tabindex="43" title="11~61" min="11" max="61" step="any" pattern="^[0-9]{1,2}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ggt }}"> U/L
+                                <input type="text" id="cl_ast" name="cl_ast" size="5" tabindex="43" title="0~40" min="0" max="40" step="any" pattern="^[0-9]{1,2}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ast }}"> U/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -440,10 +440,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>肌酐</th>
+                        <th>ALP</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_uricacid" name="cl_uricacid" size="5" tabindex="44" title="40~97" min="40.0" max="97.0" step="any" pattern="^[0-9]{1,2}(\.[0-9]{0,1})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_uricacid }}" onblur="calceGFR(this.value, {{ $sex }}, {{ $caselist->cl_patientid }})"> μmol/L
+                                <input type="text" id="cl_alp" name="cl_alp" size="5" tabindex="44" title="40~150" min="40" max="150" step="any" pattern="^[0-9]{1,3}$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_alp }}"> U/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -483,10 +483,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>UA</th>
+                        <th>GGT</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_ua" name="cl_ua" size="5" tabindex="45" title="155~428" min="155.0" max="428.0" step="any" pattern="^[0-9]{1,3}(\.[0-9]{0,1})?$" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ua }}"> μmol/L
+                                <input type="text" id="cl_ggt" name="cl_ggt" size="5" tabindex="45" title="11~61" min="11" max="61" step="any" pattern="^[0-9]{1,2}$" maxlength="2" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ggt }}"> U/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -504,10 +504,10 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>尿微</th>
+                        <th>肌酐</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_urine_micro" name="cl_urine_micro" size="5" tabindex="46" title="0~30" min="0.0" max="30.0" step="any" pattern="^[0-9]{1,2}(\.[0-9]{0,1})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_urine_micro }}"> mg/L
+                                <input type="text" id="cl_uricacid" name="cl_uricacid" size="5" tabindex="46" title="40~97" min="40.0" max="97.0" step="any" pattern="^[0-9]{1,2}(\.[0-9]{0,1})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_uricacid }}" onblur="calceGFR(this.value, {{ $sex }}, {{ $caselist->cl_patientid }})"> μmol/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -523,16 +523,13 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>尿蛋白</th>
+                        <th>UA</th>
                         <td>
-                            <select name="cl_urine_routine" id="cl_urine_routine" type="option" tabindex="47">
-                                <option value="" {!! "" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>请选择</option>
-                                <option value="1" {!! "1" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>正常</option>
-                                <option value="2" {!! "2" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>+</option>
-                                <option value="3" {!! "3" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>++</option>
-                                <option value="4" {!! "4" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>+++</option>
-                                <option value="5" {!! "5" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>++++</option>
-                            </select>
+                            <div class="form-group has-feedback">
+                                <input type="text" id="cl_ua" name="cl_ua" size="5" tabindex="47" title="155~428" min="155.0" max="428.0" step="any" pattern="^[0-9]{1,3}(\.[0-9]{0,1})?$" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ua }}"> μmol/L
+                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                <div class="help-block with-errors"></div>
+                            </div>
                         </td>
                         <th>抽烟</th>
                         <td>
@@ -548,10 +545,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>eGFR</th>
+                        <th>尿微</th>
                         <td>
-                            <div class="form-group">
-                                <input type="text" id="cl_egfr" name="cl_egfr" style="background-color:#CCCCCC" size="5" tabindex="48" title="1~500" pattern="^[0-9]{1,3}(\.[0-9]{0,2})?$" min="1.00" max="500.00" step="any" maxlength="6" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_egfr }}" readonly> ml/min/1.73m<sup>2</sup>
+                            <div class="form-group has-feedback">
+                                <input type="text" id="cl_urine_micro" name="cl_urine_micro" size="5" tabindex="48" title="0~30" min="0.0" max="30.0" step="any" pattern="^[0-9]{1,2}(\.[0-9]{0,1})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_urine_micro }}"> mg/L
+                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                <div class="help-block with-errors"></div>
                             </div>
                         </td>
                         <th>牙周病变</th>
@@ -562,8 +561,17 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
+                        <th>尿蛋白</th>
+                        <td>
+                            <select name="cl_urine_routine" id="cl_urine_routine" type="option" tabindex="49">
+                                <option value="" {!! "" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>请选择</option>
+                                <option value="1" {!! "1" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>正常</option>
+                                <option value="2" {!! "2" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>+</option>
+                                <option value="3" {!! "3" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>++</option>
+                                <option value="4" {!! "4" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>+++</option>
+                                <option value="5" {!! "5" == $caselist->cl_urine_routine ? "selected='selected'" : "" !!}>++++</option>
+                            </select>
+                        </td>
                         <th>咀嚼功能</th>
                         <td>
                             <input type="radio" name="cl_masticatory" id="cl_masticatory" value="0" tabindex="27" {{$caselist->cl_masticatory==0 ? "checked='checked'" : ""}}>正常
@@ -571,8 +579,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>&nbsp;</td>
-                        <td>&nbsp;</td>
+                        <th>尿酮</th>
+                        <td>
+                            <div class="form-group has-feedback">
+                                <input type="text" id="cl_ket" name="cl_ket" size="5" tabindex="50" title="0.5~1.0" min="0.5" max="1.0" step="any" pattern="^[0-9]{0,1}(\.[0-9]{0,1})?$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ket }}"> mmol/L
+                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </td>
                         <th>彩超</th>
                         <td>
                             <div class="form-group has-feedback" id="clultrasound">
@@ -595,6 +609,16 @@
                                 <div class="help-block with-errors"></div>
                             </div>
                         </td>
+                    </tr>
+                    <tr>
+                        <th>eGFR</th>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" id="cl_egfr" name="cl_egfr" style="background-color:#CCCCCC" size="5" tabindex="51" title="1~500" pattern="^[0-9]{1,3}(\.[0-9]{0,2})?$" min="1.00" max="500.00" step="any" maxlength="6" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_egfr }}" readonly> ml/min/1.73m<sup>2</sup>
+                            </div>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                     </tr>
                     </tbody>
                 </table>

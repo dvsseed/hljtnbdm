@@ -24,9 +24,10 @@
             <table class="table table-hover table-condensed table-striped" id="sortdmTable">
                 <thead>
                 <tr>
-                    <th>#<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                    <!-- th>#<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th -->
                     <th>身份证<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                     <th>卡号<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
+                    <th>姓名<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                     <th>建案日<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                     <th>建案人</th>
                     <th>责任卫教</th>
@@ -42,7 +43,7 @@
                 @if(count($buildcases))
                     @foreach($buildcases as $buildcase)
                         <tr>
-                            <td>{{ $buildcase->id }}</td>
+                            <!-- td>{{-- $buildcase->id --}}</td -->
                             @if($buildcase->doctor == $users->id || $buildcase->duty == $users->id || $buildcase->nurse == $users->id || $buildcase->dietitian == $users->id)
                                 <td>
 <a data-html="true" href="javascript:void(0)" data-toggle="popover" title="新增资料选项" data-content=
@@ -56,6 +57,7 @@
                                 <td>{{ $buildcase->personid }}</td>
                             @endif
                             <td>{{ $buildcase->cardid }}</td>
+                            <td>{{ $buildcase->name }}</td>
                             <td>{{ $buildcase->build_at }}</td>
                             <td>{{ $buildcase->doctor ? \App\User::find($buildcase->doctor)->name : "" }}</td>
                             <td>{{ $buildcase->duty ? \App\User::find($buildcase->duty)->name : "" }}</td>
@@ -71,19 +73,19 @@
                             <td>{{ $buildcase->nurse ? \App\User::find($buildcase->nurse)->name : "" }}</td>
                             <td>
                                 @if($buildcase->nurse)
-                                    <?php $pks0 = explode(",", $buildcase->soa_nurse_class_pks0);?>
+                                    <?php // $pks0 = explode(",", $buildcase->soa_nurse_class_pks0); ?>
                                     {{-- 未处理: bg-danger, 处理中: bg-warning, 已完成: bg-success  --}}
-                                    <p class="{{ $buildcase->nurse_status == 0 ? 'bg-danger' : ($buildcase->nurse_status == 1 ? 'bg-warning' : 'bg-success') }}">
-                                        @foreach($soa_nurse_classes as $key=>$nurses)
-                                            @if(in_array($nurses->soa_nurse_class_pk, $pks0))
-                                                {{ $nurses->name }}.
-                                                @if($key % 3 == 0)
-                                                    <br>
-                                                @endif
-                                            @endif
-                                        @endforeach
-                                    </p>
-                                    {{-- $buildcase->nurse_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') --}}
+                                    <span class="{{ $buildcase->nurse_status == 0 ? 'bg-danger' : ($buildcase->nurse_status == 1 ? 'bg-warning' : 'bg-success') }}">{{ $buildcase->nurse_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') }}</span>
+{{--
+                                       @foreach($soa_nurse_classes as $key=>$nurses)
+                                           @if(in_array($nurses->soa_nurse_class_pk, $pks0))
+                                               {{ $nurses->name }}.
+                                               @if($key % 3 == 0)
+                                                   <br>
+                                               @endif
+                                           @endif
+                                       @endforeach
+--}}
                                 @else
                                     &nbsp;
                                 @endif
@@ -91,8 +93,9 @@
                             <td>{{ $buildcase->dietitian ? \App\User::find($buildcase->dietitian)->name : "" }}</td>
                             <td>
                                 @if($buildcase->dietitian)
-                                    <?php $pks1 = explode(",", $buildcase->soa_nurse_class_pks1);?>
-                                    <p class="{{ $buildcase->dietitian_status == 0 ? 'bg-danger' : ($buildcase->dietitian_status == 1 ? 'bg-warning' : 'bg-success') }}">
+                                    <?php // $pks1 = explode(",", $buildcase->soa_nurse_class_pks1); ?>
+                                    <span class="{{ $buildcase->dietitian_status == 0 ? 'bg-danger' : ($buildcase->dietitian_status == 1 ? 'bg-warning' : 'bg-success') }}">{{ $buildcase->dietitian_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') }}</span>
+{{--
                                         @foreach($soa_nurse_classes as $key=>$nurses)
                                             @if(in_array($nurses->soa_nurse_class_pk, $pks1))
                                                 {{ $nurses->name }}.
@@ -101,8 +104,7 @@
                                                 @endif
                                             @endif
                                         @endforeach
-                                    </p>
-                                    {{-- $buildcase->dietitian_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') --}}
+--}}
                                 @else
                                     &nbsp;
                                 @endif

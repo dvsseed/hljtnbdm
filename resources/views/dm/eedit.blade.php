@@ -52,6 +52,14 @@
                             </div>
                         </div>
                         <div class="form-group has-feedback">
+                            {!! Form::label('memo', '卫教备注: ', ['class' => 'col-md-2 control-label']) !!}
+                            <div class="col-md-6">
+                                {!! Form::textarea('memo', $buildcase->memo, ['class' => 'form-control']) !!}
+                                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                                <span class="help-block with-errors"></span>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
                             {!! Form::label('nurse', '护理卫教: ', ['class' => 'col-md-2 control-label']) !!}
                             <div class="col-md-6">
                                 {!! Form::select('nurse', $nurses, $buildcase->nurse, ['class' => 'form-control']) !!}

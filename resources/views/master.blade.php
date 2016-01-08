@@ -59,7 +59,7 @@
 							<a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><a href="{{ url('/logout') }}">退出</a></li>
-                                                                <li><a href="{{ url('/dm/personal') }}">个人信息</a></li>
+								<li><a href="{{ url('/dm/personal') }}">个人信息</a></li>
  							</ul>
 						</li>
 					@endif

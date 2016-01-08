@@ -60,7 +60,7 @@ class AdminController extends Controller
     {
         $this->validate($request, [
             'account' => 'required|alpha_num|unique:users,account',
-            'pid' => 'required|alpha_num|unique:users,pid',
+//            'pid' => 'required|alpha_num|unique:users,pid',
         ]);
         $user = new User;
         $user->account = $request->account;

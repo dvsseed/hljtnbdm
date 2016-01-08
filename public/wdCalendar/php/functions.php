@@ -1,5 +1,4 @@
 <?php
-header("Content-Type:text/html; charset=utf-8");
 function js2PhpTime($jsdate){
   if(preg_match('@(\d+)-(\d+)-(\d+)\s+(\d+):(\d+)@', $jsdate, $matches)==1){
     //$ret = mktime($matches[4], $matches[5], 0, $matches[1], $matches[2], $matches[3]);

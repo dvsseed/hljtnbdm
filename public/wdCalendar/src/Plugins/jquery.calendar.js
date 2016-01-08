@@ -424,7 +424,7 @@
             var dM = PropareEvents(days, events, allDayEvents, scollDayEvents);
 
             var html = [];
-            html.push("<div id=\"dvwkcontaienr\" class=\"wktopcontainer\">");
+            html.push("<div id=\"dvwkcontainer\" class=\"wktopcontainer\">");
             html.push("<table class=\"wk-top\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">");
             BuildWT(html, days, allDayEvents, dM);
             html.push("</table>");
@@ -1956,12 +1956,12 @@
             var _MH = document.documentElement.clientHeight;
             var _viewType = option.view;
             if (_viewType == "day" || _viewType == "week") {
-                var $dvwkcontaienr = $("#dvwkcontaienr");
+                var $dvwkcontainer = $("#dvwkcontainer");
                 var $dvtec = $("#dvtec");
-                if ($dvwkcontaienr.length == 0 || $dvtec.length == 0) {
+                if ($dvwkcontainer.length == 0 || $dvtec.length == 0) {
                     alert(i18n.xgcalendar.view_no_ready); return;
                 }
-                var dvwkH = $dvwkcontaienr.height() + 2;
+                var dvwkH = $dvwkcontainer.height() + 2;
                 var calH = option.height - 8 - dvwkH;
                 $dvtec.height(calH);
                 if (typeof (option.scoll) == "undefined") {
@@ -2022,7 +2022,7 @@
                 }
 
                 if (viewtype == "week") {
-                    $("#dvwkcontaienr th.gcweekname").each(function(i) {
+                    $("#dvwkcontainer th.gcweekname").each(function(i) {
                         $(this).click(weekormonthtoday);
                     });
                 }

@@ -42,6 +42,8 @@
                     <input type="text" name="discharge_at" id="discharge_at" class="input-sm datepicker" size="8" data-date-format="yyyy-mm-dd" data-date-autoclose="true" data-date-clear-btn="true" data-date-today-highlight="true" data-date-today-btn="linked" data-date-language="zh-TW" value="{{ $discharge->discharge_at }}">
                     <label class="control-label" for="di_doctor">医生</label>
                     <input type="text" name="di_doctor" id="di_doctor" class="input-sm" size="5" value="{{ \App\User::find($discharge->doctor)->name }}" readonly>
+                    <label class='control-label' for="residencies">住院医生</label>
+                    {!! Form::select('residencies', $residencies, $discharge->residencies, ['class' => 'input-sm']) !!}
                 </div>
                 <hr>
 

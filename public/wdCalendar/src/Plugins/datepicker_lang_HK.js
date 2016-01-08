@@ -30,7 +30,7 @@ var i18n = $.extend({}, i18n || {}, {
         ok: " 确定 ",
         cancel: " 取消 ",
         today: "今天",
-        prev_month_title:"上一月",
-        next_month_title:"下一月"
+        prev_month_title: "上一月",
+        next_month_title: "下一月"
     }
 }); 
