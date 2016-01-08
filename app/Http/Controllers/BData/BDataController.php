@@ -142,10 +142,12 @@ use App\Caselist;
                 $contact_data["phone"] = User::find($hospital_no->patient_user_id)->phone;
                 $contact_data["email"] = User::find($hospital_no->patient_user_id)->email;
             }
+            $goal = $hospital_no -> hba1c_goal;
+            $goal_matrix = $hospital_no -> hba1c_goal_matrix();
 
             Session::put('uuid', $uuid);
 
-            return view('bdata.bdata', compact('blood_records', 'data', 'food_categories', 'stat', 'food_records', 'soap_link', 'notes', 'contact_data'));
+            return view('bdata.bdata', compact('blood_records', 'data', 'food_categories', 'stat', 'food_records', 'soap_link', 'notes', 'contact_data', 'goal', 'goal_matrix'));
         }
 
         private function get_has_food($uuid){
@@ -348,8 +350,9 @@ use App\Caselist;
                 }
             }
 
-
-            $records = HospitalNo::find($uuid)->blood_sugar()->where('calendar_date','<=',$calendar_date)-> where('calendar_date','>',$start)->orderby('calendar_date')->get();
+            $hospital_no = HospitalNo::find($uuid);
+            $hba1c_goal_matrix = $hospital_no -> hba1c_goal_matrix();
+            $records = $hospital_no->blood_sugar()->where('calendar_date','<=',$calendar_date)-> where('calendar_date','>',$start)->orderby('calendar_date')->get();
             $blood_tmp = array();
 
             for($i = 0; $i < count($records); $i++){
@@ -366,16 +369,19 @@ use App\Caselist;
                     }
 
                     if($node == 'breakfast_before' || $node == 'lunch_before' || $node == 'dinner_before' || $node == 'early_morning' || $node == 'morning'){
-                        $goal_up[$node] = 7;
-                        $goal_low[$node] = 3.9;
+                        $goal_up[$node] = $hba1c_goal_matrix -> goal_before_meal_high;
+                        $goal_low[$node] = $hba1c_goal_matrix -> goal_before_meal_low;
                     }
                     else if($node == 'breakfast_after' || $node == 'lunch_after' || $node == 'dinner_after'){
-                        $goal_up[$node] = 9;
-                        $goal_low[$node] = 5.6;
+                        $goal_up[$node] = $hba1c_goal_matrix -> goal_after_meal_high;
+                        $goal_low[$node] = $hba1c_goal_matrix -> goal_before_meal_low;
+                    }elseif($node == 'sleep_before'){
+                        $goal_up[$node] = $hba1c_goal_matrix -> goal_sleep_high;
+                        $goal_low[$node] = $hba1c_goal_matrix -> goal_sleep_low;
                     }
                     else{
-                        $goal_up[$node] = 8.3;
-                        $goal_low[$node] = 5.6;
+                        $goal_up[$node] = $hba1c_goal_matrix -> goal_morning_high;
+                        $goal_low[$node] = $hba1c_goal_matrix -> goal_morning_low;
                     }
                 }
 
@@ -733,6 +739,25 @@ use App\Caselist;
 
         }
 
+        public function post_hba1c_goal(Request $request) {
+            $uuid = Session::get('uuid');
+            $hospital_no = HospitalNo::find($uuid);
+            if($hospital_no == null && !is_numeric($request->hba1c_goal)){
+                return "fail";
+            }
+            DB::beginTransaction();
+            try {
+                $hospital_no->hba1c_goal = $request->hba1c_goal;
+                $hospital_no->save();
+
+                DB::commit();
+                return "success";
+            }catch (\Exception $e){
+                DB::rollback();
+                return $e;
+            }
+        }
+
         public function post_contact(Request $request){
             $this->validate($request, ContactInfo::rules());
             $uuid = Session::get('uuid');
@@ -759,6 +784,7 @@ use App\Caselist;
                 $contact_info->contact_phone = $request->contact_phone;
                 $contact_info->contact_email = $request->contact_email;
                 $contact_info->contact_time = $request->contact_time;
+                $contact_info->patient_note = $request->patient_note;
                 $contact_info->hospital_no_uuid = $uuid;
 
                 $contact_info->save();
@@ -959,12 +985,21 @@ use App\Caselist;
                     $calendar_date = $one_data['calendar_date'];
                     if(count(array_keys($one_data)) == 1){
                         $blood_sugar_data = $hospital_no->blood_sugar()->where('calendar_date', '=' , $calendar_date) ->first();
-                        if($blood_sugar_data !=null ){
+                        if($blood_sugar_data !=null){
                             $details = $blood_sugar_data -> blood_sugar_detail;
                             foreach( $details as $detail){
                                 $detail -> delete();
                             }
-                            $blood_sugar_data -> delete();
+                            $blood_sugar_data -> early_morning = null;
+                            $blood_sugar_data -> morning = null;
+                            $blood_sugar_data -> breakfast_before = null;
+                            $blood_sugar_data -> breakfast_after = null;
+                            $blood_sugar_data -> lunch_before = null;
+                            $blood_sugar_data -> lunch_after = null;
+                            $blood_sugar_data -> dinner_before = null;
+                            $blood_sugar_data -> dinner_after = null;
+                            $blood_sugar_data -> sleep_before = null;
+                            $blood_sugar_data -> save();
                         }
                     }
                     else{

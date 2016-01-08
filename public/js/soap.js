@@ -11,20 +11,33 @@ $( document ).ready(function() {
             success: function(result){
                 if(result){
                     var html = "";
-                    for(var i = 0; i< result.length; i++){
-                        html += '<option value="' + result[i].sub_class_pk + '">' + result[i].class_name + '</option>';
+
+                    for(var i = 0;  i < result.length; i += 4){
+                        html += '<tr class="form-inline">';
+                        for(var j = 0; j < 4 && i + j < result.length; j++) {
+                            html += '<td class="form-inline"><input type="radio"';
+                            if(i == 0&& j == 0){
+                                html += 'checked';
+                            }
+                            html += ' name="sub_class" value="' + result[i+j].sub_class_pk + '"/>&nbsp;&nbsp;' + result[i+j].class_name + '</td>';
+                        }
+                        html += '</tr>';
                     }
 
-                    $("#sub_class").html(html);
+                    $("#sub_class_table").html(html);
+
                     if(result.length > 0){
                         setSOAClass(result[0].sub_class_pk);
                     }
+                    $("input[name=sub_class]:radio").change(function(){
+                        setSOAClass( $(this).val());
+                    });
                 }
             }
         });
     });
 
-    $("#sub_class").change(function(){
+    $("input[name=sub_class]:radio").change(function(){
         setSOAClass( $(this).val());
     });
 

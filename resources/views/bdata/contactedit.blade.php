@@ -53,6 +53,16 @@
                 </select></td>
         </tr>
         <tr>
+            <td>病人注记</td>
+            <td class="form-inline">
+                <input type="radio" name="patient_note" @if($contact_data['patient_note'] == '住院') checked @endif value="住院"/> &nbsp;住院 &nbsp;
+                <input type="radio" name="patient_note" @if($contact_data['patient_note'] == '转院') checked @endif value="转院"/> &nbsp;转院 &nbsp;
+                <input type="radio" name="patient_note" @if($contact_data['patient_note'] == '死亡') checked @endif value="死亡"/> &nbsp;死亡 &nbsp;
+                <input type="radio" name="patient_note" @if($contact_data['patient_note'] != '住院' && $contact_data['patient_note'] != '转院' && $contact_data['patient_note'] != '死亡') checked @endif value="其他"/> &nbsp;其他 &nbsp;
+                <input type="input" id="patient_input" class="form-control" name="radio_note" value="@if($contact_data['patient_note'] != '住院' && $contact_data['patient_note'] != '转院' && $contact_data['patient_note'] != '死亡') {{$contact_data['patient_note']}} @endif"/>
+            </td>
+        </tr>
+        <tr>
             <td colspan="2">
                 {!! Form::open(array('url'=>'/soap/','method'=>'POST', 'id'=>'contact_data_save')) !!}
                 {!! Form::button('储 存', array('class'=>'btn btn-default', 'id'=>'contact_data_save_btn', 'style' => 'width: 150px; margin: 0 auto')) !!}
