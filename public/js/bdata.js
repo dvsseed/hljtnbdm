@@ -112,6 +112,7 @@ $( document ).ready(function() {
 
     setContactEditSave();
     setHba1cSave();
+    setBatchDeleteQuery();
 
     Chart.types.Line.extend({
         name: "LineAlt",
@@ -160,13 +161,50 @@ $( document ).ready(function() {
 
 });
 
+function setBatchDeleteQuery(){
+    $("#batch_delete_query").click(function(){
+        $.ajax({
+            type: 'GET',
+            url: '/bdata/query/' + $("#batch_start_date").val() + '/' + $("#batch_end_date").val(),
+            success: function (result) {
+                $("#batch_delete_result").html(result);
+                setDeleteQuery();
+            }
+        });
+    });
+}
+
+function setDeleteQuery(){
+    $("#batch_delete_btn").click(function(){
+        var intput_data = {};
+        intput_data['_token'] = $('input[name=_token]').val();
+        intput_data['start'] = $("#batch_start_date").val();
+        intput_data['end'] = $("#batch_end_date").val();
+        $.ajax({
+            type: 'POST',
+            url: '/bdata/batch_delete',
+            data: intput_data,
+            success: function (result) {
+                if(result == "success"){
+                    location.reload();
+                    alert("删除成功");
+                }else{
+                    alert("删除失败");
+                }
+            },
+            error: function(){
+                alert("删除失败");
+            }
+        });
+    });
+}
+
 function print_page(link){
     $(link).blur();
     window.print();
 }
 
 function openDialog(text, event){
-
 
     $("#dialog").html(text);
     $("#dialog").dialog("option", "position", {
@@ -249,6 +287,7 @@ function checkContent(){
                 }else if(active == '#batchInsert'){
                     $(this).children('#normal').hide();
                     $(this).children('#sugar_batch').show();
+                    $(this).children('#sugar_batch').unbind('keydown').keydown(setupKey);
                 }
             });
 
@@ -339,6 +378,35 @@ function checkContent(){
                 $("#after_two_week").attr('href', href);
         }
     }
+}
+
+function setupKey( event){
+    //top:3
+    var bottom = $("#batch_save_btn").closest("tr")[0].rowIndex;
+
+    var now_x = $(this).closest("tr")[0].rowIndex;
+    var now_y = $(this).closest("td").index();
+    if ( event.which == 37 ) {
+        if(now_y > 1){
+            now_y -= 1;
+        }
+    }
+    else if ( event.which == 39 ) {
+        if(now_y < 9){
+            now_y += 1;
+        }
+    }
+    else if ( event.which == 38 ) {
+        if(now_x > 4){
+            now_x -= 1;
+        }
+    }
+    else if ( event.which == 40 ) {
+        if(now_x < bottom){
+            now_x += 1;
+        }
+    }
+    $('#sugartable tr:eq(' + now_x + ') td:eq(' + now_y + ')').children('#sugar_batch').focus();
 }
 
 function setUpMessage(){

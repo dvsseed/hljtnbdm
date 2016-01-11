@@ -63,6 +63,7 @@
         <ul class="nav nav-tabs" id="top">
             <li role="presentation"><a class="menuLink" href="#data">区间资料</a></li>
             <li role="presentation"><a id="batch" class="menuLink" href="#batchInsert">批次输入</a></li>
+            <li role="presentation"><a id="batch" class="menuLink" href="#batchDelete">批次刪除</a></li>
             <li role="presentation"><a class="menuLink" href="#statics">统计资料</a></li>
             @if($soap_link != "")
                 <li role="presentation"><a class="menuLink real" href="{{$soap_link}}">SOAP</a></li>
@@ -78,6 +79,8 @@
         <br/>
 
         @include('bdata.sugar')
+
+        @include('bdata.batchDelete')
 
         @include('bdata.statics')
 

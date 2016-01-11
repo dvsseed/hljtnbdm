@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ddade707880558f6f175703fc2f0e089",
+    "hash": "8e49a749b5e9d3c85f81a7b0c9def6f5",
     "content-hash": "db0cf583461c02f59fd76512dabb4286",
     "packages": [
         {
@@ -384,7 +384,7 @@
                     "Dflydev\\ApacheMimeTypes": "src"
                 }
             },
-            "notification-url": "http://packagist.cn/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -650,16 +650,16 @@
         },
         {
             "name": "itsgoingd/clockwork",
-            "version": "v1.10",
+            "version": "v1.10.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/itsgoingd/clockwork.git",
-                "reference": "b3f0cd7f314d55ede9c70dda48425b7fb03d7ed6"
+                "reference": "f14f8e91a34efd0d17e8350a1db5d436154bec87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/b3f0cd7f314d55ede9c70dda48425b7fb03d7ed6",
-                "reference": "b3f0cd7f314d55ede9c70dda48425b7fb03d7ed6",
+                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/f14f8e91a34efd0d17e8350a1db5d436154bec87",
+                "reference": "f14f8e91a34efd0d17e8350a1db5d436154bec87",
                 "shasum": ""
             },
             "require": {
@@ -691,7 +691,7 @@
                 "logging",
                 "profiling"
             ],
-            "time": "2015-12-23 12:31:51"
+            "time": "2016-01-07 15:13:57"
         },
         {
             "name": "jakub-onderka/php-console-color",
@@ -813,7 +813,7 @@
                     "SuperClosure\\": "src/"
                 }
             },
-            "notification-url": "http://packagist.cn/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -946,7 +946,7 @@
                     "Illuminate\\": "src/Illuminate/"
                 }
             },
-            "notification-url": "http://packagist.cn/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -2807,7 +2807,7 @@
                     "TijsVerkoyen\\CssToInlineStyles\\": "src"
                 }
             },
-            "notification-url": "http://packagist.cn/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "BSD"
             ],
@@ -2870,23 +2870,23 @@
         },
         {
             "name": "yajra/laravel-oci8",
-            "version": "v2.4.5",
+            "version": "v2.4.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-oci8.git",
-                "reference": "dee08461d889dd971cd57a39ac2a6c5be311c687"
+                "reference": "8ef2385f085ab8916d95137286c1b64abf83fbd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/laravel-oci8/zipball/dee08461d889dd971cd57a39ac2a6c5be311c687",
-                "reference": "dee08461d889dd971cd57a39ac2a6c5be311c687",
+                "url": "https://api.github.com/repos/yajra/laravel-oci8/zipball/8ef2385f085ab8916d95137286c1b64abf83fbd9",
+                "reference": "8ef2385f085ab8916d95137286c1b64abf83fbd9",
                 "shasum": ""
             },
             "require": {
-                "illuminate/database": "~4.2|~5.0",
-                "illuminate/support": "~4.2|~5.0",
+                "illuminate/database": "~4.2|5.0.*",
+                "illuminate/support": "~4.2|5.0.*",
                 "php": ">=5.4",
-                "yajra/laravel-pdo-via-oci8": "~0.14"
+                "yajra/laravel-pdo-via-oci8": "~1.0"
             },
             "require-dev": {
                 "mockery/mockery": "0.9.*",
@@ -2917,29 +2917,29 @@
                 "oracle",
                 "pdo_oci"
             ],
-            "time": "2015-11-17 08:11:54"
+            "time": "2016-01-08 01:33:50"
         },
         {
             "name": "yajra/laravel-pdo-via-oci8",
-            "version": "0.15.0",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/pdo-via-oci8.git",
-                "reference": "e3532627dc4400baf3cc9f032dd48b95dceddde2"
+                "reference": "5f43c1d6f101486222542285a8d1d5036d0021d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yajra/pdo-via-oci8/zipball/e3532627dc4400baf3cc9f032dd48b95dceddde2",
-                "reference": "e3532627dc4400baf3cc9f032dd48b95dceddde2",
+                "url": "https://api.github.com/repos/yajra/pdo-via-oci8/zipball/5f43c1d6f101486222542285a8d1d5036d0021d0",
+                "reference": "5f43c1d6f101486222542285a8d1d5036d0021d0",
                 "shasum": ""
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "4.0.*"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "yajra\\": "src/"
+                "psr-4": {
+                    "Yajra\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -2948,12 +2948,12 @@
             ],
             "authors": [
                 {
-                    "name": "yajra - Arjay Angeles",
+                    "name": "Arjay Angeles",
                     "email": "aqangeles@gmail.com"
                 }
             ],
             "description": "PDO userspace driver proxying calls to PHP OCI8 driver",
-            "time": "2015-10-15 05:45:46"
+            "time": "2015-12-17 13:27:13"
         }
     ],
     "packages-dev": [
@@ -3236,16 +3236,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "v2.5.3",
+            "version": "v2.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "2fbcea96eae34a53183377cdbb0b9bec33974648"
+                "reference": "abbdfd1cff43a7b99d027af3be709bc8fc7d4769"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/2fbcea96eae34a53183377cdbb0b9bec33974648",
-                "reference": "2fbcea96eae34a53183377cdbb0b9bec33974648",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/abbdfd1cff43a7b99d027af3be709bc8fc7d4769",
+                "reference": "abbdfd1cff43a7b99d027af3be709bc8fc7d4769",
                 "shasum": ""
             },
             "require": {
@@ -3303,7 +3303,7 @@
                 "persistence",
                 "queryobject"
             ],
-            "time": "2015-12-25 16:28:24"
+            "time": "2016-01-05 22:11:12"
         },
         {
             "name": "doctrine/instantiator",

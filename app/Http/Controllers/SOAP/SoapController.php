@@ -64,11 +64,7 @@ class SoapController extends Controller
         }
 
         $user_soa_nurse_pks = [];
-        $user_soap = UserSoap::where('hospital_no_uuid', '=', $uuid)->first();
-        if($user_soap != null){
-            $user_soa_nurse_pks = $this->get_user_soa_array($user_soap -> soa_nurse_class_pks, $user_soap -> is_finished);
-            $user_soap = null;
-        }
+        $user_soap = null;
 
         $user_data = array();
         if(isset($request['history'])){
@@ -100,6 +96,12 @@ class SoapController extends Controller
             $user_data['P'] = "";
             $user_data['E'] = "";
             $user_data['R'] = "";
+
+            $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->orderBy('build_at','desc')->first();
+            if($buildcase -> soap_status == 0){
+                $user_soa_nurse_pks = $buildcase-> soa_nurse_class_pks0.','.$buildcase-> soa_nurse_class_pks1;
+                $user_soa_nurse_pks = $this->get_user_soa_array($user_soa_nurse_pks, false);
+            }
         }else{
             $user_data['S'] = $user_soap -> s_text;
             $user_data['O'] = $user_soap -> o_text;
@@ -116,9 +118,10 @@ class SoapController extends Controller
     }
 
     private function get_user_soa_array($user_soa_nurse_pks, $finished){
-        $user_soa_nurse_pks = [];
         if($user_soa_nurse_pks != null && $finished != 1){
             $user_soa_nurse_pks = explode(",", $user_soa_nurse_pks);
+        }else{
+            $user_soa_nurse_pks = [];
         }
         return $user_soa_nurse_pks;
     }
@@ -318,6 +321,13 @@ class SoapController extends Controller
             $user_soap_history -> save();
 
             if($user_soap->is_finished == true) { // 完成
+
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid) -> orderBy('build_at', 'desc') -> first();
+                if($buildcase) {
+                    $buildcase -> soap_status = 1;
+                    $buildcase -> save();
+                }
+
                 $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('duty','=',$uid)->first();
                 if($buildcase) {
                     $buildcase->duty_status = 2;
@@ -334,6 +344,13 @@ class SoapController extends Controller
                     $buildcase->save();
                 }
             } else { // 暫存
+
+                $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid) -> orderBy('build_at', 'desc') -> first();
+                if($buildcase) {
+                    $buildcase -> soap_status = 0;
+                    $buildcase -> save();
+                }
+
                 $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->where('duty','=',$uid)->first();
                 if($buildcase) {
                     $buildcase->duty_status = 1;
