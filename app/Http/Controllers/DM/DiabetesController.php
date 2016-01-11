@@ -325,12 +325,16 @@ class DiabetesController extends Controller
     public function ajaxget(Request $request)
     {
         $cases = DB::select('SELECT DISTINCT u.name AS teacher, count(*) AS number FROM buildcases AS b LEFT JOIN users AS u ON b.duty = u.id WHERE build_at >= ADDDATE(NOW(), -14) AND build_at < NOW() GROUP BY duty ORDER BY duty, personid');
-        $tbody = "<table><thead>";
-        $tbody .= "<tr><th>&nbsp;卫教师&nbsp;</th><th>&nbsp;案数&nbsp;</th></tr></thead>";
+        $tbody = "<strong>**二周内收案统计**</strong>";
+        $tbody .= "<table><thead>";
+        $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
+        $tbody .= "<tr><th>&nbsp;卫教师&nbsp;</th><th>&nbsp;</th><th>&nbsp;案数&nbsp;</th></tr></thead>";
+        $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
         $tbody .= "<tbody>";
         foreach ($cases as $case) {
             $tbody .= "<tr>";
             $tbody .= "<td>&nbsp;" . $case->teacher . "&nbsp;</td>";
+            $tbody .= "<td>&nbsp;&nbsp;</td>";
             $tbody .= "<td align='right'>&nbsp;" . $case->number . "&nbsp;</td>";
             $tbody .= "</tr>";
         }
@@ -356,11 +360,11 @@ class DiabetesController extends Controller
                 $dutyname = '';
                 $nursename = '';
                 $dietitianname = '';
-                if ($duty) $dutyname = '前次[责任卫教]: ' . User::findOrFail($user->duty)->name;
+                if ($duty) $dutyname = '前次[责任卫教]: <strong>'.User::findOrFail($user->duty)->name.'</strong>';
                 $nurse = $user->nurse;
-                if ($nurse) $nursename = ', [护理卫教]: ' . User::findOrFail($user->nurse)->name;
+                if ($nurse) $nursename = ', [护理卫教]: <strong>'.User::findOrFail($user->nurse)->name.'</strong>';
                 $dietitian = $user->dietitian;
-                if($dietitian) $dietitianname = ', [营养卫教]: '.User::findOrFail($user->dietitian)->name;
+                if($dietitian) $dietitianname = ', [营养卫教]: <strong>'.User::findOrFail($user->dietitian)->name.'</strong>';
             }
             if(empty($duty) && empty($nurse) && empty($dietitian)){
                 $msg = "该患者无建案纪录...";
