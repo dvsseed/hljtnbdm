@@ -106,19 +106,19 @@
         <td>@if(isset($blood_records['sleep_before']['below'])){{$blood_records['sleep_before']['below']}}@endif</td>
     </tr>
     <tr>
-        <td>PC-AC<30</td>
+        <td>PC-AC<1.7</td>
         <td></td>
         <td></td>
         <td>@if(isset($blood_records['pc']["breakfast"]["below"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["breakfast"]["below"]["filter_str"]}}', event)">{{$blood_records['pc']["breakfast"]["below"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["breakfast"]["below"]["avg"])){{$blood_records['pc']["breakfast"]["below"]["avg"]}}@endif</td>
         <td>@if(isset($blood_records['pc']["lunch"]["below"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["lunch"]["below"]["filter_str"]}}', event)">{{$blood_records['pc']["lunch"]["below"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["lunch"]["below"]["avg"])){{$blood_records['pc']["lunch"]["below"]["avg"]}}@endif</td>
-        <td>@if(isset($blood_records['pc']["dinner"]["below"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["lunch"]["below"]["filter_str"]}}', event)">{{$blood_records['pc']["dinner"]["below"]["count"]}} 笔</a>@endif</td>
+        <td>@if(isset($blood_records['pc']["dinner"]["below"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["dinner"]["below"]["filter_str"]}}', event)">{{$blood_records['pc']["dinner"]["below"]["count"]}} 笔</a>@endif</td>
         <td>@if(isset($blood_records['pc']["dinner"]["below"]["avg"])){{$blood_records['pc']["dinner"]["below"]["avg"]}}@endif</td>
         <td></td>
     </tr>
     <tr>
-        <td>PC-AC(30~60)</td>
+        <td>PC-AC(1.7~3.4)</td>
         <td></td>
         <td></td>
         <td>@if(isset($blood_records['pc']["breakfast"]["normal"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["breakfast"]["normal"]["filter_str"]}}', event)">{{$blood_records['pc']["breakfast"]["normal"]["count"]}} 笔</a>@endif</td>
@@ -130,7 +130,7 @@
         <td></td>
     </tr>
     <tr>
-        <td>PC-AC≧60</td>
+        <td>PC-AC≧3.4</td>
         <td></td>
         <td></td>
         <td>@if(isset($blood_records['pc']["breakfast"]["above"]["count"]))<a href="#" onclick="filter('{{$blood_records['pc']["breakfast"]["above"]["filter_str"]}}', event)">{{$blood_records['pc']["breakfast"]["above"]["count"]}} 笔</a>@endif</td>
@@ -172,7 +172,7 @@
         <td></td>
     </tr>
     <tr>
-        <td>B - B > 30</td>
+        <td>B - B > 1.7</td>
         <td></td>
         <td></td>
         <td>+@if(isset($blood_records['bb']["breakfast"]["above_p"]["count"]))<a href="#" onclick="filter('{{$blood_records['bb']["breakfast"]["above_p"]["filter_str"]}}', event)">{{$blood_records['bb']["breakfast"]["above_p"]["count"]}} 笔</a>,@endif

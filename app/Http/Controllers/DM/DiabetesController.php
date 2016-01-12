@@ -318,6 +318,7 @@ class DiabetesController extends Controller
             $buildcase->soa_nurse_class_pks1 = $pks1;
             $buildcase->dietitian_at = $today;
         }
+        $buildcase -> soap_status = 0;
         $buildcase->save();
         session()->flash('message', "建案修改成功");
         EventController::SaveEvent('buildcases', 'update(更新)');

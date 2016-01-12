@@ -222,7 +222,7 @@ use App\Caselist;
             foreach($blood_sugars as $blood_sugar){
                 $details = $blood_sugar -> blood_sugar_detail;
                 foreach($details as $detail){
-                    if($detail -> note != null){
+                    if($detail -> note !== null){
                         $notes[$blood_sugar -> calendar_date][$detail -> measure_type] = str_replace(["\r\n", "\r", "\n"], "<br/>", $detail -> note);
                     }
                 }
@@ -257,7 +257,7 @@ use App\Caselist;
 
             if($hospital_no != null){
                 $blood_sugar = $hospital_no -> blood_sugar() -> firstOrNew(array('calendar_date' => $calendar_date));
-                if($blood_sugar != null){
+                if($blood_sugar !== null){
                     DB::beginTransaction();
                     try {
                         $blood_sugar -> user_id = $hospital_no-> patient_user_id;
@@ -386,13 +386,13 @@ use App\Caselist;
                 }
 
                 //PC-AC
-                if($record -> breakfast_after != null && $record -> breakfast_before != null){
+                if($record -> breakfast_after !== null && $record -> breakfast_before !== null){
                     $pc_breakfast = $record -> breakfast_after - $record -> breakfast_before;
 
                     $target = "normal";
-                    if($pc_breakfast >= 60){
+                    if($pc_breakfast >= 3.4){
                         $target = "above";
-                    }elseif( $pc_breakfast < 30 ) {
+                    }elseif( $pc_breakfast < 1.7 ) {
                         $target = "below";
                     }
 
@@ -404,12 +404,12 @@ use App\Caselist;
                     $pc_arr["breakfast"]["all"]["avg"] += $pc_breakfast;
                 }
 
-                if($record -> lunch_after != null && $record -> lunch_before != null) {
+                if($record -> lunch_after !== null && $record -> lunch_before !== null) {
                     $pc_lunch = $record -> lunch_after - $record -> lunch_before;
                     $target = "normal";
-                    if($pc_lunch >= 60){
+                    if($pc_lunch >= 3.4){
                         $target = "above";
-                    }elseif( $pc_lunch < 30 ) {
+                    }elseif( $pc_lunch < 1.7 ) {
                         $target = "below";
                     }
                     $pc_arr["lunch"][$target]["count"]++;
@@ -420,12 +420,12 @@ use App\Caselist;
                     $pc_arr["lunch"]["all"]["avg"] += $pc_lunch;
                 }
 
-                if($record -> dinner_after != null && $record -> dinner_before != null) {
-                    $pc_dinner = $record -> dinner_after - $record -> dinner_before;
+                if($record -> dinner_after !== null && $record -> dinner_before !== null) {
+                    $pc_dinner = $record -> dinner_after - $record -> dinner_before. ' '.$record -> blood_sugar_pk;
                     $target = "normal";
-                    if($pc_dinner >= 60){
+                    if($pc_dinner >= 3.4){
                         $target = "above";
-                    }elseif( $pc_dinner < 30 ) {
+                    }elseif( $pc_dinner < 1.7 ) {
                         $target = "below";
                     }
                     $pc_arr["dinner"][$target]["count"]++;
@@ -437,9 +437,9 @@ use App\Caselist;
                 }
 
                 //B-B
-                if($i > 0 && $record -> breakfast_before != null && $records[$i-1] -> dinner_before != null && $records[$i-1] -> calendar_date == date('Y-m-d', strtotime('-1 day', strtotime($record -> calendar_date)))){
+                if($i > 0 && $record -> breakfast_before !== null && $records[$i-1] -> dinner_before !== null && $records[$i-1] -> calendar_date == date('Y-m-d', strtotime('-1 day', strtotime($record -> calendar_date)))){
                     $bb = $record -> breakfast_before - $records[$i-1] -> dinner_before;
-                    if($bb >= 30 || $bb <= -30){
+                    if($bb >= 1.7 || $bb <= -1.7){
                         if($bb >= 0){
                             $bb_arr["breakfast"]["above_p"]["count"] ++;
                             $bb_arr["breakfast"]["above_p"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
@@ -466,9 +466,9 @@ use App\Caselist;
                         $bb_arr["breakfast"]["normal_p"]["avg"] += $bb;
                     }
                 }
-                if($record -> lunch_before != null && $record -> breakfast_before != null){
+                if($record -> lunch_before !== null && $record -> breakfast_before !== null){
                     $bb = $record -> lunch_before - $record -> breakfast_before;
-                    if($bb >= 30 || $bb <= -30){
+                    if($bb >= 1.7 || $bb <= -1.7){
                         if($bb >= 0)
                             if($bb >= 0){
                                 $bb_arr["lunch"]["above_p"]["count"] ++;
@@ -492,9 +492,9 @@ use App\Caselist;
                         $bb_arr["lunch"]["normal_p"]["avg"] += $bb;
                     }
                 }
-                if($record -> dinner_before != null && $record -> lunch_before != null){
+                if($record -> dinner_before !== null && $record -> lunch_before !== null){
                     $bb = $record -> dinner_before - $record -> lunch_before;
-                    if($bb >= 30 || $bb <= -30){
+                    if($bb >= 1.7 || $bb <= -1.7){
                         if($bb >= 0){
                             $bb_arr["dinner"]["above_p"]["count"] ++;
                             $bb_arr["dinner"]["above_p"]["filter_str"] .= ((string)$record -> blood_sugar_pk." ");
@@ -559,6 +559,84 @@ use App\Caselist;
             return $blood_stat;
         }
 
+        public function get_query_start_end($start,$end){
+
+            if($start === null || $end === null){
+                return "日期格式错误";
+            }
+
+            $uuid = Session::get('uuid');
+            $hospital_no = HospitalNo::find($uuid);
+            $blood_records = $hospital_no->blood_sugar()->where('calendar_date', '<=', $end)->where('calendar_date', '>=', $start)->orderBy('calendar_date', 'DESC')->get();
+
+            for($i = 0; $i < count($blood_records); $i++){
+                $bsugar = $blood_records[$i];
+                if($bsugar->early_morning === null &&
+                    $bsugar->morning === null &&
+                $bsugar->breakfast_before === null &&
+                $bsugar->breakfast_after === null &&
+                $bsugar->lunch_before === null &&
+                $bsugar->lunch_after === null &&
+                $bsugar->dinner_before === null &&
+                $bsugar->dinner_after === null &&
+                $bsugar->sleep_before === null ){
+                    unset($blood_records[$i]);
+                }
+            }
+
+            return view('bdata.batchtemplete', compact('blood_records'));
+        }
+
+        public function delete_batch(Request $request){
+            $uuid = Session::get('uuid');
+            $hospital_no = HospitalNo::find($uuid);
+            $start = $request -> start;
+            $end = $request -> end;
+
+            if($start === null || $end === null){
+                return "日期格式错误";
+            }
+
+            DB::beginTransaction();
+            try {
+                $blood_records = $hospital_no->blood_sugar()->where('calendar_date', '<=', $end)->where('calendar_date', '>=', $start)->orderBy('calendar_date', 'DESC')->get();
+                foreach($blood_records as $bsugar){
+                    $bsugar->early_morning = null;
+                    $bsugar->morning = null;
+                    $bsugar->breakfast_before = null;
+                    $bsugar->breakfast_after = null;
+                    $bsugar->lunch_before = null;
+                    $bsugar->lunch_after = null;
+                    $bsugar->dinner_before = null;
+                    $bsugar->dinner_after = null;
+                    $bsugar->sleep_before = null;
+                    $bsugar->note = null;
+
+                    $details = $bsugar-> blood_sugar_detail();
+                    foreach($details as $detail){
+                        $detail -> delete();
+                    }
+                }
+
+                $foods = $hospital_no-> food_record()->where('calendar_date', '<=', $end)->where('calendar_date', '>=', $start)->orderBy('calendar_date', 'DESC')->get();
+                foreach($foods as $food){
+                    $details = $food-> food_detail();
+                    foreach($details as $detail){
+                        $detail -> delete();
+                    }
+                    $food -> delete();
+                }
+
+                $bsugar -> save();
+
+                DB::commit();
+                return "success";
+            }catch (\Exception $e){
+                DB::rollback();
+                return "fail";
+            }
+        }
+
         private function get_food_stat($uuid){
 
             $calendar_date = date('Y-m-d');
@@ -621,17 +699,16 @@ use App\Caselist;
 
         private function get_stat($blood_records){
 
-
             $stat['avg'] = array();
             $stat['deviation'] = array();
             $counter = 0;
             foreach($this -> nodes as $node){
                 $tmp_arr = [];
                 foreach($blood_records as $blood_record){
-                    if($blood_record[$node] != null){
+                    if($blood_record[$node] !== null){
                         $counter ++;
                     }
-                    if($blood_record[$node] != null)
+                    if($blood_record[$node] !== null)
                         array_push($tmp_arr,$blood_record[$node]);
                 }
 
@@ -862,7 +939,7 @@ use App\Caselist;
                 //delete old
                 $food_record -> food_detail() -> delete();
 
-                if($request -> details != null){
+                if($request -> details !== null){
                     //rule check
                     foreach($request -> details as $detail){
                         $user_food_detail = new UserFoodDetail();
@@ -891,17 +968,17 @@ use App\Caselist;
             $uuid = Session::get('uuid');
 
             $user_food['summary'] = HospitalNo::find($uuid)->food_record()->where('calendar_date','=',$calendar_date)->where('measure_type','=',$measure_type)->get()->first();
-            if($user_food['summary'] != null){
+            if($user_food['summary'] !== null){
                 $user_food['detail'] = $user_food['summary']->food_detail;
-                if($user_food['detail'] != null){
+                if($user_food['detail'] !== null){
                     foreach($user_food['detail'] as $detail){
                         $food = Food::find($detail -> food_pk);
                         $detail -> food_name = $food -> food_name;
                         $detail -> food_category_name = FoodCategory::find($detail -> food_category_pk) -> food_category_name;
-                        if($detail -> amount_gram != null){
+                        if($detail -> amount_gram !== null){
                             $detail -> sugar = $food -> gram_sugar_value * $detail -> amount_gram ;
                         }
-                        else if($detail -> amount_set != null){
+                        else if($detail -> amount_set !== null){
                             $detail -> sugar = $food -> set_sugar_value * $detail -> amount_set;
                         }
                     }
@@ -939,7 +1016,7 @@ use App\Caselist;
             $user[$hospital_no-> nurse_user_id] =  User::find($hospital_no-> nurse_user_id) -> name ;
 
             $start = Input::get('start');
-            if($start != null && is_numeric($start)){
+            if($start !== null && is_numeric($start)){
                 $messages = $hospital_no->messages()-> orderBy('created_at','desc')-> skip($start) -> take(20)->get();
             }else{
                 $messages = $hospital_no->messages()-> orderBy('created_at','desc') ->take(20)->get();
@@ -1050,8 +1127,6 @@ use App\Caselist;
 
         public function follow_up($patientid)
         {
-//            $lists = DB::select("SELECT b.personid, b.cardid, u.name, s.calendar_date, CASE c.trace_time WHEN '0000-00-00' THEN c.start_date ELSE c.trace_time END AS trace_time, c.start_date, c.med_date, CASE c.trace_method WHEN 1 THEN '电话' WHEN 2 THEN '传真' WHEN 3 THEN 'e-mail' WHEN 4 THEN '回诊讨论' WHEN 5 THEN '网路平台' WHEN 6 THEN '传输线' WHEN 7 THEN '其他' ELSE '' END AS trace_method, CASE c.contact_time WHEN 1 THEN '早上' WHEN 2 THEN '下午' WHEN 3 THEN '晚上' WHEN 4 THEN '全天' WHEN 5 THEN '其他' ELSE '' END AS contact_time FROM buildcases AS b INNER JOIN users AS u ON b.personid = u.account INNER JOIN blood_sugar AS s ON b.hospital_no_uuid = CONVERT(s.hospital_no_uuid USING utf8) COLLATE utf8_unicode_ci INNER JOIN contact_info AS c ON b.hospital_no_uuid = CONVERT(c.hospital_no_uuid USING utf8) COLLATE utf8_unicode_ci WHERE b.personid = '".$patientid."' ORDER BY s.calendar_date DESC");
-
             $result = DB::table('buildcases')
                 ->leftjoin('users', 'users.account', '=', 'buildcases.personid')
                 ->leftjoin('blood_sugar', DB::raw('CONVERT(blood_sugar.hospital_no_uuid USING utf8) COLLATE utf8_unicode_ci'), '=', 'buildcases.hospital_no_uuid')

@@ -32,7 +32,7 @@
                 <td>{{ $day->calendar_date }}</td>
                 <td class="form-inline">
                     <div id="normal">
-                    @if ($day->early_morning != null)
+                    @if ($day->early_morning !== null)
                         <div class="hover" @if($day->early_morning > $goal_matrix->goal_morning_high)style="background-color: #F08080" @elseif($day->early_morning < $goal_matrix->goal_morning_low)style="background-color: #F0E68C"@endif><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'early_morning', '{{$day->early_morning}}')" >{{$day->early_morning}}</a>@if(isset($notes[$day->calendar_date]["early_morning"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["early_morning"]}}', event)">*</a>@endif&nbsp;
                     @else
                         <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'early_morning');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
@@ -44,7 +44,7 @@
                 </td>
                 <td>
                     <div id="normal">
-                    @if ($day->morning != null)
+                    @if ($day->morning !== null)
                         <div class="hover" @if($day->morning > $goal_matrix->goal_morning_high)style="background-color: #F08080" @elseif($day->morning < $goal_matrix->goal_morning_low)style="background-color: #F0E68C"@endif><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'morning', '{{$day->morning}}')" >{{$day->morning}}</a>@if(isset($notes[$day->calendar_date]["morning"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["morning"]}}', event)">*</a>@endif&nbsp;
                     @else
                         <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'morning');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
@@ -56,7 +56,7 @@
                 </td>
                 <td>
                     <div id="normal">
-                        @if ($day->breakfast_before != null)
+                        @if ($day->breakfast_before !== null)
                             <div class="hover" @if($day->breakfast_before > $goal_matrix->goal_before_meal_high)style="background-color: #F08080" @elseif($day->breakfast_before < $goal_matrix->goal_before_meal_low)style="background-color: #F0E68C"@endif><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_before', '{{$day->breakfast_before}}')" >{{$day->breakfast_before}}</a>@if(isset($notes[$day->calendar_date]["breakfast_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["breakfast_before"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
@@ -68,7 +68,7 @@
                 </td>
                 <td>
                     <div id="normal">
-                        @if ($day->breakfast_after != null)
+                        @if ($day->breakfast_after !== null)
                             <div class="hover" @if($day->breakfast_after > $goal_matrix->goal_after_meal_high)style="background-color: #F08080" @elseif($day->breakfast_after < $goal_matrix->goal_after_meal_low)style="background-color: #F0E68C"@endif><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_after', '{{$day->breakfast_after}}')" >{{$day->breakfast_after}}</a>@if(isset($notes[$day->calendar_date]["breakfast_after"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["breakfast_after"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'breakfast_after');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
@@ -80,7 +80,7 @@
                 </td>
                 <td>
                     <div id="normal">
-                        @if ($day->lunch_before != null)
+                        @if ($day->lunch_before !== null)
                             <div class="hover" @if($day->lunch_before > $goal_matrix->goal_before_meal_high)style="background-color: #F08080" @elseif($day->lunch_before < $goal_matrix->goal_before_meal_low)style="background-color: #F0E68C"@endif><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_before', '{{$day->lunch_before}}')" >{{$day->lunch_before}}</a>@if(isset($notes[$day->calendar_date]["lunch_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["lunch_before"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
@@ -92,7 +92,7 @@
                 </td>
                 <td>
                     <div id="normal">
-                        @if ($day->lunch_after != null)
+                        @if ($day->lunch_after !== null)
                             <div class="hover" @if($day->lunch_after > $goal_matrix->goal_after_meal_high)style="background-color: #F08080" @elseif($day->lunch_after < $goal_matrix->goal_after_meal_low)style="background-color: #F0E68C"@endif><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_after', '{{$day->lunch_after}}')" >{{$day->lunch_after}}</a>@if(isset($notes[$day->calendar_date]["lunch_after"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["lunch_after"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'lunch_after');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
@@ -104,7 +104,7 @@
                 </td>
                 <td>
                     <div id="normal">
-                        @if ($day->dinner_before != null)
+                        @if ($day->dinner_before !== null)
                             <div class="hover" @if($day->dinner_before > $goal_matrix->goal_before_meal_high)style="background-color: #F08080" @elseif($day->dinner_before < $goal_matrix->goal_before_meal_low)style="background-color: #F0E68C"@endif><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_before', '{{$day->dinner_before}}')" >{{$day->dinner_before}}</a>@if(isset($notes[$day->calendar_date]["dinner_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["dinner_before"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
@@ -116,7 +116,7 @@
                 </td>
                 <td>
                     <div id="normal">
-                        @if ($day->dinner_after != null)
+                        @if ($day->dinner_after !== null)
                             <div class="hover" @if($day->dinner_after > $goal_matrix->goal_after_meal_high)style="background-color: #F08080" @elseif($day->dinner_after < $goal_matrix->goal_after_meal_low)style="background-color: #F0E68C"@endif><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_after', '{{$day->dinner_after}}')" >{{$day->dinner_after}}</a>@if(isset($notes[$day->calendar_date]["dinner_after"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["dinner_after"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'dinner_after');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
@@ -128,7 +128,7 @@
                 </td>
                 <td>
                     <div id="normal">
-                        @if ($day->sleep_before != null)
+                        @if ($day->sleep_before !== null)
                             <div class="hover" @if($day->sleep_before > $goal_matrix->goal_sleep_high)style="background-color: #F08080" @elseif($day->sleep_before < $goal_matrix->goal_sleep_low)style="background-color: #F0E68C"@endif><a href="#" onclick="updateBloodSugar('{{$day->calendar_date}}', 'sleep_before', '{{$day->sleep_before}}')" >{{$day->sleep_before}}</a>@if(isset($notes[$day->calendar_date]["sleep_before"]))<a href="#" onclick="openDialog('{{$notes[$day->calendar_date]["sleep_before"]}}', event)">*</a>@endif&nbsp;
                         @else
                             <div class="hover"><a href="#" class="change" onclick="updateBloodSugar('{{$day->calendar_date}}', 'sleep_before');" ><img src="/css/images/cross.gif"/></a>&nbsp;&nbsp;
@@ -154,7 +154,7 @@
                 @if($soap_link != "")
                     <td>
                         <div id="normal" style="max-width: 150px; text-align: left">
-                            @if ($day-> history_soap != null)
+                            @if ($day-> history_soap !== null)
                                 <div class="hover"><a href="{{$soap_link}}?history={{$day -> history_soap -> user_soap_history_pk}}"  title="{{$day-> history_soap -> p_text}}">@if($day-> history_soap -> p_text != ''){!! nl2br($day-> history_soap -> p_text) !!}@else{{ "soap" }}@endif</a>
                             @else
                                 <div class="hover"><a href="{{$soap_link}}?new=true&calendar_date={{$day -> calendar_date}}" class="change" ><img src="/css/images/note.gif"/></a>&nbsp;&nbsp;
