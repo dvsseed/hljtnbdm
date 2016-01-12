@@ -201,6 +201,7 @@ class DiabetesController extends Controller
         if ($request->nurse) {
             $buildcase->nurse = $request->nurse;
             $soa_nurse_class_pks0 = Input::get('soa_nurse_class_pks0', true);
+            $pks0 = array();
             if (is_array($soa_nurse_class_pks0)) {
                 $pks0 = implode(",", $soa_nurse_class_pks0);
             }
@@ -301,6 +302,7 @@ class DiabetesController extends Controller
         if ($request->nurse) {
             $buildcase->nurse = $request->nurse;
             $soa_nurse_class_pks0 = Input::get('soa_nurse_class_pks0', true);
+            $pks0 = array();
             if (is_array($soa_nurse_class_pks0)) {
                 $pks0 = implode(",", $soa_nurse_class_pks0);
             }

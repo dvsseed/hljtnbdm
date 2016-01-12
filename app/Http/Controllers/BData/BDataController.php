@@ -1047,4 +1047,27 @@ use App\Caselist;
                 return "fail";
             }
         }
+
+        public function follow_up($patientid)
+        {
+//            $lists = DB::select("SELECT b.personid, b.cardid, u.name, s.calendar_date, CASE c.trace_time WHEN '0000-00-00' THEN c.start_date ELSE c.trace_time END AS trace_time, c.start_date, c.med_date, CASE c.trace_method WHEN 1 THEN '电话' WHEN 2 THEN '传真' WHEN 3 THEN 'e-mail' WHEN 4 THEN '回诊讨论' WHEN 5 THEN '网路平台' WHEN 6 THEN '传输线' WHEN 7 THEN '其他' ELSE '' END AS trace_method, CASE c.contact_time WHEN 1 THEN '早上' WHEN 2 THEN '下午' WHEN 3 THEN '晚上' WHEN 4 THEN '全天' WHEN 5 THEN '其他' ELSE '' END AS contact_time FROM buildcases AS b INNER JOIN users AS u ON b.personid = u.account INNER JOIN blood_sugar AS s ON b.hospital_no_uuid = CONVERT(s.hospital_no_uuid USING utf8) COLLATE utf8_unicode_ci INNER JOIN contact_info AS c ON b.hospital_no_uuid = CONVERT(c.hospital_no_uuid USING utf8) COLLATE utf8_unicode_ci WHERE b.personid = '".$patientid."' ORDER BY s.calendar_date DESC");
+
+            $result = DB::table('buildcases')
+                ->leftjoin('users', 'users.account', '=', 'buildcases.personid')
+                ->leftjoin('blood_sugar', DB::raw('CONVERT(blood_sugar.hospital_no_uuid USING utf8) COLLATE utf8_unicode_ci'), '=', 'buildcases.hospital_no_uuid')
+                ->leftjoin('contact_info', DB::raw('CONVERT(contact_info.hospital_no_uuid USING utf8) COLLATE utf8_unicode_ci'), '=', 'buildcases.hospital_no_uuid')
+                ->select('buildcases.personid', 'buildcases.cardid', 'users.name', 'blood_sugar.calendar_date', 'contact_info.start_date', 'contact_info.med_date', DB::raw("(CASE contact_info.trace_time WHEN '0000-00-00' THEN contact_info.start_date ELSE contact_info.trace_time END) AS trace_time, (CASE contact_info.trace_method WHEN 1 THEN '电话' WHEN 2 THEN '传真' WHEN 3 THEN 'e-mail' WHEN 4 THEN '回诊讨论' WHEN 5 THEN '网路平台' WHEN 6 THEN '传输线' WHEN 7 THEN '其他' ELSE '' END) AS trace_method,
+(CASE contact_info.contact_time WHEN 1 THEN '早上' WHEN 2 THEN '下午' WHEN 3 THEN '晚上' WHEN 4 THEN '全天' WHEN 5 THEN '其他' ELSE '' END) AS contact_time"))
+                ->where('buildcases.personid', '=', $patientid)
+                ->orderBy('blood_sugar.calendar_date', 'desc');
+
+            $count = 0;
+            $err_msg = null;
+            if($result) {
+                $count = $result->count();
+                $lists = $result->paginate(10);
+            }
+
+            return view('bdata.followup', compact('err_msg', 'count', 'lists'));
+        }
     }

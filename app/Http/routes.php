@@ -68,6 +68,7 @@ Route::resource("patient", "Patient\PatientprofileController");
 #关于
 Route::get('/aboutpatient', ['as' => 'aboutpatient', 'uses' => 'Patient\PatientprofileController@about']);
 Route::get('patient/ccreate/{personid}', ['as' => 'patient_ccreate', 'uses' => 'Patient\PatientprofileController@ccreate']);
+Route::get('patient/followup/{patientid}', 'BData\BDataController@follow_up');
 
 #方案管理
 Route::resource("case", "Cases\CaseController");

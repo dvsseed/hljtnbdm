@@ -37,7 +37,7 @@
                     <div class="form-group has-feedback">
                         {!! Form::label('pid', '身份证号: ', ['class' => 'control-label col-md-1']) !!}
                         <div class="col-md-4">
-                            {!! Form::text('pid', old('pid'), ['class' => 'form-control', 'pattern' =>'^[_A-z0-9]{1,}$']) !!}
+                            {!! Form::text('pid', old('pid'), ['class' => 'form-control', 'pattern' => '^[_A-z0-9]{1,}$', 'maxlength' => 18]) !!}
                             <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                             <span class="help-block with-errors"></span>
                         </div>
