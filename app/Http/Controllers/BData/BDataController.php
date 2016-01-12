@@ -611,7 +611,7 @@ use App\Caselist;
                     $bsugar->dinner_after = null;
                     $bsugar->sleep_before = null;
                     $bsugar->note = null;
-
+                    $bsugar -> save();
                     $details = $bsugar-> blood_sugar_detail();
                     foreach($details as $detail){
                         $detail -> delete();
@@ -626,8 +626,6 @@ use App\Caselist;
                     }
                     $food -> delete();
                 }
-
-                $bsugar -> save();
 
                 DB::commit();
                 return "success";
