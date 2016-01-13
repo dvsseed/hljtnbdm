@@ -71,7 +71,7 @@ class DischargeController extends Controller {
 			$today = Carbon::today()->toDateString();
 			$year = Carbon::today()->year;
 			$patientprofiles = Patientprofile::where('pp_patientid', '=', $patientid)->first();
-			$residencies = User::where('position', '=', '住院医生')->orderBy('name', 'ASC')->lists('name', 'id');
+			$residencies = User::where('position', '=', '门诊医生')->orderBy('name', 'ASC')->lists('name', 'id');
 			$residencies = array('' => '请选择') + $residencies;
 			$err_msg = null;
 
@@ -125,7 +125,7 @@ class DischargeController extends Controller {
 		$patientid = User::find($discharge->user_id)->pid;
 		$today = Carbon::today()->toDateString();
 		$year = Carbon::today()->year;
-		$residencies = User::where('position', '=', '住院医生')->orderBy('name', 'ASC')->lists('name', 'id');
+		$residencies = User::where('position', '=', '门诊医生')->orderBy('name', 'ASC')->lists('name', 'id');
 		$residencies = array('' => '请选择') + $residencies;
 
 		EventController::SaveEvent('discharge', 'edit(编辑)');

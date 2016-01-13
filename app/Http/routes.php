@@ -22,7 +22,7 @@ Route::post('login', ['middleware' => 'guest', 'uses' => 'loginController@loginP
 Route::get('logout', ['middleware' => 'auth', 'as' => 'logout', 'uses' => 'loginController@logout']);
 Route::controller('password', 'PasswordController');
 #关于
-Route::get('/about', ['middleware' => 'auth', 'as' => 'about', 'uses' => 'Pages\PagesController@about']);
+#Route::get('/about', ['middleware' => 'auth', 'as' => 'about', 'uses' => 'Pages\PagesController@about']);
 
 #人员的登录详情(包括资料修改，查询)
 Route::get('dm/home', ['as' => 'dm_home', 'uses' => 'DM\DiabetesController@home']);
@@ -66,14 +66,14 @@ Route::resource('event', 'Event\EventController');
 #患者基本资料
 Route::resource("patient", "Patient\PatientprofileController");
 #关于
-Route::get('/aboutpatient', ['as' => 'aboutpatient', 'uses' => 'Patient\PatientprofileController@about']);
+#Route::get('/aboutpatient', ['as' => 'aboutpatient', 'uses' => 'Patient\PatientprofileController@about']);
 Route::get('patient/ccreate/{personid}', ['as' => 'patient_ccreate', 'uses' => 'Patient\PatientprofileController@ccreate']);
 Route::get('patient/followup/{patientid}', 'BData\BDataController@follow_up');
 
 #方案管理
 Route::resource("case", "Cases\CaseController");
 #关于
-Route::get('/aboutcase', ['as' => 'aboutcase', 'uses' => 'Cases\CaseController@about']);
+#Route::get('/aboutcase', ['as' => 'aboutcase', 'uses' => 'Cases\CaseController@about']);
 Route::get('case/create/{personid}', ['as' => 'case_create', 'uses' => 'Cases\CaseController@create']);
 
 #血糖

@@ -15,8 +15,6 @@
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <script type="text/javascript" charset="utf-8" src="/laravel-u-editor/ueditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="/laravel-u-editor/ueditor.all.min.js"> </script>
-    <!-- 建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败 -->
-    <!-- 这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文 -->
     <script type="text/javascript" charset="utf-8" src="/laravel-u-editor/lang/zh-cn/zh-cn.js"></script>
     {!! Html::style('css/discharge.css') !!}
     {{-- @include('UEditor::head'); --}}
@@ -37,13 +35,15 @@
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <div class="form-group">
                     <label class="control-label" for="di_patientname">患者名</label>
-                    <input type="text" name="di_patientname" id="di_patientname" class="input-sm" size="5" value="{{ $ppname }}" readonly>
+                    <input type="text" name="di_patientname" id="di_patientname" class="input-sm" size="5" value="{{ $ppname }}" style="background-color: lightgray !important" readonly>
                     <label class="control-label" for="di_patientid">患者ID</label>
-                    <input type="text" name="di_patientid" id="di_patientid" class="input-sm" value="{{ $patientid }}" readonly>
+                    <input type="text" name="di_patientid" id="di_patientid" class="input-sm" value="{{ $patientid }}" style="background-color: lightgray !important" readonly>
                     <label class="control-label" for="discharge_at">出院日</label>
                     <input type="text" name="discharge_at" id="discharge_at" class="input-sm datepicker" size="8" data-date-format="yyyy-mm-dd" data-date-autoclose="true" data-date-clear-btn="true" data-date-today-highlight="true" data-date-today-btn="linked" data-date-language="zh-TW" value="{{ $today }}">
                     <label class="control-label" for="di_doctor">医生</label>
-                    <input type="text" name="di_doctor" id="di_doctor" class="input-sm" size="5" value="{{ Auth::user()->name }}" readonly>
+                    <input type="text" name="di_doctor" id="di_doctor" class="input-sm" size="5" value="{{ Auth::user()->name }}" style="background-color: lightgray !important" readonly>
+                    <label class='control-label' for="residencies">主治医生</label>
+                    {!! Form::select('residencies', $residencies, old('residencies'), ['class' => 'input-sm']) !!}
                 </div>
                 <hr>
 
@@ -57,8 +57,7 @@
                     <tr>
                         <td>
                             <div class="form-group">
-                                <!-- 加载编辑器的容器 -->
-                                <script id="container" name="instruction" type="text/plain" style="width:100%; height:600px">初始化内容</script>
+                                <script id="container" name="instruction" type="text/plain" style="width:100%; height:600px"></script>
                             </div>
                         </td>
                     </tr>
@@ -68,7 +67,6 @@
                 <!-- a class="btn btn-default" href="{{-- route('discharge.index') --}}">返回</a -->
                 <a class="btn btn-info" href="{{ route('discharge.index') }}">历史纪录</a>
                 <button class="btn btn-primary" type="submit">保存</button>
-                <!-- button class="btn btn-default" type="button" onclick="printdiv()">打印</button -->
             </form>
             @else
                 <h4></h4>
@@ -84,11 +82,10 @@
 
 @section('loadScripts')
     {!! Html::script('js/discharge.js') !!}
-    <!-- 实例化编辑器 -->
     <script type="text/javascript">
         var ue = UE.getEditor('container');
         ue.ready(function() {
-            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}'); //此处为支持laravel5 csrf ,根据实际情况修改,目的就是设置 _token 值.
+            ue.execCommand('serverparam', '_token', '{{ csrf_token() }}');
         });
     </script>
 @stop
