@@ -1656,16 +1656,16 @@
         },
         {
             "name": "qiniu/php-sdk",
-            "version": "v7.0.6",
+            "version": "v7.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/qiniu/php-sdk.git",
-                "reference": "798ae5501ef1148d09720ca7a28b2044c2f16a53"
+                "reference": "50e3375a7044d5f94de9570ce5966c1b6174bda3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/798ae5501ef1148d09720ca7a28b2044c2f16a53",
-                "reference": "798ae5501ef1148d09720ca7a28b2044c2f16a53",
+                "url": "https://api.github.com/repos/qiniu/php-sdk/zipball/50e3375a7044d5f94de9570ce5966c1b6174bda3",
+                "reference": "50e3375a7044d5f94de9570ce5966c1b6174bda3",
                 "shasum": ""
             },
             "require": {
@@ -1703,7 +1703,7 @@
                 "sdk",
                 "storage"
             ],
-            "time": "2015-12-05 14:34:30"
+            "time": "2016-01-11 13:20:52"
         },
         {
             "name": "rap2hpoutre/laravel-log-viewer",
