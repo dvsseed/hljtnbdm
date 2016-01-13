@@ -139,10 +139,10 @@
                     <input class="form-control batchInput" id="sugar_batch" type="text" data="sleep_before" style="display: none" value="{{$day->sleep_before}}"/>
                 </td>
                 @if($soap_link != "")
-                    <td>
-                        <div id="normal" style="max-width: 150px">
+                    <td style="width: 150px;">
+                        <div id="normal" >
                             @if ($day->note != null)
-                                <div class="hover"><a href="#" onclick="updateNote('{{$day->calendar_date}}', this)" title="{{$day->note}}">@if(strlen($day->note) <= 13){{$day->note}}@else{{substr($day->note, 0, 10)."..."}}@endif</a>
+                                <div class="hover"><a href="#" onclick="updateNote('{{$day->calendar_date}}', this)" title="{{$day->note}}">@if(mb_strlen($day->note) <= 8){{$day->note}}@else{{mb_substr($day->note, 0, 7)."..."}}@endif</a>
                             @else
                                 <div class="hover"><a href="#" class="change" onclick="updateNote('{{$day->calendar_date}}');" ><img src="/css/images/note.gif"/></a>&nbsp;&nbsp;
                             @endif
