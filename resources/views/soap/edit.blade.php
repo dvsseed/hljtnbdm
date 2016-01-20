@@ -1,5 +1,11 @@
 <table class="table borderless" id="edit_class" style="text-align: center">
     <tr>
+        <td style="text-align: left">衛教備註</td>
+    </tr>
+    <tr>
+        <td style="text-align: left"><a href={{$burl}}>{!! nl2br($memo) !!}}</a></td>
+    </tr>
+    <tr>
         <td>S</td>
     </tr>
     <tr>

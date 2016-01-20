@@ -109,6 +109,13 @@ $( document ).ready(function() {
     });
 
     setCustomize($("#customize_class").val(), $("#customize_type").val());
+
+    if (!Modernizr.inputtypes['date']) {
+        $('input[type=date]').datepicker({
+            dateFormat: 'yy-mm-dd'
+        });
+    }
+
 });
 
 function save_soap(confirm){
@@ -120,6 +127,7 @@ function save_soap(confirm){
     inputdata['p_text'] = $("#p_text").val();
     inputdata['e_text'] = $("#e_text").val();
     inputdata['r_text'] = $("#r_text").val();
+    inputdata['health_date'] = $("#health_date").val();
     inputdata['_token'] = $('#customize > input[ name=_token]').val();
     var soap_nurse_class_pks = [];
     $("input:checkbox[name=nurse]:checked").each(function(){
@@ -143,10 +151,10 @@ function save_soap(confirm){
             var words = result.split(" ");
             if(words[0] == 'success'){
                 alert("储存成功");
-                var url = window.location.href;
-                if(url.indexOf("history=") != -1){
+                if(words.length == 2){
                     window.location.href = words[1];
                 }
+
                 $("#soap_save_btn").blur();
                 $("#soap_confirm_btn").blur();
             }else{

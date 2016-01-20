@@ -25,7 +25,7 @@
             </tr>
             @foreach($histories as $history)
                 <tr >
-                    <td>{{$history -> created_at}}</td>
+                    <td>{{$history -> health_date}}</td>
                     <td>{{$history -> updated_at}}</td>
                     <td style="text-align: left"><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{!! nl2br($history -> s_text)!!}</a></td>
                     <td style="text-align: left"><a href= "/soap/{{$uuid}}?history={{$history -> user_soap_history_pk}}" >{!! nl2br($history -> o_text)!!}</a></td>
@@ -47,4 +47,5 @@
 @section('loadScripts')
     {!! Html::script('js/all.js') !!}
     {!! Html::script('js/soap.js') !!}
+    {!! Html::script('js/modernizr.min.js') !!}
 @stop

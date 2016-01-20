@@ -89,6 +89,14 @@ class SoapController extends Controller
             Session::forget('calendar_date');
         }
 
+        $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->orderBy('build_at','desc')->first();
+        $memo = "";
+        $burl = "#";
+        if($buildcase !== null){
+            $memo = $buildcase -> memo;
+            $burl = "/dm/eedit/".$buildcase->id;
+        }
+
         if($user_soap == null || (isset($request['new']) && $request['new'] == true)){
             $user_data['S'] = "";
             $user_data['O'] = "";
@@ -96,8 +104,6 @@ class SoapController extends Controller
             $user_data['P'] = "";
             $user_data['E'] = "";
             $user_data['R'] = "";
-
-            $buildcase = Buildcase::where('hospital_no_uuid','=',$uuid)->orderBy('build_at','desc')->first();
             if($buildcase -> soap_status == 0){
                 $user_soa_nurse_pks = $buildcase-> soa_nurse_class_pks0.','.$buildcase-> soa_nurse_class_pks1;
                 $user_soa_nurse_pks = $this->get_user_soa_array($user_soa_nurse_pks, false);
@@ -114,7 +120,7 @@ class SoapController extends Controller
 
         Session::put('uuid', $uuid);
 
-        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid', 'history_pk', 'soa_nurse_classes', 'user_soa_nurse_pks', 'pks0', 'pks1'));
+        return view('soap.soap', compact('main_classes', 'sub_classes', 'soa_classes', 'user_data', 'uuid', 'history_pk', 'soa_nurse_classes', 'user_soa_nurse_pks', 'memo', 'burl'));
     }
 
     private function get_user_soa_array($user_soa_nurse_pks, $finished){
@@ -274,6 +280,7 @@ class SoapController extends Controller
                 $user_soap -> p_text = $request -> p_text;
                 $user_soap -> e_text = $request -> e_text;
                 $user_soap -> r_text = $request -> r_text;
+                $user_soap -> health_date = $request -> health_date;
                 $user_soap -> soa_nurse_class_pks = $request -> soa_nurse_class_pks;
 
                 if(isset($request["confirm"]) && $request -> confirm == "true"){
@@ -291,6 +298,7 @@ class SoapController extends Controller
             $user_soap_history -> p_text = $request -> p_text;
             $user_soap_history -> e_text = $request -> e_text;
             $user_soap_history -> r_text = $request -> r_text;
+            $user_soap_history -> health_date = $request -> health_date;
             $user_soap_history -> user_id = Auth::user() -> id;
             $user_soap_history -> created_at = $user_soap -> created_at;
             $user_soap_history -> soa_nurse_class_pks = $request -> soa_nurse_class_pks;
@@ -369,7 +377,7 @@ class SoapController extends Controller
             }
 
             DB::commit();
-            return "success /soap/$uuid?history=".$user_soap_history->user_soap_history_pk;
+            return "success /bdata/$uuid";
         }catch (\Exception $e){
             DB::rollback();
 	        return "$e";
