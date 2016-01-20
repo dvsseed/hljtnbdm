@@ -137,6 +137,7 @@ class PatientprofileController extends Controller
             $user->name = $request->pp_name;
             $user->password = Hash::make($user->account);
             $user->pid = $request->pp_patientid;
+            $user->position = '患者';
             $user->phone = $request->pp_mobile1;
             $user->email = $request->pp_email;
             $user->save();
@@ -354,6 +355,29 @@ class PatientprofileController extends Controller
         return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'ppname', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind'));
     }
 
+    public function eedit($patientid)
+    {
+        $pps = Patientprofile::where('pp_patientid', '=', $patientid)->first();
+        $id = $pps->id;
+        $patientprofile = Patientprofile::findOrFail($id);
+        $casecare = CaseCare::where('patientprofile1_id', '=', $id)->firstOrFail();
+        $carbon = Carbon::today();
+        $year = $carbon->year;
+        $bsms = BSM::orderBy('bm_order')->get();
+        $account = User::findOrFail($patientprofile->user_id)->account;
+        $ppname = User::findOrFail($patientprofile->user_id)->name;
+        $areas = Patientprofile::$_area;
+        $doctors = User::where('position','=','门诊医生')->orWhere('position', '=', '住院医生')->orderBy('name', 'ASC')->lists('name', 'id');
+        $doctors = array('' => '不详') + $doctors;
+        $sources = Patientprofile::$_source;
+        $occupations = Patientprofile::$_occupation;
+        $languages = Patientprofile::$_language;
+        $actkind = Patientprofile::$_actkind;
+
+        EventController::SaveEvent('patientprofile', 'edit(编辑)');
+        return view('patient.edit', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'ppname', 'areas', 'doctors', 'sources', 'occupations', 'languages', 'actkind'));
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -395,6 +419,7 @@ class PatientprofileController extends Controller
             $user = User::find($patientprofile->user_id);
             if($user) {
                 $user->name = $request->pp_name;
+                $user->position = '患者';
                 $user->save();
             }
 

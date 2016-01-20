@@ -18,7 +18,7 @@
             <div class="col-md-2"><h4>{{$data['patient_bday']}} , {{$data['patient_age']}}岁</h4></div>
         </div>
         <br/>
-        @if($contact_data != null)
+        @if($contact_data != null && Auth::user()->position != null && Auth::user()->position != '患者')
         <table class="table">
             <tr>
                 <td>卫教师</td>
@@ -62,21 +62,25 @@
         <br/>
         <ul class="nav nav-tabs" id="top">
             <li role="presentation"><a class="menuLink" href="#data">区间资料</a></li>
-            <li role="presentation"><a id="batch" class="menuLink" href="#batchInsert">批次输入</a></li>
-            <li role="presentation"><a id="batch" class="menuLink" href="#batchDelete">批次刪除</a></li>
-            <li role="presentation"><a class="menuLink" href="#statics">统计资料</a></li>
-            @if($soap_link != "")
-                <li role="presentation"><a class="menuLink real" href="{{$soap_link}}">SOAP</a></li>
+            @if(Auth::user()->position != null && Auth::user()->position != '患者')
+                <li role="presentation"><a id="batch" class="menuLink" href="#batchInsert">批次输入</a></li>
+                <li role="presentation"><a id="batch" class="menuLink" href="#batchDelete">批次刪除</a></li>
+                <li role="presentation"><a class="menuLink" href="#statics">统计资料</a></li>
+                @if($soap_link != "")
+                    <li role="presentation"><a class="menuLink real" href="{{$soap_link}}">SOAP</a></li>
+                @endif
+                <li role="presentation"><a class="menuLink" href="#hba1c">HbA1C</a></li>
             @endif
-            <li role="presentation"><a class="menuLink" href="#hba1c">HbA1C</a></li>
             <li role="presentation"><a class="menuLink" href="#message">留言</a></li>
-            <li role="presentation"><a class="menuLink" href="#goal">血糖目标</a></li>
-            <li role="presentation"><a class="menuLink real" href="/patient/followup/{{$data['patient_id']}}">随访清单</a></li>
-            <li role="presentation"><a class="menuLink real" href="/patient/ccreate/{{$data['patient_id']}}">患者资料</a></li>
-            <li role="presentation"><a class="menuLink real" href="/case/create/{{$data['patient_id']}}">方案资料</a></li>
-            <li role="presentation"><a class="menuLink real" href="/discharge/history/{{$data['patient_id']}}">出院指导</a></li>
-            <li role="presentation"><a class="menuLink" href="#contactedit">联络资料</a></li>
+            @if(Auth::user()->position != null && Auth::user()->position != '患者')
+                <li role="presentation"><a class="menuLink" href="#goal">血糖目标</a></li>
+                <!-- li role="presentation"><a class="menuLink real" href="/patient/followup/{{-- $data['patient_id'] --}}">随访清单</a></li -->
+                <li role="presentation"><a class="menuLink real" href="/patient/eedit/{{$data['patient_id']}}">患者资料</a></li>
+                <li role="presentation"><a class="menuLink real" href="/case/history/{{$data['patient_id']}}">方案资料</a></li>
+                <li role="presentation"><a class="menuLink real" href="/discharge/history/{{$data['patient_id']}}">出院指导</a></li>
+                <li role="presentation"><a class="menuLink" href="#contactedit">联络资料</a></li>
             <li role="presentation"><a class="no-hover" href="#" onclick="print_page(this)">列印本页</a></li>
+            @endif
         </ul>
         <br/>
 

@@ -34,14 +34,22 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/dm/home">共同照护</a>
+            <a class="navbar-brand" href="/dm/home">糖尿病共同照护</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav">
-                <li class="@yield('activep')"><a href="/patient">患者资料</a></li>
-                <li class="@yield('activeb')"><a href="/bdata/">血糖</a></li>
-                <li class="@yield('activec')"><a href="/case">方案</a></li>
-                <!-- li class="@yield('aactive')"><a href="@yield('navabout')">关于</a></li -->
+                @if(Auth::user()->position == '住院医生' || Auth::user()->position == '门诊医生')
+                    <li class="@yield('activep')"><a href="/patient">患者资料</a></li>
+                    <li class="@yield('activef')"><a href="/patient/followup/">随访清单</a></li>
+                    <li class="@yield('activec')"><a href="/case">方案</a></li>
+                    <li class="@yield('actived')"><a href="/discharge">出院指导</a></li>
+                @else
+                    <li class="@yield('activep')"><a href="/patient">患者资料</a></li>
+                    <li class="@yield('activef')"><a href="/patient/followup/">随访清单</a></li>
+                    <li class="@yield('activec')"><a href="/case">方案</a></li>
+                @endif
+                <li><a href="http://www.hljtnb.com" target="__blank">黑龙江瑞京</a></li>
+                <!-- li class="yield('aactive')"><a href="yield('navabout')">关于</a></li -->
                 <!-- li><a href="{{-- url('/logout') --}}">退出</a></li -->
             </ul>
             <ul class="nav navbar-nav navbar-right">

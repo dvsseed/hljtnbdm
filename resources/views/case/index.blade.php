@@ -5,9 +5,7 @@
 @stop
 
 @section('activec')
-<li class=""><a href="/patient">患者资料</a></li>
-<li class=""><a href="/bdata/">血糖</a></li>
-<li class="active"><a href="/case">方案</a></li>
+active
 @stop
 
 @section('content')
@@ -20,7 +18,8 @@
         <form method="GET" action="/case" accept-charset="UTF-8" class="form navbar-form navbar-right searchform">
             <select class="form-control" name="category" required>
                 <option value="" {{Text::selected($category, '')}}>请选择</option>
-                <option value="1" {{Text::selected($category, 1)}}>收案日期</option>
+                <option value="1" {{Text::selected($category, 1)}}>病患ID</option>
+                <option value="2" {{Text::selected($category, 2)}}>收案日期</option>
             </select>
             <input class="form-control" placeholder="按栏位搜索..." name="search" type="text" value="{{ $search }}" required>
             <input class="btn btn-default" type="submit" value="搜寻">
@@ -46,8 +45,8 @@
                         @foreach($caselists as $caselist)
                             <tr>
                                 <td>{{ $caselist->id }}</td>
-                                <td>{{ \App\User::find($caselist->user_id)->pid }}</td>
-                                <td>{{ \App\User::find($caselist->user_id)->name }}</td>
+                                <td>{{ $caselist->pid }}</td>
+                                <td>{{ $caselist->name }}</td>
                                 <td>{{ $caselist->cl_case_type==1 ? '初诊' : ($caselist->cl_case_type==2 ? '复诊' : ($caselist->cl_case_type==3 ? '年度检查' : '一般')) }}</td>
                                 <td>{{ $caselist->cl_case_date }}</td>
                                 <td>{{ \App\User::find($caselist->cl_case_educator)->name }}</td>

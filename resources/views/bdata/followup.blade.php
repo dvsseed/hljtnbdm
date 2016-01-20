@@ -4,7 +4,8 @@
     随访清单
 @stop
 
-@section('activec')
+@section('activef')
+active
 @stop
 
 @section('content')
@@ -46,7 +47,7 @@
                     @if (count($lists))
                         @foreach($lists as $list)
                             <tr>
-                                <td>{{ $list->personid }}</td>
+                                <td><a href='/bdata/{{ $list->hospital_no_uuid }}'>{{ $list->personid }}</a></td>
                                 <td>{{ $list->cardid }}</td>
                                 <td>{{ $list->name }}</td>
                                 <td>{{ $list->calendar_date }}</td>

@@ -5,9 +5,7 @@
 @stop
 
 @section('activec')
-    <li class=""><a href="/patient">患者资料</a></li>
-    <li class=""><a href="/bdata/">血糖</a></li>
-    <li class="active"><a href="/case">方案</a></li>
+active
 @stop
 
 @section('css')
@@ -257,7 +255,7 @@
                         <th>TC</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_tc" name="cl_tc" size="5" tabindex="38" title="0~6.19" min="0.00" max="6.19" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_tc }}"> mmol/l
+                                <input type="text" id="cl_tc" name="cl_tc" size="5" tabindex="38" title="0~6.19" min="0.00" max="6.19" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_tc }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -278,7 +276,7 @@
                         <th>TG</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_tg" name="cl_tg" size="5" tabindex="39" title="0.4~1.86" min="0.40" max="1.86" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_tg }}"> mmol/l
+                                <input type="text" id="cl_tg" name="cl_tg" size="5" tabindex="39" title="0.4~1.86" min="0.40" max="1.86" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_tg }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -298,7 +296,7 @@
                         <th>LDL</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_ldl" name="cl_ldl" size="5" tabindex="40" title="2.07~3.10" min="2.07" max="3.10" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ldl }}"> mmol/l
+                                <input type="text" id="cl_ldl" name="cl_ldl" size="5" tabindex="40" title="2.07~3.10" min="2.07" max="3.10" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ldl }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -329,7 +327,7 @@
                         <th>HDL</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_hdl" name="cl_hdl" size="5" tabindex="41" title="1.2~1.68" min="1.20" max="1.68" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_hdl }}"> mmol/l
+                                <input type="text" id="cl_hdl" name="cl_hdl" size="5" tabindex="41" title="1.2~1.68" min="1.20" max="1.68" step="any" pattern="^[0-9]{0,2}(\.[0-9]{0,2})?$" maxlength="5" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_hdl }}"> mmol/l
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -507,7 +505,7 @@
                         <th>肌酐</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_uricacid" name="cl_uricacid" size="5" tabindex="46" title="40~97" min="40.0" max="97.0" step="any" pattern="^[0-9]{1,2}(\.[0-9]{0,1})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_uricacid }}" onblur="calceGFR(this.value, {{ $sex }}, {{ $caselist->cl_patientid }})"> μmol/L
+                                <input type="text" id="cl_uricacid" name="cl_uricacid" size="5" tabindex="46" title="40~97" min="40" max="97" step="any" pattern="^[0-9]{1,3}?$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_uricacid }}" onblur="calceGFR(this.value, {{ $sex }}, {{ $caselist->cl_patientid }})"> μmol/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -548,7 +546,7 @@
                         <th>尿微</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_urine_micro" name="cl_urine_micro" size="5" tabindex="48" title="0~30" min="0.0" max="30.0" step="any" pattern="^[0-9]{1,2}(\.[0-9]{0,1})?$" maxlength="4" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_urine_micro }}"> mg/L
+                                <input type="text" id="cl_urine_micro" name="cl_urine_micro" size="5" tabindex="48" title="0~30" min="0" max="30" step="any" pattern="^[0-9]{1,3}?$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_urine_micro }}"> mg/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>

@@ -4,11 +4,8 @@
     出院指导-增
 @stop
 
-@section('activec')
-    <li class=""><a href="/patient">患者资料</a></li>
-    <li class=""><a href="/bdata/">血糖</a></li>
-    <li class=""><a href="/case">方案</a></li>
-    <li class="active"><a href="/discharge">出院指导</a></li>
+@section('actived')
+active
 @stop
 
 @section('css')

@@ -68,12 +68,14 @@ Route::resource("patient", "Patient\PatientprofileController");
 #关于
 #Route::get('/aboutpatient', ['as' => 'aboutpatient', 'uses' => 'Patient\PatientprofileController@about']);
 Route::get('patient/ccreate/{personid}', ['as' => 'patient_ccreate', 'uses' => 'Patient\PatientprofileController@ccreate']);
+Route::get('patient/eedit/{personid}', ['as' => 'patient_eedit', 'uses' => 'Patient\PatientprofileController@eedit']);
 Route::get('patient/followup/{patientid}', 'BData\BDataController@follow_up');
 
 #方案管理
 Route::resource("case", "Cases\CaseController");
 #关于
 #Route::get('/aboutcase', ['as' => 'aboutcase', 'uses' => 'Cases\CaseController@about']);
+Route::get('case/history/{personid}', ['as' => 'case_history', 'uses' => 'Cases\CaseController@history']);
 Route::get('case/create/{personid}', ['as' => 'case_create', 'uses' => 'Cases\CaseController@create']);
 
 #血糖

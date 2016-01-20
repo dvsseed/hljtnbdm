@@ -5,7 +5,7 @@
 @stop
 
 @section('activep')
-    active
+active
 @stop
 
 @section('navabout')

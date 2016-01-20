@@ -1127,7 +1127,7 @@ use App\Caselist;
         {
             $result = DB::table(DB::raw('contact_info AS ci'))
                 ->select('bc.personid', 'bc.cardid', 'users.name', 'bs.calendar_date', 'ci.start_date', 'ci.med_date', DB::raw("(CASE ci.trace_time WHEN '0000-00-00' THEN ci.start_date ELSE ci.trace_time END) AS trace_time, (CASE ci.trace_method WHEN 1 THEN '电话' WHEN 2 THEN '传真' WHEN 3 THEN 'e-mail' WHEN 4 THEN '回诊讨论' WHEN 5 THEN '网路平台' WHEN 6 THEN '传输线' WHEN 7 THEN '其他' ELSE '' END) AS trace_method,
-(CASE ci.contact_time WHEN 1 THEN '早上' WHEN 2 THEN '下午' WHEN 3 THEN '晚上' WHEN 4 THEN '全天' WHEN 5 THEN '其他' ELSE '' END) AS contact_time"))
+(CASE ci.contact_time WHEN 1 THEN '早上' WHEN 2 THEN '下午' WHEN 3 THEN '晚上' WHEN 4 THEN '全天' WHEN 5 THEN '其他' ELSE '' END) AS contact_time, ci.hospital_no_uuid"))
                 ->join(DB::raw('(SELECT hospital_no_uuid, MAX(calendar_date) AS calendar_date FROM blood_sugar GROUP BY hospital_no_uuid) AS bs'), function($join){ $join->on('ci.hospital_no_uuid', '=', 'bs.hospital_no_uuid'); })
                 ->join(DB::raw('(SELECT personid, cardid, hospital_no_uuid, MAX(build_at) FROM buildcases GROUP BY hospital_no_uuid) AS bc'), function($join){ $join->on('ci.hospital_no_uuid', '=', DB::raw('CONVERT(bc.hospital_no_uuid USING utf8) COLLATE utf8_unicode_ci')); })
                 ->join('users', 'users.account', '=', 'bc.personid')

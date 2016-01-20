@@ -4,11 +4,8 @@
     出院指导管理
 @stop
 
-@section('activec')
-<li class=""><a href="/patient">患者资料</a></li>
-<li class=""><a href="/bdata/">血糖</a></li>
-<li class=""><a href="/case">方案</a></li>
-<li class="active"><a href="/discharge">出院指导</a></li>
+@section('actived')
+active
 @stop
 
 @section('content')
@@ -39,7 +36,9 @@
                         <th>医生<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                         <th>主治医生<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                         <th>出院日期<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
-                        <th class="text-center">功能</th>
+                        @if(Auth::user()->position == '住院医生')
+                            <th class="text-center">功能</th>
+                        @endif
                     </tr>
                     </thead>
 
@@ -53,14 +52,16 @@
                                 <td>{{ \App\User::find($discharge->doctor)->name }}</td>
                                 <td>{{ $discharge->name }}</td>
                                 <td>{{ $discharge->discharge_at }}</td>
-                                <td>
-                                    <a class="btn btn-warning" href="{{ route('discharge.edit', $discharge->id) }}">改</a>
-                                    <form action="{{ route('discharge.destroy', $discharge->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('确定删除?')">
-                                        <input type="hidden" name="_method" value="DELETE">
-                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                        <button class="btn btn-danger" type="submit">删</button>
-                                    </form>
-                                </td>
+                                @if(Auth::user()->position == '住院医生')
+                                    <td>
+                                        <a class="btn btn-warning" href="{{ route('discharge.edit', $discharge->id) }}">改</a>
+                                        <form action="{{ route('discharge.destroy', $discharge->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('确定删除?')">
+                                            <input type="hidden" name="_method" value="DELETE">
+                                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                            <button class="btn btn-danger" type="submit">删</button>
+                                        </form>
+                                    </td>
+                                @endif
                             </tr>
                         @endforeach
                     @else

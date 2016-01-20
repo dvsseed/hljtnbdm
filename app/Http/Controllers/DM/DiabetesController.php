@@ -42,7 +42,7 @@ class DiabetesController extends Controller
             ->where('users.id', '=', $users->id)
             ->get();
         $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
-        if ($users->position == null) {
+        if ($users->position == null || $users->position == '患者') {
             // 患者登入
 //            return view('dm.personal', compact('doctor', 'users', 'features'));
             return Redirect::route("bdata");
@@ -168,7 +168,16 @@ class DiabetesController extends Controller
      */
     public function create()
     {
-        $dutys = User::where('position', '=', '护理师')->orWhere('position', '=', '营养师')->orderBy('name', 'ASC')->lists('name', 'id');
+        $dutys = User::where('position', '=', '院长')
+            ->orWhere('position', '=', '副院长')
+            ->orWhere('position', '=', '病区主任')
+            ->orWhere('position', '=', '门诊医生')
+            ->orWhere('position', '=', '住院医生')
+            ->orWhere('position', '=', '护理师')
+            ->orWhere('position', '=', '营养师')
+            ->orWhere('position', '=', '医助')
+            ->orderBy('name', 'ASC')
+            ->lists('name', 'id');
         $dutys = array('' => '请选择') + $dutys;
         $nurses = User::where('position', '=', '护理师')->orderBy('name', 'ASC')->lists('name', 'id');
         $nurses = array('' => '请选择') + $nurses;
@@ -201,9 +210,10 @@ class DiabetesController extends Controller
         if ($request->nurse) {
             $buildcase->nurse = $request->nurse;
             $soa_nurse_class_pks0 = Input::get('soa_nurse_class_pks0', true);
-            $pks0 = array();
             if (is_array($soa_nurse_class_pks0)) {
                 $pks0 = implode(",", $soa_nurse_class_pks0);
+            } else {
+                $pks0 = array();
             }
             $buildcase->soa_nurse_class_pks0 = $pks0;
             $buildcase->nurse_status = 0;
@@ -214,6 +224,8 @@ class DiabetesController extends Controller
             $soa_nurse_class_pks1 = Input::get('soa_nurse_class_pks1', true);
             if (is_array($soa_nurse_class_pks1)) {
                 $pks1 = implode(",", $soa_nurse_class_pks1);
+            } else {
+                $pks1 = array();
             }
             $buildcase->soa_nurse_class_pks1 = $pks1;
             $buildcase->dietitian_status = 0;
@@ -272,7 +284,16 @@ class DiabetesController extends Controller
     public function eedit($id)
     {
         $buildcase = Buildcase::findOrFail($id);
-        $dutys = User::where('position', '=', '护理师')->orWhere('position', '=', '营养师')->orderBy('name', 'ASC')->lists('name', 'id');
+        $dutys = User::where('position', '=', '院长')
+            ->orWhere('position', '=', '副院长')
+            ->orWhere('position', '=', '病区主任')
+            ->orWhere('position', '=', '门诊医生')
+            ->orWhere('position', '=', '住院医生')
+            ->orWhere('position', '=', '护理师')
+            ->orWhere('position', '=', '营养师')
+            ->orWhere('position', '=', '医助')
+            ->orderBy('name', 'ASC')
+            ->lists('name', 'id');
         $dutys = array('' => '请选择') + $dutys;
         $nurses = User::where('position', '=', '护理师')->orderBy('name', 'ASC')->lists('name', 'id');
         $nurses = array('' => '请选择') + $nurses;
@@ -302,9 +323,10 @@ class DiabetesController extends Controller
         if ($request->nurse) {
             $buildcase->nurse = $request->nurse;
             $soa_nurse_class_pks0 = Input::get('soa_nurse_class_pks0', true);
-            $pks0 = array();
             if (is_array($soa_nurse_class_pks0)) {
                 $pks0 = implode(",", $soa_nurse_class_pks0);
+            } else {
+                $pks0 = array();
             }
             $buildcase->soa_nurse_class_pks0 = $pks0;
             $buildcase->nurse_at = $today;
@@ -314,6 +336,8 @@ class DiabetesController extends Controller
             $soa_nurse_class_pks1 = Input::get('soa_nurse_class_pks1', true);
             if (is_array($soa_nurse_class_pks1)) {
                 $pks1 = implode(",", $soa_nurse_class_pks1);
+            } else {
+                $pks1 = array();
             }
             $buildcase->soa_nurse_class_pks1 = $pks1;
             $buildcase->dietitian_at = $today;
