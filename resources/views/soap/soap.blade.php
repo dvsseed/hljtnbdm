@@ -5,6 +5,7 @@
 @stop
 
 @section('content')
+    {!! Html::style('css/all.css') !!}
     <div class="container-fluid">
         @if(isset($err_msg))
             @include('soap.error')
@@ -14,16 +15,18 @@
                     <td colspan="2">
                         <table class="table borderless" id="main_class">
                             <tr>
-                                <td style="text-align: left">
-                                    <a class="btn btn-success" href="/soap/{{$uuid}}?new=true">增</a>
+                                <td colspan="3" class="form-inline" style="text-align: left">
+                                    <a class="btn btn-success" href="/soap/{{$uuid}}?new=true" style="margin-right: 15px">增</a>
+                                    卫教日期
+                                    <input id="health_date" type="date" class="form-control" style="margin-left: 15px" value="{{date("Y-m-d")}}"/>
                                 </td>
                             </tr>
                             <tr>
                                 @foreach($main_classes as $main_class)
                                     @if($main_class -> main_class_pk == 1)
-                                        <td><button class="form-control btn-primary" data="{{$main_class -> main_class_pk}}">{{$main_class -> class_name}}</button></td>
+                                        <td width="{{100/count($main_classes)}}%"><button class="form-control btn-primary" data="{{$main_class -> main_class_pk}}">{{$main_class -> class_name}}</button></td>
                                     @else
-                                        <td><button class="form-control" data="{{$main_class -> main_class_pk}}">{{$main_class -> class_name}}</button></td>
+                                        <td width="{{100/count($main_classes)}}%"><button class="form-control" data="{{$main_class -> main_class_pk}}">{{$main_class -> class_name}}</button></td>
                                     @endif
                                 @endforeach
                             </tr>
@@ -42,4 +45,5 @@
 @section('loadScripts')
     {!! Html::script('js/all.js') !!}
     {!! Html::script('js/soap.js') !!}
+    {!! Html::script('js/modernizr.min.js') !!}
 @stop
