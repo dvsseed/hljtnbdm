@@ -41,7 +41,15 @@ class DiabetesController extends Controller
             ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
             ->where('users.id', '=', $users->id)
             ->get();
-        $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
+        // 權限
+//        $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
+        $chiefs = array("院长", "副院长", "病区主任");
+        $positions = array("院长", "副院长", "病区主任", "门诊医生", "住院医生");
+        if (in_array($users->position, $positions)) {
+            $doctor = 1;
+        } else {
+            $doctor = 0;
+        }
         if ($users->position == null || $users->position == '患者') {
             // 患者登入
 //            return view('dm.personal', compact('doctor', 'users', 'features'));
@@ -58,19 +66,41 @@ class DiabetesController extends Controller
                 if($field!="other") {
                     $results = DB::table('buildcases')
                         ->leftjoin('users', 'users.pid', '=', 'buildcases.personid')
-                        ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')->where($field, 'like', '%' . $search . '%')->where(function($query){
-                        $users = Auth::user();
-                        $query->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id);
-                    })->orderBy('build_at', 'desc');
+                        ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')
+                        ->where($field, 'like', '%' . $search . '%')
+                        ->where(function($query){
+                            $users = Auth::user();
+                            $chiefs = array("院长", "副院长", "病区主任");
+                            if (!in_array($users->position, $chiefs)) {
+                                $query->where('doctor', '=', $users->id)
+                                    ->orWhere('duty', '=', $users->id)
+                                    ->orWhere('nurse', '=', $users->id)
+                                    ->orWhere('dietitian', '=', $users->id);
+                            }
+                        })->orderBy('build_at', 'desc');
                 } else {
                     $results = DB::table('buildcases')
                         ->leftjoin('users', 'users.pid', '=', 'buildcases.personid')
-                        ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
+                        ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name');
+                    if (!in_array($users->position, $chiefs)) {
+                        $results->where('doctor', '=', $users->id)
+                            ->orWhere('duty', '=', $users->id)
+                            ->orWhere('nurse', '=', $users->id)
+                            ->orWhere('dietitian', '=', $users->id);
+                    }
+                    $results->orderBy('build_at', 'desc');
                 }
             } else {
                 $results = DB::table('buildcases')
                     ->leftjoin('users', 'users.pid', '=', 'buildcases.personid')
-                    ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
+                    ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name');
+                if (!in_array($users->position, $chiefs)) {
+                    $results->where('doctor', '=', $users->id)
+                        ->orWhere('duty', '=', $users->id)
+                        ->orWhere('nurse', '=', $users->id)
+                        ->orWhere('dietitian', '=', $users->id);
+                }
+                $results->orderBy('build_at', 'desc');
             }
             $count = $results->count();
             $buildcases = $results->paginate(10)->appends(['search' => $search, 'category' => $category]);
