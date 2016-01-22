@@ -16,6 +16,7 @@ class CreateCaselistTable extends Migration
             $table->increments('id');
             $table->integer('pp_id')->unsigned();
             $table->integer('user_id')->unsigned();
+            $table->string('cl_patientid', 50)->nullable();
             $table->char('cl_case_date', 10)->nullable();
             $table->integer('cl_case_educator')->unsigned();
             $table->string('cl_case_type', 12)->nullable();

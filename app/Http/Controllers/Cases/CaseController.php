@@ -28,7 +28,7 @@ class CaseController extends Controller {
 		$category = $request->category;
 		if ($search) {
 			$categoryList = [
-				1 => "pid",
+				1 => "cl_patientid",
 				2 => "cl_case_date",
 			];
 			$field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
@@ -36,21 +36,21 @@ class CaseController extends Controller {
 //				$result = Caselist::where($field, 'like', '%' . $search . '%')->orderBy('created_at', 'desc');
 				$result = DB::table('caselist')
 					->join('users', 'users.id', '=', 'caselist.user_id')
-					->select('caselist.id', 'users.pid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
+					->select('caselist.id', 'caselist.cl_patientid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
 					->where($field, 'like', '%' . $search . '%')
 					->orderBy('caselist.created_at', 'desc');
 			} else {
 //				$result = Caselist::orderBy('created_at', 'desc');
 				$result = DB::table('caselist')
 					->join('users', 'users.id', '=', 'caselist.user_id')
-					->select('caselist.id', 'users.pid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
+					->select('caselist.id', 'caselist.cl_patientid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
 					->orderBy('caselist.created_at', 'desc');
 			}
 		} else {
 //			$result = Caselist::orderBy('created_at', 'desc');
 			$result = DB::table('caselist')
 				->join('users', 'users.id', '=', 'caselist.user_id')
-				->select('caselist.id', 'users.pid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
+				->select('caselist.id', 'caselist.cl_patientid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
 				->orderBy('caselist.created_at', 'desc');
 		}
 
@@ -105,6 +105,7 @@ class CaseController extends Controller {
 		$caselist = new Caselist();
 		$caselist->pp_id = $request->pp_id;
 		$caselist->user_id = $request->user_id;
+		$caselist->cl_patientid = $request->cl_patientid;
 		$caselist->cl_case_date = $request->cl_case_date;
 		$caselist->cl_case_educator = $request->educator_id;
 		$caselist->cl_case_type = $request->cl_case_type;
@@ -246,7 +247,7 @@ class CaseController extends Controller {
 	{
 		$caselist = Caselist::findOrFail($id);
 		$sex = Patientprofile::where('id', '=', $caselist->pp_id)->first()->pp_sex;
-		$uid = $caselist->user_id;
+//		$uid = $caselist->user_id;
 		$ppname = User::find($caselist->user_id)->name;
 		$patientid = User::find($caselist->user_id)->pid;
 		$today = Carbon::today()->toDateString();
@@ -266,6 +267,7 @@ class CaseController extends Controller {
 	public function update(Request $request, $id)
 	{
 		$caselist = Caselist::findOrFail($id);
+		$caselist->cl_patientid = $request->cl_patientid;
 		$caselist->cl_case_date = $request->cl_case_date;
 		if($request->cl_case_type == 4) {
 			// 一般
@@ -417,7 +419,7 @@ class CaseController extends Controller {
 		}
 		if ($search) {
 			$categoryList = [
-				1 => "pid",
+				1 => "cl_patientid",
 				2 => "cl_case_date",
 			];
 			$field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
@@ -425,21 +427,21 @@ class CaseController extends Controller {
 //				$result = Caselist::where($field, 'like', '%' . $search . '%')->orderBy('created_at', 'desc');
 				$result = DB::table('caselist')
 					->leftjoin('users', 'users.id', '=', 'caselist.user_id')
-					->select('caselist.id', 'users.pid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
+					->select('caselist.id', 'caselist.cl_patientid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
 					->where($field, 'like', '%' . $search . '%')
 					->orderBy('caselist.created_at', 'desc');
 			} else {
 //				$result = Caselist::orderBy('created_at', 'desc');
 				$result = DB::table('caselist')
 					->leftjoin('users', 'users.id', '=', 'caselist.user_id')
-					->select('caselist.id', 'users.pid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
+					->select('caselist.id', 'caselist.cl_patientid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
 					->orderBy('caselist.created_at', 'desc');
 			}
 		} else {
 //			$result = Caselist::orderBy('created_at', 'desc');
 			$result = DB::table('caselist')
 				->leftjoin('users', 'users.id', '=', 'caselist.user_id')
-				->select('caselist.id', 'users.pid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
+				->select('caselist.id', 'caselist.cl_patientid', 'users.name', 'caselist.cl_case_type', 'caselist.cl_case_date', 'caselist.cl_case_educator', 'users.name', 'caselist.created_at')
 				->orderBy('caselist.created_at', 'desc');
 		}
 
