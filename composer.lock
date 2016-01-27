@@ -1801,22 +1801,23 @@
         },
         {
             "name": "stevenyangecho/laravel-u-editor",
-            "version": "v1.2.1",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stevenyangecho/laravel-u-editor.git",
-                "reference": "15abe56d11efa527a8c0a5cf1648a086a41cc214"
+                "reference": "1868b64e3bdc07378b7200a1560713e9a030a92b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stevenyangecho/laravel-u-editor/zipball/15abe56d11efa527a8c0a5cf1648a086a41cc214",
-                "reference": "15abe56d11efa527a8c0a5cf1648a086a41cc214",
+                "url": "https://api.github.com/repos/stevenyangecho/laravel-u-editor/zipball/1868b64e3bdc07378b7200a1560713e9a030a92b",
+                "reference": "1868b64e3bdc07378b7200a1560713e9a030a92b",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "5.0.*|5.1.x",
+                "ext-fileinfo": "*",
+                "illuminate/support": "5.*",
                 "php": ">=5.4.0",
-                "qiniu/php-sdk": "7.0.*"
+                "qiniu/php-sdk": "7.*"
             },
             "type": "library",
             "autoload": {
@@ -1843,7 +1844,7 @@
                 "stevenyangecho",
                 "ueditor"
             ],
-            "time": "2015-10-14 05:02:36"
+            "time": "2016-01-22 07:28:21"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2415,16 +2416,16 @@
         },
         {
             "name": "symfony/polyfill-php56",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php56.git",
-                "reference": "e2e77609a9e2328eb370fbb0e0d8b2000ebb488f"
+                "reference": "4d891fff050101a53a4caabb03277284942d1ad9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/e2e77609a9e2328eb370fbb0e0d8b2000ebb488f",
-                "reference": "e2e77609a9e2328eb370fbb0e0d8b2000ebb488f",
+                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/4d891fff050101a53a4caabb03277284942d1ad9",
+                "reference": "4d891fff050101a53a4caabb03277284942d1ad9",
                 "shasum": ""
             },
             "require": {
@@ -2434,7 +2435,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -2467,20 +2468,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2015-12-18 15:10:25"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/polyfill-util",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-util.git",
-                "reference": "4271c55cbc0a77b2641f861b978123e46b3da969"
+                "reference": "8de62801aa12bc4dfcf85eef5d21981ae7bb3cc4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/4271c55cbc0a77b2641f861b978123e46b3da969",
-                "reference": "4271c55cbc0a77b2641f861b978123e46b3da969",
+                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/8de62801aa12bc4dfcf85eef5d21981ae7bb3cc4",
+                "reference": "8de62801aa12bc4dfcf85eef5d21981ae7bb3cc4",
                 "shasum": ""
             },
             "require": {
@@ -2489,7 +2490,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -2519,7 +2520,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2015-11-04 20:28:58"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/process",

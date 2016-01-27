@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: purplebleed
  * Date: 2015/9/21
- * Time: �U�� 09:36
+ * Time: 下午 09:36
  */
 
 use App\Buildcase;
@@ -58,16 +58,17 @@ use App\Caselist;
                 }
             }else{
 
+                $hospital_no = null;
                 $hospital_no = HospitalNo::find($uuid);
 
                 if($hospital_no != null){
                     $patient = $hospital_no -> patient;
-                    if($hospital_no -> patient_user_id != $users -> id){
-                        $user_feature = Feature::where('href', '=', '/patient') -> first() -> hasfeatures() -> where('user_id', '=', $users -> id)->first();
-                        if($user_feature == null){
-                            $hospital_no = null;
-                        }
-                    }
+//                    if($hospital_no -> patient_user_id != $users -> id){
+//                        $user_feature = Feature::where('href', '=', '/patient') -> first() -> hasfeatures() -> where('user_id', '=', $users -> id)->first();
+//                        if($user_feature == null){
+//                            $hospital_no = null;
+//                        }
+//                    }
                 }
                 if($hospital_no == null){
                     $err_msg = '您没有权限查看此血糖资料!';
@@ -124,9 +125,9 @@ use App\Caselist;
             $food_records = $this->get_has_food($uuid);
 
             $soap_link = "";
-            if(isset($user_feature) && $user_feature != null){
+//            if(isset($user_feature) && $user_feature != null){
                 $soap_link = '/soap/'.$uuid ;
-            }
+//            }
 
             $contact_data = $hospital_no -> contact_info;
             if($contact_data != null){

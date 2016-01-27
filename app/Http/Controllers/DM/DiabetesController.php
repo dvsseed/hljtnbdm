@@ -382,26 +382,28 @@ class DiabetesController extends Controller
     public function ajaxget(Request $request)
     {
         $cases = DB::select('SELECT DISTINCT u.name AS teacher, count(*) AS number FROM buildcases AS b LEFT JOIN users AS u ON b.duty = u.id WHERE build_at >= ADDDATE(NOW(), -14) AND build_at < NOW() GROUP BY duty ORDER BY duty, personid');
-        $tbody = "<strong>**二周内收案统计**</strong>";
-        $tbody .= "<table><thead>";
-        $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
-        $tbody .= "<tr><th>&nbsp;卫教师&nbsp;</th><th>&nbsp;</th><th>&nbsp;案数&nbsp;</th></tr></thead>";
-        $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
-        $tbody .= "<tbody>";
-        foreach ($cases as $case) {
-            $tbody .= "<tr>";
-            $tbody .= "<td>&nbsp;" . $case->teacher . "&nbsp;</td>";
-            $tbody .= "<td>&nbsp;&nbsp;</td>";
-            $tbody .= "<td align='right'>&nbsp;" . $case->number . "&nbsp;</td>";
-            $tbody .= "</tr>";
+        if($cases) {
+            $tbody = "<strong>**二周内收案统计**</strong>";
+            $tbody .= "<table><thead>";
+            $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
+            $tbody .= "<tr><th>&nbsp;卫教师&nbsp;</th><th>&nbsp;</th><th>&nbsp;案数&nbsp;</th></tr></thead>";
+            $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
+            $tbody .= "<tbody>";
+            foreach ($cases as $case) {
+                $tbody .= "<tr>";
+                $tbody .= "<td>&nbsp;" . $case->teacher . "&nbsp;</td>";
+                $tbody .= "<td>&nbsp;&nbsp;</td>";
+                $tbody .= "<td align='right'>&nbsp;" . $case->number . "&nbsp;</td>";
+                $tbody .= "</tr>";
+            }
+            $tbody .= "</tbody></table>";
+            $msg = $tbody;
+            $data = array(
+                'status' => 'success',
+                'msg' => $msg,
+            );
+            return response()->json($data);
         }
-        $tbody .= "</tbody></table>";
-        $msg = $tbody;
-        $data = array(
-            'status' => 'success',
-            'msg' => $msg,
-        );
-        return response()->json($data);
     }
 
     public function ajaxpost(Request $request)
