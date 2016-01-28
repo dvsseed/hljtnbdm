@@ -1,7 +1,7 @@
 <?php namespace App\Http\Controllers\Patient;
 
-use App\Feature;
-use App\Hasfeature;
+// use App\Feature;
+// use App\Hasfeature;
 use App\Buildcase;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
@@ -282,11 +282,11 @@ class PatientprofileController extends Controller
             $hospital_no -> save();
 
             //enable feature
-            $featurs_id = Feature::where('href', '=', '/bdata') -> first() -> id;
-            $hasfeatures = new Hasfeature();
-            $hasfeatures -> user_id =  $patientprofile -> user_id;
-            $hasfeatures -> feature_id =  $featurs_id;
-            $hasfeatures -> save();
+//            $featurs_id = Feature::where('href', '=', '/bdata') -> first() -> id;
+//            $hasfeatures = new Hasfeature();
+//            $hasfeatures -> user_id =  $patientprofile -> user_id;
+//            $hasfeatures -> feature_id =  $featurs_id;
+//            $hasfeatures -> save();
 
             $msg = '项目成功创建。';
             DB::commit();
@@ -549,10 +549,10 @@ class PatientprofileController extends Controller
                 $patientprofile = Patientprofile::find($id);
                 if ($patientprofile) {
                     $this->cleanUpHospital($patientprofile -> hospital_no);
-                    $hasfeature = Hasfeature::where('user_id', '=', $patientprofile->user_id) -> first();
-                    if($hasfeature != null){
-                        $hasfeature -> delete();
-                    }
+//                    $hasfeature = Hasfeature::where('user_id', '=', $patientprofile->user_id) -> first();
+//                    if($hasfeature != null){
+//                        $hasfeature -> delete();
+//                    }
                     $patientprofile->delete();
                     $user = User::find($patientprofile->user_id);
                     if ($user) {

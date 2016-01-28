@@ -381,26 +381,38 @@ class DiabetesController extends Controller
 
     public function ajaxget(Request $request)
     {
-        $cases = DB::select('SELECT DISTINCT u.name AS teacher, count(*) AS number FROM buildcases AS b LEFT JOIN users AS u ON b.duty = u.id WHERE build_at >= ADDDATE(NOW(), -14) AND build_at < NOW() GROUP BY duty ORDER BY duty, personid');
-        if($cases) {
+        try {
+            $cases = DB::select('SELECT DISTINCT u.name AS teacher, count(*) AS number FROM buildcases AS b LEFT JOIN users AS u ON b.duty = u.id WHERE build_at >= ADDDATE(NOW(), -14) AND build_at < NOW() GROUP BY duty ORDER BY duty, personid');
             $tbody = "<strong>**二周内收案统计**</strong>";
             $tbody .= "<table><thead>";
             $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
             $tbody .= "<tr><th>&nbsp;卫教师&nbsp;</th><th>&nbsp;</th><th>&nbsp;案数&nbsp;</th></tr></thead>";
             $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
             $tbody .= "<tbody>";
+            $swth = 0;
             foreach ($cases as $case) {
                 $tbody .= "<tr>";
                 $tbody .= "<td>&nbsp;" . $case->teacher . "&nbsp;</td>";
                 $tbody .= "<td>&nbsp;&nbsp;</td>";
                 $tbody .= "<td align='right'>&nbsp;" . $case->number . "&nbsp;</td>";
                 $tbody .= "</tr>";
+                $swth = 1;
             }
             $tbody .= "</tbody></table>";
-            $msg = $tbody;
+            if($swth) {
+                $msg = $tbody;
+            } else {
+                $msg = '<strong>**二周内无收案统计**</strong>';
+            }
             $data = array(
                 'status' => 'success',
                 'msg' => $msg,
+            );
+            return response()->json($data);
+        } catch(Exception $e) {
+            $data = array(
+                'status' => 'success',
+                'msg' => '',
             );
             return response()->json($data);
         }
@@ -411,7 +423,7 @@ class DiabetesController extends Controller
 //      $pid = Request::input('personid');
         $pid = Input::get('personid');
         if(empty($pid)) {
-            $msg = "请输入: 患者[身份证]...";
+            $msg = "请输入: <strong>患者[身份证]</strong>...";
         } else {
             $user = Buildcase::where('personid', '=', $pid)->orderBy('personid', 'ASC')->orderBy('build_at', 'DESC')->first();
             if($user) {
