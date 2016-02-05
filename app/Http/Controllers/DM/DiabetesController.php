@@ -14,7 +14,6 @@ use App\Model\SOAP\SoaNurseClass;
 use App\Http\Requests\DiabetesMesRequest;
 use App\Http\Controllers\Event\EventController;
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -35,12 +34,12 @@ class DiabetesController extends Controller
     public function home(Request $request)
     {
         $users = Auth::user();
-        $features = DB::table('users')
-            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
-            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
-            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
-            ->where('users.id', '=', $users->id)
-            ->get();
+//        $features = DB::table('users')
+//            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
+//            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
+//            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
+//            ->where('users.id', '=', $users->id)
+//            ->get();
         // 權限
 //        $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
         $chiefs = array("院长", "副院长", "病区主任");
@@ -106,7 +105,7 @@ class DiabetesController extends Controller
             $buildcases = $results->paginate(10)->appends(['search' => $search, 'category' => $category]);
             $soa_nurse_classes = SoaNurseClass::orderBy('soa_nurse_class_pk')->get();
 
-            return view('dm.home', compact('doctor', 'users', 'count', 'buildcases', 'features', 'search', 'category', 'soa_nurse_classes'));
+            return view('dm.home', compact('doctor', 'users', 'count', 'buildcases', 'search', 'category', 'soa_nurse_classes'));
         }
     }
 
@@ -153,14 +152,14 @@ class DiabetesController extends Controller
         // return view('dm.home', compact('diabetes'));
         $users = Auth::user();
         // $hasfeatures = Hasfeature::where('user_id', '=', $users->id)->get();
-        $features = DB::table('users')
-            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
-            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
-            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
-            ->where('users.id', '=', $users->id)
-            ->get();
+//        $features = DB::table('users')
+//            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
+//            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
+//            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
+//            ->where('users.id', '=', $users->id)
+//            ->get();
         $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
-        return view('dm.personal', compact('doctor', 'users', 'features'));
+        return view('dm.personal', compact('doctor', 'users'));
     }
 
     /**
