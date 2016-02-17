@@ -30,6 +30,12 @@ active
                     <input type="text" name="cl_patientid" id="cl_patientid" class="input-sm" value="{{ $patientid }}" readonly>
                     <label class="control-label" for="cl_case_date">收案日</label>
                     <input type="text" name="cl_case_date" id="cl_case_date" class="input-sm datepicker" size="7" data-date-format="yyyy-mm-dd" data-date-autoclose="true" data-date-clear-btn="true" data-date-today-highlight="true" data-date-today-btn="linked" data-date-language="zh-TW" value="{{ $caselist->cl_case_date }}">
+                    <label class="control-label" for="cl_doctor">建案医生</label>
+                    <select name="cl_doctor" id="cl_doctor" class="input-sm" required>
+                        @foreach($doctors as $key => $value)
+                            <option value="{{ $key }}" {!! "$key" == $caselist->cl_doctor ? "selected='selected'" : "" !!}>{{ $value }}</option>
+                        @endforeach
+                    </select>
                     <label class="control-label" for="cl_case_educator">卫教师</label>
                     <input type="text" name="cl_case_educator" id="cl_case_educator" class="input-sm" size="5" value="{{ \App\User::find($caselist->cl_case_educator)->name }}" readonly>
                     <label class="control-label" for="cl_case_type">方案种类</label>

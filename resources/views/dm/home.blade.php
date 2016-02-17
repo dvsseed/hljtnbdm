@@ -48,7 +48,7 @@
 "&lt;a href='/patient/ccreate/{{ $buildcase->personid }}' class='btn btn-info' role='button'&gt;患者&lt;/a&gt;
 &lt;a href='/dm/gobd/{{ $buildcase->personid }}/{{ $buildcase->id }}' class='btn btn-danger' role='button'&gt;血糖&lt;/a&gt;
 &lt;a href='/dm/gosoap/{{ $buildcase->personid }}/{{ $buildcase->id }}' class='btn btn-success' role='button'&gt;SOAP&lt;/a&gt;
-&lt;a href='/case/create/{{ $buildcase->personid }}' class='btn btn-warning' role='button'&gt;方案&lt;/a&gt;
+&lt;a href='/case/create/{{ $buildcase->personid }}/{{ $buildcase->doctor }}' class='btn btn-warning' role='button'&gt;方案&lt;/a&gt;
 {!! $doctor ? "&lt;a href='/discharge/create/$buildcase->personid' class='btn btn-info' role='button'&gt;出院指导&lt;/a&gt;" : "" !!}">{{ $buildcase->personid }}</a>
                                 </td>
                             @else
