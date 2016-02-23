@@ -118,3 +118,6 @@ Route::get('discharge/history/{personid}', ['as' => 'discharge_history', 'uses' 
 
 #统计报表
 Route::resource("quality", "Quality\QualityController");
+
+#行政報表
+Route::get('/executive/{type}/{range}', 'Exceutive\ExceutiveController@exec_stat');
