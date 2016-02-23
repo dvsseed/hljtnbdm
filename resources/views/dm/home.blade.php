@@ -24,7 +24,6 @@
             <table class="table table-hover table-condensed table-striped" id="sortdmTable">
                 <thead>
                 <tr>
-                    <!-- th>#<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th -->
                     <th>身份证<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                     <th>卡号<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
                     <th>姓名<a href="javascript:void(0)"><span class="glyphicon glyphicon-sort" aria-hidden="true"></span></a></th>
@@ -43,14 +42,13 @@
                 @if(count($buildcases))
                     @foreach($buildcases as $buildcase)
                         <tr>
-                            <!-- td>{{-- $buildcase->id --}}</td -->
-                            @if($buildcase->doctor == $users->id || $buildcase->duty == $users->id || $buildcase->nurse == $users->id || $buildcase->dietitian == $users->id)
+                            @if($doctor || $buildcase->doctor == $users->id || $buildcase->duty == $users->id || $buildcase->nurse == $users->id || $buildcase->dietitian == $users->id)
                                 <td>
 <a data-html="true" href="javascript:void(0)" data-toggle="popover" title="新增资料选项" data-content=
 "&lt;a href='/patient/ccreate/{{ $buildcase->personid }}' class='btn btn-info' role='button'&gt;患者&lt;/a&gt;
 &lt;a href='/dm/gobd/{{ $buildcase->personid }}/{{ $buildcase->id }}' class='btn btn-danger' role='button'&gt;血糖&lt;/a&gt;
 &lt;a href='/dm/gosoap/{{ $buildcase->personid }}/{{ $buildcase->id }}' class='btn btn-success' role='button'&gt;SOAP&lt;/a&gt;
-&lt;a href='/case/create/{{ $buildcase->personid }}' class='btn btn-warning' role='button'&gt;方案&lt;/a&gt;
+&lt;a href='/case/create/{{ $buildcase->personid }}/{{ $buildcase->doctor }}' class='btn btn-warning' role='button'&gt;方案&lt;/a&gt;
 {!! $doctor ? "&lt;a href='/discharge/create/$buildcase->personid' class='btn btn-info' role='button'&gt;出院指导&lt;/a&gt;" : "" !!}">{{ $buildcase->personid }}</a>
                                 </td>
                             @else
@@ -61,31 +59,10 @@
                             <td>{{ $buildcase->build_at }}</td>
                             <td>{{ $buildcase->doctor ? \App\User::find($buildcase->doctor)->name : "" }}</td>
                             <td>{{ $buildcase->duty ? \App\User::find($buildcase->duty)->name : "" }}</td>
-                            <!-- td -->
-{{--
-                                @if($buildcase->duty)
-                                    {{ $buildcase->duty_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') }}
-                                @else
-                                    &nbsp;
-                                @endif
---}}
-                            <!-- /td -->
                             <td>{{ $buildcase->nurse ? \App\User::find($buildcase->nurse)->name : "" }}</td>
                             <td>
                                 @if($buildcase->nurse)
-                                    <?php // $pks0 = explode(",", $buildcase->soa_nurse_class_pks0); ?>
-                                    {{-- 未处理: bg-danger, 处理中: bg-warning, 已完成: bg-success  --}}
                                     <span class="{{ $buildcase->nurse_status == 0 ? 'bg-danger' : ($buildcase->nurse_status == 1 ? 'bg-warning' : 'bg-success') }}">{{ $buildcase->nurse_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') }}</span>
-{{--
-                                       @foreach($soa_nurse_classes as $key=>$nurses)
-                                           @if(in_array($nurses->soa_nurse_class_pk, $pks0))
-                                               {{ $nurses->name }}.
-                                               @if($key % 3 == 0)
-                                                   <br>
-                                               @endif
-                                           @endif
-                                       @endforeach
---}}
                                 @else
                                     &nbsp;
                                 @endif
@@ -93,24 +70,12 @@
                             <td>{{ $buildcase->dietitian ? \App\User::find($buildcase->dietitian)->name : "" }}</td>
                             <td>
                                 @if($buildcase->dietitian)
-                                    <?php // $pks1 = explode(",", $buildcase->soa_nurse_class_pks1); ?>
                                     <span class="{{ $buildcase->dietitian_status == 0 ? 'bg-danger' : ($buildcase->dietitian_status == 1 ? 'bg-warning' : 'bg-success') }}">{{ $buildcase->dietitian_status == 0 ? '未处理' : ($buildcase->duty_status == 1 ? '处理中' : '已完成') }}</span>
-{{--
-                                        @foreach($soa_nurse_classes as $key=>$nurses)
-                                            @if(in_array($nurses->soa_nurse_class_pk, $pks1))
-                                                {{ $nurses->name }}.
-                                                @if($key % 3 == 0)
-                                                    <br>
-                                                @endif
-                                            @endif
-                                        @endforeach
---}}
                                 @else
                                     &nbsp;
                                 @endif
                             </td>
                             <td {!! $doctor ? '' : 'style="display:none"' !!}>
-                                <!-- a class="btn btn-primary" href="{{-- route('dm_show', $buildcase->id) --}}">查</a -->
                                 <a class="btn btn-warning" href="{{ route('dm_eedit', $buildcase->id) }}">改</a>
                                 <form action="{{ route('dm_destroy', $buildcase->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('确定删除?')">
                                     <input type="hidden" name="_method" value="DELETE">
@@ -127,7 +92,6 @@
             </table>
             <?php echo $buildcases->render(); ?>
         </div>
-        {{-- @include('dm.right_bar') --}}
     </div>
 </div>
 

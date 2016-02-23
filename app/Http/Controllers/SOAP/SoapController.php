@@ -50,9 +50,13 @@ class SoapController extends Controller
             if($hospital_no -> patient_user_id == $users -> id ){
                 return Redirect::route('bdata');
             }
-            $user_feature = Feature::where('href', '=', '/patient') -> first() -> hasfeatures() -> where('user_id', '=', $users -> id)->first();
-
-            if($user_feature == null){
+//            $user_feature = Feature::where('href', '=', '/patient') -> first() -> hasfeatures() -> where('user_id', '=', $users -> id)->first();
+//            if($user_feature == null){
+//                $hospital_no = null;
+//                $err_msg = "您没有权限查看此资料";
+//            }
+            $psn = array("患者");
+            if (in_array($users->position, $psn)) {
                 $hospital_no = null;
                 $err_msg = "您没有权限查看此资料";
             }

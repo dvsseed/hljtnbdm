@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('account', 50)->unique()->index();
             $table->string('name', 50);
             $table->string('password', 100);
-            $table->string('pid', 50)->unique()->index();
+            $table->string('pid', 50)->nullable();
             $table->string('hospital', 50)->default('hljtnb');
             $table->integer('departmentno')->nullable();
             $table->string('department', 50)->nullable();

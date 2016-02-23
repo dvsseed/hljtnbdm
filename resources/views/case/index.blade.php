@@ -45,7 +45,7 @@ active
                         @foreach($caselists as $caselist)
                             <tr>
                                 <td>{{ $caselist->id }}</td>
-                                <td>{{ $caselist->pid }}</td>
+                                <td>{{ $caselist->cl_patientid }}</td>
                                 <td>{{ $caselist->name }}</td>
                                 <td>{{ $caselist->cl_case_type==1 ? '初诊' : ($caselist->cl_case_type==2 ? '复诊' : ($caselist->cl_case_type==3 ? '年度检查' : '一般')) }}</td>
                                 <td>{{ $caselist->cl_case_date }}</td>

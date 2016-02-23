@@ -14,7 +14,6 @@ use App\Model\SOAP\SoaNurseClass;
 use App\Http\Requests\DiabetesMesRequest;
 use App\Http\Controllers\Event\EventController;
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -35,13 +34,21 @@ class DiabetesController extends Controller
     public function home(Request $request)
     {
         $users = Auth::user();
-        $features = DB::table('users')
-            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
-            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
-            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
-            ->where('users.id', '=', $users->id)
-            ->get();
-        $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
+//        $features = DB::table('users')
+//            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
+//            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
+//            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
+//            ->where('users.id', '=', $users->id)
+//            ->get();
+        // 權限
+//        $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
+        $chiefs = array("院长", "副院长", "病区主任");
+        $positions = array("院长", "副院长", "病区主任", "门诊医生", "住院医生");
+        if (in_array($users->position, $positions)) {
+            $doctor = 1;
+        } else {
+            $doctor = 0;
+        }
         if ($users->position == null || $users->position == '患者') {
             // 患者登入
 //            return view('dm.personal', compact('doctor', 'users', 'features'));
@@ -58,25 +65,47 @@ class DiabetesController extends Controller
                 if($field!="other") {
                     $results = DB::table('buildcases')
                         ->leftjoin('users', 'users.pid', '=', 'buildcases.personid')
-                        ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')->where($field, 'like', '%' . $search . '%')->where(function($query){
-                        $users = Auth::user();
-                        $query->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id);
-                    })->orderBy('build_at', 'desc');
+                        ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')
+                        ->where($field, 'like', '%' . $search . '%')
+                        ->where(function($query){
+                            $users = Auth::user();
+                            $chiefs = array("院长", "副院长", "病区主任");
+                            if (!in_array($users->position, $chiefs)) {
+                                $query->where('doctor', '=', $users->id)
+                                    ->orWhere('duty', '=', $users->id)
+                                    ->orWhere('nurse', '=', $users->id)
+                                    ->orWhere('dietitian', '=', $users->id);
+                            }
+                        })->orderBy('build_at', 'desc');
                 } else {
                     $results = DB::table('buildcases')
                         ->leftjoin('users', 'users.pid', '=', 'buildcases.personid')
-                        ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
+                        ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name');
+                    if (!in_array($users->position, $chiefs)) {
+                        $results->where('doctor', '=', $users->id)
+                            ->orWhere('duty', '=', $users->id)
+                            ->orWhere('nurse', '=', $users->id)
+                            ->orWhere('dietitian', '=', $users->id);
+                    }
+                    $results->orderBy('build_at', 'desc');
                 }
             } else {
                 $results = DB::table('buildcases')
                     ->leftjoin('users', 'users.pid', '=', 'buildcases.personid')
-                    ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')->where('doctor', '=', $users->id)->orWhere('duty', '=', $users->id)->orWhere('nurse', '=', $users->id)->orWhere('dietitian', '=', $users->id)->orderBy('build_at', 'desc');
+                    ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name');
+                if (!in_array($users->position, $chiefs)) {
+                    $results->where('doctor', '=', $users->id)
+                        ->orWhere('duty', '=', $users->id)
+                        ->orWhere('nurse', '=', $users->id)
+                        ->orWhere('dietitian', '=', $users->id);
+                }
+                $results->orderBy('build_at', 'desc');
             }
             $count = $results->count();
             $buildcases = $results->paginate(10)->appends(['search' => $search, 'category' => $category]);
             $soa_nurse_classes = SoaNurseClass::orderBy('soa_nurse_class_pk')->get();
 
-            return view('dm.home', compact('doctor', 'users', 'count', 'buildcases', 'features', 'search', 'category', 'soa_nurse_classes'));
+            return view('dm.home', compact('doctor', 'users', 'count', 'buildcases', 'search', 'category', 'soa_nurse_classes'));
         }
     }
 
@@ -123,14 +152,14 @@ class DiabetesController extends Controller
         // return view('dm.home', compact('diabetes'));
         $users = Auth::user();
         // $hasfeatures = Hasfeature::where('user_id', '=', $users->id)->get();
-        $features = DB::table('users')
-            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
-            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
-            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
-            ->where('users.id', '=', $users->id)
-            ->get();
+//        $features = DB::table('users')
+//            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
+//            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
+//            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
+//            ->where('users.id', '=', $users->id)
+//            ->get();
         $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
-        return view('dm.personal', compact('doctor', 'users', 'features'));
+        return view('dm.personal', compact('doctor', 'users'));
     }
 
     /**
@@ -351,27 +380,41 @@ class DiabetesController extends Controller
 
     public function ajaxget(Request $request)
     {
-        $cases = DB::select('SELECT DISTINCT u.name AS teacher, count(*) AS number FROM buildcases AS b LEFT JOIN users AS u ON b.duty = u.id WHERE build_at >= ADDDATE(NOW(), -14) AND build_at < NOW() GROUP BY duty ORDER BY duty, personid');
-        $tbody = "<strong>**二周内收案统计**</strong>";
-        $tbody .= "<table><thead>";
-        $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
-        $tbody .= "<tr><th>&nbsp;卫教师&nbsp;</th><th>&nbsp;</th><th>&nbsp;案数&nbsp;</th></tr></thead>";
-        $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
-        $tbody .= "<tbody>";
-        foreach ($cases as $case) {
-            $tbody .= "<tr>";
-            $tbody .= "<td>&nbsp;" . $case->teacher . "&nbsp;</td>";
-            $tbody .= "<td>&nbsp;&nbsp;</td>";
-            $tbody .= "<td align='right'>&nbsp;" . $case->number . "&nbsp;</td>";
-            $tbody .= "</tr>";
+        try {
+            $cases = DB::select('SELECT DISTINCT u.name AS teacher, count(*) AS number FROM buildcases AS b LEFT JOIN users AS u ON b.duty = u.id WHERE build_at >= ADDDATE(NOW(), -14) AND build_at < NOW() GROUP BY duty ORDER BY duty, personid');
+            $tbody = "<strong>**二周内收案统计**</strong>";
+            $tbody .= "<table><thead>";
+            $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
+            $tbody .= "<tr><th>&nbsp;卫教师&nbsp;</th><th>&nbsp;</th><th>&nbsp;案数&nbsp;</th></tr></thead>";
+            $tbody .= "<tr><td colspan='3'>--------------------</td></tr></thead>";
+            $tbody .= "<tbody>";
+            $swth = 0;
+            foreach ($cases as $case) {
+                $tbody .= "<tr>";
+                $tbody .= "<td>&nbsp;" . $case->teacher . "&nbsp;</td>";
+                $tbody .= "<td>&nbsp;&nbsp;</td>";
+                $tbody .= "<td align='right'>&nbsp;" . $case->number . "&nbsp;</td>";
+                $tbody .= "</tr>";
+                $swth = 1;
+            }
+            $tbody .= "</tbody></table>";
+            if($swth) {
+                $msg = $tbody;
+            } else {
+                $msg = '<strong>**二周内无收案统计**</strong>';
+            }
+            $data = array(
+                'status' => 'success',
+                'msg' => $msg,
+            );
+            return response()->json($data);
+        } catch(Exception $e) {
+            $data = array(
+                'status' => 'success',
+                'msg' => '',
+            );
+            return response()->json($data);
         }
-        $tbody .= "</tbody></table>";
-        $msg = $tbody;
-        $data = array(
-            'status' => 'success',
-            'msg' => $msg,
-        );
-        return response()->json($data);
     }
 
     public function ajaxpost(Request $request)
@@ -379,7 +422,7 @@ class DiabetesController extends Controller
 //      $pid = Request::input('personid');
         $pid = Input::get('personid');
         if(empty($pid)) {
-            $msg = "请输入: 患者[身份证]...";
+            $msg = "请输入: <strong>患者[身份证]</strong>...";
         } else {
             $user = Buildcase::where('personid', '=', $pid)->orderBy('personid', 'ASC')->orderBy('build_at', 'DESC')->first();
             if($user) {

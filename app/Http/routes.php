@@ -76,7 +76,7 @@ Route::resource("case", "Cases\CaseController");
 #关于
 #Route::get('/aboutcase', ['as' => 'aboutcase', 'uses' => 'Cases\CaseController@about']);
 Route::get('case/history/{personid}', ['as' => 'case_history', 'uses' => 'Cases\CaseController@history']);
-Route::get('case/create/{personid}', ['as' => 'case_create', 'uses' => 'Cases\CaseController@create']);
+Route::get('case/create/{personid}/{doctor}', ['as' => 'case_create', 'uses' => 'Cases\CaseController@create']);
 
 #血糖
 Route::get('/bdata/foods/{food_category_id}', 'BData\BDataController@get_food_category');
@@ -115,3 +115,6 @@ Route::get('/soap/{uuid}',['as' => 'soap', 'uses' => 'SOAP\SoapController@page']
 Route::resource("discharge", "Discharges\DischargeController");
 Route::get('discharge/create/{personid}', ['as' => 'discharge_create', 'uses' => 'Discharges\DischargeController@create']);
 Route::get('discharge/history/{personid}', ['as' => 'discharge_history', 'uses' => 'Discharges\DischargeController@history']);
+
+#统计报表
+Route::resource("quality", "Quality\QualityController");
