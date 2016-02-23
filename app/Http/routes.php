@@ -69,7 +69,7 @@ Route::resource("patient", "Patient\PatientprofileController");
 #Route::get('/aboutpatient', ['as' => 'aboutpatient', 'uses' => 'Patient\PatientprofileController@about']);
 Route::get('patient/ccreate/{personid}', ['as' => 'patient_ccreate', 'uses' => 'Patient\PatientprofileController@ccreate']);
 Route::get('patient/eedit/{personid}', ['as' => 'patient_eedit', 'uses' => 'Patient\PatientprofileController@eedit']);
-Route::get('patient/followup/{patientid}', 'BData\BDataController@follow_up');
+Route::get('patient/followup/{patientid?}', 'BData\BDataController@follow_up');
 
 #方案管理
 Route::resource("case", "Cases\CaseController");
@@ -118,3 +118,5 @@ Route::get('discharge/history/{personid}', ['as' => 'discharge_history', 'uses' 
 
 #统计报表
 Route::resource("quality", "Quality\QualityController");
+Route::post('quality/lists', 'Quality\QualityController@lists');
+Route::get('quality/downloadexcel/{obj}', ['as' => 'download_excel', 'uses' => 'Quality\ExcelController@xlsx']);

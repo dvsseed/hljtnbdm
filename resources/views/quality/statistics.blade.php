@@ -16,7 +16,7 @@ active
                 <hr>
                 @include('errors.list')
                 <div class="form-group">
-                    {!! Form::model($user = new \App\User, ['url' => 'quality/', 'class' => 'form-horizontal', 'role' => 'form', 'data-toggle' => 'validator']) !!}
+                    {!! Form::model(null, ['url' => 'quality/lists', 'class' => 'form-horizontal', 'role' => 'form', 'data-toggle' => 'validator']) !!}
                     <div class="form-group has-feedback">
                         {!! Form::label('object', '对象：', ['class' => 'control-label col-md-1']) !!}
                         <div class="col-md-4">
@@ -28,7 +28,6 @@ active
                     <div id="interval" class="form-group has-feedback" style="display: none">
                         {!! Form::label('interval', '区间日期：', ['class' => 'control-label col-md-1']) !!}
                         <div class="col-md-4">
-<?php $year = 2016; ?>
                             <select class="input-sm" name="interval_fromyear">
                                 <option value="-1">不详</option>
                                 @for ($i = $year; $i > 2014; $i--)
