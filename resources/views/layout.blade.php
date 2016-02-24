@@ -40,12 +40,12 @@
             <ul class="nav navbar-nav">
                 @if(Auth::user()->position == '住院医生' || Auth::user()->position == '门诊医生')
                     <li class="@yield('activep')"><a href="/patient">患者资料</a></li>
-                    <li class="@yield('activef')"><a href="/patient/followup/">随访清单</a></li>
+                    <li class="@yield('activef')"><a href="/patient/followup/{{ Auth::user()->id }}">随访清单</a></li>
                     <li class="@yield('activec')"><a href="/case">方案</a></li>
                     <li class="@yield('actived')"><a href="/discharge">出院指导</a></li>
                 @else
                     <li class="@yield('activep')"><a href="/patient">患者资料</a></li>
-                    <li class="@yield('activef')"><a href="/patient/followup/">随访清单</a></li>
+                    <li class="@yield('activef')"><a href="/patient/followup/{{ Auth::user()->id }}">随访清单</a></li>
                     <li class="@yield('activec')"><a href="/case">方案</a></li>
                 @endif
                 <li><a href="http://www.hljtnb.com" target="__blank">黑龙江瑞京</a></li>

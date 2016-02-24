@@ -520,7 +520,7 @@ active
                         <td>
                             <div class="form-group has-feedback" id="cldrinking">
                                 <input type="checkbox" name="cl_drinking" id="cl_drinking" value="1" tabindex="24" {{substr($caselist->cl_drinking.'0',0,1)=='1' ? "checked='checked'" : ""}}>无
-                                有：<input type="text" id="cl_drinking_other" name="cl_drinking_other" size="10" tabindex="24" value="{{ $caselist->cl_drinking_other }}"> c.c/周
+                                有：<input type="text" id="cl_drinking_other" name="cl_drinking_other" size="10" tabindex="24" value="{{ $caselist->cl_drinking_other }}"> mL/周
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -586,7 +586,7 @@ active
                         <th>尿酮</th>
                         <td>
                             <div class="form-group has-feedback">
-                                <input type="text" id="cl_ket" name="cl_ket" size="5" tabindex="50" title="0.5~1.0" min="0.5" max="1.0" step="any" pattern="^[0-9]{0,1}(\.[0-9]{0,1})?$" maxlength="3" data-minlength="1" data-minlength-error="输入数字长度不足" value="{{ $caselist->cl_ket }}"> mmol/L
+                                <input type="text" id="cl_ket" name="cl_ket" size="5" tabindex="50" maxlength="4" data-minlength="1" data-minlength-error="输入长度不足" value="{{ $caselist->cl_ket }}"> mmol/L
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>
@@ -596,19 +596,19 @@ active
                             <div class="form-group has-feedback" id="clultrasound">
                                 <input type="checkbox" name="cl_ultrasound0" id="cl_ultrasound0" value="1" tabindex="28" {{substr($caselist->cl_ultrasound.'00000000',0,1)=='1' ? "checked='checked'" : ""}}>无<br>有，如下：<br>
                                 <input type="checkbox" name="cl_ultrasound1" id="cl_ultrasound1" value="1" tabindex="28" {{substr($caselist->cl_ultrasound.'00000000',1,1)=='1' ? "checked='checked'" : ""}}>双下肢
-                                <input type="text" id="cl_ultrasound01" name="cl_ultrasound01" size="20" tabindex="28" value="{{ $caselist->cl_ultrasound01 }}"><br>
+                                <input type="text" id="cl_ultrasound01" name="cl_ultrasound01" size="100" tabindex="28" value="{{ $caselist->cl_ultrasound01 }}"><br>
                                 <input type="checkbox" name="cl_ultrasound2" id="cl_ultrasound2" value="1" tabindex="28" {{substr($caselist->cl_ultrasound.'00000000',2,1)=='1' ? "checked='checked'" : ""}}>心脏
-                                <input type="text" id="cl_ultrasound02" name="cl_ultrasound02" size="20" tabindex="28" value="{{ $caselist->cl_ultrasound02 }}"><br>
+                                <input type="text" id="cl_ultrasound02" name="cl_ultrasound02" size="100" tabindex="28" value="{{ $caselist->cl_ultrasound02 }}"><br>
                                 <input type="checkbox" name="cl_ultrasound3" id="cl_ultrasound3" value="1" tabindex="28" {{substr($caselist->cl_ultrasound.'00000000',3,1)=='1' ? "checked='checked'" : ""}}>颈部
-                                <input type="text" id="cl_ultrasound03" name="cl_ultrasound03" size="20" tabindex="28" value="{{ $caselist->cl_ultrasound03 }}"><br>
+                                <input type="text" id="cl_ultrasound03" name="cl_ultrasound03" size="100" tabindex="28" value="{{ $caselist->cl_ultrasound03 }}"><br>
                                 <input type="checkbox" name="cl_ultrasound4" id="cl_ultrasound4" value="1" tabindex="28" {{substr($caselist->cl_ultrasound.'00000000',4,1)=='1' ? "checked='checked'" : ""}}>消化
-                                <input type="text" id="cl_ultrasound04" name="cl_ultrasound04" size="20" tabindex="28" value="{{ $caselist->cl_ultrasound04 }}"><br>
+                                <input type="text" id="cl_ultrasound04" name="cl_ultrasound04" size="100" tabindex="28" value="{{ $caselist->cl_ultrasound04 }}"><br>
                                 <input type="checkbox" name="cl_ultrasound5" id="cl_ultrasound5" value="1" tabindex="28" {{substr($caselist->cl_ultrasound.'00000000',5,1)=='1' ? "checked='checked'" : ""}}>泌尿
-                                <input type="text" id="cl_ultrasound05" name="cl_ultrasound05" size="20" tabindex="28" value="{{ $caselist->cl_ultrasound05 }}"><br>
+                                <input type="text" id="cl_ultrasound05" name="cl_ultrasound05" size="100" tabindex="28" value="{{ $caselist->cl_ultrasound05 }}"><br>
                                 <input type="checkbox" name="cl_ultrasound6" id="cl_ultrasound6" value="1" tabindex="28" {{substr($caselist->cl_ultrasound.'00000000',6,1)=='1' ? "checked='checked'" : ""}}>甲状腺
-                                <input type="text" id="cl_ultrasound06" name="cl_ultrasound06" size="20" tabindex="28" value="{{ $caselist->cl_ultrasound06 }}"><br>
+                                <input type="text" id="cl_ultrasound06" name="cl_ultrasound06" size="100" tabindex="28" value="{{ $caselist->cl_ultrasound06 }}"><br>
                                 <input type="checkbox" name="cl_ultrasound7" id="cl_ultrasound7" value="1" tabindex="28" {{substr($caselist->cl_ultrasound.'00000000',7,1)=='1' ? "checked='checked'" : ""}}>妇科
-                                <input type="text" id="cl_ultrasound07" name="cl_ultrasound07" size="20" tabindex="28" value="{{ $caselist->cl_ultrasound07 }}">
+                                <input type="text" id="cl_ultrasound07" name="cl_ultrasound07" size="100" tabindex="28" value="{{ $caselist->cl_ultrasound07 }}">
                                 <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
                                 <div class="help-block with-errors"></div>
                             </div>

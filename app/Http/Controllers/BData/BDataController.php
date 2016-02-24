@@ -1124,7 +1124,7 @@ use App\Caselist;
             }
         }
 
-        public function follow_up($patientid)
+        public function follow_up($patientid = null)
         {
             $result = DB::table(DB::raw('contact_info AS ci'))
                 ->select('bc.personid', 'bc.cardid', 'users.name', 'bs.calendar_date', 'ci.start_date', 'ci.med_date', DB::raw("(CASE ci.trace_time WHEN '0000-00-00' THEN ci.start_date ELSE ci.trace_time END) AS trace_time, (CASE ci.trace_method WHEN 1 THEN '电话' WHEN 2 THEN '传真' WHEN 3 THEN 'e-mail' WHEN 4 THEN '回诊讨论' WHEN 5 THEN '网路平台' WHEN 6 THEN '传输线' WHEN 7 THEN '其他' ELSE '' END) AS trace_method,

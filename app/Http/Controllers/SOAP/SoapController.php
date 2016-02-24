@@ -108,7 +108,7 @@ class SoapController extends Controller
             $user_data['P'] = "";
             $user_data['E'] = "";
             $user_data['R'] = "";
-            if($buildcase -> soap_status == 0){
+            if($buildcase !== null && $buildcase -> soap_status == 0){
                 $user_soa_nurse_pks = $buildcase-> soa_nurse_class_pks0.','.$buildcase-> soa_nurse_class_pks1;
                 $user_soa_nurse_pks = $this->get_user_soa_array($user_soa_nurse_pks, false);
             }
