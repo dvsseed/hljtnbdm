@@ -19,7 +19,7 @@
 
             <button class="btn btn-success" type="button" onclick="printdiv0()">打印</button>
             <!-- a href="{{-- route('download_excel', array('obj' => $object)) --}}"><button class="btn btn-warning" onclick="return confirm('确定下载?')">汇出Excel</button></a -->
-            <a href="{{$url}}" type="button" id="btnExport" onclick="return confirm('确定下载?')"  >汇出Excel</a>
+            <a href="{{$url}}"  class="btn btn-success" id="btnExport" onclick="return confirm('确定下载?')"  >汇出Excel</a>
             <!-- a href="#" class="export">汇出</a -->
             <div id="printpage">
                 @if($type == 'soap')
