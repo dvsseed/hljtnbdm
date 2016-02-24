@@ -123,3 +123,4 @@ Route::get('quality/downloadexcel/{obj}', ['as' => 'download_excel', 'uses' => '
 
 #行政報表
 Route::get('/executive/{type}/{range}', 'Exceutive\ExceutiveController@exec_stat');
+Route::get('/executive/{type}/{range}/{chart_title}.xls', 'Exceutive\ExceutiveController@export_excel');
