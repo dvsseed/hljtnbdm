@@ -18,8 +18,8 @@ active
         <form method="GET" action="/discharge" accept-charset="UTF-8" class="form navbar-form navbar-right searchform">
             <select class="form-control" name="category" required>
                 <option value="" {{Text::selected($category, '')}}>请选择</option>
-                <option value="1" {{Text::selected($category, 1)}}>出院日期</option>
-                <option value="2" {{Text::selected($category, 2)}}>主治医生</option>
+                <option value="1" {{Text::selected($category, 1)}}>主治医生</option>
+                <option value="2" {{Text::selected($category, 2)}}>出院日期</option>
             </select>
             <input class="form-control" placeholder="按栏位搜索..." name="search" type="text" value="{{ $search }}" required>
             <input class="btn btn-default" type="submit" value="搜寻">

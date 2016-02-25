@@ -24,6 +24,10 @@ active
         <select class="form-control" name="category" required>
             <option value="" {{Text::selected($category, '')}}>请选择</option>
             <option value="1" {{Text::selected($category, 1)}}>病历号码</option>
+            <option value="2" {{Text::selected($category, 2)}}>姓名</option>
+            <option value="3" {{Text::selected($category, 3)}}>生日</option>
+            <option value="4" {{Text::selected($category, 4)}}>家用电话</option>
+            <option value="5" {{Text::selected($category, 5)}}>行动电话</option>
         </select>
         <input class="form-control" placeholder="按栏位搜索..." name="search" type="text"
                value="{{ $search }}" required>
@@ -60,13 +64,14 @@ active
                     @foreach($patientprofiles as $patientprofile)
                         <tr>
                             <td>{{ $patientprofile->id }}</td>
-                            @if($patientprofile->hospital_no != null )
-                                <td><a href="/bdata/{{ $patientprofile->hospital_no-> hospital_no_uuid}}">{{ $patientprofile->pp_patientid}}</a></td>
+                            {{-- @if($patientprofile->hospital_no != null ) --}}
+                                    <!-- td><a href="/bdata/{{-- $patientprofile->hospital_no-> hospital_no_uuid --}}">{{-- $patientprofile->pp_patientid --}}</a></td -->
+                            @if($patientprofile->hospital_no_uuid != null)
+                                <td><a href="/bdata/{{ $patientprofile->hospital_no_uuid }}">{{ $patientprofile->pp_patientid }}</a></td>
                             @else
                                 <td>{{ $patientprofile->pp_patientid}}</td>
                             @endif
-                            <!-- td>{{-- $patientprofile->account --}}</td   -->
-                            <td>{{ \App\User::find($patientprofile->user_id)->name }}</td>
+                            <td>{{ $patientprofile->name }}</td>
                             <td>{{ $patientprofile->pp_birthday }}</td>
                             <td>{{ $patientprofile->pp_sex ? '男' : '女' }}</td>
                             <td>{{ $patientprofile->pp_height }}</td>

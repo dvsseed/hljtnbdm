@@ -15,11 +15,11 @@ active
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        @if($object == 0 || $object == 1 || $object == 2 || $object == 3)
+        @if($object == 0 || $object == 1 || $object == 2 || $object == 3 || $object == 7 || $object == 8 || $object == 9 || $object == 10 || $object == 14 || $object == 15 || $object == 16 || $object == 17)
             <div class="col-md-6">
-        @elseif($object == 4 || $object == 6)
+        @elseif($object == 4 || $object == 6 || $object == 11 || $object == 13 || $object == 18 || $object == 20)
             <div class="col-md-8">
-        @elseif($object == 5)
+        @elseif($object == 5 || $object == 12 || $object == 19)
             <div class="col-md-11">
         @endif
             @include('errors.list')
@@ -31,23 +31,23 @@ active
             <div id="printpage">
             <table>
                 <tr>
-                    @if($object == 0 || $object == 1 || $object == 2 || $object == 3)
+                    @if($object == 0 || $object == 1 || $object == 2 || $object == 3 || $object == 7 || $object == 8 || $object == 9 || $object == 10 || $object == 14 || $object == 15 || $object == 16 || $object == 17)
                         <th colspan="4">{{ $header }}</th>
-                    @elseif($object == 4)
+                    @elseif($object == 4 || $object == 11 || $object == 18)
                         <th colspan="15">{{ $header }}</th>
-                    @elseif($object == 5)
+                    @elseif($object == 5 || $object == 12 || $object == 19)
                         <th colspan="20">{{ $header }}</th>
-                    @elseif($object == 6)
+                    @elseif($object == 6 || $object == 13 || $object == 20)
                         <th colspan="16">{{ $header }}</th>
                     @endif
                 </tr>
                 <tr>
-                    @if($object == 0 || $object == 1 || $object == 2 || $object == 3)
+                    @if($object == 0 || $object == 1 || $object == 2 || $object == 3 || $object == 7 || $object == 8 || $object == 9 || $object == 10 || $object == 14 || $object == 15 || $object == 16 || $object == 17)
                         <th>指标项目</th>
                         <th>切点</th>
                         <th>笔数</th>
                         <th>百分比</th>
-                    @elseif($object == 4)
+                    @elseif($object == 4 || $object == 11 || $object == 18)
                         <th>ID</th>
                         <th>姓名</th>
                         <th>生日</th>
@@ -63,7 +63,7 @@ active
                         <th>饮酒</th>
                         <th>牙周病</th>
                         <th>咀嚼</th>
-                    @elseif($object == 5)
+                    @elseif($object == 5 || $object == 12 || $object == 19)
                         <th>ID</th>
                         <th>姓名</th>
                         <th>生日</th>
@@ -84,7 +84,7 @@ active
                         <th>洗肾</th>
                         <th>下肢截肢</th>
                         <th>高低血糖就医</th>
-                    @elseif($object == 6)
+                    @elseif($object == 6 || $object == 13 || $object == 20)
                         <th>ID</th>
                         <th>姓名</th>
                         <th>生日</th>
@@ -118,33 +118,33 @@ active
                 @elseif($object == 6)
                     @include('quality.list6')
                 @elseif($object == 7)
-                    @include('quality.list7')
+                    @include('quality.list0')
                 @elseif($object == 8)
-                    @include('quality.list8')
+                    @include('quality.list1')
                 @elseif($object == 9)
-                    @include('quality.list9')
+                    @include('quality.list2')
                 @elseif($object == 10)
-                    @include('quality.list10')
+                    @include('quality.list3')
                 @elseif($object == 11)
-                    @include('quality.list11')
+                    @include('quality.list4')
                 @elseif($object == 12)
-                    @include('quality.list12')
+                    @include('quality.list5')
                 @elseif($object == 13)
-                    @include('quality.list13')
+                    @include('quality.list6')
                 @elseif($object == 14)
-                    @include('quality.list14')
+                    @include('quality.list0')
                 @elseif($object == 15)
-                    @include('quality.list15')
+                    @include('quality.list1')
                 @elseif($object == 16)
-                    @include('quality.list16')
+                    @include('quality.list2')
                 @elseif($object == 17)
-                    @include('quality.list17')
+                    @include('quality.list3')
                 @elseif($object == 18)
-                    @include('quality.list18')
+                    @include('quality.list4')
                 @elseif($object == 19)
-                    @include('quality.list19')
+                    @include('quality.list5')
                 @elseif($object == 20)
-                    @include('quality.list20')
+                    @include('quality.list6')
                 @else
                     <h1>没有资料...</h1>
                 @endif
@@ -164,50 +164,6 @@ active
                 window.open('data:application/vnd.ms-excel,' + $('#printpage').html());
                 e.preventDefault();
             });
-
-/*
-            function exportTableToCSV($table, filename) {
-                var $rows = $table.find('tr:has(td)'),
-                // Temporary delimiter characters unlikely to be typed by keyboard
-                // This is to avoid accidentally splitting the actual contents
-                tmpColDelim = String.fromCharCode(11), // vertical tab character
-                tmpRowDelim = String.fromCharCode(0), // null character
-                // actual delimiter characters for CSV format
-                colDelim = '","',
-                rowDelim = '"\r\n"',
-                // Grab text from table into CSV formatted string
-                csv = '"' + $rows.map(function (i, row) {
-                            var $row = $(row),
-                                    $cols = $row.find('td');
-                            return $cols.map(function (j, col) {
-                                var $col = $(col),
-                                        text = $col.text();
-                                return text.replace(/"/g, '""'); // escape double quotes
-                            }).get().join(tmpColDelim);
-                        }).get().join(tmpRowDelim)
-                                .split(tmpRowDelim).join(rowDelim)
-                                .split(tmpColDelim).join(colDelim) + '"',
-                // Data URI
-                csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
-                $(this)
-                    .attr({
-                        'download': filename,
-                        'href': csvData,
-                        'target': '_blank'
-                    });
-            }
-
-            // This must be a hyperlink
-            $(".export").on('click', function(event) {
-                if(confirm('确定下载?')) {
-                    // CSV
-                    exportTableToCSV.apply(this, [$('#printpage>table'), 'export.csv']);
-                }
-                // IF CSV, don't do event.preventDefault() or return false
-                // We actually need this to be a typical hyperlink
-            });
-*/
-
         });
     </script>
 @stop

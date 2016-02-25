@@ -42,106 +42,121 @@ class QualityController extends Controller {
 
 		$fyear = $request->interval_fromyear;
 		$fmonth = $request->interval_frommonth;
-		if(strlen($fmonth) == 1) $fmonth = str_pad($fmonth, 2, '0', STR_PAD_LEFT);
 		$tyear = $request->interval_toyear;
 		$tmonth = $request->interval_tomonth;
+		$err = 0;
+		if($tyear < $fyear) {
+			$err = 1;
+		}
+		if($fyear == $tyear && $tmonth < $fmonth) {
+			$err = 1;
+		}
+		if($err){
+			$msg = '区间日期应为：从[较小日期]到[较大日期]';
+			session()->flash('message', $msg);
+			return view('quality.empty');
+		}
+		if(strlen($fmonth) == 1) $fmonth = str_pad($fmonth, 2, '0', STR_PAD_LEFT);
 		if(strlen($tmonth) == 1) $tmonth = str_pad($tmonth, 2, '0', STR_PAD_LEFT);
-
-
+		$ifrom = $fyear.$fmonth;
+		$ito = $tyear.$tmonth;
 
 		switch ($object) {
 			case 0:
-				$count = $this->list0();
+				$count = $this->list0($object, $ifrom, $ito);
 				break;
 			case 1:
-				$count = $this->list1();
+				$count = $this->list1($object, $ifrom, $ito);
 				break;
 			case 2:
-				$count = $this->list2();
+				$count = $this->list2($object, $ifrom, $ito);
 				break;
 			case 3:
-				$count = $this->list3();
+				$count = $this->list3($object, $ifrom, $ito);
 				break;
 			case 4:
-				$count = $this->list4();
+				$count = $this->list4($object, $ifrom, $ito);
 				break;
 			case 5:
-				$count = $this->list5();
+				$count = $this->list5($object, $ifrom, $ito);
 				break;
 			case 6:
-				$count = $this->list6();
+				$count = $this->list6($object, $ifrom, $ito);
 				break;
 			case 7:
-				$count = $this->list7();
+				$count = $this->list0($object, $ifrom, $ito);
 				break;
 			case 8:
-				$count = $this->list8();
+				$count = $this->list1($object, $ifrom, $ito);
 				break;
 			case 9:
-				$count = $this->list9();
+				$count = $this->list2($object, $ifrom, $ito);
 				break;
 			case 10:
-				$count = $this->list10();
+				$count = $this->list3($object, $ifrom, $ito);
 				break;
 			case 11:
-				$count = $this->list11();
+				$count = $this->list4($object, $ifrom, $ito);
 				break;
 			case 12:
-				$count = $this->list12();
+				$count = $this->list5($object, $ifrom, $ito);
 				break;
 			case 13:
-				$count = $this->list13();
+				$count = $this->list6($object, $ifrom, $ito);
 				break;
 			case 14:
-				$count = $this->list14();
+				$count = $this->list0($object, $ifrom, $ito);
 				break;
 			case 15:
-				$count = $this->list15();
+				$count = $this->list1($object, $ifrom, $ito);
 				break;
 			case 16:
-				$count = $this->list16();
+				$count = $this->list2($object, $ifrom, $ito);
 				break;
 			case 17:
-				$count = $this->list17();
+				$count = $this->list3($object, $ifrom, $ito);
 				break;
 			case 18:
-				$count = $this->list18();
+				$count = $this->list4($object, $ifrom, $ito);
 				break;
 			case 19:
-				$count = $this->list19();
+				$count = $this->list5($object, $ifrom, $ito);
 				break;
 			case 20:
-				$count = $this->list20();
+				$count = $this->list6($object, $ifrom, $ito);
 				break;
 			default:
 				break;
 		}
-
-		return view('quality.lists', compact('object', 'header', 'count'));
+		if(empty($count)) {
+			return view('quality.empty');
+		} else {
+			return view('quality.lists', compact('object', 'header', 'count'));
+		}
 	}
 
-	public function firstdata()
+	public function insertdata($object, $ifrom, $ito)
 	{
-		DB::statement('TRUNCATE TABLE firstdata');
-		DB::statement('INSERT INTO firstdata SELECT c.id,c.pp_id,c.user_id,c.cl_patientid,c.cl_case_type,c.cl_bmi,c.cl_waist,c.cl_base_sbp,c.cl_base_ebp,c.cl_drinking,c.cl_drinking_other,c.cl_smoking,c.cl_havesmoke,c.cl_quitsmoke,c.cl_periodontal,c.cl_masticatory,c.cl_complications,c.cl_complications_stage,c.cl_complications_other,c.cl_eye_chk8,c.cl_eye_chk8_right_item,c.cl_eye_chk8_left_item,c.cl_blood_hba1c,c.cl_tg,c.cl_ldl,c.cl_egfr,c.cl_cataract,c.cl_coronary_heart,c.cl_coronary_heart_other,c.cl_chh_year,c.cl_chh_month,c.cl_stroke,c.cl_stroke_item,c.cl_stroke_other,c.cl_sh_year,c.cl_sh_month,c.cl_blindness,c.cl_blindness_right_item,c.cl_blindness_left_item,c.cl_bh_year,c.cl_bh_month,c.cl_dialysis,c.cl_dialysis_item,c.cl_dh_year,c.cl_dh_month,c.cl_amputation,c.cl_amputation_right_item,c.cl_amputation_left_item,c.cl_ah_year,c.cl_ah_month,c.cl_amputation_other,c.cl_medical_treatment,c.cl_medical_treatment_other,c.cl_medical_treatment_emergency,u.account,u.name,u.pid,p.pp_patientid,p.pp_birthday,p.pp_age,p.pp_sex,p.pp_height,p.pp_weight,p.educator,cc.patientprofile1_id,cc.cc_mdate,cc.cc_edu FROM caselist AS c LEFT JOIN users AS u ON u.id = c.user_id LEFT JOIN patientprofile1 AS p ON p.user_id = c.user_id LEFT JOIN casecare AS cc ON cc.patientprofile1_id = p.id WHERE c.cl_case_type != 4 GROUP BY c.cl_patientid ORDER BY c.cl_patientid, c.created_at');
-		$firstdata = DB::select('select * from firstdata');
-		return $firstdata;
+		DB::statement('TRUNCATE TABLE insertdata');
+		if($object >= 0 && $object <= 6) {
+			// 新登錄
+			$scope = " GROUP BY c.cl_patientid ORDER BY c.cl_patientid, c.created_at";
+		} elseif($object >= 7 && $object <= 13) {
+			// 二年內
+			$scope = " AND (c.cl_case_type != 1) AND (TIMESTAMPDIFF(YEAR, c.created_at, NOW()) <= 2) GROUP BY c.cl_patientid ORDER BY c.cl_patientid, c.created_at desc";
+		} else {
+			// 區間日期
+			$scope = " AND (c.cl_case_type != 1) AND (CONCAT(LEFT(c.created_at,4),SUBSTRING(c.created_at,6,2)) >= '" . $ifrom . "') AND (CONCAT(LEFT(c.created_at,4),SUBSTRING(c.created_at,6,2)) <= '" . $ito . "') GROUP BY c.cl_patientid ORDER BY c.cl_patientid, c.created_at desc";
+		}
+		DB::statement("INSERT INTO insertdata SELECT c.id,c.pp_id,c.user_id,c.cl_patientid,c.cl_case_type,c.cl_bmi,c.cl_waist,c.cl_base_sbp,c.cl_base_ebp,c.cl_drinking,c.cl_drinking_other,c.cl_smoking,c.cl_havesmoke,c.cl_quitsmoke,c.cl_periodontal,c.cl_masticatory,c.cl_complications,c.cl_complications_stage,c.cl_complications_other,c.cl_eye_chk8,c.cl_eye_chk8_right_item,c.cl_eye_chk8_left_item,c.cl_blood_hba1c,c.cl_tg,c.cl_ldl,c.cl_egfr,c.cl_cataract,c.cl_coronary_heart,c.cl_coronary_heart_other,c.cl_chh_year,c.cl_chh_month,c.cl_stroke,c.cl_stroke_item,c.cl_stroke_other,c.cl_sh_year,c.cl_sh_month,c.cl_blindness,c.cl_blindness_right_item,c.cl_blindness_left_item,c.cl_bh_year,c.cl_bh_month,c.cl_dialysis,c.cl_dialysis_item,c.cl_dh_year,c.cl_dh_month,c.cl_amputation,c.cl_amputation_right_item,c.cl_amputation_left_item,c.cl_ah_year,c.cl_ah_month,c.cl_amputation_other,c.cl_medical_treatment,c.cl_medical_treatment_other,c.cl_medical_treatment_emergency,u.account,u.name,u.pid,p.pp_patientid,p.pp_birthday,p.pp_age,p.pp_sex,p.pp_height,p.pp_weight,p.educator,cc.patientprofile1_id,cc.cc_mdate,cc.cc_edu,c.created_at FROM caselist AS c LEFT JOIN users AS u ON u.id = c.user_id LEFT JOIN patientprofile1 AS p ON p.user_id = c.user_id LEFT JOIN casecare AS cc ON cc.patientprofile1_id = p.id WHERE (c.cl_case_type != 4) ".$scope);
+		$listdata = DB::select('select * from insertdata');
+		return $listdata;
 	}
 
-	public function twoyearsdata()
-	{
-
-	}
-
-	public function intervaldata()
-	{
-
-	}
-
-	public function loopdata($firstdata, $fcnt)
+	public function loopdata($listdata, $fcnt)
 	{
 		$cnt = 0;
-		foreach ($firstdata as $first) {
+		foreach ($listdata as $first) {
 			switch ($fcnt) {
 				case "c01":
 					if(substr($first->cl_patientid, 16, 1) % 2 == 1) $cnt++;
@@ -429,7 +444,7 @@ class QualityController extends Controller {
 					if($first->cl_base_sbp < 150 && $first->cl_base_ebp < 90) $cnt++;
 					break;
 				case "d01":
-					if(substr($first->cl_complications,0,1) == 1) $cnt++;
+					if(substr($first->cl_complications,0,1) == "1") $cnt++;
 					break;
 				case "d02":
 					$comp = $first->cl_complications_stage;
@@ -528,7 +543,7 @@ class QualityController extends Controller {
 		return $cnt;
 	}
 
-	public function list0()
+	public function list0($object, $ifrom, $ito)
 	{
 		// 性别-总笔数
 //		$count0 = DB::select(DB::raw('SELECT COUNT(c.cl_patientid) AS c_count FROM caselist AS c LEFT JOIN patientprofile1 AS p ON p.user_id = c.user_id WHERE c.cl_case_type != 4 ORDER BY c.cl_patientid, c.created_at DESC'));
@@ -540,552 +555,406 @@ class QualityController extends Controller {
 //			->orderBy('caselist.cl_patientid')
 //			->orderBy('caselist.created_at')
 //			->get();
-//		$count[0][0] = count($sql);
-//		DB::statement('TRUNCATE TABLE firstdata');
-//		DB::statement('INSERT INTO firstdata SELECT c.id,c.pp_id,c.user_id,c.cl_patientid,c.cl_case_type,c.cl_bmi,c.cl_waist,c.cl_base_sbp,c.cl_base_ebp,c.cl_drinking,c.cl_drinking_other,c.cl_smoking,c.cl_havesmoke,c.cl_quitsmoke,c.cl_periodontal,c.cl_masticatory,c.cl_complications,c.cl_complications_stage,c.cl_complications_other,c.cl_eye_chk8,c.cl_eye_chk8_right_item,c.cl_eye_chk8_left_item,c.cl_blood_hba1c,c.cl_tg,c.cl_ldl,c.cl_egfr,c.cl_cataract,c.cl_coronary_heart,c.cl_coronary_heart_other,c.cl_chh_year,c.cl_chh_month,c.cl_stroke,c.cl_stroke_item,c.cl_stroke_other,c.cl_sh_year,c.cl_sh_month,c.cl_blindness,c.cl_blindness_right_item,c.cl_blindness_left_item,c.cl_bh_year,c.cl_bh_month,c.cl_dialysis,c.cl_dialysis_item,c.cl_dh_year,c.cl_dh_month,c.cl_amputation,c.cl_amputation_right_item,c.cl_amputation_left_item,c.cl_ah_year,c.cl_ah_month,c.cl_amputation_other,c.cl_medical_treatment,c.cl_medical_treatment_other,c.cl_medical_treatment_emergency,u.account,u.name,u.pid,p.pp_patientid,p.pp_birthday,p.pp_age,p.pp_sex,p.pp_height,p.pp_weight,p.educator,cc.patientprofile1_id,cc.cc_mdate,cc.cc_edu FROM caselist AS c LEFT JOIN users AS u ON u.id = c.user_id LEFT JOIN patientprofile1 AS p ON p.user_id = c.user_id LEFT JOIN casecare AS cc ON cc.patientprofile1_id = p.id WHERE c.cl_case_type != 4 GROUP BY c.cl_patientid ORDER BY c.cl_patientid, c.created_at');
-		$firstdata = $this->firstdata();
-		$count[0][0] = count($firstdata);
-		// 性别-男
-//			->where(DB::raw('MOD(SUBSTRING(caselist.cl_patientid,17,1),2)'), 1)
-		$count[0][1] = $this->loopdata($firstdata, "c01");
-		// 性别-女
-//			->where(DB::raw('MOD(SUBSTRING(caselist.cl_patientid,17,1),2)'), 0)
-		$count[0][2] = $this->loopdata($firstdata, "c02");
-		// 年龄 <15
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 15)
-		$count[1][1] = $this->loopdata($firstdata, "c11");
-		// 年龄 ≥15~<20
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 15)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 20)
-		$count[1][2] = $this->loopdata($firstdata, "c12");
-		// 年龄 ≥20~<25
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 20)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 25)
-		$count[1][3] = $this->loopdata($firstdata, "c13");
-		// 年龄 ≥25~<30
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 25)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 30)
-		$count[1][4] = $this->loopdata($firstdata, "c14");
-		// 年龄 ≥30~<35
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 30)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 35)
-		$count[1][5] = $this->loopdata($firstdata, "c15");
-		// 年龄 ≥35~<40
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 35)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 40)
-		$count[1][6] = $this->loopdata($firstdata, "c16");
-		// 年龄 ≥40~<45
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 40)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 45)
-		$count[1][7] = $this->loopdata($firstdata, "c17");
-		// 年龄 ≥45~<50
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 45)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 50)
-		$count[1][8] = $this->loopdata($firstdata, "c18");
-		// 年龄 ≥50~<55
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 50)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 55)
-		$count[1][9] = $this->loopdata($firstdata, "c19");
-		// 年龄 ≥55~<60
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 55)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 60)
-		$count[1][10] = $this->loopdata($firstdata, "c110");
-		// 年龄 ≥60~<65
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 60)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 65)
-		$count[1][11] = $this->loopdata($firstdata, "c111");
-		// 年龄 ≥65~<70
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 65)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 70)
-		$count[1][12] = $this->loopdata($firstdata, "c112");
-		// 年龄 ≥70~<75
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 70)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 75)
-		$count[1][13] = $this->loopdata($firstdata, "c113");
-		// 年龄 ≥75~<80
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 75)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 80)
-		$count[1][14] = $this->loopdata($firstdata, "c114");
-		// 年龄 ≥80~<85
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 80)
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '<', 85)
-		$count[1][15] = $this->loopdata($firstdata, "c115");
-		// 年龄 ≥85
-//			->where(DB::raw('SUBSTRING(caselist.cl_patientid,7,4)-1911'), '>=', 85)
-		$count[1][16] = $this->loopdata($firstdata, "c116");
-		// 罹病年 <1年
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '<', 1)
-		$count[2][1] = $this->loopdata($firstdata, "c21");
-		// 罹病年 ≥1~<5年
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '>=', 1)
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '<', 5)
-		$count[2][2] = $this->loopdata($firstdata, "c22");
-		// 罹病年 ≥5~<10年
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '>=', 5)
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '<', 10)
-		$count[2][3] = $this->loopdata($firstdata, "c23");
-		// 罹病年 ≥10~<15年
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '>=', 10)
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '<', 15)
-		$count[2][4] = $this->loopdata($firstdata, "c24");
-		// 罹病年 ≥15~<20年
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '>=', 15)
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '<', 20)
-		$count[2][5] = $this->loopdata($firstdata, "c25");
-		// 罹病年 ≥20~<25年
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '>=', 20)
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '<', 25)
-		$count[2][6] = $this->loopdata($firstdata, "c26");
-		// 罹病年 ≥25~<30年
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '>=', 25)
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '<', 30)
-		$count[2][7] = $this->loopdata($firstdata, "c27");
-		// 罹病年 ≥30~<35年
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '>=', 30)
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '<', 35)
-		$count[2][8] = $this->loopdata($firstdata, "c28");
-		// 罹病年 ≥35~<40年
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '>=', 35)
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '<', 40)
-		$count[2][9] = $this->loopdata($firstdata, "c29");
-		// 罹病年 ≥40
-//			->where(DB::raw('YEAR(CURDATE())-casecare.cc_mdate'), '>=', 40)
-		$count[2][10] = $this->loopdata($firstdata, "c210");
-		// 教育程度 不识字
-//			->where('caselist.cl_case_type', '!=', 4)
-		$count[3][1] = $this->loopdata($firstdata, "c31");
-		// 教育程度 识字
-//			->where('casecare.cc_edu', 1)
-		$count[3][2] = $this->loopdata($firstdata, "c32");
-		// 教育程度 小学
-//			->where('casecare.cc_edu', 2)
-		$count[3][3] = $this->loopdata($firstdata, "c33");
-		// 教育程度 初中
-//			->where('casecare.cc_edu', 3)
-		$count[3][4] = $this->loopdata($firstdata, "c34");
-		// 教育程度 高中
-//			->where('casecare.cc_edu', 4)
-		$count[3][5] = $this->loopdata($firstdata, "c35");
-		// 教育程度 大专
-//			->where('casecare.cc_edu', 5)
-		$count[3][6] = $this->loopdata($firstdata, "c36");
-		// 教育程度 大学或以上
-//			->where('casecare.cc_edu', 6)
-		$count[3][7] = $this->loopdata($firstdata, "c37");
-
+		$listdata = $this->insertdata($object, $ifrom, $ito);
+		if(empty($listdata)) {
+			$count = array();
+		} else {
+			$count[0][0] = count($listdata);
+			// 性别-男
+			$count[0][1] = $this->loopdata($listdata, "c01");
+			// 性别-女
+			$count[0][2] = $this->loopdata($listdata, "c02");
+			// 年龄 <15
+			$count[1][1] = $this->loopdata($listdata, "c11");
+			// 年龄 ≥15~<20
+			$count[1][2] = $this->loopdata($listdata, "c12");
+			// 年龄 ≥20~<25
+			$count[1][3] = $this->loopdata($listdata, "c13");
+			// 年龄 ≥25~<30
+			$count[1][4] = $this->loopdata($listdata, "c14");
+			// 年龄 ≥30~<35
+			$count[1][5] = $this->loopdata($listdata, "c15");
+			// 年龄 ≥35~<40
+			$count[1][6] = $this->loopdata($listdata, "c16");
+			// 年龄 ≥40~<45
+			$count[1][7] = $this->loopdata($listdata, "c17");
+			// 年龄 ≥45~<50
+			$count[1][8] = $this->loopdata($listdata, "c18");
+			// 年龄 ≥50~<55
+			$count[1][9] = $this->loopdata($listdata, "c19");
+			// 年龄 ≥55~<60
+			$count[1][10] = $this->loopdata($listdata, "c110");
+			// 年龄 ≥60~<65
+			$count[1][11] = $this->loopdata($listdata, "c111");
+			// 年龄 ≥65~<70
+			$count[1][12] = $this->loopdata($listdata, "c112");
+			// 年龄 ≥70~<75
+			$count[1][13] = $this->loopdata($listdata, "c113");
+			// 年龄 ≥75~<80
+			$count[1][14] = $this->loopdata($listdata, "c114");
+			// 年龄 ≥80~<85
+			$count[1][15] = $this->loopdata($listdata, "c115");
+			// 年龄 ≥85
+			$count[1][16] = $this->loopdata($listdata, "c116");
+			// 罹病年 <1年
+			$count[2][1] = $this->loopdata($listdata, "c21");
+			// 罹病年 ≥1~<5年
+			$count[2][2] = $this->loopdata($listdata, "c22");
+			// 罹病年 ≥5~<10年
+			$count[2][3] = $this->loopdata($listdata, "c23");
+			// 罹病年 ≥10~<15年
+			$count[2][4] = $this->loopdata($listdata, "c24");
+			// 罹病年 ≥15~<20年
+			$count[2][5] = $this->loopdata($listdata, "c25");
+			// 罹病年 ≥20~<25年
+			$count[2][6] = $this->loopdata($listdata, "c26");
+			// 罹病年 ≥25~<30年
+			$count[2][7] = $this->loopdata($listdata, "c27");
+			// 罹病年 ≥30~<35年
+			$count[2][8] = $this->loopdata($listdata, "c28");
+			// 罹病年 ≥35~<40年
+			$count[2][9] = $this->loopdata($listdata, "c29");
+			// 罹病年 ≥40
+			$count[2][10] = $this->loopdata($listdata, "c210");
+			// 教育程度 不识字
+			$count[3][1] = $this->loopdata($listdata, "c31");
+			// 教育程度 识字
+			$count[3][2] = $this->loopdata($listdata, "c32");
+			// 教育程度 小学
+			$count[3][3] = $this->loopdata($listdata, "c33");
+			// 教育程度 初中
+			$count[3][4] = $this->loopdata($listdata, "c34");
+			// 教育程度 高中
+			$count[3][5] = $this->loopdata($listdata, "c35");
+			// 教育程度 大专
+			$count[3][6] = $this->loopdata($listdata, "c36");
+			// 教育程度 大学或以上
+			$count[3][7] = $this->loopdata($listdata, "c37");
+		}
 		return $count;
 	}
 
-	public function list1()
+	public function list1($object, $ifrom, $ito)
 	{
 		// BMI-总笔数
-		$firstdata = $this->firstdata();
-		$count[0][0] = count($firstdata);
-		// BMI <18.5
-//			->where('caselist.cl_bmi', '<', 18.5)
-		$count[0][1] = $this->loopdata($firstdata, "a01");
-		// BMI ≥18.5~<22
-//			->where('caselist.cl_bmi', '>=', 18.5)
-//			->where('caselist.cl_bmi', '<', 22)
-		$count[0][2] = $this->loopdata($firstdata, "a02");
-		// BMI ≥22~<23
-//			->where('caselist.cl_bmi', '>=', 22)
-//			->where('caselist.cl_bmi', '<', 23)
-		$count[0][3] = $this->loopdata($firstdata, "a03");
-		// BMI ≥23~<24
-//			->where('caselist.cl_bmi', '>=', 23)
-//			->where('caselist.cl_bmi', '<', 24)
-		$count[0][4] = $this->loopdata($firstdata, "a04");
-		// BMI ≥24~<27
-//			->where('caselist.cl_bmi', '>=', 24)
-//			->where('caselist.cl_bmi', '<', 27)
-		$count[0][5] = $this->loopdata($firstdata, "a05");
-		// BMI ≥27~<30
-//			->where('caselist.cl_bmi', '>=', 27)
-//			->where('caselist.cl_bmi', '<', 30)
-		$count[0][6] = $this->loopdata($firstdata, "a06");
-		// BMI ≥30~<35
-//			->where('caselist.cl_bmi', '>=', 30)
-//			->where('caselist.cl_bmi', '<', 35)
-		$count[0][7] = $this->loopdata($firstdata, "a07");
-		// BMI ≥35~<40
-//			->where('caselist.cl_bmi', '>=', 35)
-//			->where('caselist.cl_bmi', '<', 40)
-		$count[0][8] = $this->loopdata($firstdata, "a08");
-		// BMI ≥40
-//			->where('caselist.cl_bmi', '>=', 40)
-		$count[0][9] = $this->loopdata($firstdata, "a09");
-		// 腰围 男性<90
-//			->where('patientprofile1.pp_sex', 1)
-//			->where('caselist.cl_waist', '<', 90)
-		$count[1][1] = $this->loopdata($firstdata, "a11");
-		// 腰围 女性<80
-//			->where('patientprofile1.pp_sex', 0)
-//			->where('caselist.cl_waist', '<', 80)
-		$count[1][2] = $this->loopdata($firstdata, "a12");
-		// 吸烟
-//			->where('caselist.cl_smoking', 1)
-		$count[2][1] = $this->loopdata($firstdata, "a21");
-		// 饮酒
-//			->where(DB::raw('IFNULL(caselist.cl_drinking_other, 0)'), '>', 0)
-		$count[3][1] = $this->loopdata($firstdata, "a31");
-		// 牙周病
-//			->where(DB::raw('IFNULL(caselist.cl_periodontal, 0)'), 1)
-		$count[4][1] = $this->loopdata($firstdata, "a41");
-		// 咀嚼
-//			->where(DB::raw('IFNULL(caselist.cl_masticatory, 0)'), 1)
-		$count[5][1] = $this->loopdata($firstdata, "a51");
+		$listdata = $this->insertdata($object, $ifrom, $ito);
+		if(empty($listdata)) {
+			$count = array();
+		} else {
+			$count[0][0] = count($listdata);
+			// BMI <18.5
+			$count[0][1] = $this->loopdata($listdata, "a01");
+			// BMI ≥18.5~<22
+			$count[0][2] = $this->loopdata($listdata, "a02");
+			// BMI ≥22~<23
+			$count[0][3] = $this->loopdata($listdata, "a03");
+			// BMI ≥23~<24
+			$count[0][4] = $this->loopdata($listdata, "a04");
+			// BMI ≥24~<27
+			$count[0][5] = $this->loopdata($listdata, "a05");
+			// BMI ≥27~<30
+			$count[0][6] = $this->loopdata($listdata, "a06");
+			// BMI ≥30~<35
+			$count[0][7] = $this->loopdata($listdata, "a07");
+			// BMI ≥35~<40
+			$count[0][8] = $this->loopdata($listdata, "a08");
+			// BMI ≥40
+			$count[0][9] = $this->loopdata($listdata, "a09");
+			// 腰围 男性<90
+			$count[1][1] = $this->loopdata($listdata, "a11");
+			// 腰围 女性<80
+			$count[1][2] = $this->loopdata($listdata, "a12");
+			// 吸烟
+			$count[2][1] = $this->loopdata($listdata, "a21");
+			// 饮酒
+			$count[3][1] = $this->loopdata($listdata, "a31");
+			// 牙周病
+			$count[4][1] = $this->loopdata($listdata, "a41");
+			// 咀嚼
+			$count[5][1] = $this->loopdata($listdata, "a51");
+		}
 		return $count;
 	}
 
-	public function list2()
+	public function list2($object, $ifrom, $ito)
 	{
 		// A1C-总笔数
-		$firstdata = $this->firstdata();
-		$count[0][0] = count($firstdata);
-		// A1C <6.0
-//			->where('caselist.cl_blood_hba1c', '<', 6)
-		$count[0][1] = $this->loopdata($firstdata, "b01");
-		// A1C ≥6.0~<6.5
-//			->where('caselist.cl_blood_hba1c', '>=', 6)
-//			->where('caselist.cl_blood_hba1c', '<', 6.5)
-		$count[0][2] = $this->loopdata($firstdata, "b02");
-		// A1C ≥6.5~<7.0
-//			->where('caselist.cl_blood_hba1c', '>=', 6.5)
-//			->where('caselist.cl_blood_hba1c', '<', 7)
-		$count[0][3] = $this->loopdata($firstdata, "b03");
-		// A1C ≥7.0~<7.5
-//			->where('caselist.cl_blood_hba1c', '>=', 7)
-//			->where('caselist.cl_blood_hba1c', '<', 7.5)
-		$count[0][4] = $this->loopdata($firstdata, "b04");
-		// A1C ≥7.5~<8.0
-//			->where('caselist.cl_blood_hba1c', '>=', 7.5)
-//			->where('caselist.cl_blood_hba1c', '<', 8)
-		$count[0][5] = $this->loopdata($firstdata, "b05");
-		// A1C ≥8.0~<8.5
-//			->where('caselist.cl_blood_hba1c', '>=', 8)
-//			->where('caselist.cl_blood_hba1c', '<', 8.5)
-		$count[0][6] = $this->loopdata($firstdata, "b06");
-		// A1C ≥8.5~<9.0
-//			->where('caselist.cl_blood_hba1c', '>=', 8.5)
-//			->where('caselist.cl_blood_hba1c', '<', 9)
-		$count[0][7] = $this->loopdata($firstdata, "b07");
-		// A1C ≥9.0~<9.5
-//			->where('caselist.cl_blood_hba1c', '>=', 9)
-//			->where('caselist.cl_blood_hba1c', '<', 9.5)
-		$count[0][8] = $this->loopdata($firstdata, "b08");
-		// A1C ≥9.5~<10.0
-//			->where('caselist.cl_blood_hba1c', '>=', 9.5)
-//			->where('caselist.cl_blood_hba1c', '<', 10)
-		$count[0][9] = $this->loopdata($firstdata, "b09");
-		// A1C ≥10.0
-//			->where('caselist.cl_blood_hba1c', '>=', 10)
-		$count[0][10] = $this->loopdata($firstdata, "b010");
-		// LDL <1.81
-//			->where('caselist.cl_ldl', '<', 1.81)
-		$count[1][1] = $this->loopdata($firstdata, "b11");
-		// LDL ≥1.81~<2.59
-//			->where('caselist.cl_ldl', '>=', 1.81)
-//			->where('caselist.cl_ldl', '<', 2.59)
-		$count[1][2] = $this->loopdata($firstdata, "b12");
-		// LDL ≥2.59~<3.37
-//			->where('caselist.cl_ldl', '>=', 2.59)
-//			->where('caselist.cl_ldl', '<', 3.37)
-		$count[1][3] = $this->loopdata($firstdata, "b13");
-		// LDL ≥3.37
-//			->where('caselist.cl_ldl', '>=', 3.37)
-		$count[1][4] = $this->loopdata($firstdata, "b14");
-		// TG <1.70
-//			->where('caselist.cl_tg', '<', 1.7)
-		$count[2][1] = $this->loopdata($firstdata, "b21");
-		// TG ≥1.70~<2.26
-//			->where('caselist.cl_tg', '>=', 1.7)
-//			->where('caselist.cl_tg', '<', 2.26)
-		$count[2][2] = $this->loopdata($firstdata, "b22");
-		// TG ≥2.26~<5.65
-//			->where('caselist.cl_tg', '>=', 2.26)
-//			->where('caselist.cl_tg', '<', 5.65)
-		$count[2][3] = $this->loopdata($firstdata, "b23");
-		// TG ≥5.65
-//			->where('caselist.cl_tg', '>=', 5.65)
-		$count[2][4] = $this->loopdata($firstdata, "b24");
-		// eGFR ≥90
-//			->where('caselist.cl_egfr', '>=', 90)
-		$count[3][1] = $this->loopdata($firstdata, "b31");
-		// eGFR <90~≥60
-//			->where('caselist.cl_egfr', '>=', 60)
-//			->where('caselist.cl_egfr', '<', 90)
-		$count[3][2] = $this->loopdata($firstdata, "b32");
-		// eGFR <60~≥45
-//			->where('caselist.cl_egfr', '>=', 45)
-//			->where('caselist.cl_egfr', '<', 60)
-		$count[3][3] = $this->loopdata($firstdata, "b33");
-		// eGFR <45~≥30
-//			->where('caselist.cl_egfr', '>=', 30)
-//			->where('caselist.cl_egfr', '<', 45)
-		$count[3][4] = $this->loopdata($firstdata, "b34");
-		// eGFR <30~≥15
-//			->where('caselist.cl_egfr', '>=', 15)
-//			->where('caselist.cl_egfr', '<', 30)
-		$count[3][5] = $this->loopdata($firstdata, "b35");
-		// eGFR <15
-//			->where('caselist.cl_egfr', '<', 15)
-		$count[3][6] = $this->loopdata($firstdata, "b36");
-		// BP <120/80
-//			->where('caselist.cl_base_sbp', '<', 120)
-//			->where('caselist.cl_base_ebp', '<', 80)
-		$count[4][1] = $this->loopdata($firstdata, "b41");
-		// BP <130/80
-//			->where('caselist.cl_base_sbp', '<', 130)
-//			->where('caselist.cl_base_ebp', '<', 80)
-		$count[4][2] = $this->loopdata($firstdata, "b42");
-		// BP <140/80
-//			->where('caselist.cl_base_sbp', '<', 140)
-//			->where('caselist.cl_base_ebp', '<', 80)
-		$count[4][3] = $this->loopdata($firstdata, "b43");
-		// BP <150/90
-//			->where('caselist.cl_base_sbp', '<', 150)
-//			->where('caselist.cl_base_ebp', '<', 90)
-		$count[4][4] = $this->loopdata($firstdata, "b44");
-
+		$listdata = $this->insertdata($object, $ifrom, $ito);
+		if(empty($listdata)) {
+			$count = array();
+		} else {
+			$count[0][0] = count($listdata);
+			// A1C <6.0
+			$count[0][1] = $this->loopdata($listdata, "b01");
+			// A1C ≥6.0~<6.5
+			$count[0][2] = $this->loopdata($listdata, "b02");
+			// A1C ≥6.5~<7.0
+			$count[0][3] = $this->loopdata($listdata, "b03");
+			// A1C ≥7.0~<7.5
+			$count[0][4] = $this->loopdata($listdata, "b04");
+			// A1C ≥7.5~<8.0
+			$count[0][5] = $this->loopdata($listdata, "b05");
+			// A1C ≥8.0~<8.5
+			$count[0][6] = $this->loopdata($listdata, "b06");
+			// A1C ≥8.5~<9.0
+			$count[0][7] = $this->loopdata($listdata, "b07");
+			// A1C ≥9.0~<9.5
+			$count[0][8] = $this->loopdata($listdata, "b08");
+			// A1C ≥9.5~<10.0
+			$count[0][9] = $this->loopdata($listdata, "b09");
+			// A1C ≥10.0
+			$count[0][10] = $this->loopdata($listdata, "b010");
+			// LDL <1.81
+			$count[1][1] = $this->loopdata($listdata, "b11");
+			// LDL ≥1.81~<2.59
+			$count[1][2] = $this->loopdata($listdata, "b12");
+			// LDL ≥2.59~<3.37
+			$count[1][3] = $this->loopdata($listdata, "b13");
+			// LDL ≥3.37
+			$count[1][4] = $this->loopdata($listdata, "b14");
+			// TG <1.70
+			$count[2][1] = $this->loopdata($listdata, "b21");
+			// TG ≥1.70~<2.26
+			$count[2][2] = $this->loopdata($listdata, "b22");
+			// TG ≥2.26~<5.65
+			$count[2][3] = $this->loopdata($listdata, "b23");
+			// TG ≥5.65
+			$count[2][4] = $this->loopdata($listdata, "b24");
+			// eGFR ≥90
+			$count[3][1] = $this->loopdata($listdata, "b31");
+			// eGFR <90~≥60
+			$count[3][2] = $this->loopdata($listdata, "b32");
+			// eGFR <60~≥45
+			$count[3][3] = $this->loopdata($listdata, "b33");
+			// eGFR <45~≥30
+			$count[3][4] = $this->loopdata($listdata, "b34");
+			// eGFR <30~≥15
+			$count[3][5] = $this->loopdata($listdata, "b35");
+			// eGFR <15
+			$count[3][6] = $this->loopdata($listdata, "b36");
+			// BP <120/80
+			$count[4][1] = $this->loopdata($listdata, "b41");
+			// BP <130/80
+			$count[4][2] = $this->loopdata($listdata, "b42");
+			// BP <140/80
+			$count[4][3] = $this->loopdata($listdata, "b43");
+			// BP <150/90
+			$count[4][4] = $this->loopdata($listdata, "b44");
+		}
 		return $count;
 	}
 
-	public function list3()
+	public function list3($object, $ifrom, $ito)
 	{
 		// 肾病变-总笔数
-		$firstdata = $this->firstdata();
-		$count[0][0] = count($firstdata);
-		// 肾病变 无
-//			->where(DB::raw('LEFT(caselist.cl_complications,1)'), "1")
-		$count[0][1] = $this->loopdata($firstdata, "d01");
-		// 肾病变 stage1
-//			->where(DB::raw('IFNULL(caselist.cl_complications_stage,0)'), 1)
-		$count[0][2] = $this->loopdata($firstdata, "d02");
-		// 肾病变 stage2
-//			->where(DB::raw('IFNULL(caselist.cl_complications_stage,0)'), 2)
-		$count[0][3] = $this->loopdata($firstdata, "d03");
-		// 肾病变 stage3a
-//			->where(DB::raw('IFNULL(caselist.cl_complications_stage,0)'), 3)
-		$count[0][4] = $this->loopdata($firstdata, "d04");
-		// 肾病变 stage3b
-//			->where(DB::raw('IFNULL(caselist.cl_complications_stage,0)'), 4)
-		$count[0][5] = $this->loopdata($firstdata, "d05");
-		// 肾病变 stage4
-//			->where(DB::raw('IFNULL(caselist.cl_complications_stage,0)'), 5)
-		$count[0][6] = $this->loopdata($firstdata, "d06");
-		// 肾病变 stage5
-//			->where(DB::raw('IFNULL(caselist.cl_complications_stage,0)'), 6)
-		$count[0][7] = $this->loopdata($firstdata, "d07");
-		// 周边血管病变 有
-//			->where(DB::raw('SUBSTRING(caselist.cl_complications,3,1)'), "1")
-		$count[1][1] = $this->loopdata($firstdata, "d11");
-		// 神经病变 有
-//			->where(DB::raw('SUBSTRING(caselist.cl_complications,2,1)'), "1")
-		$count[2][1] = $this->loopdata($firstdata, "d21");
-		// 视网膜病变 有
-//			->where(DB::raw('SUBSTRING(caselist.cl_eye_chk8,2,1)'), "1")
-//			->orWhere(DB::raw('SUBSTRING(caselist.cl_eye_chk8,3,1)'), "1")
-//			->orWhere('caselist.cl_eye_chk8_right_item', ">=", 1)
-//			->orWhere('caselist.cl_eye_chk8_left_item', ">=", 1)
-		$count[3][1] = $this->loopdata($firstdata, "d31");
-		// 白内障 有
-//			->where(DB::raw('SUBSTRING(caselist.cl_cataract,2,1)'), "1")
-//			->orWhere(DB::raw('SUBSTRING(caselist.cl_cataract,3,1)'), "1")
-		$count[4][1] = $this->loopdata($firstdata, "d41");
-		// 冠心病 无
-//			->where('caselist.cl_coronary_heart', 1)
-		$count[5][1] = $this->loopdata($firstdata, "d51");
-		// 冠心病 有，发生时间<1年
-//			->where(DB::raw('caselist.cl_coronary_heart_other IS NOT NULL'))
-//			->where('caselist.cl_chh_year', '!=', -1)
-//			->where(DB::raw('YEAR(CURDATE())-caselist.cl_chh_year'), 0)
-//			->where('caselist.cl_chh_month', '!=', -1)
-//			->where(DB::raw('MONTH(CURDATE())-caselist.cl_chh_month'), '>=', 1)
-		$count[5][2] = $this->loopdata($firstdata, "d52");
-		// 冠心病 有，发生时间≥1年
-//			->where(DB::raw('caselist.cl_coronary_heart_other IS NOT NULL'))
-//			->where('caselist.cl_chh_year', '!=', -1)
-//			->where(DB::raw('YEAR(CURDATE())-caselist.cl_chh_year'), '>=', 1)
-		$count[5][3] = $this->loopdata($firstdata, "d53");
-		// 脑中风 无
-//			->where('caselist.cl_stroke', 1)
-		$count[6][1] = $this->loopdata($firstdata, "d61");
-		// 脑中风 有，发生时间<1年
-//			->where(DB::raw('caselist.cl_stroke_other IS NOT NULL'))
-//			->orWhere('caselist.cl_stroke_item', '>=', 1)
-//			->where('caselist.cl_sh_year', '!=', -1)
-//			->where(DB::raw('YEAR(CURDATE())-caselist.cl_sh_year'), 0)
-//			->where('caselist.cl_sh_month', '!=', -1)
-//			->where(DB::raw('MONTH(CURDATE())-caselist.cl_sh_month'), '>=', 1)
-		$count[6][2] = $this->loopdata($firstdata, "d62");
-		// 脑中风 有，发生时间≥1年
-//			->where(DB::raw('caselist.cl_stroke_other IS NOT NULL'))
-//			->orWhere('caselist.cl_stroke_item', '>=', 1)
-//			->where('caselist.cl_sh_year', '!=', -1)
-//			->where(DB::raw('YEAR(CURDATE())-caselist.cl_sh_year'), '>=', 1)
-		$count[6][3] = $this->loopdata($firstdata, "d63");
-		// 失明 无
-//			->where(DB::raw('LEFT(caselist.cl_blindness,1)'), "1")
-		$count[7][1] = $this->loopdata($firstdata, "d71");
-		// 失明 有，发生时间<1年
-//			->where(DB::raw('SUBSTRING(caselist.cl_blindness,2,1)'), "1")
-//			->orWhere(DB::raw('SUBSTRING(caselist.cl_blindness,3,1)'), "1")
-//			->orWhere('caselist.cl_blindness_right_item', '>=', 1)
-//			->orWhere('caselist.cl_blindness_left_item', '>=', 1)
-//			->where('caselist.cl_bh_year', '!=', -1)
-//			->where(DB::raw('YEAR(CURDATE())-caselist.cl_bh_year'), 0)
-//			->where('caselist.cl_bh_month', '!=', -1)
-//			->where(DB::raw('MONTH(CURDATE())-caselist.cl_bh_month'), '>=', 1)
-		$count[7][2] = $this->loopdata($firstdata, "d72");
-		// 失明 有，发生时间≥1年
-//			->where(DB::raw('SUBSTRING(caselist.cl_blindness,2,1)'), "1")
-//			->orWhere(DB::raw('SUBSTRING(caselist.cl_blindness,3,1)'), "1")
-//			->orWhere('caselist.cl_blindness_right_item', '>=', 1)
-//			->orWhere('caselist.cl_blindness_left_item', '>=', 1)
-//			->where('caselist.cl_bh_year', '!=', -1)
-//			->where(DB::raw('YEAR(CURDATE())-caselist.cl_bh_year'), '>=', 1)
-		$count[7][3] = $this->loopdata($firstdata, "d73");
-		// 透析 无
-//			->where('caselist.cl_dialysis', 1)
-		$count[8][1] = $this->loopdata($firstdata, "d81");
-		// 透析 有，发生时间<1年
-//			->where('caselist.cl_dialysis_item', '>=', 1)
-//			->where('caselist.cl_dh_year', '!=', -1)
-//			->where(DB::raw('YEAR(CURDATE())-caselist.cl_dh_year'), 0)
-//			->where('caselist.cl_dh_month', '!=', -1)
-//			->where(DB::raw('MONTH(CURDATE())-caselist.cl_dh_month'), '>=', 1)
-		$count[8][2] = $this->loopdata($firstdata, "d82");
-		// 透析 有，发生时间≥1年
-//			->where('caselist.cl_dialysis_item', '>=', 1)
-//			->where('caselist.cl_dh_year', '!=', -1)
-//			->where(DB::raw('YEAR(CURDATE())-caselist.cl_dh_year'), '>=', 1)
-		$count[8][3] = $this->loopdata($firstdata, "d83");
-		// 下肢截肢 无
-//			->where(DB::raw('LEFT(caselist.cl_amputation,1)'), "1")
-		$count[9][1] = $this->loopdata($firstdata, "d91");
-		// 下肢截肢 有，发生时间<1年
-//			->where(DB::raw('SUBSTRING(caselist.cl_amputation,2,1)'), "1")
-//			->orWhere(DB::raw('SUBSTRING(caselist.cl_amputation,3,1)'), "1")
-//			->orWhere(DB::raw('caselist.cl_amputation_other IS NOT NULL'))
-//			->orWhere('caselist.cl_amputation_right_item', '>=', 1)
-//			->orWhere('caselist.cl_amputation_left_item', '>=', 1)
-//			->where('caselist.cl_ah_year', '!=', -1)
-//			->where(DB::raw('YEAR(CURDATE())-caselist.cl_ah_year'), 0)
-//			->where('caselist.cl_ah_month', '!=', -1)
-//			->where(DB::raw('MONTH(CURDATE())-caselist.cl_ah_month'), '>=', 1)
-		$count[9][2] = $this->loopdata($firstdata, "d92");
-		// 下肢截肢 有，发生时间≥1年
-//			->where(DB::raw('SUBSTRING(caselist.cl_amputation,2,1)'), "1")
-//			->orWhere(DB::raw('SUBSTRING(caselist.cl_amputation,3,1)'), "1")
-//			->orWhere(DB::raw('caselist.cl_amputation_other IS NOT NULL'))
-//			->orWhere('caselist.cl_amputation_right_item', '>=', 1)
-//			->orWhere('caselist.cl_amputation_left_item', '>=', 1)
-//			->where('caselist.cl_ah_year', '!=', -1)
-//			->where(DB::raw('YEAR(CURDATE())-caselist.cl_ah_year'), '>=', 1)
-		$count[9][3] = $this->loopdata($firstdata, "d93");
-		// 高低血糖就医 有
-//			->where(DB::raw('caselist.cl_medical_treatment_other IS NOT NULL'))
-//			->orWhere('caselist.cl_medical_treatment_emergency', '>=', 1)
-		$count[10][1] = $this->loopdata($firstdata, "d101");
-
+		$listdata = $this->insertdata($object, $ifrom, $ito);
+		if(empty($listdata)) {
+			$count = array();
+		} else {
+			$count[0][0] = count($listdata);
+			// 肾病变 无
+			$count[0][1] = $this->loopdata($listdata, "d01");
+			// 肾病变 stage1
+			$count[0][2] = $this->loopdata($listdata, "d02");
+			// 肾病变 stage2
+			$count[0][3] = $this->loopdata($listdata, "d03");
+			// 肾病变 stage3a
+			$count[0][4] = $this->loopdata($listdata, "d04");
+			// 肾病变 stage3b
+			$count[0][5] = $this->loopdata($listdata, "d05");
+			// 肾病变 stage4
+			$count[0][6] = $this->loopdata($listdata, "d06");
+			// 肾病变 stage5
+			$count[0][7] = $this->loopdata($listdata, "d07");
+			// 周边血管病变 有
+			$count[1][1] = $this->loopdata($listdata, "d11");
+			// 神经病变 有
+			$count[2][1] = $this->loopdata($listdata, "d21");
+			// 视网膜病变 有
+			$count[3][1] = $this->loopdata($listdata, "d31");
+			// 白内障 有
+			$count[4][1] = $this->loopdata($listdata, "d41");
+			// 冠心病 无
+			$count[5][1] = $this->loopdata($listdata, "d51");
+			// 冠心病 有，发生时间<1年
+			$count[5][2] = $this->loopdata($listdata, "d52");
+			// 冠心病 有，发生时间≥1年
+			$count[5][3] = $this->loopdata($listdata, "d53");
+			// 脑中风 无
+			$count[6][1] = $this->loopdata($listdata, "d61");
+			// 脑中风 有，发生时间<1年
+			$count[6][2] = $this->loopdata($listdata, "d62");
+			// 脑中风 有，发生时间≥1年
+			$count[6][3] = $this->loopdata($listdata, "d63");
+			// 失明 无
+			$count[7][1] = $this->loopdata($listdata, "d71");
+			// 失明 有，发生时间<1年
+			$count[7][2] = $this->loopdata($listdata, "d72");
+			// 失明 有，发生时间≥1年
+			$count[7][3] = $this->loopdata($listdata, "d73");
+			// 透析 无
+			$count[8][1] = $this->loopdata($listdata, "d81");
+			// 透析 有，发生时间<1年
+			$count[8][2] = $this->loopdata($listdata, "d82");
+			// 透析 有，发生时间≥1年
+			$count[8][3] = $this->loopdata($listdata, "d83");
+			// 下肢截肢 无
+			$count[9][1] = $this->loopdata($listdata, "d91");
+			// 下肢截肢 有，发生时间<1年
+			$count[9][2] = $this->loopdata($listdata, "d92");
+			// 下肢截肢 有，发生时间≥1年
+			$count[9][3] = $this->loopdata($listdata, "d93");
+			// 高低血糖就医 有
+			$count[10][1] = $this->loopdata($listdata, "d101");
+		}
 		return $count;
 	}
 
-	public function list4()
+	public function list4($object, $ifrom, $ito)
 	{
-		// 新登錄_生理與習慣明細
-		$sql = DB::table('caselist')
-			->leftjoin('users', 'users.id', '=', 'caselist.user_id')
-			->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
-			->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
-			->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', 'caselist.cl_bmi', 'caselist.cl_waist', 'caselist.cl_smoking', DB::raw("IFNULL(caselist.cl_drinking_other,0) AS drinking"), DB::raw("IFNULL(caselist.cl_periodontal, 0) AS periodontal"),	DB::raw("IFNULL(caselist.cl_masticatory, 0) AS masticatory"))
-			->where('caselist.cl_case_type', '!=', 4)
-			->groupBy('caselist.cl_patientid')
-			->orderBy('caselist.cl_patientid')
-			->orderBy('caselist.created_at')
-			->get();
+		// 生理與習慣明細
+		if($object >= 0 && $object <= 6) {
+			// 新登錄
+			$sql = DB::table('caselist')
+				->leftjoin('users', 'users.id', '=', 'caselist.user_id')
+				->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
+				->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
+				->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', 'caselist.cl_bmi', 'caselist.cl_waist', 'caselist.cl_smoking', DB::raw("IFNULL(caselist.cl_drinking_other,0) AS drinking"), DB::raw("IFNULL(caselist.cl_periodontal, 0) AS periodontal"),	DB::raw("IFNULL(caselist.cl_masticatory, 0) AS masticatory"))
+				->where('caselist.cl_case_type', '!=', 4)
+				->groupBy('caselist.cl_patientid')
+				->orderBy('caselist.cl_patientid')
+				->orderBy('caselist.created_at')
+				->get();
+		} elseif($object >= 7 && $object <= 13) {
+			// 二年內
+			$sql = DB::table('caselist')
+				->leftjoin('users', 'users.id', '=', 'caselist.user_id')
+				->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
+				->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
+				->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', 'caselist.cl_bmi', 'caselist.cl_waist', 'caselist.cl_smoking', DB::raw("IFNULL(caselist.cl_drinking_other,0) AS drinking"), DB::raw("IFNULL(caselist.cl_periodontal, 0) AS periodontal"),	DB::raw("IFNULL(caselist.cl_masticatory, 0) AS masticatory"))
+				->where('caselist.cl_case_type', '!=', 4)
+				->where('caselist.cl_case_type', '!=', 1)
+				->where(DB::raw('TIMESTAMPDIFF(YEAR, caselist.created_at, NOW())'), '<=', 2)
+				->groupBy('caselist.cl_patientid')
+				->orderBy('caselist.cl_patientid')
+				->orderBy('caselist.created_at', 'desc')
+				->get();
+		} else {
+			// 區間日期
+			$sql = DB::table('caselist')
+				->leftjoin('users', 'users.id', '=', 'caselist.user_id')
+				->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
+				->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
+				->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', 'caselist.cl_bmi', 'caselist.cl_waist', 'caselist.cl_smoking', DB::raw("IFNULL(caselist.cl_drinking_other,0) AS drinking"), DB::raw("IFNULL(caselist.cl_periodontal, 0) AS periodontal"),	DB::raw("IFNULL(caselist.cl_masticatory, 0) AS masticatory"))
+				->where('caselist.cl_case_type', '!=', 4)
+				->where('caselist.cl_case_type', '!=', 1)
+				->where(DB::raw('CONCAT(LEFT(caselist.created_at,4),SUBSTRING(caselist.created_at,6,2))'), '>=', DB::raw("'".$ifrom."'"))
+				->where(DB::raw('CONCAT(LEFT(caselist.created_at,4),SUBSTRING(caselist.created_at,6,2))'), '<=', DB::raw("'".$ito."'"))
+				->groupBy('caselist.cl_patientid')
+				->orderBy('caselist.cl_patientid')
+				->orderBy('caselist.created_at', 'desc')
+				->get();
+		}
 		$count = $sql;
 		return $count;
 	}
 
-	public function list5()
+	public function list5($object, $ifrom, $ito)
 	{
-		// 新登錄_併發症明細
-		$sql = DB::table('caselist')
-			->leftjoin('users', 'users.id', '=', 'caselist.user_id')
-			->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
-			->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
-			->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', DB::raw("(CASE IFNULL(caselist.cl_complications_stage,0) WHEN 1 THEN 'stage1' WHEN 2 THEN 'stage2' WHEN 3 THEN 'stage3a' WHEN 4 THEN 'stage3b' WHEN 5 THEN 'stage4' WHEN 6 THEN 'stage5' END) AS stage"), DB::raw('SUBSTRING(caselist.cl_complications,3,1) AS complication3'), DB::raw('SUBSTRING(caselist.cl_complications,2,1) AS complication2'), DB::raw("NOT LEFT(caselist.cl_eye_chk8,1) AS eye8"), DB::raw("NOT LEFT(caselist.cl_cataract,1) AS cataract"), DB::raw("NOT caselist.cl_coronary_heart AS heart"), DB::raw("NOT caselist.cl_stroke AS stroke"), DB::raw("NOT LEFT(caselist.cl_blindness,1) AS blindness"), DB::raw("NOT caselist.cl_dialysis AS dialysis"), DB::raw("NOT LEFT(caselist.cl_amputation,1) AS amputation"), DB::raw("NOT caselist.cl_medical_treatment AS treatment"))
-			->where('caselist.cl_case_type', '!=', 4)
-			->groupBy('caselist.cl_patientid')
-			->orderBy('caselist.cl_patientid')
-			->orderBy('caselist.created_at')
-			->get();
+		// 併發症明細
+		if($object >= 0 && $object <= 6) {
+			// 新登錄
+			$sql = DB::table('caselist')
+				->leftjoin('users', 'users.id', '=', 'caselist.user_id')
+				->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
+				->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
+				->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', DB::raw("(CASE IFNULL(caselist.cl_complications_stage,0) WHEN 1 THEN 'stage1' WHEN 2 THEN 'stage2' WHEN 3 THEN 'stage3a' WHEN 4 THEN 'stage3b' WHEN 5 THEN 'stage4' WHEN 6 THEN 'stage5' END) AS stage"), DB::raw('SUBSTRING(caselist.cl_complications,3,1) AS complication3'), DB::raw('SUBSTRING(caselist.cl_complications,2,1) AS complication2'), DB::raw("NOT LEFT(caselist.cl_eye_chk8,1) AS eye8"), DB::raw("NOT LEFT(caselist.cl_cataract,1) AS cataract"), DB::raw("NOT caselist.cl_coronary_heart AS heart"), DB::raw("NOT caselist.cl_stroke AS stroke"), DB::raw("NOT LEFT(caselist.cl_blindness,1) AS blindness"), DB::raw("NOT caselist.cl_dialysis AS dialysis"), DB::raw("NOT LEFT(caselist.cl_amputation,1) AS amputation"), DB::raw("NOT caselist.cl_medical_treatment AS treatment"))
+				->where('caselist.cl_case_type', '!=', 4)
+				->groupBy('caselist.cl_patientid')
+				->orderBy('caselist.cl_patientid')
+				->orderBy('caselist.created_at')
+				->get();
+		} elseif($object >= 7 && $object <= 13) {
+			// 二年內
+			$sql = DB::table('caselist')
+				->leftjoin('users', 'users.id', '=', 'caselist.user_id')
+				->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
+				->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
+				->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', DB::raw("(CASE IFNULL(caselist.cl_complications_stage,0) WHEN 1 THEN 'stage1' WHEN 2 THEN 'stage2' WHEN 3 THEN 'stage3a' WHEN 4 THEN 'stage3b' WHEN 5 THEN 'stage4' WHEN 6 THEN 'stage5' END) AS stage"), DB::raw('SUBSTRING(caselist.cl_complications,3,1) AS complication3'), DB::raw('SUBSTRING(caselist.cl_complications,2,1) AS complication2'), DB::raw("NOT LEFT(caselist.cl_eye_chk8,1) AS eye8"), DB::raw("NOT LEFT(caselist.cl_cataract,1) AS cataract"), DB::raw("NOT caselist.cl_coronary_heart AS heart"), DB::raw("NOT caselist.cl_stroke AS stroke"), DB::raw("NOT LEFT(caselist.cl_blindness,1) AS blindness"), DB::raw("NOT caselist.cl_dialysis AS dialysis"), DB::raw("NOT LEFT(caselist.cl_amputation,1) AS amputation"), DB::raw("NOT caselist.cl_medical_treatment AS treatment"))
+				->where('caselist.cl_case_type', '!=', 4)
+				->where('caselist.cl_case_type', '!=', 1)
+				->where(DB::raw('TIMESTAMPDIFF(YEAR, caselist.created_at, NOW())'), '<=', 2)
+				->groupBy('caselist.cl_patientid')
+				->orderBy('caselist.cl_patientid')
+				->orderBy('caselist.created_at', 'desc')
+				->get();
+		} else {
+			// 區間日期
+			$sql = DB::table('caselist')
+				->leftjoin('users', 'users.id', '=', 'caselist.user_id')
+				->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
+				->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
+				->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', DB::raw("(CASE IFNULL(caselist.cl_complications_stage,0) WHEN 1 THEN 'stage1' WHEN 2 THEN 'stage2' WHEN 3 THEN 'stage3a' WHEN 4 THEN 'stage3b' WHEN 5 THEN 'stage4' WHEN 6 THEN 'stage5' END) AS stage"), DB::raw('SUBSTRING(caselist.cl_complications,3,1) AS complication3'), DB::raw('SUBSTRING(caselist.cl_complications,2,1) AS complication2'), DB::raw("NOT LEFT(caselist.cl_eye_chk8,1) AS eye8"), DB::raw("NOT LEFT(caselist.cl_cataract,1) AS cataract"), DB::raw("NOT caselist.cl_coronary_heart AS heart"), DB::raw("NOT caselist.cl_stroke AS stroke"), DB::raw("NOT LEFT(caselist.cl_blindness,1) AS blindness"), DB::raw("NOT caselist.cl_dialysis AS dialysis"), DB::raw("NOT LEFT(caselist.cl_amputation,1) AS amputation"), DB::raw("NOT caselist.cl_medical_treatment AS treatment"))
+				->where('caselist.cl_case_type', '!=', 4)
+				->where('caselist.cl_case_type', '!=', 1)
+				->where(DB::raw('CONCAT(LEFT(caselist.created_at,4),SUBSTRING(caselist.created_at,6,2))'), '>=', DB::raw("'".$ifrom."'"))
+				->where(DB::raw('CONCAT(LEFT(caselist.created_at,4),SUBSTRING(caselist.created_at,6,2))'), '<=', DB::raw("'".$ito."'"))
+				->groupBy('caselist.cl_patientid')
+				->orderBy('caselist.cl_patientid')
+				->orderBy('caselist.created_at', 'desc')
+				->get();
+		}
 		$count = $sql;
 		return $count;
 	}
 
-	public function list6()
+	public function list6($object, $ifrom, $ito)
 	{
-		// 新登錄_品質指標明細
-		$sql = DB::table('caselist')
-			->leftjoin('users', 'users.id', '=', 'caselist.user_id')
-			->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
-			->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
-			->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', 'caselist.cl_bmi', 'caselist.cl_blood_hba1c', 'caselist.cl_ldl', 'caselist.cl_tg', 'caselist.cl_egfr', 'caselist.cl_base_sbp', 'caselist.cl_base_ebp')
-			->where('caselist.cl_case_type', '!=', 4)
-			->groupBy('caselist.cl_patientid')
-			->orderBy('caselist.cl_patientid')
-			->orderBy('caselist.created_at')
-			->get();
+		// 品質指標明細
+		if($object >= 0 && $object <= 6) {
+			// 新登錄
+			$sql = DB::table('caselist')
+				->leftjoin('users', 'users.id', '=', 'caselist.user_id')
+				->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
+				->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
+				->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', 'caselist.cl_bmi', 'caselist.cl_blood_hba1c', 'caselist.cl_ldl', 'caselist.cl_tg', 'caselist.cl_egfr', 'caselist.cl_base_sbp', 'caselist.cl_base_ebp')
+				->where('caselist.cl_case_type', '!=', 4)
+				->groupBy('caselist.cl_patientid')
+				->orderBy('caselist.cl_patientid')
+				->orderBy('caselist.created_at')
+				->get();
+		} elseif($object >= 7 && $object <= 13) {
+			// 二年內
+			$sql = DB::table('caselist')
+				->leftjoin('users', 'users.id', '=', 'caselist.user_id')
+				->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
+				->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
+				->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', 'caselist.cl_bmi', 'caselist.cl_blood_hba1c', 'caselist.cl_ldl', 'caselist.cl_tg', 'caselist.cl_egfr', 'caselist.cl_base_sbp', 'caselist.cl_base_ebp')
+				->where('caselist.cl_case_type', '!=', 4)
+				->where('caselist.cl_case_type', '!=', 1)
+				->where(DB::raw('TIMESTAMPDIFF(YEAR, caselist.created_at, NOW())'), '<=', 2)
+				->groupBy('caselist.cl_patientid')
+				->orderBy('caselist.cl_patientid')
+				->orderBy('caselist.created_at', 'desc')
+				->get();
+		} else {
+			// 區間日期
+			$sql = DB::table('caselist')
+				->leftjoin('users', 'users.id', '=', 'caselist.user_id')
+				->leftjoin('patientprofile1', 'patientprofile1.user_id', '=', 'caselist.user_id')
+				->leftjoin('casecare', 'casecare.patientprofile1_id', '=', 'patientprofile1.id')
+				->select('caselist.cl_patientid', 'users.name', DB::raw("DATE_FORMAT(patientprofile1.pp_birthday,'%Y-%m-%d') AS birthday"), DB::raw("(CASE patientprofile1.pp_sex WHEN 1 THEN '男' ELSE '女' END) AS sex"), 'patientprofile1.pp_age', 'casecare.cc_mdate', DB::raw("(CASE casecare.cc_edu WHEN 0 THEN '不识字' WHEN 1 THEN '识字' WHEN 2 THEN '小学' WHEN '3' THEN '初中' WHEN '4' THEN '高中' WHEN '5' THEN '大专' ELSE '大学或以上' END) AS edu"), 'patientprofile1.pp_height', 'patientprofile1.pp_weight', 'caselist.cl_bmi', 'caselist.cl_blood_hba1c', 'caselist.cl_ldl', 'caselist.cl_tg', 'caselist.cl_egfr', 'caselist.cl_base_sbp', 'caselist.cl_base_ebp')
+				->where('caselist.cl_case_type', '!=', 4)
+				->where('caselist.cl_case_type', '!=', 1)
+				->where(DB::raw('CONCAT(LEFT(caselist.created_at,4),SUBSTRING(caselist.created_at,6,2))'), '>=', DB::raw("'".$ifrom."'"))
+				->where(DB::raw('CONCAT(LEFT(caselist.created_at,4),SUBSTRING(caselist.created_at,6,2))'), '<=', DB::raw("'".$ito."'"))
+				->groupBy('caselist.cl_patientid')
+				->orderBy('caselist.cl_patientid')
+				->orderBy('caselist.created_at', 'desc')
+				->get();
+		}
 		$count = $sql;
 		return $count;
 	}
 
-	public function list7()
-	{
-	}
-	public function list8()
-	{
-	}
-	public function list9()
-	{
-	}
-	public function list10()
-	{
-	}
-	public function list11()
-	{
-	}
-	public function list12()
-	{
-	}
-	public function list13()
-	{
-	}
-	public function list14()
-	{
-		// 区间日期::基本资料(总表)
-
-	}
-	public function list15()
-	{
-	}
-	public function list16()
-	{
-	}
-	public function list17()
-	{
-	}
-	public function list18()
-	{
-	}
-	public function list19()
-	{
-	}
-	public function list20()
-	{
-	}
-
-	}
+}

@@ -18,6 +18,7 @@ class CreateCaselistTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('cl_patientid', 50)->nullable();
             $table->char('cl_case_date', 10)->nullable();
+            $table->integer('cl_doctor')->unsigned();
             $table->integer('cl_case_educator')->unsigned();
             $table->string('cl_case_type', 12)->nullable();
             $table->decimal('cl_base_sbp', 3, 0)->unsigned()->nullable();
@@ -47,7 +48,7 @@ class CreateCaselistTable extends Migration
             $table->decimal('cl_ua', 3, 0)->unsigned()->nullable();
             $table->decimal('cl_urine_micro', 3, 0)->unsigned()->nullable();
             $table->char('cl_urine_routine', 2)->nullable();
-            $table->decimal('cl_ket', 3, 1)->unsigned()->nullable();
+            $table->char('cl_ket', 4)->nullable();
             $table->decimal('cl_egfr', 5, 1)->unsigned()->nullable();
             $table->char('cl_foot_chk_right', 6)->nullable();
             $table->char('cl_foot_chk_left', 6)->nullable();

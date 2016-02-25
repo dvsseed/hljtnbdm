@@ -29,23 +29,27 @@ class DischargeController extends Controller {
 		$category = $request->category;
 		if ($search) {
 			$categoryList = [
-				1 => "discharges.discharge_at",
-				2 => "users.name",
+				1 => "users.name",
+				2 => "discharges.discharge_at",
 			];
 			$field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
 			if($field!="other") {
 				$result = DB::table('discharges')
 					->leftjoin('users', 'users.id', '=', 'discharges.residencies')
-					->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')->where($field, 'like', '%' . $search . '%')->orderBy('discharge_at', 'desc');
+					->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')
+					->where($field, 'like', '%' . $search . '%')
+					->orderBy('discharge_at', 'desc');
 			} else {
 				$result = DB::table('discharges')
 					->leftjoin('users', 'users.id', '=', 'discharges.residencies')
-					->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')->orderBy('discharge_at', 'desc');
+					->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')
+					->orderBy('discharge_at', 'desc');
 			}
 		} else {
 			$result = DB::table('discharges')
 				->leftjoin('users', 'users.id', '=', 'discharges.residencies')
-				->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')->orderBy('discharge_at', 'desc');
+				->select('discharges.id', 'discharges.user_id', 'discharges.doctor', 'discharges.residencies', 'discharges.discharge_at', 'users.name')
+				->orderBy('discharge_at', 'desc');
 		}
 
 		$count = $result->count();

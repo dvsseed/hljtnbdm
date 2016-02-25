@@ -17,6 +17,8 @@
                     <option value="" {{ Text::selected($category, '') }}>请选择</option>
                     <option value="1" {{ Text::selected($category, 1) }}>身份证</option>
                     <option value="2" {{ Text::selected($category, 2) }}>卡号</option>
+                    <option value="3" {{ Text::selected($category, 3) }}>姓名</option>
+                    users.name
                 </select>
                 <input class="form-control" placeholder="按栏位搜索..." name="search" type="text" value="{{ $search }}" required>
                 <input class="btn btn-default" type="submit" value="搜寻">

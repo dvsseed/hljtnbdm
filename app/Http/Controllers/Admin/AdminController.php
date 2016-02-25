@@ -25,9 +25,10 @@ class AdminController extends Controller
 
         if ($search) {
             $categoryList = [
-                1 => "name",
-                2 => "department",
-                3 => "position",
+                1 => "account",
+                2 => "name",
+                3 => "department",
+                4 => "position",
             ];
             $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
             if($field!="other") {
@@ -41,7 +42,7 @@ class AdminController extends Controller
         $countstr = '人';
         $count = $result->count();
         $users = $result->paginate(10)->appends(['search' => $search, 'category' => $category]);
-        $categories = array('' => '请选择', '1' => '姓名', '2' => '部门', '3' => '职务');
+        $categories = array('' => '请选择', '1' => '帐号', '2' => '姓名', '3' => '部门', '4' => '职务');
         $positions = User::$_position;
         return view('Admin.index', compact('users', 'countstr', 'count', 'categories', 'search', 'category', 'positions'));
     }

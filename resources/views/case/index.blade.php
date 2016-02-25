@@ -19,7 +19,8 @@ active
             <select class="form-control" name="category" required>
                 <option value="" {{Text::selected($category, '')}}>请选择</option>
                 <option value="1" {{Text::selected($category, 1)}}>病患ID</option>
-                <option value="2" {{Text::selected($category, 2)}}>收案日期</option>
+                <option value="2" {{Text::selected($category, 2)}}>病患姓名</option>
+                <option value="3" {{Text::selected($category, 3)}}>收案日期</option>
             </select>
             <input class="form-control" placeholder="按栏位搜索..." name="search" type="text" value="{{ $search }}" required>
             <input class="btn btn-default" type="submit" value="搜寻">

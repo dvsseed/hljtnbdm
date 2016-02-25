@@ -40,15 +40,35 @@ class PatientprofileController extends Controller
         if ($search) {
             $categoryList = [
                 1 => "pp_patientid",
+                2 => "name",
+                3 => "pp_birthday",
+                4 => "pp_tel1",
+                5 => "pp_mobile1",
             ];
             $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
             if($field!="other") {
-                $result = Patientprofile::where($field, 'like', '%' . $search . '%')->orderBy('created_at', 'desc');
+//                $result = Patientprofile::where($field, 'like', '%' . $search . '%')->orderBy('created_at', 'desc');
+                $result = DB::table('patientprofile1')
+                    ->leftjoin('users', 'users.id', '=', 'patientprofile1.user_id')
+                    ->leftjoin('hospital_no', 'hospital_no.patient_profile_id', '=', 'patientprofile1.id')
+                    ->select('patientprofile1.id', 'hospital_no.hospital_no_uuid', 'patientprofile1.pp_patientid', 'patientprofile1.pp_birthday', 'patientprofile1.pp_sex', 'patientprofile1.pp_height', 'patientprofile1.pp_weight', 'patientprofile1.pp_tel1', 'patientprofile1.pp_mobile1', 'patientprofile1.pp_address', 'patientprofile1.pp_email', 'users.name')
+                    ->where($field, 'like', '%' . $search . '%')
+                    ->orderBy('patientprofile1.created_at', 'desc');
             } else {
-                $result = Patientprofile::orderBy('created_at', 'desc');
+//                $result = Patientprofile::orderBy('created_at', 'desc');
+                $result = DB::table('patientprofile1')
+                    ->leftjoin('users', 'users.id', '=', 'patientprofile1.user_id')
+                    ->leftjoin('hospital_no', 'hospital_no.patient_profile_id', '=', 'patientprofile1.id')
+                    ->select('patientprofile1.id', 'hospital_no.hospital_no_uuid', 'patientprofile1.pp_patientid', 'patientprofile1.pp_birthday', 'patientprofile1.pp_sex', 'patientprofile1.pp_height', 'patientprofile1.pp_weight', 'patientprofile1.pp_tel1', 'patientprofile1.pp_mobile1', 'patientprofile1.pp_address', 'patientprofile1.pp_email', 'users.name')
+                    ->orderBy('patientprofile1.created_at', 'desc');
             }
         } else {
-            $result = Patientprofile::orderBy('created_at', 'desc');
+//            $result = Patientprofile::orderBy('created_at', 'desc');
+            $result = DB::table('patientprofile1')
+                ->leftjoin('users', 'users.id', '=', 'patientprofile1.user_id')
+                ->leftjoin('hospital_no', 'hospital_no.patient_profile_id', '=', 'patientprofile1.id')
+                ->select('patientprofile1.id', 'hospital_no.hospital_no_uuid', 'patientprofile1.pp_patientid', 'patientprofile1.pp_birthday', 'patientprofile1.pp_sex', 'patientprofile1.pp_height', 'patientprofile1.pp_weight', 'patientprofile1.pp_tel1', 'patientprofile1.pp_mobile1', 'patientprofile1.pp_address', 'patientprofile1.pp_email', 'users.name')
+                ->orderBy('patientprofile1.created_at', 'desc');
         }
 
         $count = $result->count();

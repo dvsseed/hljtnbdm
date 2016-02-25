@@ -60,6 +60,7 @@ class DiabetesController extends Controller
                 $categoryList = [
                     1 => "buildcases.personid",
                     2 => "buildcases.cardid",
+                    3 => "users.name",
                 ];
                 $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
                 if($field!="other") {

@@ -29,7 +29,8 @@ class CaseController extends Controller {
 		if ($search) {
 			$categoryList = [
 				1 => "cl_patientid",
-				2 => "cl_case_date",
+				2 => "name",
+				3 => "cl_case_date",
 			];
 			$field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
 			if($field!="other") {
