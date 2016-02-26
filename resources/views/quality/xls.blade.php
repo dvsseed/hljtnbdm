@@ -1,33 +1,13 @@
-@extends('master')
+<html>
 
-@section('title')
-    统计报表
-@stop
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
 
-@section('activeq1')
-active
-@stop
-
-@section('css')
-    {!! Html::style('css/quality.css') !!}
-@stop
-
-@section('content')
+<body>
 <div class="container-fluid">
     <div class="row">
-        @if($object == 0 || $object == 1 || $object == 2 || $object == 3 || $object == 7 || $object == 8 || $object == 9 || $object == 10 || $object == 14 || $object == 15 || $object == 16 || $object == 17)
-            <div class="col-md-6">
-        @elseif($object == 4 || $object == 6 || $object == 11 || $object == 13 || $object == 18 || $object == 20)
-            <div class="col-md-8">
-        @elseif($object == 5 || $object == 12 || $object == 19)
-            <div class="col-md-11">
-        @endif
-            @include('errors.list')
-            <a class="btn btn-default" href="{{ route('quality.index') }}">返回</a>
-            <button class="btn btn-success" type="button" onclick="printdiv0()">打印</button>
-            <a href="{{ route('download_excel', array('object' => $object, 'header' => $header, 'count' => '', 'ifrom' => $ifrom, 'ito' => $ito)) }}"><button class="btn btn-warning" onclick="return confirm('确定下载?')">汇出Excel</button></a>
-            <!-- input type="button" id="btnExport" onclick="return confirm('确定下载?')" value="汇出Excel" / -->
-            <div id="printpage">
+        <div class="col-md-12">
             <table>
                 <tr>
                     @if($object == 0 || $object == 1 || $object == 2 || $object == 3 || $object == 7 || $object == 8 || $object == 9 || $object == 10 || $object == 14 || $object == 15 || $object == 16 || $object == 17)
@@ -144,25 +124,11 @@ active
                     @include('quality.list5')
                 @elseif($object == 20)
                     @include('quality.list6')
-                @else
-                    <h1>没有资料...</h1>
                 @endif
             </table>
-            <br>
-            </div>
         </div>
     </div>
 </div>
-@stop
+</body>
 
-@section('loadScripts')
-    {!! Html::script('js/quality.js') !!}
-    <script>
-//        $(document).ready(function(){
-//            $("#btnExport").click(function(e){
-//                window.open('data:application/vnd.ms-excel,' + $('#printpage').html());
-//                e.preventDefault();
-//            });
-//        });
-    </script>
-@stop
+</html>

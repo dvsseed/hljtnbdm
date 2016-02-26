@@ -119,7 +119,7 @@ Route::get('discharge/history/{personid}', ['as' => 'discharge_history', 'uses' 
 #统计报表
 Route::resource("quality", "Quality\QualityController");
 Route::post('quality/lists', 'Quality\QualityController@lists');
-Route::get('quality/downloadexcel/{obj}', ['as' => 'download_excel', 'uses' => 'Quality\ExcelController@xlsx']);
+Route::get('quality/downloadexcel/{object}/{ifrom}/{ito}', ['as' => 'download_excel', 'uses' => 'Quality\QualityController@xlsx']);
 
 #行政報表
 Route::get('/executive/{type}/{range}', 'Exceutive\ExceutiveController@exec_stat');

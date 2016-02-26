@@ -5,6 +5,7 @@ use Carbon\Carbon;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Excel;
 
 class QualityController extends Controller {
 
@@ -14,6 +15,12 @@ class QualityController extends Controller {
 		"6" => "新登录::品质指标明细", "7" => "二年内::基本资料(总表)", "8" => "二年内::生理与习惯(总表)", "9" => "二年内::品质指标(总表)", "10" => "二年内::并发症(总表)", "11" => "二年内::生理与习惯明细", "12" => "二年内::并发症明细",
 		"13" => "二年内::品质指标明细", "14" => "区间日期::基本资料(总表)", "15" => "区间日期::生理与习惯(总表)", "16" => "区间日期::品质指标(总表)", "17" => "区间日期::并发症(总表)", "18" => "区间日期::生理与习惯明细",
 		"19" => "区间日期::并发症明细", "20" => "区间日期::品质指标明细"
+	);
+	public static $_fname = array(
+		"0" => "新登录_基本资料总表", "1" => "新登录_生理与习惯总表", "2" => "新登录_品质指标总表", "3" => "新登录_并发症总表", "4" => "新登录_生理与习惯明细", "5" => "新登录_并发症明细",
+		"6" => "新登录_品质指标明细", "7" => "二年内_基本资料总表", "8" => "二年内_生理与习惯总表", "9" => "二年内_品质指标总表", "10" => "二年内_并发症总表", "11" => "二年内_生理与习惯明细", "12" => "二年内_并发症明细",
+		"13" => "二年内_品质指标明细", "14" => "区间日期_基本资料总表", "15" => "区间日期_生理与习惯总表", "16" => "区间日期_品质指标总表", "17" => "区间日期_并发症总表", "18" => "区间日期_生理与习惯明细",
+		"19" => "区间日期_并发症明细", "20" => "区间日期_品质指标明细"
 	);
 
 	/**
@@ -39,7 +46,6 @@ class QualityController extends Controller {
 		$objects = self::$_objects;
 		$object = $request->object;
 		$header = in_array($object, array_keys($objects)) ? $objects[$object] : "other";
-
 		$fyear = $request->interval_fromyear;
 		$fmonth = $request->interval_frommonth;
 		$tyear = $request->interval_toyear;
@@ -61,6 +67,16 @@ class QualityController extends Controller {
 		$ifrom = $fyear.$fmonth;
 		$ito = $tyear.$tmonth;
 
+		$count = $this->switchcase($object, $ifrom, $ito);
+		if(empty($count)) {
+			return view('quality.empty');
+		} else {
+			return view('quality.lists', compact('object', 'header', 'count', 'ifrom', 'ito'));
+		}
+	}
+
+	public function switchcase($object, $ifrom, $ito)
+	{
 		switch ($object) {
 			case 0:
 				$count = $this->list0($object, $ifrom, $ito);
@@ -128,16 +144,12 @@ class QualityController extends Controller {
 			default:
 				break;
 		}
-		if(empty($count)) {
-			return view('quality.empty');
-		} else {
-			return view('quality.lists', compact('object', 'header', 'count'));
-		}
+		return $count;
 	}
 
 	public function insertdata($object, $ifrom, $ito)
 	{
-		DB::statement('TRUNCATE TABLE insertdata');
+//		DB::statement('TRUNCATE TABLE insertdata');
 		if($object >= 0 && $object <= 6) {
 			// 新登錄
 			$scope = " GROUP BY c.cl_patientid ORDER BY c.cl_patientid, c.created_at";
@@ -148,8 +160,9 @@ class QualityController extends Controller {
 			// 區間日期
 			$scope = " AND (c.cl_case_type != 1) AND (CONCAT(LEFT(c.created_at,4),SUBSTRING(c.created_at,6,2)) >= '" . $ifrom . "') AND (CONCAT(LEFT(c.created_at,4),SUBSTRING(c.created_at,6,2)) <= '" . $ito . "') GROUP BY c.cl_patientid ORDER BY c.cl_patientid, c.created_at desc";
 		}
-		DB::statement("INSERT INTO insertdata SELECT c.id,c.pp_id,c.user_id,c.cl_patientid,c.cl_case_type,c.cl_bmi,c.cl_waist,c.cl_base_sbp,c.cl_base_ebp,c.cl_drinking,c.cl_drinking_other,c.cl_smoking,c.cl_havesmoke,c.cl_quitsmoke,c.cl_periodontal,c.cl_masticatory,c.cl_complications,c.cl_complications_stage,c.cl_complications_other,c.cl_eye_chk8,c.cl_eye_chk8_right_item,c.cl_eye_chk8_left_item,c.cl_blood_hba1c,c.cl_tg,c.cl_ldl,c.cl_egfr,c.cl_cataract,c.cl_coronary_heart,c.cl_coronary_heart_other,c.cl_chh_year,c.cl_chh_month,c.cl_stroke,c.cl_stroke_item,c.cl_stroke_other,c.cl_sh_year,c.cl_sh_month,c.cl_blindness,c.cl_blindness_right_item,c.cl_blindness_left_item,c.cl_bh_year,c.cl_bh_month,c.cl_dialysis,c.cl_dialysis_item,c.cl_dh_year,c.cl_dh_month,c.cl_amputation,c.cl_amputation_right_item,c.cl_amputation_left_item,c.cl_ah_year,c.cl_ah_month,c.cl_amputation_other,c.cl_medical_treatment,c.cl_medical_treatment_other,c.cl_medical_treatment_emergency,u.account,u.name,u.pid,p.pp_patientid,p.pp_birthday,p.pp_age,p.pp_sex,p.pp_height,p.pp_weight,p.educator,cc.patientprofile1_id,cc.cc_mdate,cc.cc_edu,c.created_at FROM caselist AS c LEFT JOIN users AS u ON u.id = c.user_id LEFT JOIN patientprofile1 AS p ON p.user_id = c.user_id LEFT JOIN casecare AS cc ON cc.patientprofile1_id = p.id WHERE (c.cl_case_type != 4) ".$scope);
-		$listdata = DB::select('select * from insertdata');
+//		DB::statement("INSERT INTO insertdata SELECT c.id,c.pp_id,c.user_id,c.cl_patientid,c.cl_case_type,c.cl_bmi,c.cl_waist,c.cl_base_sbp,c.cl_base_ebp,c.cl_drinking,c.cl_drinking_other,c.cl_smoking,c.cl_havesmoke,c.cl_quitsmoke,c.cl_periodontal,c.cl_masticatory,c.cl_complications,c.cl_complications_stage,c.cl_complications_other,c.cl_eye_chk8,c.cl_eye_chk8_right_item,c.cl_eye_chk8_left_item,c.cl_blood_hba1c,c.cl_tg,c.cl_ldl,c.cl_egfr,c.cl_cataract,c.cl_coronary_heart,c.cl_coronary_heart_other,c.cl_chh_year,c.cl_chh_month,c.cl_stroke,c.cl_stroke_item,c.cl_stroke_other,c.cl_sh_year,c.cl_sh_month,c.cl_blindness,c.cl_blindness_right_item,c.cl_blindness_left_item,c.cl_bh_year,c.cl_bh_month,c.cl_dialysis,c.cl_dialysis_item,c.cl_dh_year,c.cl_dh_month,c.cl_amputation,c.cl_amputation_right_item,c.cl_amputation_left_item,c.cl_ah_year,c.cl_ah_month,c.cl_amputation_other,c.cl_medical_treatment,c.cl_medical_treatment_other,c.cl_medical_treatment_emergency,u.account,u.name,u.pid,p.pp_patientid,p.pp_birthday,p.pp_age,p.pp_sex,p.pp_height,p.pp_weight,p.educator,cc.patientprofile1_id,cc.cc_mdate,cc.cc_edu,c.created_at FROM caselist AS c LEFT JOIN users AS u ON u.id = c.user_id LEFT JOIN patientprofile1 AS p ON p.user_id = c.user_id LEFT JOIN casecare AS cc ON cc.patientprofile1_id = p.id WHERE (c.cl_case_type != 4) ".$scope);
+//		$listdata = DB::select('select * from insertdata');
+		$listdata = DB::select("SELECT c.id,c.pp_id,c.user_id,c.cl_patientid,c.cl_case_type,c.cl_bmi,c.cl_waist,c.cl_base_sbp,c.cl_base_ebp,c.cl_drinking,c.cl_drinking_other,c.cl_smoking,c.cl_havesmoke,c.cl_quitsmoke,c.cl_periodontal,c.cl_masticatory,c.cl_complications,c.cl_complications_stage,c.cl_complications_other,c.cl_eye_chk8,c.cl_eye_chk8_right_item,c.cl_eye_chk8_left_item,c.cl_blood_hba1c,c.cl_tg,c.cl_ldl,c.cl_egfr,c.cl_cataract,c.cl_coronary_heart,c.cl_coronary_heart_other,c.cl_chh_year,c.cl_chh_month,c.cl_stroke,c.cl_stroke_item,c.cl_stroke_other,c.cl_sh_year,c.cl_sh_month,c.cl_blindness,c.cl_blindness_right_item,c.cl_blindness_left_item,c.cl_bh_year,c.cl_bh_month,c.cl_dialysis,c.cl_dialysis_item,c.cl_dh_year,c.cl_dh_month,c.cl_amputation,c.cl_amputation_right_item,c.cl_amputation_left_item,c.cl_ah_year,c.cl_ah_month,c.cl_amputation_other,c.cl_medical_treatment,c.cl_medical_treatment_other,c.cl_medical_treatment_emergency,u.account,u.name,u.pid,p.pp_patientid,p.pp_birthday,p.pp_age,p.pp_sex,p.pp_height,p.pp_weight,p.educator,cc.patientprofile1_id,cc.cc_mdate,cc.cc_edu,c.created_at FROM caselist AS c LEFT JOIN users AS u ON u.id = c.user_id LEFT JOIN patientprofile1 AS p ON p.user_id = c.user_id LEFT JOIN casecare AS cc ON cc.patientprofile1_id = p.id WHERE (c.cl_case_type != 4) ".$scope);
 		return $listdata;
 	}
 
@@ -955,6 +968,18 @@ class QualityController extends Controller {
 		}
 		$count = $sql;
 		return $count;
+	}
+
+	public function xlsx($object, $ifrom, $ito)
+	{
+		$objects = self::$_fname;
+		$header = in_array($object, array_keys($objects)) ? $objects[$object] : "other";
+		$count = $this->switchcase($object, $ifrom, $ito);
+		Excel::create($header, function($excel) use($object, $header, $count, $ifrom, $ito) {
+			$excel->sheet('quality', function($sheet) use($object, $header, $count, $ifrom, $ito) {
+				$sheet->loadView('quality.xls', array('object' => $object, 'header' => $header, 'count' => $count, 'ifrom' => $ifrom, 'ito' => $ito));
+			});
+		})->export('xls');
 	}
 
 }
