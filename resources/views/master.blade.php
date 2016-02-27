@@ -60,7 +60,7 @@
 						@endif
 						@if(Auth::user()->position == '院长' || Auth::user()->position == '副院长')
 							<li class="@yield('activeq1')"><a href="/quality">照护品质</a></li>
-							<li class="@yield('activeq2')"><a href="/quality">行政报表</a></li>
+							<li class="@yield('activeq2')"><a href="/executive">行政报表</a></li>
 						@endif
 					@endif
 					<li><a href="http://www.hljtnb.com" target="__blank">黑龙江瑞京</a></li>

@@ -122,5 +122,8 @@ Route::post('quality/lists', 'Quality\QualityController@lists');
 Route::get('quality/downloadexcel/{object}/{ifrom}/{ito}', ['as' => 'download_excel', 'uses' => 'Quality\QualityController@xlsx']);
 
 #行政報表
+Route::get('/executive/', 'Exceutive\ExceutiveController@lists');
 Route::get('/executive/{type}/{range}', 'Exceutive\ExceutiveController@exec_stat');
 Route::get('/executive/{type}/{range}/{chart_title}.xls', 'Exceutive\ExceutiveController@export_excel');
+Route::get('/executive/{type}/{range}/{user_id}/{chart_title}.xls', 'Exceutive\ExceutiveController@export_excel_person');
+Route::get('/executive/{type}/{range}/{user_id?}', 'Exceutive\ExceutiveController@exec_stat');

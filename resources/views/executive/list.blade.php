@@ -1,155 +1,34 @@
-<meta charset="UTF-8">
 <table>
+    <tr>
+        <th colspan="{{count($records)*4}}">{{$chart_title}}</th>
+    </tr>
     <tr>
         @foreach($records as $key=>$data)
             @if($first_key = key($data)) @endif
-            <td>
-                <table>
-                    <tr>
-                        <th colspan="4">{{$chart_title}}</th>
-                    </tr>
-                    <tr>
-                        <th>@if($first_key == $key) 區間 @else {{$data['title']}} @endif</th>
-                        <th>@if($first_key == $key) {{$data['title']}} @endif</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <td>A1C</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>總筆數</td>
-                        <td>{{$data['data']['count']}}</td>
-                        <td></td>
-                        <td>百分比</td>
-                    </tr>
-                    @if(isset($data['data']['a1c']['mid']))
-                        @foreach($data['data']['a1c']['mid'] as $doc => $count)
-                            <tr>
-                                <td></td>
-                                <td>{{$doc}} </td>
-                                <td>{{$count}}</td>
-                                <td>{{$count}}/{{$data['data']['count']}}</td>
-                            </tr>
-                        @endforeach
-                    @endif
-                    @if(isset($data['data']['a1c']['low']))
-                        @if($first = key($data['data']['a1c']['low'])) @endif
-                        @foreach($data['data']['a1c']['low'] as $doc => $count)
-                            <tr>
-                                <td> @if($first===$doc) <7 @endif </td>
-                                <td>{{$doc}} </td>
-                                <td>{{$count}}</td>
-                                <td>{{$count}}/{{$data['data']['count']}}</td>
-                            </tr>
-                        @endforeach
-                    @endif
-                    @if(isset($data['data']['a1c']['high']))
-                        @if($first = key($data['data']['a1c']['high'])) @endif
-                        @foreach($data['data']['a1c']['high'] as $doc => $count)
-                            <tr>
-                                <td> @if($first===$doc) >9 @endif </td>
-                                <td>{{$doc}} </td>
-                                <td>{{$count}}</td>
-                                <td>{{$count}}/{{$data['data']['count']}}</td>
-                            </tr>
-                        @endforeach
-                    @endif
-
-                    <tr>
-                        <td>LDL</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>總筆數</td>
-                        <td>{{$data['data']['count']}}</td>
-                        <td></td>
-                        <td>百分比</td>
-                    </tr>
-                    @if(isset($data['data']['ldl']['mid']))
-                        @foreach($data['data']['ldl']['mid'] as $doc => $count)
-                            <tr>
-                                <td></td>
-                                <td>{{$doc}} </td>
-                                <td>{{$count}}</td>
-                                <td>{{$count}}/{{$data['data']['count']}}</td>
-                            </tr>
-                        @endforeach
-                    @endif
-                    @if(isset($data['data']['ldl']['low']))
-                        @if($first = key($data['data']['ldl']['low'])) @endif
-                        @foreach($data['data']['ldl']['low'] as $doc => $count)
-                            <tr>
-                                <td> @if($first===$doc) <7 @endif </td>
-                                <td>{{$doc}} </td>
-                                <td>{{$count}}</td>
-                                <td>{{$count}}/{{$data['data']['count']}}</td>
-                            </tr>
-                        @endforeach
-                    @endif
-                    @if(isset($data['data']['ldl']['high']))
-                        @if($first = key($data['data']['ldl']['high'])) @endif
-                        @foreach($data['data']['ldl']['high'] as $doc => $count)
-                            <tr>
-                                <td> @if($first===$doc) >9 @endif </td>
-                                <td>{{$doc}} </td>
-                                <td>{{$count}}</td>
-                                <td>{{$count}}/{{$data['data']['count']}}</td>
-                            </tr>
-                        @endforeach
-                    @endif
-
-                    <tr>
-                        <td>血壓</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>總筆數</td>
-                        <td>{{$data['data']['count']}}</td>
-                        <td></td>
-                        <td>百分比</td>
-                    </tr>
-                    @if(isset($data['data']['bp']['mid']))
-                        @foreach($data['data']['bp']['mid'] as $doc => $count)
-                            <tr>
-                                <td></td>
-                                <td>{{$doc}} </td>
-                                <td>{{$count}}</td>
-                                <td>{{$count}}/{{$data['data']['count']}}</td>
-                            </tr>
-                        @endforeach
-                    @endif
-                    @if(isset($data['data']['bp']['low']))
-                        @if($first = key($data['data']['bp']['low'])) @endif
-                        @foreach($data['data']['bp']['low'] as $doc => $count)
-                            <tr>
-                                <td> @if($first===$doc) <7 @endif </td>
-                                <td>{{$doc}} </td>
-                                <td>{{$count}}</td>
-                                <td>{{$count}}/{{$data['data']['count']}}</td>
-                            </tr>
-                        @endforeach
-                    @endif
-                    @if(isset($data['data']['bp']['high']))
-                        @if($first = key($data['data']['bp']['high'])) @endif
-                        @foreach($data['data']['bp']['high'] as $doc => $count)
-                            <tr>
-                                <td> @if($first===$doc) >9 @endif </td>
-                                <td>{{$doc}} </td>
-                                <td>{{$count}}</td>
-                                <td>{{$count}}/{{$data['data']['count']}}</td>
-                            </tr>
-                        @endforeach
-                    @endif
-                </table>
-            </td>
+            <th style="min-width: 100px;font-weight:bold" @if(isset($xls)) width="20px" @endif>@if($first_key == $key) 區間 @else {{$data['title']}} @endif </th>
+            <th style="min-width: 100px" @if(isset($xls)) width="20px" @endif>@if($first_key == $key) {{$data['title']}} @endif</th>
+            <th style="min-width: 100px" @if(isset($xls)) width="20px" @endif></th>
+            <th style="min-width: 100px" @if(isset($xls)) width="20px" @endif></th>
         @endforeach
     </tr>
+    @if($longest != -1)
+        @for($i = 0; $i < $longest; $i++)
+            <tr>
+                @foreach($records as $key=>$data)
+                    @if(isset($data['data'][$i]))
+                        <td style="font-weight: bold">{{$data['data'][$i][0]}}</td>
+                        <td> @if(isset($data['data'][$i]['doctor_detail']) && !isset($xls)) <a href="{{$base}}/{{$data['data'][$i]['doctor_detail']}}">{{$data['data'][$i][1]}}</a> @else {{$data['data'][$i][1]}} @endif</td>
+                        <td>{{$data['data'][$i][2]}}</td>
+                        <td>{{$data['data'][$i][3]}}</td>
+                    @else
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    @endif
+                @endforeach
+            </tr>
+        @endfor
+    @endif
+
 </table>
