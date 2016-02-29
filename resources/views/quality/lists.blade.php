@@ -15,6 +15,7 @@ active
 @section('content')
 <div class="container-fluid">
     <div class="row">
+{{--
         @if($object == 0 || $object == 1 || $object == 2 || $object == 3 || $object == 7 || $object == 8 || $object == 9 || $object == 10 || $object == 14 || $object == 15 || $object == 16 || $object == 17)
             <div class="col-md-6">
         @elseif($object == 4 || $object == 6 || $object == 11 || $object == 13 || $object == 18 || $object == 20)
@@ -22,6 +23,7 @@ active
         @elseif($object == 5 || $object == 12 || $object == 19)
             <div class="col-md-11">
         @endif
+--}}
             @include('errors.list')
             <a class="btn btn-default" href="{{ route('quality.index') }}">返回</a>
             <button class="btn btn-success" type="button" onclick="printdiv0()">打印</button>
@@ -150,7 +152,9 @@ active
             </table>
             <br>
             </div>
+{{--
         </div>
+--}}
     </div>
 </div>
 @stop
