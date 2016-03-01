@@ -5,7 +5,7 @@
     <tr>
         @foreach($records as $key=>$data)
             @if($first_key = key($data)) @endif
-            <th style="min-width: 100px;font-weight:bold" @if(isset($xls)) width="20px" @endif>@if($first_key == $key) 區間 @else {{$data['title']}} @endif </th>
+            <th style="min-width: 100px;font-weight:bold" @if(isset($xls)) width="20px" @endif>@if($first_key == $key) 区间 @else {{$data['title']}} @endif </th>
             <th style="min-width: 100px" @if(isset($xls)) width="20px" @endif>@if($first_key == $key) {{$data['title']}} @endif</th>
             <th style="min-width: 100px" @if(isset($xls)) width="20px" @endif></th>
             <th style="min-width: 100px" @if(isset($xls)) width="20px" @endif></th>

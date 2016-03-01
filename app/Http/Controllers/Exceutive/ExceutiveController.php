@@ -15,33 +15,33 @@ use Excel;
 class ExceutiveController extends Controller{
 
     private $title = array(
-        "day" => array("exec" => "三高績效統計日報表", "soap" => "SOAP績效統計日報表"),
-        "week" => array("exec" => "三高績效統計周報表", "soap" => "SOAP績效統計周報表"),
-        "month" => array("exec" => "三高績效統計月報表", "soap" => "SOAP績效統計月報表"),
-        "season" => array("exec" => "三高績效統計季報表", "soap" => "SOAP績效統計季報表表"),
-        "year" => array("exec" => "三高績效統計年報表", "soap" => "SOAP績效統計年報表")
+        "day" => array("exec" => "三高绩效统计日报表", "soap" => "SOAP绩效统计日报表"),
+        "week" => array("exec" => "三高绩效统计周报表", "soap" => "SOAP绩效统计周报表"),
+        "month" => array("exec" => "三高绩效统计月报表", "soap" => "SOAP绩效统计月报表"),
+        "season" => array("exec" => "三高绩效统计季报表", "soap" => "SOAP绩效统计季报表表"),
+        "year" => array("exec" => "三高绩效统计年报表", "soap" => "SOAP绩效统计年报表")
     );
     private $types = array('a1c','ldl','bp');
-    private $levels = array('mid','low','high');
+    private $levels = array('low','high');
     private $bounds = array(
         'a1c' => array('high' => 9, 'low' => 7),
         'ldl' => array('high' => 3.37, 'low' => 2.59),
         'bp' => array(
             's' => array('high' => 150, 'low' => 130),
             'e' => array('high' => 90, 'low' => 80)
-            )
-        );
+        )
+    );
 
     private $tags = array(
-        'a1c' => array('high' => '>9', 'low' => '<7', 'mid' => ''),
-        'ldl' => array('high' => '≥3.37', 'low' => '<2.59', 'mid' => ''),
-        'bp' => array('high' => '>150/90', 'low' => '<130/80', 'mid' => '')
+        'a1c' => array('high' => '>9', 'low' => '<7'),
+        'ldl' => array('high' => '≥3.37', 'low' => '<2.59'),
+        'bp' => array('high' => '>150/90', 'low' => '<130/80')
     );
 
     private $tags_title = array(
         'a1c' => 'A1C',
         'ldl' => 'LDL',
-        'bp' => '血壓'
+        'bp' => '血压'
     );
 
     public function __construct()
@@ -233,45 +233,52 @@ class ExceutiveController extends Controller{
         foreach($records as $record){
 
             //a1c
-            $level = 'mid';
+            $level = null;
             $type = 'a1c';
             if($record[$type] < $this->bounds[$type]['low']){
                 $level = 'low';
             }else if($record['cl_blood_hba1c'] > $this->bounds[$type]['high']){
                 $level = 'high';
             }
-            if(isset($data[$type][$level][$record['doc']])){
-                $data[$type][$level][$record['doc']] ++;
-            }else{
-                $data[$type][$level][$record['doc']] = 1;
+            if($level != null){
+                if(isset($data[$type][$level][$record['doc']])){
+                    $data[$type][$level][$record['doc']] ++;
+                }else{
+                    $data[$type][$level][$record['doc']] = 1;
+                }
             }
 
+
             //ldl
-            $level = 'mid';
+            $level = null;
             $type = 'ldl';
             if($record[$type] < $this->bounds[$type]['low']){
                 $level = 'low';
             }else if($record['cl_blood_hba1c'] > $this->bounds[$type]['high']){
                 $level = 'high';
             }
-            if(isset($data[$type][$level][$record['doc']])){
-                $data[$type][$level][$record['doc']] ++;
-            }else{
-                $data[$type][$level][$record['doc']] = 1;
+            if($level != null) {
+                if (isset($data[$type][$level][$record['doc']])) {
+                    $data[$type][$level][$record['doc']]++;
+                } else {
+                    $data[$type][$level][$record['doc']] = 1;
+                }
             }
 
             //bp
-            $level = 'mid';
+            $level = null;
             $type = 'bp';
             if($record['cl_base_sbp'] < $this->bounds['bp']['s']['low'] && $record['cl_base_ebp'] < $this->bounds['bp']['e']['low']){
                 $level = 'low';
             }else if($record['cl_base_sbp'] < $this->bounds['bp']['s']['high'] && $record['cl_base_ebp'] < $this->bounds['bp']['e']['high']){
                 $level = 'high';
             }
-            if(isset($data[$type][$level][$record['doc']])){
-                $data[$type][$level][$record['doc']] ++;
-            }else{
-                $data[$type][$level][$record['doc']] = 1;
+            if($level != null){
+                if(isset($data[$type][$level][$record['doc']])){
+                    $data[$type][$level][$record['doc']] ++;
+                }else{
+                    $data[$type][$level][$record['doc']] = 1;
+                }
             }
 
             $doc_pk_mapping[$record['doc']] = $record['name'];
@@ -312,7 +319,7 @@ class ExceutiveController extends Controller{
                         $sum_count += array_sum($data[$type][$level]);
                     }
                 }
-                $one_data = array('總筆數', $sum_count, '', '百分比');
+                $one_data = array('总笔数', $sum_count, '', '百分比');
                 array_push($export_data,$one_data);
             }else{
                 $sum_count = $total_count;
@@ -326,9 +333,9 @@ class ExceutiveController extends Controller{
 
                     foreach($data[$type][$level] as $doc => $count){
                         if($doc === $first_key){
-                            $one_data = array($this->tags[$type][$level], $doc_pk_mapping[$doc], $count, $count.'/'.$sum_count);
+                            $one_data = array($this->tags[$type][$level], $doc_pk_mapping[$doc], $count, round(100*$count/$sum_count));
                         }else{
-                            $one_data = array("", $doc_pk_mapping[$doc], $count, $count.'/'.$sum_count);
+                            $one_data = array("", $doc_pk_mapping[$doc], $count, round(100*$count/$sum_count));
                         }
                         $one_data["doctor_detail"] = $doc;
                         array_push($export_data,$one_data);
