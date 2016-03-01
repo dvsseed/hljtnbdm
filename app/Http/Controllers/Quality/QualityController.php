@@ -9,6 +9,11 @@ use Excel;
 
 class QualityController extends Controller {
 
+	public function __construct()
+	{
+		$this->middleware('auth');
+	}
+
 	// 对象
 	public static $_objects = array(
 		"" => "请选择", "0" => "新登录::基本资料(总表)", "1" => "新登录::生理与习惯(总表)", "2" => "新登录::品质指标(总表)", "3" => "新登录::并发症(总表)", "4" => "新登录::生理与习惯明细", "5" => "新登录::并发症明细",
