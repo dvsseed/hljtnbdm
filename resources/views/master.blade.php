@@ -63,7 +63,10 @@
 							<li class="@yield('activeq2')"><a href="/executive">行政报表</a></li>
 						@endif
 					@endif
-					<li><a href="http://www.hljtnb.com" target="__blank">黑龙江瑞京</a></li>
+					@if(Auth::check())
+						<?php $hospitals = ['hljtnb' => '黑龙江瑞京', 'tytnb' => '太原瑞京', 'tnbrj' => '北京瑞京', 'cdtnb' => '成都瑞恩', 'xbtnb' => '兰州瑞京']; ?>
+						<li><a href="http://www.{{ Auth::user()->hospital }}.com" target="__blank">{{ in_array(Auth::user()->hospital, array_keys($hospitals)) ? $hospitals[Auth::user()->hospital] : "" }}</a></li>
+					@endif
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					@if (Auth::guest())

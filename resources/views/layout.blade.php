@@ -48,7 +48,10 @@
                     <li class="@yield('activef')"><a href="/patient/followup/{{ Auth::user()->id }}">随访清单</a></li>
                     <li class="@yield('activec')"><a href="/case">方案</a></li>
                 @endif
-                <li><a href="http://www.hljtnb.com" target="__blank">黑龙江瑞京</a></li>
+                @if(Auth::check())
+                    <?php $hospitals = ['hljtnb' => '黑龙江瑞京', 'tytnb' => '太原瑞京', 'tnbrj' => '北京瑞京', 'cdtnb' => '成都瑞恩', 'xbtnb' => '兰州瑞京']; ?>
+                    <li><a href="http://www.{{ Auth::user()->hospital }}.com" target="__blank">{{ in_array(Auth::user()->hospital, array_keys($hospitals)) ? $hospitals[Auth::user()->hospital] : "" }}</a></li>
+                @endif
                 <!-- li class="yield('aactive')"><a href="yield('navabout')">关于</a></li -->
                 <!-- li><a href="{{-- url('/logout') --}}">退出</a></li -->
             </ul>

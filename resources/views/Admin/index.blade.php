@@ -31,13 +31,14 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <?php $hospitals = ['hljtnb' => '黑龙江', 'tytnb' => '太原', 'tnbrj' => '北京', 'cdtnb' => '成都', 'xbtnb' => '兰州']; ?>
                     @if (count($users))
                         @foreach ($users as $user)
                             <tr>
                                 <td>{{ $user->id }}</td>
                                 <td>{{ $user->account }}</td>
                                 <td>{{ $user->name }}</td>
-                                <td>{{ $user->hospital == "hljtnb" ? "黑龙江" : "" }}</td>
+                                <td>{{ in_array($user->hospital, array_keys($hospitals)) ? $hospitals[$user->hospital] : "" }}</td>
                                 <td>{{ $user->department }}</td>
                                 <td>{{ $user->phone }}</td>
                                 <td>{{ $user->email }}</td>
