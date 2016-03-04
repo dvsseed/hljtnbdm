@@ -14,7 +14,6 @@ use App\CaseCare;
 use App\User;
 use App\Http\Controllers\Event\EventController;
 use Illuminate\Http\Request;
-
 use App\Model\Pdata\HospitalNo;
 
 class PatientprofileController extends Controller
@@ -24,7 +23,6 @@ class PatientprofileController extends Controller
     {
         $this->middleware('auth');
 //        $this->middleware('patient');
-	    // \Debugbar::enable();
     }
 
     /**
