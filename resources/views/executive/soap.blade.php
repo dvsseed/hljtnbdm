@@ -27,7 +27,7 @@
                     @if(isset($data['data'][$i]))
                         <td>@if(isset($xls)) {{$data['data'][$i]['nurse']}} @else <a href="{{$base}}/{{$data['data'][$i]['nurse_detail']}}" >{{$data['data'][$i]['nurse']}}</a> @endif</td>
                         <td>{{$data['data'][$i]['count']}}</td>
-                        <td>{{round(100*$data['data'][$i]['count']/$data['data']['count'])}}</td>
+                        <td>{{round(100*$data['data'][$i]['count']/$data['data']['count'])}}%</td>
                     @else
                         <td></td>
                         <td></td>

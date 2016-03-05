@@ -21,7 +21,7 @@
                         <td>权责卫教师</td>
                         <td>{{$data['data'][$i]['nurse']}}</td>
                         <td>{{$data['data'][$i]['count']}}</td>
-                        <td>{{round(100*$data['data'][$i]['count']/$data['data'][$i]['total'])}}</td>
+                        <td>{{round(100*$data['data'][$i]['count']/$data['data'][$i]['total'])}}%</td>
                     @else
                         <td></td>
                         <td></td>
