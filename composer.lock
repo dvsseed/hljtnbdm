@@ -176,16 +176,16 @@
         },
         {
             "name": "barryvdh/laravel-ide-helper",
-            "version": "v2.1.2",
+            "version": "v2.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-ide-helper.git",
-                "reference": "d82e8f191fb043a0f8cbf2de64fd3027bfa4f772"
+                "reference": "f1ebd847aac9a4545325d35108cafc285fe1605f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/d82e8f191fb043a0f8cbf2de64fd3027bfa4f772",
-                "reference": "d82e8f191fb043a0f8cbf2de64fd3027bfa4f772",
+                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/f1ebd847aac9a4545325d35108cafc285fe1605f",
+                "reference": "f1ebd847aac9a4545325d35108cafc285fe1605f",
                 "shasum": ""
             },
             "require": {
@@ -193,8 +193,8 @@
                 "illuminate/filesystem": "5.0.x|5.1.x|5.2.x",
                 "illuminate/support": "5.0.x|5.1.x|5.2.x",
                 "php": ">=5.4.0",
-                "phpdocumentor/reflection-docblock": "2.0.4",
-                "symfony/class-loader": "~2.3"
+                "phpdocumentor/reflection-docblock": "^2.0.4",
+                "symfony/class-loader": "~2.3|~3.0"
             },
             "require-dev": {
                 "doctrine/dbal": "~2.3"
@@ -235,7 +235,7 @@
                 "phpstorm",
                 "sublime"
             ],
-            "time": "2015-12-21 19:48:06"
+            "time": "2016-03-03 08:45:00"
         },
         {
             "name": "classpreloader/classpreloader",
