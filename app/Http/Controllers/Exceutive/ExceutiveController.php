@@ -333,13 +333,16 @@ class ExceutiveController extends Controller{
 
                     foreach($data[$type][$level] as $doc => $count){
                         if($doc === $first_key){
-                            $one_data = array($this->tags[$type][$level], $doc_pk_mapping[$doc], $count, round(100*$count/$sum_count));
+                            $one_data = array($this->tags[$type][$level], $doc_pk_mapping[$doc], $count, round(100*$count/$sum_count).'%');
                         }else{
-                            $one_data = array("", $doc_pk_mapping[$doc], $count, round(100*$count/$sum_count));
+                            $one_data = array("", $doc_pk_mapping[$doc], $count, round(100*$count/$sum_count).'%');
                         }
                         $one_data["doctor_detail"] = $doc;
                         array_push($export_data,$one_data);
                     }
+                }else{
+                    $one_data = array($this->tags[$type][$level],  0, '', '');
+                    array_push($export_data,$one_data);
                 }
             }
         }
