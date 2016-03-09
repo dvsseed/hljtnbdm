@@ -145,66 +145,66 @@ class QualityController extends Controller {
 					if(substr($first->cl_patientid,16,1) % 2 == 0) $cnt++;
 					break;
 				case "c11":
-					if(substr($first->cl_patientid,6,4)-1911 < 15) $cnt++;
+					if(date("Y") - substr($first->cl_patientid,6,4) < 15) $cnt++;
 					break;
 				case "c12":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >=15 && $comp < 20) $cnt++;
 					break;
 				case "c13":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 20 && $comp < 25) $cnt++;
 					break;
 				case "c14":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 25 && $comp < 30) $cnt++;
 					break;
 				case "c15":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 30 && $comp < 35) $cnt++;
 					break;
 				case "c16":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 35 && $comp < 40) $cnt++;
 					break;
 				case "c17":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 40 && $comp < 45) $cnt++;
 					break;
 				case "c18":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 45 && $comp < 50) $cnt++;
 					break;
 				case "c19":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 50 && $comp < 55) $cnt++;
 					break;
 				case "c110":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 55 && $comp < 60) $cnt++;
 					break;
 				case "c111":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 60 && $comp < 65) $cnt++;
 					break;
 				case "c112":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 65 && $comp < 70) $cnt++;
 					break;
 				case "c113":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 70 && $comp < 75) $cnt++;
 					break;
 				case "c114":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 75 && $comp < 80) $cnt++;
 					break;
 				case "c115":
-					$comp = substr($first->cl_patientid,6,4) - 1911;
+					$comp = date("Y") - substr($first->cl_patientid,6,4);
 					if($comp >= 80 && $comp < 85) $cnt++;
 					break;
 				case "c116":
-					if(substr($first->cl_patientid,6,4)-1911 >= 85) $cnt++;
+					if(date("Y") - substr($first->cl_patientid,6,4) >= 85) $cnt++;
 					break;
 				case "c21":
 					if(date('Y')-$first->cc_mdate < 1) $cnt++;
@@ -266,7 +266,8 @@ class QualityController extends Controller {
 					if($first->cc_edu == 6) $cnt++;
 					break;
 				case "a01":
-					if($first->cl_bmi < 18.5) $cnt++;
+					$comp = $first->cl_bmi;
+					if($comp > 0 && $comp < 18.5) $cnt++;
 					break;
 				case "a02":
 					$comp = $first->cl_bmi;
@@ -324,7 +325,8 @@ class QualityController extends Controller {
 					if($comp > 0) $cnt++;
 					break;
 				case "b01":
-					if($first->cl_blood_hba1c < 6) $cnt++;
+					$comp = $first->cl_blood_hba1c;
+					if($comp > 0 && $comp < 6) $cnt++;
 					break;
 				case "b02":
 					$comp = $first->cl_blood_hba1c;
@@ -362,7 +364,8 @@ class QualityController extends Controller {
 					if($first->cl_blood_hba1c >= 10) $cnt++;
 					break;
 				case "b11":
-					if($first->cl_ldl < 1.81) $cnt++;
+					$comp = $first->cl_ldl;
+					if($comp > 0 && $comp < 1.81) $cnt++;
 					break;
 				case "b12":
 					$comp = $first->cl_ldl;
@@ -376,7 +379,8 @@ class QualityController extends Controller {
 					if($first->cl_ldl >= 3.37) $cnt++;
 					break;
 				case "b21":
-					if($first->cl_tg < 1.7) $cnt++;
+					$comp = $first->cl_tg;
+					if($comp > 0 && $comp < 1.7) $cnt++;
 					break;
 				case "b22":
 					$comp = $first->cl_tg;
@@ -409,7 +413,8 @@ class QualityController extends Controller {
 					if($comp >= 15 && $comp < 30) $cnt++;
 					break;
 				case "b36":
-					if($first->cl_egfr < 15) $cnt++;
+					$comp = $first->cl_egfr;
+					if($comp > 0 && $comp < 15) $cnt++;
 					break;
 				case "b41":
 					if($first->cl_base_sbp < 120 && $first->cl_base_ebp < 80) $cnt++;
