@@ -235,9 +235,9 @@ class ExceutiveController extends Controller{
             //a1c
             $level = null;
             $type = 'a1c';
-            if($record[$type] < $this->bounds[$type]['low']){
+            if($record[$type] < $this->bounds[$type]['low'] && $record[$type] != 0){
                 $level = 'low';
-            }else if($record['cl_blood_hba1c'] > $this->bounds[$type]['high']){
+            }else if($record[$type] > $this->bounds[$type]['high'] && $record[$type] != 0){
                 $level = 'high';
             }
             if($level != null){
@@ -247,14 +247,21 @@ class ExceutiveController extends Controller{
                     $data[$type][$level][$record['doc']] = 1;
                 }
             }
+            if($record[$type] != 0){
+                if(isset($data[$type]['total'])){
+                    $data[$type]['total'][$record['doc']] ++;
+                }else{
+                    $data[$type]['total'][$record['doc']] = 1;
+                }
+            }
 
 
             //ldl
             $level = null;
             $type = 'ldl';
-            if($record[$type] < $this->bounds[$type]['low']){
+            if($record[$type] < $this->bounds[$type]['low'] && $record[$type] != 0){
                 $level = 'low';
-            }else if($record['cl_blood_hba1c'] > $this->bounds[$type]['high']){
+            }else if($record[$type] > $this->bounds[$type]['high'] && $record[$type] != 0){
                 $level = 'high';
             }
             if($level != null) {
@@ -264,13 +271,20 @@ class ExceutiveController extends Controller{
                     $data[$type][$level][$record['doc']] = 1;
                 }
             }
+            if($record[$type] != 0){
+                if(isset($data[$type]['total'][$record['doc']])){
+                    $data[$type]['total'][$record['doc']] ++;
+                }else{
+                    $data[$type]['total'][$record['doc']] = 1;
+                }
+            }
 
             //bp
             $level = null;
             $type = 'bp';
-            if($record['cl_base_sbp'] < $this->bounds['bp']['s']['low'] && $record['cl_base_ebp'] < $this->bounds['bp']['e']['low']){
+            if($record['cl_base_sbp'] < $this->bounds['bp']['s']['low'] && $record['cl_base_ebp'] < $this->bounds['bp']['e']['low'] && $record['cl_base_sbp'] != 0 && $record['cl_base_ebp'] != 0){
                 $level = 'low';
-            }else if($record['cl_base_sbp'] < $this->bounds['bp']['s']['high'] && $record['cl_base_ebp'] < $this->bounds['bp']['e']['high']){
+            }else if($record['cl_base_sbp'] < $this->bounds['bp']['s']['high'] && $record['cl_base_ebp'] < $this->bounds['bp']['e']['high'] && $record['cl_base_sbp'] != 0 && $record['cl_base_ebp'] != 0){
                 $level = 'high';
             }
             if($level != null){
@@ -278,6 +292,13 @@ class ExceutiveController extends Controller{
                     $data[$type][$level][$record['doc']] ++;
                 }else{
                     $data[$type][$level][$record['doc']] = 1;
+                }
+            }
+            if($record['cl_base_sbp'] != 0 &&$record['cl_base_ebp'] != 0 ){
+                if(isset($data[$type]['total'][$record['doc']])){
+                    $data[$type]['total'][$record['doc']] ++;
+                }else{
+                    $data[$type]['total'][$record['doc']] = 1;
                 }
             }
 
@@ -314,15 +335,31 @@ class ExceutiveController extends Controller{
 
             if($user_id == null){
                 $sum_count = 0;
-                foreach ($this->levels as $level) {
-                    if(isset($data[$type][$level])) {
-                        $sum_count += array_sum($data[$type][$level]);
-                    }
+                if(isset($data[$type]['total'])) {
+                    $sum_count += array_sum($data[$type]['total']);
                 }
                 $one_data = array('总笔数', $sum_count, '', '百分比');
                 array_push($export_data,$one_data);
             }else{
                 $sum_count = $total_count;
+            }
+
+            if(isset($data[$type]['total'])){
+                reset($data[$type]['total']);
+                $first_key = key($data[$type]['total']);
+
+                foreach($data[$type]['total'] as $doc => $count){
+                    if($doc === $first_key){
+                        $one_data = array("", $doc_pk_mapping[$doc], $count, round(100*$count/$sum_count).'%');
+                    }else{
+                        $one_data = array("", $doc_pk_mapping[$doc], $count, round(100*$count/$sum_count).'%');
+                    }
+                    $one_data["doctor_detail"] = $doc;
+                    array_push($export_data,$one_data);
+                }
+            }else{
+                $one_data = array("",  0, '', '');
+                array_push($export_data,$one_data);
             }
 
             foreach ($this->levels as $level) {
@@ -333,9 +370,9 @@ class ExceutiveController extends Controller{
 
                     foreach($data[$type][$level] as $doc => $count){
                         if($doc === $first_key){
-                            $one_data = array($this->tags[$type][$level], $doc_pk_mapping[$doc], $count, round(100*$count/$sum_count).'%');
+                            $one_data = array($this->tags[$type][$level], $doc_pk_mapping[$doc], $count, round(100*$count/$data[$type]['total'][$doc]).'%');
                         }else{
-                            $one_data = array("", $doc_pk_mapping[$doc], $count, round(100*$count/$sum_count).'%');
+                            $one_data = array("", $doc_pk_mapping[$doc], $count, round(100*$count/$data[$type]['total'][$doc]).'%');
                         }
                         $one_data["doctor_detail"] = $doc;
                         array_push($export_data,$one_data);
