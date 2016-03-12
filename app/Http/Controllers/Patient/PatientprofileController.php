@@ -609,29 +609,37 @@ class PatientprofileController extends Controller
             }
 
             $food_records = $hospital -> food_record;
-            foreach( $food_records as $food_record){
-                $details = $food_record -> food_detail;
-                foreach( $details as $detail){
-                    $detail -> delete();
+            if($food_records != null){
+                foreach( $food_records as $food_record){
+                    $details = $food_record -> food_detail;
+                    foreach( $details as $detail){
+                        $detail -> delete();
+                    }
+                    $food_record -> delete();
                 }
-                $food_record -> delete();
             }
 
             $messages = $hospital -> messages;
-            foreach( $messages as $message){
-                $message -> delete();
+            if($messages != null){
+                foreach( $messages as $message){
+                    $message -> delete();
+                }
             }
-            $hospital -> delete();
+            // $hospital -> delete();
 
             $user_soap = $hospital -> user_soap;
-            $histories = $user_soap -> history;
-            foreach( $histories as $history){
-                $history -> delete();
+            if($user_soap != null){
+                $histories = $user_soap -> history;
+                foreach( $histories as $history){
+                    $history -> delete();
+                }
+                $user_soap -> delete();
             }
-            $user_soap -> delete();
 
             $contact_info = $hospital -> contact_info;
-            $contact_info -> delete();
+            if($contact_info != null){
+                $contact_info -> delete();
+            }
 
             $hospital -> delete();
         }
