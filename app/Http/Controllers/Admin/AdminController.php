@@ -86,7 +86,7 @@ class AdminController extends Controller
 
     public function upload_user(Request $request)
     {
-        $this->validate($request, User::rules());
+        $this->validate($request, User::rules1());
         $user = User::where('id', $request->user_id)->first();
         $user->account = $request->account;
         $user->name = $request->name;
