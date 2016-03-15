@@ -177,7 +177,7 @@ class DiabetesController extends Controller
     public function update(DiabetesMesRequest $request)
     {
         // Auth::user()->update($request->all());
-        $this->validate($request, User::rules());
+        $this->validate($request, User::rules1());
         $user = Auth::user();
         $user->name = $request->name;
         $user->password = Hash::make($request->password);
