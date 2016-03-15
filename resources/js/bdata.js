@@ -382,31 +382,41 @@ function checkContent(){
 
 function setupKey( event){
     //top:3
-    var bottom = $("#batch_save_btn").closest("tr")[0].rowIndex;
+    var bottom = $("#sugartable > tbody tr").index($("#batch_save_btn").closest("tr")[0]);
 
-    var now_x = $(this).closest("tr")[0].rowIndex;
+    var now_x = $("#sugartable > tbody tr").index($(this).closest("tr")[0]);
     var now_y = $(this).closest("td").index();
+
+    var changed = false;
+
     if ( event.which == 37 ) {
         if(now_y > 1){
             now_y -= 1;
+            changed = true;
         }
     }
     else if ( event.which == 39 ) {
         if(now_y < 9){
             now_y += 1;
+            changed = true;
         }
     }
     else if ( event.which == 38 ) {
-        if(now_x > 4){
+        if(now_x > 0){
             now_x -= 1;
+            changed = true;
         }
     }
     else if ( event.which == 40 ) {
         if(now_x < bottom){
             now_x += 1;
+            changed = true;
         }
     }
-    $('#sugartable tr:eq(' + now_x + ') td:eq(' + now_y + ')').children('#sugar_batch').focus();
+
+    if(changed){
+        $('#sugartable > tbody').find('tr').eq(now_x).find('td').eq(now_y).children('#sugar_batch').focus();
+    }
 }
 
 function setUpMessage(){
