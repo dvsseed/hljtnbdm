@@ -1,21 +1,21 @@
 <?php namespace App\Http\Controllers\DM;
 
-use DB;
-use Auth;
-use Redirect;
-use Hash;
-use Input;
-use Carbon\Carbon;
-use App\User;
 use App\Buildcase;
-use App\Patientprofile;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Event\EventController;
+use App\Http\Requests\DiabetesMesRequest;
 use App\Model\Pdata\HospitalNo;
 use App\Model\SOAP\SoaNurseClass;
-use App\Http\Requests\DiabetesMesRequest;
-use App\Http\Controllers\Event\EventController;
-use App\Http\Controllers\Controller;
+use App\Patientprofile;
+use App\User;
+use Auth;
+use Carbon\Carbon;
+use DB;
+use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Input;
+use Redirect;
 
 class DiabetesController extends Controller
 {
@@ -35,13 +35,13 @@ class DiabetesController extends Controller
     {
         $users = Auth::user();
 //        $features = DB::table('users')
-//            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
-//            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
-//            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
-//            ->where('users.id', '=', $users->id)
-//            ->get();
+        //            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
+        //            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
+        //            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
+        //            ->where('users.id', '=', $users->id)
+        //            ->get();
         // 權限
-//        $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
+        //        $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
         $chiefs = array("院长", "副院长", "病区主任");
         $positions = array("院长", "副院长", "病区主任", "门诊医生", "住院医生");
         if (in_array($users->position, $positions)) {
@@ -51,7 +51,7 @@ class DiabetesController extends Controller
         }
         if ($users->position == null || $users->position == '患者') {
             // 患者登入
-//            return view('dm.personal', compact('doctor', 'users', 'features'));
+            //            return view('dm.personal', compact('doctor', 'users', 'features'));
             return Redirect::route("bdata");
         } else {
             $search = urldecode($request->search);
@@ -63,12 +63,12 @@ class DiabetesController extends Controller
                     3 => "users.name",
                 ];
                 $field = in_array($category, array_keys($categoryList)) ? $categoryList[$category] : "other";
-                if($field!="other") {
+                if ($field != "other") {
                     $results = DB::table('buildcases')
                         ->leftjoin('users', 'users.pid', '=', 'buildcases.personid')
                         ->select('buildcases.id', 'buildcases.doctor', 'buildcases.duty', 'buildcases.nurse', 'buildcases.dietitian', 'buildcases.personid', 'buildcases.cardid', 'buildcases.build_at', 'buildcases.nurse_status', 'buildcases.duty_status', 'buildcases.dietitian', 'buildcases.dietitian_status', 'users.name')
                         ->where($field, 'like', '%' . $search . '%')
-                        ->where(function($query){
+                        ->where(function ($query) {
                             $users = Auth::user();
                             $chiefs = array("院长", "副院长", "病区主任");
                             if (!in_array($users->position, $chiefs)) {
@@ -113,7 +113,7 @@ class DiabetesController extends Controller
     public function gobd($pid, $bid)
     {
         $pps = Patientprofile::where('pp_patientid', '=', $pid)->first();
-        if(is_null($pps)) {
+        if (is_null($pps)) {
             return Redirect::route("bdata");
         } else {
             $ppid = $pps->id;
@@ -130,7 +130,7 @@ class DiabetesController extends Controller
     public function gosoap($pid, $bid)
     {
         $pps = Patientprofile::where('pp_patientid', '=', $pid)->first();
-        if(is_null($pps)) {
+        if (is_null($pps)) {
             return Redirect::route("soap");
         } else {
             $ppid = $pps->id;
@@ -153,12 +153,12 @@ class DiabetesController extends Controller
         // return view('dm.home', compact('diabetes'));
         $users = Auth::user();
         // $hasfeatures = Hasfeature::where('user_id', '=', $users->id)->get();
-//        $features = DB::table('users')
-//            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
-//            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
-//            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
-//            ->where('users.id', '=', $users->id)
-//            ->get();
+        //        $features = DB::table('users')
+        //            ->join('hasfeatures', 'users.id', '=', 'hasfeatures.user_id')
+        //            ->join('features', 'hasfeatures.feature_id', '=', 'features.id')
+        //            ->select('features.id', 'features.href', 'features.btnclass', 'features.innerhtml')
+        //            ->where('users.id', '=', $users->id)
+        //            ->get();
         $doctor = ($users->position == '门诊医生' || $users->position == '住院医生') ? 1 : 0;
         return view('dm.personal', compact('doctor', 'users'));
     }
@@ -170,7 +170,7 @@ class DiabetesController extends Controller
     public function edit()
     {
 //        $positions = User::$_position;
-//        return view('dm.edit', compact('positions'));
+        //        return view('dm.edit', compact('positions'));
         return view('dm.edit', compact('positions'));
     }
 
@@ -211,10 +211,10 @@ class DiabetesController extends Controller
         $dutys = array('' => '请选择') + $dutys;
         $nurses = User::where('position', '=', '护理师')->orderBy('name', 'ASC')->lists('name', 'id');
         $nurses = array('' => '请选择') + $nurses;
-        $soa_nurse_classes[0] = SoaNurseClass::where('type','=',1)->orderBy('soa_nurse_class_pk')->get();
+        $soa_nurse_classes[0] = SoaNurseClass::where('type', '=', 1)->orderBy('soa_nurse_class_pk')->get();
         $dietitians = User::where('position', '=', '营养师')->orderBy('name', 'ASC')->lists('name', 'id');
         $dietitians = array('' => '请选择') + $dietitians;
-        $soa_nurse_classes[1] = SoaNurseClass::where('type','=',2)->orderBy('soa_nurse_class_pk')->get();
+        $soa_nurse_classes[1] = SoaNurseClass::where('type', '=', 2)->orderBy('soa_nurse_class_pk')->get();
         EventController::SaveEvent('buildcases', 'create(创建)');
         return view('dm.create', compact('dutys', 'nurses', 'dietitians', 'soa_nurse_classes'));
     }
@@ -243,7 +243,7 @@ class DiabetesController extends Controller
             if (is_array($soa_nurse_class_pks0)) {
                 $pks0 = implode(",", $soa_nurse_class_pks0);
             } else {
-                $pks0 = array();
+                $pks0 = null;
             }
             $buildcase->soa_nurse_class_pks0 = $pks0;
             $buildcase->nurse_status = 0;
@@ -255,7 +255,7 @@ class DiabetesController extends Controller
             if (is_array($soa_nurse_class_pks1)) {
                 $pks1 = implode(",", $soa_nurse_class_pks1);
             } else {
-                $pks1 = array();
+                $pks1 = null;
             }
             $buildcase->soa_nurse_class_pks1 = $pks1;
             $buildcase->dietitian_status = 0;
@@ -274,22 +274,22 @@ class DiabetesController extends Controller
      * @return Response
      */
 //    public function show($id)
-//    {
-//        $patientprofile = Patientprofile::findOrFail($id);
-//        $casecare = CaseCare::where('patientprofile1_id', '=', $id)->firstOrFail();
-//        $carbon = Carbon::today();
-//        $year = $carbon->year;
-//        $bsms = BSM::orderBy('bm_order')->get();
-//        $account = User::findOrFail($patientprofile->user_id)->account;
-//        $areas = Patientprofile::$_area;
-//        $doctors = Patientprofile::$_doctor;
-//        $sources = Patientprofile::$_source;
-//        $occupations = Patientprofile::$_occupation;
-//        $languages = Patientprofile::$_language;
-//
-//        EventController::SaveEvent('buildcases', 'show(显示)');
-//        return view('dm.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
-//    }
+    //    {
+    //        $patientprofile = Patientprofile::findOrFail($id);
+    //        $casecare = CaseCare::where('patientprofile1_id', '=', $id)->firstOrFail();
+    //        $carbon = Carbon::today();
+    //        $year = $carbon->year;
+    //        $bsms = BSM::orderBy('bm_order')->get();
+    //        $account = User::findOrFail($patientprofile->user_id)->account;
+    //        $areas = Patientprofile::$_area;
+    //        $doctors = Patientprofile::$_doctor;
+    //        $sources = Patientprofile::$_source;
+    //        $occupations = Patientprofile::$_occupation;
+    //        $languages = Patientprofile::$_language;
+    //
+    //        EventController::SaveEvent('buildcases', 'show(显示)');
+    //        return view('dm.show', compact('patientprofile', 'casecare', 'year', 'bsms', 'account', 'areas', 'doctors', 'sources', 'occupations', 'languages'));
+    //    }
 
     /**
      * Remove the specified resource from storage.
@@ -327,10 +327,10 @@ class DiabetesController extends Controller
         $dutys = array('' => '请选择') + $dutys;
         $nurses = User::where('position', '=', '护理师')->orderBy('name', 'ASC')->lists('name', 'id');
         $nurses = array('' => '请选择') + $nurses;
-        $soa_nurse_classes[0] = SoaNurseClass::where('type','=',1)->orderBy('soa_nurse_class_pk')->get();
+        $soa_nurse_classes[0] = SoaNurseClass::where('type', '=', 1)->orderBy('soa_nurse_class_pk')->get();
         $dietitians = User::where('position', '=', '营养师')->orderBy('name', 'ASC')->lists('name', 'id');
         $dietitians = array('' => '请选择') + $dietitians;
-        $soa_nurse_classes[1] = SoaNurseClass::where('type','=',2)->orderBy('soa_nurse_class_pk')->get();
+        $soa_nurse_classes[1] = SoaNurseClass::where('type', '=', 2)->orderBy('soa_nurse_class_pk')->get();
         EventController::SaveEvent('buildcases', 'edit(编辑)');
         return view('dm.eedit', compact('buildcase', 'dutys', 'nurses', 'dietitians', 'soa_nurse_classes'));
     }
@@ -356,7 +356,7 @@ class DiabetesController extends Controller
             if (is_array($soa_nurse_class_pks0)) {
                 $pks0 = implode(",", $soa_nurse_class_pks0);
             } else {
-                $pks0 = array();
+                $pks0 = null;
             }
             $buildcase->soa_nurse_class_pks0 = $pks0;
             $buildcase->nurse_at = $today;
@@ -367,12 +367,12 @@ class DiabetesController extends Controller
             if (is_array($soa_nurse_class_pks1)) {
                 $pks1 = implode(",", $soa_nurse_class_pks1);
             } else {
-                $pks1 = array();
+                $pks1 = null;
             }
             $buildcase->soa_nurse_class_pks1 = $pks1;
             $buildcase->dietitian_at = $today;
         }
-        $buildcase -> soap_status = 0;
+        $buildcase->soap_status = 0;
         $buildcase->save();
         session()->flash('message', "建案修改成功");
         EventController::SaveEvent('buildcases', 'update(更新)');
@@ -399,7 +399,7 @@ class DiabetesController extends Controller
                 $swth = 1;
             }
             $tbody .= "</tbody></table>";
-            if($swth) {
+            if ($swth) {
                 $msg = $tbody;
             } else {
                 $msg = '<strong>**二周内无收案统计**</strong>';
@@ -409,7 +409,7 @@ class DiabetesController extends Controller
                 'msg' => $msg,
             );
             return response()->json($data);
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             $data = array(
                 'status' => 'success',
                 'msg' => '',
@@ -422,22 +422,31 @@ class DiabetesController extends Controller
     {
 //      $pid = Request::input('personid');
         $pid = Input::get('personid');
-        if(empty($pid)) {
+        if (empty($pid)) {
             $msg = "请输入: <strong>患者[身份证]</strong>...";
         } else {
             $user = Buildcase::where('personid', '=', $pid)->orderBy('personid', 'ASC')->orderBy('build_at', 'DESC')->first();
-            if($user) {
+            if ($user) {
                 $duty = $user->duty;
                 $dutyname = '';
                 $nursename = '';
                 $dietitianname = '';
-                if ($duty) $dutyname = '前次[责任卫教]: <strong>'.User::findOrFail($user->duty)->name.'</strong>';
+                if ($duty) {
+                    $dutyname = '前次[责任卫教]: <strong>' . User::findOrFail($user->duty)->name . '</strong>';
+                }
+
                 $nurse = $user->nurse;
-                if ($nurse) $nursename = ', [护理卫教]: <strong>'.User::findOrFail($user->nurse)->name.'</strong>';
+                if ($nurse) {
+                    $nursename = ', [护理卫教]: <strong>' . User::findOrFail($user->nurse)->name . '</strong>';
+                }
+
                 $dietitian = $user->dietitian;
-                if($dietitian) $dietitianname = ', [营养卫教]: <strong>'.User::findOrFail($user->dietitian)->name.'</strong>';
+                if ($dietitian) {
+                    $dietitianname = ', [营养卫教]: <strong>' . User::findOrFail($user->dietitian)->name . '</strong>';
+                }
+
             }
-            if(empty($duty) && empty($nurse) && empty($dietitian)){
+            if (empty($duty) && empty($nurse) && empty($dietitian)) {
                 $msg = "该患者无建案纪录...";
             } else {
                 $msg = $dutyname . $nursename . $dietitianname;
