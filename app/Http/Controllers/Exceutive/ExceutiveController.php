@@ -248,7 +248,7 @@ class ExceutiveController extends Controller{
                 }
             }
             if($record[$type] != 0){
-                if(isset($data[$type]['total'])){
+                if(isset($data[$type]['total'][$record['doc']])){
                     $data[$type]['total'][$record['doc']] ++;
                 }else{
                     $data[$type]['total'][$record['doc']] = 1;
