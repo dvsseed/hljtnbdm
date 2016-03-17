@@ -385,7 +385,7 @@ class ExceutiveController extends Controller{
         }
         $export_data['count'] = $total_count;
         $export_data['name'] = "全院";
-        if($user_id != null){
+        if($user_id != null && isset($doc_pk_mapping[$user_id])){
             $export_data['name'] = $doc_pk_mapping[$user_id];
         }
         return $export_data;
